@@ -6,6 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./control-test.component.scss']
 })
 export class ControlTestComponent implements OnInit {
+  public testing: number = 0;
 
   constructor() { }
 
