@@ -1,12 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ControlTestComponent } from './control-test/control-test.component';
+
+import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
+// import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'control-test', pathMatch: 'full' },
-  { path: 'control-test', component: ControlTestComponent },
-  { path: '**', redirectTo: 'control-test' }
+  // {
+  //   path: '', component: MainLayoutComponent,
+  //   canActivate: [AuthGuard],
+  //   resolve: { auth: AuthResolver },
+  //   children: [
+  //     {
+  //       path: '',
+  //       loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
+  //     },
+  //   ]
+  // },
+  {
+    path: '', component: AuthLayoutComponent,
+    loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
+  }
 ];
+
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],

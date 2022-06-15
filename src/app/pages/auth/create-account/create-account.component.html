@@ -1,0 +1,70 @@
+<p class="text-xl font-medium leading-6 !mb-[30px] font-mont text-center text-pri-black">Create Account</p>
+<form [formGroup]="form" (ngSubmit)="signup()" novalidate>
+  <div>
+    <mat-form-field class="w-full">
+      <input matInput class="!font-lato" placeholder="Email" formControlName="email" type="email">
+      <mat-error *ngIf="form.controls['email'].hasError('required')">
+        Email is required
+      </mat-error>
+      <mat-error *ngIf="form.controls['email'].hasError('email') && !form.controls['email'].hasError('required')">
+        Email is not valid
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="w-full">
+      <input matInput placeholder="Password" formControlName="password" type="password" autocomplete="new-password"
+        class="!font-lato">
+      <mat-error *ngIf="form.controls['password'].hasError('required')">
+        Password is required
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="w-full">
+      <input matInput placeholder="Name" formControlName="name" class="!font-lato">
+      <mat-error *ngIf="form.controls['name'].hasError('required')">
+        Name is required
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="w-full">
+      <input matInput placeholder="Title" formControlName="title" class="!font-lato">
+      <mat-error *ngIf="form.controls['title'].hasError('required')">
+        Title is required
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="w-full">
+      <input matInput placeholder="Office City" formControlName="office" class="!font-lato">
+      <mat-error *ngIf="form.controls['office'].hasError('required')">
+        Office city is required
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="w-full">
+      <input matInput placeholder="Phone" formControlName="phone" class="!font-lato">
+      <mat-error *ngIf="form.controls['phone'].hasError('required')">
+        Phone is required
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="flex items-end mb-5">
+    <mat-checkbox formControlName="terms" class="!font-lato" color="primary">
+      <span class=" text-pri-black">I accept the &nbsp;</span>
+    </mat-checkbox>
+    <span class="text-regal-blue"><a>Terms of Use</a></span>
+  </div>
+  <div class="text-center">
+    <button mat-raised-button type="submit" color="primary" [disabled]="form.pristine || form.invalid"
+      class="text-base !mb-5 font-mont w-[106px]">
+      Submit
+    </button>
+    <p class="text-light-gray font-lato">Already have an account?&nbsp;
+      <a routerLink="/login" class="text-regal-blue">Log In</a>
+    </p>
+  </div>
+</form>
