@@ -2,20 +2,20 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AuthLayoutComponent } from './layout/auth-layout/auth-layout.component';
-// import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
-  // {
-  //   path: '', component: MainLayoutComponent,
-  //   canActivate: [AuthGuard],
-  //   resolve: { auth: AuthResolver },
-  //   children: [
-  //     {
-  //       path: '',
-  //       loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
-  //     },
-  //   ]
-  // },
+  {
+    path: '', component: MainLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
+      },
+    ]
+  },
   {
     path: '', component: AuthLayoutComponent,
     loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)

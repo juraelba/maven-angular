@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { lastValueFrom } from 'rxjs';
 
-// import { AuthService } from '../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { ToastrService } from '../../../core/services/toastr.service';
+import { SpinnerService } from '../../../core/services/spinner.service';
+
 
 @Component({
   selector: 'app-login',
@@ -11,7 +15,6 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
 
-  isLoading: boolean = false;
   form: FormGroup = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
     password: ['', Validators.required],
@@ -19,24 +22,25 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    // private authService: AuthService,
+    private authService: AuthService,
     private router: Router,
+    private toastr: ToastrService,
+    private spinnerService: SpinnerService
   ) { }
 
   ngOnInit(): void {
   }
 
   async login() {
-    // this.toastr.error('Danger', 'This is a error message.');
     try {
-      this.isLoading = true;
+      this.spinnerService.show();
       const value = this.form.value;
-      // await this.authService.login(value.email, value.password).toPromise();
+      await lastValueFrom(this.authService.login(value.email, value.password));
       this.router.navigate(['/']);
-    } catch (e) {
-      // this.toastr.danger(e.error.message);
+    } catch (e: any) {
+      this.toastr.danger(e.message);
     } finally {
-      this.isLoading = false;
+      this.spinnerService.hide();
     }
   }
 }
