@@ -47,7 +47,7 @@ export class ToastrComponent implements OnInit, OnDestroy {
       this.toastrs.push(toastr);
       setTimeout(() => {
         this.toastrs.splice(0, 1);
-      }, 100000000);
+      }, 3000);
     });
 
   }
