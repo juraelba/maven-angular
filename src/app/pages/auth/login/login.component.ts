@@ -14,7 +14,6 @@ import { SpinnerService } from '../../../core/services/spinner.service';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-
   form: UntypedFormGroup = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
     password: ['', Validators.required],
@@ -35,8 +34,13 @@ export class LoginComponent implements OnInit {
     try {
       this.spinnerService.show();
       const value = this.form.value;
-      await lastValueFrom(this.authService.login(value.email, value.password));
-      this.router.navigate(['/']);
+      this.authService.login(value.email, value.password).subscribe(token => {
+        if (token) {
+          this.router.navigate(['/']);
+        } else {
+          this.toastr.danger("Invalid Login");
+        }
+      });
     } catch (e: any) {
       this.toastr.danger(e.message);
     } finally {
