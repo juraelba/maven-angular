@@ -26,14 +26,34 @@
       <mat-error *ngIf="dataForm.controls['password'].hasError('required')">
         Password is required
       </mat-error>
-      <mat-error *ngIf="dataForm.controls['password'].hasError('minlength')">
-        At least 8 characters
-      </mat-error>
-      <mat-error *ngIf="dataForm.controls['password'].hasError('passwordNoNumber')">
-        At least 1 number
-      </mat-error>
-      <mat-error *ngIf="dataForm.controls['password'].hasError('passwordNoUpper')">
-        At least 1 uppercase
+      <mat-error
+        *ngIf="!dataForm.controls['password'].hasError('required') && (dataForm.controls['password'].hasError('minlength') || dataForm.controls['password'].hasError('passwordNoNumber') || dataForm.controls['password'].hasError('passwordNoUpper'))">
+        <div class="flex items-center">
+          <img class="mr-[5px] mb-1"
+            [src]="dataForm.controls['password'].hasError('minlength') ? '/assets/images/icons/validation/warnning.svg' : '/assets/images/icons/validation/checked.svg'"
+            alt="Not found :(">
+          <span [ngClass]="dataForm.controls['password'].hasError('minlength') ? 'text-warn-red' : 'text-check-green'">
+            At least 8 characters
+          </span>
+        </div>
+        <div class="flex items-center">
+          <img class="mr-[5px] mb-1"
+            [src]="dataForm.controls['password'].hasError('passwordNoNumber') ? '/assets/images/icons/validation/warnning.svg' : '/assets/images/icons/validation/checked.svg'"
+            alt="Not found :(">
+          <span
+            [ngClass]="dataForm.controls['password'].hasError('passwordNoNumber') ? 'text-warn-red' : 'text-check-green'">
+            At least 1 number
+          </span>
+        </div>
+        <div class="flex items-center">
+          <img class="mr-[5px] mb-1"
+            [src]="dataForm.controls['password'].hasError('passwordNoUpper') ? '/assets/images/icons/validation/warnning.svg' : '/assets/images/icons/validation/checked.svg'"
+            alt="Not found :(">
+          <span
+            [ngClass]="dataForm.controls['password'].hasError('passwordNoUpper') ? 'text-warn-red' : 'text-check-green'">
+            At least 1 uppercase
+          </span>
+        </div>
       </mat-error>
     </mat-form-field>
   </div>

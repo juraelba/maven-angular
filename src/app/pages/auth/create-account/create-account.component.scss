@@ -1,0 +1,25 @@
+:host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-invalid .mat-form-field-outline-thick,
+:host ::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-label,
+.mat-error {
+  color: #C94A55;
+}
+
+:host ::ng-deep .mat-form-field.mat-form-field-invalid .mat-form-field-ripple {
+  background-color: #C94A55;
+}
+
+.mat-error .validation-description {
+  color: #018C76;
+}
+
+:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+  bottom: auto;
+}
+
+:host ::ng-deep .mat-form-field-subscript-wrapper {
+  position: relative;
+}

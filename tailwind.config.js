@@ -11,6 +11,8 @@ module.exports = {
         "regal-blue": "#3a63cc",
         "light-gray": "#b3b3b8",
         "pri-black": "#1f1f1f",
+        "warn-red": "#c94a55",
+        "check-green": "#018c76",
       },
       fontFamily: {
         mont: ["Montserrat"],
