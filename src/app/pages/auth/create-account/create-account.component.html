@@ -1,29 +1,46 @@
 <p class="text-xl font-medium leading-6 !mb-[30px] font-mont text-center text-pri-black">Create Account</p>
-<form [formGroup]="form" (ngSubmit)="signup()" novalidate>
+<form [formGroup]="dataForm" (ngSubmit)="signup()" novalidate *ngIf="!sentFormData">
   <div>
     <mat-form-field class="w-full">
       <input matInput class="!font-lato" placeholder="Email" formControlName="email" type="email">
-      <mat-error *ngIf="form.controls['email'].hasError('required')">
+      <mat-error *ngIf="dataForm.controls['email'].hasError('required')">
         Email is required
       </mat-error>
-      <mat-error *ngIf="form.controls['email'].hasError('email') && !form.controls['email'].hasError('required')">
+      <mat-error
+        *ngIf="dataForm.controls['email'].hasError('email') && !dataForm.controls['email'].hasError('required')">
         Email is not valid
+      </mat-error>
+      <mat-error
+        *ngIf="dataForm.controls['email'].hasError('existingEmail') && !dataForm.controls['email'].hasError('required')">
+        Email already exists
+      </mat-error>
+      <mat-error
+        *ngIf="dataForm.controls['email'].hasError('invalidDomain') && !dataForm.controls['email'].hasError('required')">
+        Email is not the invalid domain
       </mat-error>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="w-full">
-      <input matInput placeholder="Password" formControlName="password" type="password" autocomplete="new-password"
-        class="!font-lato">
-      <mat-error *ngIf="form.controls['password'].hasError('required')">
+      <input matInput placeholder="Password" formControlName="password" type="password" autocomplete="new-password">
+      <mat-error *ngIf="dataForm.controls['password'].hasError('required')">
         Password is required
+      </mat-error>
+      <mat-error *ngIf="dataForm.controls['password'].hasError('minlength')">
+        At least 8 characters
+      </mat-error>
+      <mat-error *ngIf="dataForm.controls['password'].hasError('passwordNoNumber')">
+        At least 1 number
+      </mat-error>
+      <mat-error *ngIf="dataForm.controls['password'].hasError('passwordNoUpper')">
+        At least 1 uppercase
       </mat-error>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="w-full">
       <input matInput placeholder="Name" formControlName="name" class="!font-lato">
-      <mat-error *ngIf="form.controls['name'].hasError('required')">
+      <mat-error *ngIf="dataForm.controls['name'].hasError('required')">
         Name is required
       </mat-error>
     </mat-form-field>
@@ -31,7 +48,7 @@
   <div>
     <mat-form-field class="w-full">
       <input matInput placeholder="Title" formControlName="title" class="!font-lato">
-      <mat-error *ngIf="form.controls['title'].hasError('required')">
+      <mat-error *ngIf="dataForm.controls['title'].hasError('required')">
         Title is required
       </mat-error>
     </mat-form-field>
@@ -39,7 +56,7 @@
   <div>
     <mat-form-field class="w-full">
       <input matInput placeholder="Office City" formControlName="office" class="!font-lato">
-      <mat-error *ngIf="form.controls['office'].hasError('required')">
+      <mat-error *ngIf="dataForm.controls['office'].hasError('required')">
         Office city is required
       </mat-error>
     </mat-form-field>
@@ -47,7 +64,7 @@
   <div>
     <mat-form-field class="w-full">
       <input matInput placeholder="Phone" formControlName="phone" class="!font-lato">
-      <mat-error *ngIf="form.controls['phone'].hasError('required')">
+      <mat-error *ngIf="dataForm.controls['phone'].hasError('required')">
         Phone is required
       </mat-error>
     </mat-form-field>
@@ -59,7 +76,7 @@
     <span class="text-regal-blue"><a>Terms of Use</a></span>
   </div>
   <div class="text-center">
-    <button mat-raised-button type="submit" color="primary" [disabled]="form.pristine || form.invalid"
+    <button mat-raised-button type="submit" color="primary" [disabled]="dataForm.pristine || dataForm.invalid"
       class="text-base !mb-5 font-mont w-[106px]">
       Submit
     </button>
@@ -68,3 +85,26 @@
     </p>
   </div>
 </form>
+<div *ngIf="sentFormData">
+  <p class="text-sm font-lato text-pri-black text-center mb-[30px]">A message containing a verification code has been
+    sent to your email address. Please enter the verification code below.</p>
+  <form [formGroup]="codeForm" (ngSubmit)="signup()" novalidate>
+    <div>
+      <mat-form-field class="w-full">
+        <input matInput placeholder="Code" formControlName="code" class="!font-lato">
+        <mat-error *ngIf="codeForm.controls['code'].hasError('required')">
+          Code is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="text-center">
+      <button mat-raised-button type="submit" color="primary" [disabled]="codeForm.pristine || codeForm.invalid"
+        class="text-base !mb-5 font-mont w-[106px]">
+        Submit
+      </button>
+      <p class="text-light-gray font-lato">
+        <a class="text-regal-blue">Resend Code</a>
+      </p>
+    </div>
+  </form>
+</div>

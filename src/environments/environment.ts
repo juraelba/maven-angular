@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  api: 'https://dev-maven.mediaframework.com/api'
+  api: 'https://dev-maven.mediaframework.com/api/'
 };
 
 /*

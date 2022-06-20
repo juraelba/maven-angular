@@ -40,17 +40,17 @@ export class AuthService {
     const encoded: string = btoa(email + "|" + password);
     const httpOptions = {
       headers: new HttpHeaders({
-        'Content-Type':  'application/json',
+        'Content-Type': 'application/json',
         'Authorization': encoded
       })
     };
     return this.http.get<TokenResponse>(url, httpOptions).pipe(
-      tap(res => {if (typeof res === "string") this.authenticateUser(res)})
+      tap(res => { if (typeof res === "string") this.authenticateUser(res) })
     );
   }
 
   logout(): void {
-    this.accessToken = null;
+    this.accessToken = '';
     this.isAuthenticated$.next(this.isAuthenticated);
     this.router.navigate(['/login']);
   }
@@ -66,14 +66,14 @@ export class AuthService {
   // }
 
   isTokenExpired(token: string | null): boolean {
-    if(!token) token = this.accessToken;
-    if(!token) return true;
+    if (!token) token = this.accessToken;
+    if (!token) return true;
 
     const date = this.getTokenExpirationDate(token);
-    if(date === undefined) return false;
+    if (date === undefined) return false;
     return !(date.valueOf() > new Date().valueOf());
   }
-  
+
   private getTokenExpirationDate(token: string): Date {
     const decoded = jwt_decode<DecodedToken>(token);
     if (decoded.exp === undefined) return new Date();
@@ -82,7 +82,7 @@ export class AuthService {
     return date;
   }
 
-  authenticateUser(accessToken: string) {
+  authenticateUser(accessToken: string | null) {
     this.accessToken = accessToken;
     // localStorage.setItem('accessToken', this.accessToken);
     // this.isAuthenticated$.next(this.isAuthenticated);
