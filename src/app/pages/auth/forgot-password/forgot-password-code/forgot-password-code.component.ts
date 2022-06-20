@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-forgot-password-code',
@@ -9,12 +9,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class ForgotPasswordCodeComponent implements OnInit {
   @Output() onSendEmail = new EventEmitter();
 
-  form: FormGroup = this.fb.group({
+  form: UntypedFormGroup = this.fb.group({
     code: ['', [Validators.required]],
   });
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     // private authService: AuthService,
     // private router: Router,
   ) { }

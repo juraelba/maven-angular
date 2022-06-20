@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { lastValueFrom } from 'rxjs';
 
@@ -15,13 +15,13 @@ import { SpinnerService } from '../../../core/services/spinner.service';
 })
 export class LoginComponent implements OnInit {
 
-  form: FormGroup = this.fb.group({
+  form: UntypedFormGroup = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
     password: ['', Validators.required],
   });
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private authService: AuthService,
     private router: Router,
     private toastr: ToastrService,

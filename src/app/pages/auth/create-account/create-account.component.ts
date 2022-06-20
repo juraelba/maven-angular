@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { AuthService } from '../../../core/services/auth.service';
@@ -14,7 +14,7 @@ import { CustomValidator, PasswordNumberValidator, PasswordUpperValidator } from
 })
 export class CreateAccountComponent implements OnInit {
   sentFormData: boolean = false;
-  dataForm: FormGroup = this.fb.group({
+  dataForm: UntypedFormGroup = this.fb.group({
     email: ['', {
       validators: [Validators.required, Validators.email],
       asyncValidators: [
@@ -35,12 +35,12 @@ export class CreateAccountComponent implements OnInit {
     terms: ['', Validators.required],
     // captcha: ['', Validators.required],
   });
-  codeForm: FormGroup = this.fb.group({
+  codeForm: UntypedFormGroup = this.fb.group({
     code: ['', Validators.required],
   });
 
   constructor(
-    private fb: FormBuilder,
+    private fb: UntypedFormBuilder,
     private router: Router,
     private authService: AuthService,
     private toastr: ToastrService,
