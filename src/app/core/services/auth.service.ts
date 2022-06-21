@@ -89,10 +89,10 @@ export class AuthService {
 
   //ReCAPTCHA Service
 
-  // recaptchaValidate(token: string): Observable<{}> {
-  //   const url = environment.api + 'validate_captcha';
-  //   return this.http.post<string>(url, JSON.stringify(token), this.headerOptions);
-  // }
+  recaptchaValidate(token: string): Observable<{}> {
+    const url = environment.api + '/validate_captcha';
+    return this.http.post<string>(url, JSON.stringify(token), this.headerOptions);
+  }
 
   // Checking authentication service
 

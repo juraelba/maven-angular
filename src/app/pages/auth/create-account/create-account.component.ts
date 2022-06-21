@@ -23,6 +23,7 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
   MAX_TRIES: number = MAX_VALIDATION_TRIES;
   invalidMessage: string = "";
   accountValidated: boolean = false;
+  checkReCaptcha: boolean = false;
   dataForm: UntypedFormGroup = this.fb.group({
     email: ['', {
       validators: [Validators.required, Validators.email],
@@ -42,7 +43,6 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
     office: ['', Validators.required],
     phone: ['', Validators.required],
     terms: ['', Validators.required],
-    captcha: ['', Validators.required],
   });
   codeForm: UntypedFormGroup = this.fb.group({
     code: ['', Validators.required],
@@ -130,6 +130,25 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
           this.toastr.success('Another code has been sent to ' + this.user.email + '. Check your spam folder. It may be hiding in there.');
         }
       });
+    } catch (e: any) {
+      this.toastr.danger(e.message);
+    } finally {
+      this.spinnerService.hide();
+    }
+  }
+
+  async recaptchaResolved(captchaResponse: string) {
+    try {
+      this.spinnerService.show();
+      if (captchaResponse) {
+        this.authService.recaptchaValidate(captchaResponse).pipe(
+          takeUntil(this.unsubscribeAll)
+        ).subscribe((res: any) => {
+          this.checkReCaptcha = res.success;
+        });
+      } else {
+        this.checkReCaptcha = false;
+      }
     } catch (e: any) {
       this.toastr.danger(e.message);
     } finally {

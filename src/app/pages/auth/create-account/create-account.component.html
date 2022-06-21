@@ -98,8 +98,12 @@
       </mat-checkbox>
       <span class="text-regal-blue"><a>Terms of Use</a></span>
     </div>
+    <div class="mb-10 w-full">
+      <re-captcha (resolved)="recaptchaResolved($event)"></re-captcha>
+    </div>
     <div class="text-center">
-      <button mat-raised-button type="submit" color="primary" [disabled]="dataForm.pristine || dataForm.invalid"
+      <button mat-raised-button type="submit" color="primary"
+        [disabled]="dataForm.pristine || dataForm.invalid || !checkReCaptcha"
         class="text-base !mb-5 font-mont w-[106px]">
         Submit
       </button>
