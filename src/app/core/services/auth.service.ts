@@ -66,12 +66,12 @@ export class AuthService {
 
   // Create Account Service
 
-  sendCreatAccountFormData(user: User): Observable<User> {
+  sendCreateAccountFormData(user: User): Observable<User> {
     const url = environment.api + '/users';
     return this.http.post<User>(url, JSON.stringify(user), this.headerOptions);
   }
 
-  checkCreatAccountCode(email: string, code: string): Observable<string> {
+  checkCreateAccountCode(email: string, code: string): Observable<string> {
     const url = environment.api + '/auth/token-check/';
     return this.http.get<string>(url + email + '/' + code);
   }

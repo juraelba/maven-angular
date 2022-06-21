@@ -71,7 +71,7 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
     try {
       this.spinnerService.show();
       this.packObject();
-      this.authService.sendCreatAccountFormData(this.user).pipe(
+      this.authService.sendCreateAccountFormData(this.user).pipe(
         takeUntil(this.unsubscribeAll)
       ).subscribe(res => {
         if (typeof res === 'string') this.toastr.danger(res);
@@ -89,7 +89,7 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
   async verificationCodeSubmit() {
     try {
       this.spinnerService.show();
-      this.authService.checkCreatAccountCode(this.user.email, this.codeForm.value.code).pipe(
+      this.authService.checkCreateAccountCode(this.user.email, this.codeForm.value.code).pipe(
         takeUntil(this.unsubscribeAll)
       ).subscribe(res => {
         if (res == '') {
