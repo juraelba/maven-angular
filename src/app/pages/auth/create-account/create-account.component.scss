@@ -12,10 +12,6 @@
   color: #018C76;
 }
 
-:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-wrapper {
-  padding-bottom: 0;
-}
-
 :host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
   bottom: auto;
 }

@@ -9,7 +9,7 @@ import { environment } from '../../../environments/environment';
 })
 
 export class ValidationService {
-  options = {
+  headerOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
@@ -19,12 +19,12 @@ export class ValidationService {
   }
 
   isDupe(email: string): Observable<boolean> {
-    const url = environment.api + 'users/is-dupe/' + email;
+    const url = environment.api + '/users/is-dupe/' + email;
     return this.http.get<boolean>(url);
   }
 
   isDomainValid(email: string): Observable<boolean> {
-    const url = environment.api + 'domains/isvalid/' + email;
+    const url = environment.api + '/domains/isvalid/' + email;
     return this.http.get<boolean>(url);
   }
 }

@@ -1,6 +1,20 @@
-export enum UserRole {
-  User = 'USER',
-  Admin = 'ADMIN'
+export interface Role {
+  roleID: number;
+  userID: number;
+  name: string;
+  recordToken: RecordToken;
+}
+
+export interface RecordToken {
+  createdBy: number;
+  createdDate: Date;
+  createdByName: string;
+  modifiedBy: number;
+  modifiedDate: Date;
+  modifiedByName: string;
+  updatedBy: number;
+  dirty: boolean;
+  deleted: boolean;
 }
 
 export interface TokenResponse {
@@ -15,24 +29,22 @@ export interface SuccessResponse {
   success: boolean;
 }
 
+
 export interface User {
   id: number;
-  digitalId: number;
+  name: string;
   email: string;
-  firstName: string;
-  lastName: string;
-  role: UserRole;
-  isEmailVerified: boolean;
-  walletAddress: string;
-  invitation: string;
-  star: number;
-}
+  password: string;
+  office: string;
+  title: string;
+  phone: string;
 
-export interface Profile {
-  level: number;
-}
-
-export interface UserWithProfile extends User {
-  profile: Profile;
-  invitor: User;
+  company: string;
+  companyID: number;
+  active: boolean;
+  validated: boolean;
+  lockedOut: boolean;
+  expires: Date;
+  roles: Role[];
+  recordToken: RecordToken;
 }

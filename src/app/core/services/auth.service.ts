@@ -6,16 +6,21 @@ import { tap } from 'rxjs/operators';
 import jwt_decode from 'jwt-decode';
 
 import { environment } from '../../../environments/environment';
-import { DecodedToken, TokenResponse, UserWithProfile } from '../models/auth.model';
+import { DecodedToken, TokenResponse } from '../models/auth.model';
+import { User } from '../models/auth.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  user: UserWithProfile | null = null;
-  user$: BehaviorSubject<UserWithProfile | null> = new BehaviorSubject<UserWithProfile | null>(this.user);
+  // user: UserWithProfile | null = null;
+  // user$: BehaviorSubject<UserWithProfile | null> = new BehaviorSubject<UserWithProfile | null>(this.user);
   isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject(this.isAuthenticated);
+
+  headerOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
 
   constructor(
     private http: HttpClient,
@@ -35,6 +40,8 @@ export class AuthService {
     return Boolean(this.accessToken);
   }
 
+  // Login service
+
   login(email: string, password: string): Observable<TokenResponse> {
     const url = environment.api + '/auth/login';
     const encoded: string = btoa(email + "|" + password);
@@ -49,21 +56,45 @@ export class AuthService {
     );
   }
 
+  // Logout service
+
   logout(): void {
     this.accessToken = '';
     this.isAuthenticated$.next(this.isAuthenticated);
     this.router.navigate(['/login']);
   }
 
-  // getAuth(): Observable<UserWithProfile> {
-  //   const url = environment.api + '/auth';
-  //   return this.http.get<UserWithProfile>(url).pipe(
-  //     tap(user => {
-  //       this.user = user;
-  //       this.user$.next(this.user);
-  //     })
-  //   );
+  // Create Account Service
+
+  sendCreatAccountFormData(user: User): Observable<User> {
+    const url = environment.api + '/users';
+    return this.http.post<User>(url, JSON.stringify(user), this.headerOptions);
+  }
+
+  checkCreatAccountCode(email: string, code: string): Observable<string> {
+    const url = environment.api + '/auth/token-check/';
+    return this.http.get<string>(url + email + '/' + code);
+  }
+
+
+  checkCodeValidate(token: string): Observable<boolean> {
+    const url = environment.api + '/auth/validate-account';
+    return this.http.put<boolean>(url, JSON.stringify(token), this.headerOptions);
+  }
+
+  sendCode(email: string): Observable<string> {
+    const url = environment.api + '/auth/new-account-code/';
+    return this.http.get<string>(url + email);
+  }
+
+  //ReCAPTCHA Service
+
+  // recaptchaValidate(token: string): Observable<{}> {
+  //   const url = environment.api + 'validate_captcha';
+  //   return this.http.post<string>(url, JSON.stringify(token), this.headerOptions);
   // }
+
+  // Checking authentication service
 
   isTokenExpired(token: string | null): boolean {
     if (!token) token = this.accessToken;
@@ -74,6 +105,10 @@ export class AuthService {
     return !(date.valueOf() > new Date().valueOf());
   }
 
+  authenticateUser(accessToken: string | null) {
+    this.accessToken = accessToken;
+  }
+
   private getTokenExpirationDate(token: string): Date {
     const decoded = jwt_decode<DecodedToken>(token);
     if (decoded.exp === undefined) return new Date();
@@ -81,46 +116,4 @@ export class AuthService {
     date.setUTCSeconds(decoded.exp);
     return date;
   }
-
-  authenticateUser(accessToken: string | null) {
-    this.accessToken = accessToken;
-    // localStorage.setItem('accessToken', this.accessToken);
-    // this.isAuthenticated$.next(this.isAuthenticated);
-    // this.getAuth().subscribe();
-  }
-
-  // getUpdateInfoCode(email: string): Observable<SuccessResponse> {
-  //   const url = environment.api + '/auth/update-user-verification/add';
-  //   return this.http.post<SuccessResponse>(url, { email });
-  // }
-
-  // updateUser(email: string, walletAddress: string, password: string, code: string): Observable<SuccessResponse> {
-  //   const url = environment.api + '/auth';
-  //   return this.http.put<SuccessResponse>(url, { email, walletAddress, password, code });
-  // }
-
-  // upgrade(transactionHash: string): Observable<SuccessResponse> {
-  //   const url = environment.api + '/level/up';
-  //   return this.http.post<SuccessResponse>(url, { transactionHash });
-  // }
-
-  // getForgotPasswordCode(email: string): Observable<SuccessResponse> {
-  //   const url = environment.api + '/auth/forgot-password-verification/add';
-  //   return this.http.post<SuccessResponse>(url, { email });
-  // }
-
-  // resetPassword(email: string, password: string, code: string): Observable<SuccessResponse> {
-  //   const url = environment.api + '/auth/forgot-password';
-  //   return this.http.post<SuccessResponse>(url, { email, password, code });
-  // }
-
-  // signup(firstName: string, lastName: string, email: string, password: string, invitee: string): Observable<SuccessResponse> {
-  //   const url = environment.api + '/auth/signup';
-  //   return this.http.post<SuccessResponse>(url, { firstName, lastName, email, password, invitee });
-  // }
-
-  // acceptInvite(firstName: string, lastName: string, email: string, password: string, invitorId: string): Observable<SuccessResponse> {
-  //   const url = environment.api + '/auth/accept-invite/' + invitorId;
-  //   return this.http.post<SuccessResponse>(url, { firstName, lastName, email, password });
-  // }
 }

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { lastValueFrom } from 'rxjs';
+import { lastValueFrom, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastrService } from '../../../core/services/toastr.service';
@@ -13,11 +14,12 @@ import { SpinnerService } from '../../../core/services/spinner.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   form: UntypedFormGroup = this.fb.group({
     email: ['', [Validators.email, Validators.required]],
     password: ['', Validators.required],
   });
+  private unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private fb: UntypedFormBuilder,
@@ -30,11 +32,18 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next(null);
+    this.unsubscribeAll.complete();
+  }
+
   async login() {
     try {
       this.spinnerService.show();
       const value = this.form.value;
-      this.authService.login(value.email, value.password).subscribe(token => {
+      this.authService.login(value.email, value.password).pipe(
+        takeUntil(this.unsubscribeAll)
+      ).subscribe(token => {
         if (token) {
           this.router.navigate(['/']);
         } else {
