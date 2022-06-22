@@ -23,6 +23,10 @@ function hasUpper(myString: string) {
   return /[A-Z]/.test(myString);
 }
 
+function hasLower(myString: string) {
+  return /[a-z]/.test(myString);
+}
+
 @Injectable({
   providedIn: "root"
 })
@@ -80,3 +84,19 @@ export function PasswordUpperValidator(): ValidatorFn {
     return hasUpper(control.value) ? null : { 'passwordNoUpper': true };
   };
 }
+
+export function PasswordLowerValidator(): ValidatorFn {
+  return (control: AbstractControl): { [key: string]: any } | null => {
+    if (isEmpty(control.value)) return null;
+    return hasLower(control.value) ? null : { 'passwordNoLower': true };
+  };
+}
+
+
+export const ConfirmPasswordValidator = (control: AbstractControl): { [key: string]: boolean } | null => {
+  const password = control.get('password');
+  const confirm = control.get('confirm');
+
+  if (!password || !confirm) return null;
+  return confirm.value != password.value ? { 'confirmPassword': true } : null;
+};

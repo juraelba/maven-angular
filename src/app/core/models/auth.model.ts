@@ -29,12 +29,6 @@ export interface SuccessResponse {
   success: boolean;
 }
 
-export interface NextStepData {
-  status: boolean;
-  email: string;
-}
-
-
 export interface User {
   id: number;
   name: string;
@@ -52,4 +46,22 @@ export interface User {
   expires: Date;
   roles: Role[];
   recordToken: RecordToken;
+}
+
+export class ChangePassword {
+  token: string;
+  password: string;
+  constructor(token: string, password: string) {
+    this.token = token;
+    this.password = password;
+  }
+}
+
+export class NextStepData {
+  status: boolean;
+  email: string;
+  constructor(status: boolean, email: string) {
+    this.status = status;
+    this.email = email;
+  }
 }

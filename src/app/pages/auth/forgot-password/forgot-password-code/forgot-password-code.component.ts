@@ -51,7 +51,7 @@ export class ForgotPasswordCodeComponent implements OnInit, OnDestroy {
       this.spinnerService.show();
       this.descriptionMessage = '';
       if (this.codeFormControl.value) {
-        this.authService.checkForgotPasswordCode(this.codeFormControl.value, this.email).pipe(
+        this.authService.codeCheckWithEmail(this.email, this.codeFormControl.value).pipe(
           takeUntil(this.unsubscribeAll)
         ).subscribe(res => {
           if (res == '') {

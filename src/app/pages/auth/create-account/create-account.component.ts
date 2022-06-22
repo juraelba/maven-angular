@@ -89,7 +89,7 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
   async verificationCodeSubmit() {
     try {
       this.spinnerService.show();
-      this.authService.checkCreateAccountCode(this.user.email, this.codeForm.value.code).pipe(
+      this.authService.codeCheckWithEmail(this.user.email, this.codeForm.value.code).pipe(
         takeUntil(this.unsubscribeAll)
       ).subscribe(res => {
         if (res == '') {

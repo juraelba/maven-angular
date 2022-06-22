@@ -7,7 +7,7 @@ import jwt_decode from 'jwt-decode';
 
 import { environment } from '../../../environments/environment';
 import { DecodedToken, TokenResponse } from '../models/auth.model';
-import { User } from '../models/auth.model';
+import { User, ChangePassword } from '../models/auth.model';
 
 @Injectable({
   providedIn: 'root'
@@ -71,11 +71,10 @@ export class AuthService {
     return this.http.post<User>(url, JSON.stringify(user), this.headerOptions);
   }
 
-  checkCreateAccountCode(email: string, code: string): Observable<string> {
+  codeCheckWithEmail(email: string, code: string): Observable<string> {
     const url = environment.api + '/auth/token-check/';
     return this.http.get<string>(url + email + '/' + code);
   }
-
 
   checkCreateAccountValidate(token: string): Observable<boolean> {
     const url = environment.api + '/auth/validate-account';
@@ -94,9 +93,17 @@ export class AuthService {
     return this.http.get<string>(url + email);
   }
 
-  checkForgotPasswordCode(code: string, email: string): Observable<string> {
+  // Change Password Service
+
+  checkToken(token: string): Observable<boolean> {
     const url = environment.api + '/auth/token-check/';
-    return this.http.get<string>(url + email + '/' + code);
+    return this.http.get<boolean>(url + token);
+  }
+
+  updatePassword(params: ChangePassword): Observable<string> {
+    const url = environment.api + '/auth/change-password';
+    // update password. return email to be used for login
+    return this.http.put<string>(url, JSON.stringify(params), this.headerOptions);
   }
 
   // ReCAPTCHA Service
