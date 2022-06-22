@@ -15,6 +15,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { ForgotPasswordEmailComponent } from './forgot-password/forgot-password-email/forgot-password-email.component';
 import { ForgotPasswordCodeComponent } from './forgot-password/forgot-password-code/forgot-password-code.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { TermsComponent } from './terms/terms.component';
 
 const globalSettings: RecaptchaSettings = { siteKey: RECAPTCHA_KEY };
 
@@ -25,7 +26,8 @@ const globalSettings: RecaptchaSettings = { siteKey: RECAPTCHA_KEY };
     ForgotPasswordComponent,
     ForgotPasswordEmailComponent,
     ForgotPasswordCodeComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    TermsComponent
   ],
   imports: [
     AuthRoutingModule,
@@ -38,7 +40,8 @@ const globalSettings: RecaptchaSettings = { siteKey: RECAPTCHA_KEY };
   ],
   exports: [
     LoginComponent,
-    CreateAccountComponent
+    CreateAccountComponent,
+    TermsComponent
   ],
   providers: [
     {

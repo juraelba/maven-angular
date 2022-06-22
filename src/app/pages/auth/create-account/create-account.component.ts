@@ -3,6 +3,7 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { Router } from '@angular/router';
 import { lastValueFrom, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastrService } from '../../../core/services/toastr.service';
@@ -10,6 +11,7 @@ import { SpinnerService } from '../../../core/services/spinner.service';
 import { CustomValidator, PasswordNumberValidator, PasswordUpperValidator } from '../../../core/utils/validators.util';
 import { User } from '../../../core/models/auth.model';
 import { MAX_VALIDATION_TRIES } from '../../../core/data/constants';
+import { TermsComponent } from '../terms/terms.component';
 
 @Component({
   selector: 'app-create-account',
@@ -57,6 +59,7 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
     private toastr: ToastrService,
     private spinnerService: SpinnerService,
     private customValidator: CustomValidator,
+    private termsDialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -158,6 +161,9 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
 
   async redirectToLogin() {
     this.router.navigate(['/login']);
+  }
+  async showTerms() {
+    this.termsDialog.open(TermsComponent, {});
   }
 
   private packObject() {
