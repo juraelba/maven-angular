@@ -1,3 +1,3 @@
 export interface SpinnerState {
-    show: boolean;
+  show: boolean;
 }

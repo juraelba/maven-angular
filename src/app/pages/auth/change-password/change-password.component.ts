@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormControl } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormControl, AbstractControlOptions } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -17,8 +17,8 @@ import { ChangePassword } from 'src/app/core/models/auth.model';
 })
 export class ChangePasswordComponent implements OnInit, OnDestroy {
   token: string;
-  form: UntypedFormGroup;
   checkTokenValid: boolean = false;
+  form: UntypedFormGroup;
   passwordFormControl = new FormControl('', {
     validators: [
       Validators.required,
@@ -32,6 +32,10 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
       Validators.required
     ]
   });
+  formOptions: AbstractControlOptions = {
+    validators: ConfirmPasswordValidator
+  };
+
   private unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
@@ -54,7 +58,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
       this.form = this.fb.group({
         password: this.passwordFormControl,
         confirm: this.confirmFormControl
-      }, { validator: ConfirmPasswordValidator });
+      }, this.formOptions);
 
       this.checkToken();
     });
