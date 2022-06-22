@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { lastValueFrom, Subject, Subscription } from 'rxjs';
+import { lastValueFrom, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../../../core/services/auth.service';
@@ -100,7 +100,7 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
             this.toastr.danger("You have attempted to enter the code too many times. The code found in the email is no longer valid.");
           }
         } else {
-          this.authService.checkCodeValidate(res).pipe(
+          this.authService.checkCreateAccountValidate(res).pipe(
             takeUntil(this.unsubscribeAll)
           ).subscribe(valid => {
             if (valid) {
@@ -123,7 +123,7 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
     try {
       this.spinnerService.show();
       this.invalidMessage = "";
-      this.authService.sendCode(this.user.email).pipe(
+      this.authService.sendCreateAccountCode(this.user.email).pipe(
         takeUntil(this.unsubscribeAll)
       ).subscribe(res => {
         if (typeof res === 'string' && res == 'message sent') {
@@ -156,7 +156,7 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
     }
   }
 
-  redirectToLogin() {
+  async redirectToLogin() {
     this.router.navigate(['/login']);
   }
 

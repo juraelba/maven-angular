@@ -14,6 +14,7 @@ import { MatModule } from 'src/app/mat/mat.module';
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { ForgotPasswordEmailComponent } from './forgot-password/forgot-password-email/forgot-password-email.component';
 import { ForgotPasswordCodeComponent } from './forgot-password/forgot-password-code/forgot-password-code.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const globalSettings: RecaptchaSettings = { siteKey: RECAPTCHA_KEY };
 
@@ -23,7 +24,8 @@ const globalSettings: RecaptchaSettings = { siteKey: RECAPTCHA_KEY };
     CreateAccountComponent,
     ForgotPasswordComponent,
     ForgotPasswordEmailComponent,
-    ForgotPasswordCodeComponent
+    ForgotPasswordCodeComponent,
+    ChangePasswordComponent
   ],
   imports: [
     AuthRoutingModule,

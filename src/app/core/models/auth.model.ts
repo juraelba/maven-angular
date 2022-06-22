@@ -29,6 +29,11 @@ export interface SuccessResponse {
   success: boolean;
 }
 
+export interface NextStepData {
+  status: boolean;
+  email: string;
+}
+
 
 export interface User {
   id: number;

@@ -1,29 +1,68 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators, FormControl } from '@angular/forms';
+import { lastValueFrom, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+
+import { AuthService } from 'src/app/core/services/auth.service';
+import { SpinnerService } from 'src/app/core/services/spinner.service';
+import { ToastrService } from 'src/app/core/services/toastr.service';
+import { NextStepData } from 'src/app/core/models/auth.model';
 
 @Component({
   selector: 'app-forgot-password-email',
   templateUrl: './forgot-password-email.component.html',
   styleUrls: ['./forgot-password-email.component.scss']
 })
-export class ForgotPasswordEmailComponent implements OnInit {
-  @Output() onSendEmail = new EventEmitter();
+export class ForgotPasswordEmailComponent implements OnInit, OnDestroy {
 
-  form: UntypedFormGroup = this.fb.group({
-    email: ['', [Validators.email, Validators.required]],
+  @Output() onSendEmail = new EventEmitter<NextStepData>();
+  form: UntypedFormGroup;
+  emailFormControl = new FormControl('', {
+    validators: [Validators.required, Validators.email]
   });
+
+  private unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
     private fb: UntypedFormBuilder,
-    // private authService: AuthService,
-    // private router: Router,
+    private authService: AuthService,
+    private spinnerService: SpinnerService,
+    private toastr: ToastrService
   ) { }
 
-  handleClick = (): void => {
-    this.onSendEmail.emit();
-   }
-
   ngOnInit(): void {
+    this.form = this.fb.group({
+      email: this.emailFormControl
+    });
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next(null);
+    this.unsubscribeAll.complete();
+  }
+
+  async onEmailSubmit() {
+    try {
+      this.spinnerService.show();
+      if (this.emailFormControl.value) {
+        this.authService.sendForgotPasswordCode(this.emailFormControl.value).pipe(
+          takeUntil(this.unsubscribeAll)
+        ).subscribe(res => {
+          if (typeof res === 'string' && res == 'message sent') {
+            this.toastr.success('Verification code has been sent to ' + this.emailFormControl.value + '.');
+            this.onSendEmail.emit({
+              status: true,
+              email: this.emailFormControl.value ? this.emailFormControl.value : '',
+            });
+          } else if (typeof res === 'string') {
+            this.toastr.danger(res);
+          }
+        });
+      }
+    } catch (e: any) {
+      this.toastr.danger(e.message);
+    } finally {
+      this.spinnerService.hide();
+    }
+  }
 }

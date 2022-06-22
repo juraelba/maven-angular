@@ -77,17 +77,29 @@ export class AuthService {
   }
 
 
-  checkCodeValidate(token: string): Observable<boolean> {
+  checkCreateAccountValidate(token: string): Observable<boolean> {
     const url = environment.api + '/auth/validate-account';
     return this.http.put<boolean>(url, JSON.stringify(token), this.headerOptions);
   }
 
-  sendCode(email: string): Observable<string> {
+  sendCreateAccountCode(email: string): Observable<string> {
     const url = environment.api + '/auth/new-account-code/';
     return this.http.get<string>(url + email);
   }
 
-  //ReCAPTCHA Service
+  // Forgot Password Service
+
+  sendForgotPasswordCode(email: string): Observable<string> {
+    const url = environment.api + '/auth/forgot-password/';
+    return this.http.get<string>(url + email);
+  }
+
+  checkForgotPasswordCode(code: string, email: string): Observable<string> {
+    const url = environment.api + '/auth/token-check/';
+    return this.http.get<string>(url + email + '/' + code);
+  }
+
+  // ReCAPTCHA Service
 
   recaptchaValidate(token: string): Observable<{}> {
     const url = environment.api + '/validate_captcha';

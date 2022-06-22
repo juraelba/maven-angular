@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -10,7 +10,7 @@ import { SpinnerState } from '../../core/models/spinner.model';
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss']
 })
-export class SpinnerComponent implements OnInit {
+export class SpinnerComponent implements OnInit, OnDestroy {
 
   show = false;
   private unsubscribeAll: Subject<any> = new Subject<any>();
