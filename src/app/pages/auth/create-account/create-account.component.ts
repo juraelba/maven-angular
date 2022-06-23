@@ -158,9 +158,25 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
     }
   }
 
-  async redirectToLogin() {
-    this.router.navigate(['/login']);
+  async startSearching() {
+    try {
+      this.spinnerService.show();
+      this.authService.login(this.user.email, this.user.password).pipe(
+        takeUntil(this.unsubscribeAll)
+      ).subscribe(token => {
+        if (token) {
+          this.router.navigate(['/']);
+        } else {
+          this.toastr.danger("Invalid Login");
+        }
+      });
+    } catch (e: any) {
+      this.toastr.danger(e.message);
+    } finally {
+      this.spinnerService.hide();
+    }
   }
+
   async showTerms() {
     this.termsDialog.open(TermsComponent, {});
   }
