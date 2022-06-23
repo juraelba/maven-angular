@@ -62,7 +62,6 @@ export class ForgotPasswordCodeComponent implements OnInit, OnDestroy {
               this.toastr.danger("You have attempted to enter the code too many times. The code found in the email is no longer valid.");
             }
           } else {
-            this.toastr.success("You can change the password");
             this.router.navigate(['/change-password', { token: res }]);
           }
         });

@@ -49,7 +49,6 @@ export class ForgotPasswordEmailComponent implements OnInit, OnDestroy {
           takeUntil(this.unsubscribeAll)
         ).subscribe(res => {
           if (typeof res === 'string' && res == 'message sent') {
-            this.toastr.success('Verification code has been sent to ' + this.emailFormControl.value + '.');
             this.onSendEmail.emit(new NextStepData(true, this.emailFormControl.value ? this.emailFormControl.value : ''));
           } else if (typeof res === 'string') {
             this.toastr.danger(res);
