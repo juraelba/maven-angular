@@ -1,7 +1,7 @@
 <p class="text-xl font-medium leading-6 !mb-[30px] font-mont text-center text-pri-black">Log in</p>
 <form [formGroup]="form" (ngSubmit)="login()" novalidate>
   <div>
-    <mat-form-field class="w-full">
+    <mat-form-field class="w-full" hideRequiredMarker>
       <input matInput class="!font-lato" placeholder="Email" formControlName="email" type="email">
       <mat-error *ngIf="form.controls['email'].hasError('required')">
         Email is required
@@ -12,8 +12,9 @@
     </mat-form-field>
   </div>
   <div>
-    <mat-form-field class="w-full">
-      <input matInput placeholder="Password" formControlName="password" type="password" autocomplete="new-password" class="!font-lato">
+    <mat-form-field class="w-full" hideRequiredMarker>
+      <input matInput placeholder="Password" formControlName="password" type="password" autocomplete="new-password"
+        class="!font-lato">
       <mat-error *ngIf="form.controls['password'].hasError('required')">
         Password is required
       </mat-error>
@@ -23,8 +24,9 @@
     <a routerLink="/forgot-password" class="text-regal-blue font-lato">Forgot Password?</a>
   </div>
   <div class="text-center">
-    <button mat-raised-button  type="submit" color="primary" [disabled]="form.pristine || form.invalid" class="text-base  w-[106px] !mb-5 font-mont">
-     Login
+    <button mat-raised-button type="submit" color="primary" [disabled]="form.pristine || form.invalid"
+      class="text-base  w-[106px] !mb-5 font-mont">
+      Login
     </button>
     <p class="text-light-gray font-lato">Don’t have an account?&nbsp;
       <a routerLink="/signup" class="text-regal-blue">Sign Up!</a>
