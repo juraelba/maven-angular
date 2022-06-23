@@ -129,6 +129,7 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribeAll)
       ).subscribe(res => {
         if (typeof res === 'string' && res == 'message sent') {
+          this.attempts = 0;
           this.toastr.success('Another code has been sent to ' + this.user.email + '. Check your spam folder. It may be hiding in there.');
         }
       });
