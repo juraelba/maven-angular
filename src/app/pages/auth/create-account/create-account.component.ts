@@ -107,7 +107,6 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
             takeUntil(this.unsubscribeAll)
           ).subscribe(valid => {
             if (valid) {
-              this.toastr.success("Your account has been validated");
               this.accountValidated = true;
             } else {
               this.invalidMessage = "Invalid Code. Please try again.";
