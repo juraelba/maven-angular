@@ -52,7 +52,7 @@ export class AuthService {
       })
     };
     return this.http.get<TokenResponse>(url, httpOptions).pipe(
-      tap(res => { if (typeof res === "string") this.authenticateUser(res) })
+      tap(res => { if (res.status === "valid") this.authenticateUser(res.token) })
     );
   }
 

@@ -1,5 +1,5 @@
 <p class="text-xl font-medium leading-6 !mb-[30px] font-mont text-center text-pri-black">Log in</p>
-<form [formGroup]="form" (ngSubmit)="login()" novalidate>
+<form [formGroup]="form" (ngSubmit)="login()" novalidate *ngIf="!checkPendingUser">
   <div>
     <mat-form-field class="w-full" hideRequiredMarker>
       <input matInput class="!font-lato" placeholder="Email" formControlName="email" type="email">
@@ -33,3 +33,32 @@
     </p>
   </div>
 </form>
+
+<!-- Send Validation Code section -->
+<div *ngIf="checkPendingUser">
+  <p class="text-sm font-lato text-pri-black text-center !mb-[30px]">
+    You're almost done.
+    A message containing a verification code has been sent to your email address.
+  </p>
+  <p *ngIf="invalidMessage" class="text-lg font-lato text-warn-red !mb-[30px] text-center">{{invalidMessage}}</p>
+  <form [formGroup]="codeForm" (ngSubmit)="verificationCodeSubmit()" novalidate>
+    <div>
+      <mat-form-field class="w-full" hideRequiredMarker>
+        <input matInput placeholder="Code" formControlName="code" class="!font-lato">
+        <mat-error *ngIf="codeForm.controls['code'].hasError('required')">
+          Code is required
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="text-center">
+      <button mat-raised-button type="submit" color="primary"
+        [disabled]="codeForm.pristine || codeForm.invalid || attempts >= MAX_TRIES"
+        class="text-base !mb-5 font-mont w-[106px]">
+        Submit
+      </button>
+      <p class="text-light-gray font-lato">
+        <a class="text-regal-blue cursor-pointer" (click)="verificationCodeSendAgain()">Resend Code</a>
+      </p>
+    </div>
+  </form>
+</div>

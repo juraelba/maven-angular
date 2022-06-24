@@ -18,7 +18,9 @@ export interface RecordToken {
 }
 
 export interface TokenResponse {
-  accessToken: string;
+  token: string | null;
+  status: string;
+  code: string | null;
 }
 
 export interface DecodedToken {
