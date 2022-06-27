@@ -55,10 +55,15 @@ export class LoginComponent implements OnInit, OnDestroy {
       ).subscribe((res: TokenResponse) => {
         if (res.status === 'valid') {
           this.router.navigate(['/']);
+          this.invalidMessage = '';
         } else if (res.status === 'pending') {
           this.checkPendingUser = true;
+          this.invalidMessage = '';
+        } else if (res.status === 'review') {
+          this.invalidMessage = 'There was a problem with your registration. Please contact us at info@mediaframework.com or 201-801-5228 to complete your registration.';
         } else {
           this.toastr.danger('Invalid Login');
+          this.invalidMessage = '';
         }
       });
     } catch (e: any) {
