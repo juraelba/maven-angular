@@ -23,7 +23,7 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
   user = {} as User;
   attempts: number = 0;
   MAX_TRIES: number = MAX_VALIDATION_TRIES;
-  invalidMessage: string = "";
+  invalidMessage: string = '';
   accountValidated: boolean = false;
   checkReCaptcha: boolean = false;
   dataForm: UntypedFormGroup = this.fb.group({
@@ -77,8 +77,16 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
       this.authService.sendCreateAccountFormData(this.user).pipe(
         takeUntil(this.unsubscribeAll)
       ).subscribe(res => {
-        if (typeof res === 'string') this.toastr.danger(res);
+        if (typeof res === 'string') {
+          if (res === 'Invalid Office') {
+            this.invalidMessage = 'There was a problem with your registration. Please contact us at info@mediaframework.com or 201-801-5228 to complete your registration.';
+          } else {
+            this.invalidMessage = '';
+            this.toastr.danger(res);
+          }
+        }
         else if (typeof res === 'object' && res.id > 0) {
+          this.invalidMessage = '';
           this.sentFormData = true;
         }
       });

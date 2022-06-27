@@ -1,6 +1,7 @@
 <!-- Create Account Form section -->
 <div *ngIf="!sentFormData">
   <p class="text-xl font-medium leading-6 !mb-[30px] font-mont text-center text-pri-black">Create Account</p>
+  <p *ngIf="invalidMessage" class="text-sm font-lato text-warn-red !mb-[30px] text-center">{{invalidMessage}}</p>
   <form [formGroup]="dataForm" (ngSubmit)="signupFormSubmit()" novalidate>
     <div>
       <mat-form-field class="w-full" hideRequiredMarker>
