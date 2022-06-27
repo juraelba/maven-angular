@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, Validators, FormControl, AbstractControlOptions } from '@angular/forms';
+import { UntypedFormGroup, Validators, UntypedFormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -18,28 +18,12 @@ import { ChangePassword } from 'src/app/core/models/auth.model';
 export class ChangePasswordComponent implements OnInit, OnDestroy {
   token: string;
   checkTokenValid: boolean = false;
-  form: UntypedFormGroup;
-  passwordFormControl = new FormControl('', {
-    validators: [
-      Validators.required,
-      Validators.minLength(8),
-      PasswordNumberValidator(),
-      PasswordUpperValidator()
-    ]
-  });
-  confirmFormControl = new FormControl('', {
-    validators: [
-      Validators.required
-    ]
-  });
-  formOptions: AbstractControlOptions = {
-    validators: ConfirmPasswordValidator
-  };
+
+  public form: UntypedFormGroup;
 
   private unsubscribeAll: Subject<any> = new Subject<any>();
 
   constructor(
-    private fb: UntypedFormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private authService: AuthService,
@@ -48,6 +32,15 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.getToken();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next(null);
+    this.unsubscribeAll.complete();
+  }
+
+  getToken() {
     this.route.paramMap.subscribe(params => {
       if (params.has('token')) {
         let getToken = params.get('token');
@@ -55,18 +48,27 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
           this.token = getToken;
         }
       };
-      this.form = this.fb.group({
-        password: this.passwordFormControl,
-        confirm: this.confirmFormControl
-      }, this.formOptions);
-
+      this.buildForm();
       this.checkToken();
     });
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribeAll.next(null);
-    this.unsubscribeAll.complete();
+  buildForm() {
+    const passwordValidators = [
+      Validators.required,
+      Validators.minLength(8),
+      PasswordNumberValidator(),
+      PasswordUpperValidator()
+    ];
+
+    const confirmValidator = [
+      Validators.required
+    ]
+
+    this.form = new UntypedFormGroup({
+      password: new UntypedFormControl('', passwordValidators),
+      confirm: new UntypedFormControl('', confirmValidator),
+    }, { validators: ConfirmPasswordValidator });
   }
 
   async checkToken() {
@@ -91,8 +93,8 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   async onSubmit() {
     try {
       this.spinnerService.show();
-      if (this.passwordFormControl.value) {
-        this.authService.updatePassword(new ChangePassword(this.token, this.passwordFormControl.value)).pipe(
+      if (this.form.value && this.form.value.password) {
+        this.authService.updatePassword(new ChangePassword(this.token, this.form.value.password)).pipe(
           takeUntil(this.unsubscribeAll)
         ).subscribe(res => {
           if (res && res.length > 0) {
@@ -106,5 +108,9 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
     } finally {
       this.spinnerService.hide();
     }
+  }
+
+  get formControls() {
+    return this.form.controls;
   }
 }

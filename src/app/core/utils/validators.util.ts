@@ -94,9 +94,12 @@ export function PasswordLowerValidator(): ValidatorFn {
 
 
 export const ConfirmPasswordValidator = (control: AbstractControl): { [key: string]: boolean } | null => {
-  const password = control.get('password');
-  const confirm = control.get('confirm');
+  const password = control.get('password')!;
+  const confirm = control.get('confirm')!;
 
-  if (!password || !confirm) return null;
-  return confirm.value != password.value ? { 'confirmPassword': true } : null;
+  if (confirm.value != password.value) {
+    confirm.setErrors({ confirmPassword: true });
+    return { confirmPassword: true };
+  }
+  return null;
 };
