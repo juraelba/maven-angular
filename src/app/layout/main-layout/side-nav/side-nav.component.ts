@@ -10,54 +10,54 @@ export class SideNavComponent implements OnInit {
     {
       label: "Media",
       imageIcon: '/assets/images/icons/media.svg',
-      show: false,
+      disabled: false,
       items: [
         {
           name: "media-search",
           label: 'Media Search',
           route: "/media-search",
-          disabled: true,
+          disabled: false,
           id: 0
         },
         {
           label: "Network",
-          show: false,
+          disabled: false,
           items: [
-            { name: "network-tv", label: "Broadcast Networks", route: "/network-tv-search", disabled: true, id: 1 },
-            { name: "network-cable", label: "Cable Networks", route: "/network-cable-search", disabled: true, id: 2 },
-            { name: "network-radio", label: "National Audio", route: "/network-radio-search", disabled: true, id: 3 },
+            { name: "network-tv", label: "Broadcast Networks", route: "/network-tv-search", disabled: false, id: 1 },
+            { name: "network-cable", label: "Cable Networks", route: "/network-cable-search", disabled: false, id: 2 },
+            { name: "network-radio", label: "National Audio", route: "/network-radio-search", disabled: false, id: 3 },
           ]
         },
         {
           name: "digital",
           label: 'Digital',
           route: "/digital-search",
-          disabled: true,
+          disabled: false,
           id: 4
         },
         {
           label: "Spot",
-          show: false,
+          disabled: false,
           items: [
-            { name: "spot-tv", label: "Spot TV", route: "/spot-tv-search", disabled: true, id: 5 },
-            { name: "spot-radio", label: "Spot Radio", route: "/spot-radio-search", disabled: true, id: 6 },
-            { name: "regional-cable", label: "Regional Cable", route: "/regional-cable-search", disabled: true, id: 7 },
-            { name: "call-history", label: "Call History", route: "/call-history", disabled: true, id: 8 }
+            { name: "spot-tv", label: "Spot TV", route: "/spot-tv-search", disabled: false, id: 5 },
+            { name: "spot-radio", label: "Spot Radio", route: "/spot-radio-search", disabled: false, id: 6 },
+            { name: "regional-cable", label: "Regional Cable", route: "/regional-cable-search", disabled: false, id: 7 },
+            { name: "call-history", label: "Call History", route: "/call-history", disabled: false, id: 8 }
           ]
         },
         {
           label: "Print",
-          show: false,
+          disabled: false,
           items: [
-            { name: "magazine", label: "Magazines", route: "/magazine-search", disabled: true, id: 9 },
-            { name: "newspaper", label: "Newspapers", route: "/newspaper-search", disabled: true, id: 10 }
+            { name: "magazine", label: "Magazines", route: "/magazine-search", disabled: false, id: 9 },
+            { name: "newspaper", label: "Newspapers", route: "/newspaper-search", disabled: false, id: 10 }
           ]
         },
         {
           name: "outdoor",
           label: 'Out-of-Home',
           route: "/outdoor-search",
-          disabled: true,
+          disabled: false,
           id: 11
         },
       ]
@@ -67,28 +67,31 @@ export class SideNavComponent implements OnInit {
       imageIcon: '/assets/images/icons/ownership.svg',
       label: 'Ownership',
       route: "/owner-search",
-      disabled: true,
+      disabled: false,
       id: 12
     },
     {
       label: "Diversity",
       imageIcon: '/assets/images/icons/diversity.svg',
-      show: false,
+      disabled: false,
       items: [
-        { name: "diverse-media", label: "Media", route: "/diverse-media-search", disabled: true, id: 13 },
-        { name: "diverse-owner", label: "Owners", route: "/diverse-owner-search", disabled: true, id: 14 },
-        { name: "diverse-research", label: "Research", route: "/diverse-research", disabled: true, id: 15 },
+        { name: "diverse-media", label: "Media", route: "/diverse-media-search", disabled: false, id: 13 },
+        { name: "diverse-owner", label: "Owners", route: "/diverse-owner-search", disabled: false, id: 14 },
+        { name: "diverse-research", label: "Research", route: "/diverse-research", disabled: false, id: 15 },
       ]
     },
     {
-      label: "Markets", show: false, imageIcon: '/assets/images/icons/market.svg', items: [
-        { name: "market-media", label: "Media in Market", route: "/market-media", disabled: true, id: 16 },
-        { name: "dma-msa", label: "DMA > MSA", route: "/dma-msa", disabled: true, id: 17 },
-        { name: "msa-dma", label: "MSA > DMA", route: "/msa-dma", disabled: true, id: 18 },
-        { name: "dma-state", label: "DMA > State", route: "/dma-state", disabled: true, id: 19 },
-        { name: "msa-state", label: "MSA > State", route: "/msa-state", disabled: true, id: 20 },
-        { name: "state-dma", label: "State > DMA", route: "/state-dma", disabled: true, id: 21 },
-        { name: "state-msa", label: "State > MSA", route: "/state-msa", disabled: true, id: 22 }
+      label: "Markets",
+      disabled: false,
+      imageIcon: '/assets/images/icons/market.svg',
+      items: [
+        { name: "market-media", label: "Media in Market", route: "/market-media", disabled: false, id: 16 },
+        { name: "dma-msa", label: "DMA > MSA", route: "/dma-msa", disabled: false, id: 17 },
+        { name: "msa-dma", label: "MSA > DMA", route: "/msa-dma", disabled: false, id: 18 },
+        { name: "dma-state", label: "DMA > State", route: "/dma-state", disabled: false, id: 19 },
+        { name: "msa-state", label: "MSA > State", route: "/msa-state", disabled: false, id: 20 },
+        { name: "state-dma", label: "State > DMA", route: "/state-dma", disabled: false, id: 21 },
+        { name: "state-msa", label: "State > MSA", route: "/state-msa", disabled: false, id: 22 }
       ]
     },
     {
@@ -96,7 +99,7 @@ export class SideNavComponent implements OnInit {
       imageIcon: '/assets/images/icons/user.svg',
       label: 'Security',
       route: "/users",
-      disabled: true,
+      disabled: false,
       id: 13
     },
   ]
