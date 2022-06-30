@@ -2,8 +2,21 @@
   padding-top: 33px;
   padding-left: 10px;
 
+  .mat-list-base .mat-list-item {
+    height: 40px;
+    margin-bottom: 10px;
+  }
+
   .amml-menu-container {
     position: relative;
+
+    .anml-data {
+      height: 40px;
+    }
+
+    .label {
+      line-height: 40px;
+    }
 
     .amml-submenu {
       border-left: 1px solid #3A63CC;
