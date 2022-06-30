@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MultilevelMenuService, NgMaterialMultilevelMenuModule} from 'ng-material-multilevel-menu';
 
 @NgModule({
   declarations: [],
@@ -19,7 +20,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatCheckboxModule,
     MatButtonModule,
     MatProgressSpinnerModule,
-    MatDialogModule
-  ]
+    MatDialogModule,
+    NgMaterialMultilevelMenuModule
+  ],
+  providers: [MultilevelMenuService ]
 })
 export class MatModule { }

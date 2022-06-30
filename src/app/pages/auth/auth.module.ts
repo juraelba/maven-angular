@@ -6,7 +6,6 @@ import {
   RECAPTCHA_SETTINGS, RecaptchaModule, RecaptchaSettings,
 } from 'ng-recaptcha';
 import { RECAPTCHA_KEY } from '../../core/data/constants';
-
 import { LoginComponent } from './login/login.component';
 import { CreateAccountComponent } from './create-account/create-account.component';
 import { AuthRoutingModule } from './auth-routing.module';
@@ -16,9 +15,7 @@ import { ForgotPasswordEmailComponent } from './forgot-password/forgot-password-
 import { ForgotPasswordCodeComponent } from './forgot-password/forgot-password-code/forgot-password-code.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { TermsComponent } from './terms/terms.component';
-
 const globalSettings: RecaptchaSettings = { siteKey: RECAPTCHA_KEY };
-
 @NgModule({
   declarations: [
     LoginComponent,

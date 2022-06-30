@@ -1,0 +1,50 @@
+::ng-deep.sidebar{
+    padding-top: 33px;
+    padding-left: 10px;
+    .amml-menu-container {
+    position: relative;
+    .amml-submenu {
+        border-left: 1px solid #3A63CC
+        ;
+    }
+}
+.mat-list-item-content{
+    position: relative;
+    font-family: Montserrat;
+    .mat-list-avatar {
+        &.amml-icon {
+            width: 16px;
+            height: auto;
+            border-radius: 0;            
+        }
+        
+        }
+&:hover {
+    background-color: white;
+    color: #2E4FA3;
+    font-size: 15px;
+    font-weight: 500;
+    border-radius: 50px 0px 0px 50px;
+    .mat-list-avatar {
+        &.amml-icon {
+                -webkit-filter: grayscale(1) invert(1);
+                filter: grayscale(1) invert(1);
+            }
+        
+        }
+}
+}
+}
+::ng-deep.amml-menu-container{
+    .mat-list-item{
+        &::before{
+    content: '';
+    position: absolute;
+    background: transparent url('../../../../assets/images/curve.png') no-repeat;
+    height: 100%;
+    width: 100%;
+    top: 20px;
+}
+    }
+
+}

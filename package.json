@@ -21,7 +21,8 @@
     "@angular/platform-browser-dynamic": "^14.0.2",
     "@angular/router": "^14.0.2",
     "jwt-decode": "^3.1.2",
-    "ng-recaptcha": "^9.0.0",
+    "ng-material-multilevel-menu": "^5.5.3",
+    "ng-recaptcha": "^10.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
