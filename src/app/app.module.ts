@@ -10,6 +10,7 @@ import { SpinnerModule } from './ui-kit/spinner/spinner.module';
 import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
 import { MultilevelMenuService } from 'ng-material-multilevel-menu';
+
 @NgModule({
   declarations: [
     AppComponent
@@ -23,7 +24,7 @@ import { MultilevelMenuService } from 'ng-material-multilevel-menu';
     ToastrModule,
     SpinnerModule
   ],
-  providers: [ MultilevelMenuService ],
+  providers: [MultilevelMenuService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

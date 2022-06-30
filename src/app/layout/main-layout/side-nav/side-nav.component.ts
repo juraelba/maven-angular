@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.component.html',
@@ -73,7 +74,7 @@ export class SideNavComponent implements OnInit {
       label: "Diversity",
       imageIcon: '/assets/images/icons/diversity.svg',
       show: false,
-       items: [
+      items: [
         { name: "diverse-media", label: "Media", route: "/diverse-media-search", disabled: true, id: 13 },
         { name: "diverse-owner", label: "Owners", route: "/diverse-owner-search", disabled: true, id: 14 },
         { name: "diverse-research", label: "Research", route: "/diverse-research", disabled: true, id: 15 },
@@ -113,8 +114,11 @@ export class SideNavComponent implements OnInit {
     useDividers: false,
     rtlLayout: false,
   };
-  constructor() {}
-  ngOnInit(): void {}
+
+  constructor() { }
+
+  ngOnInit(): void { }
+
   selectedItem(event: any) {
     console.log(event);
   }

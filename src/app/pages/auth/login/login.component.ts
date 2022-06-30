@@ -10,7 +10,6 @@ import { SpinnerService } from '../../../core/services/spinner.service';
 import { TokenResponse } from '../../../core/models/auth.model';
 import { MAX_VALIDATION_TRIES } from '../../../core/data/constants';
 
-
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
