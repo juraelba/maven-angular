@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 
-import { SideNavService } from '../../services/side-nav.service';
+import { SideNavService } from '../../../core/services/side-nav.service';
 import { Menu, AccessibleMenu } from '../../../core/models/side-nav.model';
 import { ObjectType, Role, Service } from '../../../core/enums/permissions.enum';
 @Component({
@@ -144,7 +144,7 @@ export class SideNavComponent implements OnInit {
     this.unsubscribeAll.next(null);
     this.unsubscribeAll.complete();
   }
- 
+
   selectedItem(event: any) {
     console.log(event);
   }

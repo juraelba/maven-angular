@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient,  } from '@angular/common/http';
+import { HttpClient, } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
-import { Menu, AccessibleMenu } from '../../core/models/side-nav.model';
+import { Menu, AccessibleMenu } from '../models/side-nav.model';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +24,7 @@ export class SideNavService {
   }
 
   updateDisabledState(menu: Menu[], accessibleMenu: AccessibleMenu[]): Menu[] {
-    return menu.map(({ permissions, items, ...rest}) => {
+    return menu.map(({ permissions, items, ...rest }) => {
       const isDisabled = !this.isAvailable(permissions, accessibleMenu);
 
       const updatedItem: Menu = {
@@ -33,7 +33,7 @@ export class SideNavService {
         disabled: isDisabled
       };
 
-      if(items) {
+      if (items) {
         updatedItem.items = this.updateDisabledState(items, accessibleMenu);
       }
 
