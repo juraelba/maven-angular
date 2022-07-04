@@ -9,7 +9,7 @@
       font-size: 15px;
       font-weight: 500;
       border-radius: 50px 0px 0px 50px;
-  
+
       .mat-list-avatar {
         &.amml-icon {
           -webkit-filter: grayscale(1) invert(1);
@@ -37,6 +37,21 @@
 
     .amml-submenu {
       border-left: 1px solid #3A63CC;
+
+      ng-list-item {
+        &:last-child {
+          &::before {
+            display: inline-block;
+            left: 15px;
+            content: '';
+            height: 23px;
+            position: absolute;
+            width: 5px;
+            background-color: #2e4fa3;
+            bottom: 0;
+          }
+        }
+      }
     }
   }
 
