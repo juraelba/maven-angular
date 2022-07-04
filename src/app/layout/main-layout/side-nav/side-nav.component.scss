@@ -2,6 +2,23 @@
   padding-top: 33px;
   padding-left: 10px;
 
+  .selected-amml-item {
+    .mat-list-item-content {
+      background-color: white;
+      color: #2E4FA3;
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: 50px 0px 0px 50px;
+  
+      .mat-list-avatar {
+        &.amml-icon {
+          -webkit-filter: grayscale(1) invert(1);
+          filter: grayscale(1) invert(1);
+        }
+      }
+    }
+  }
+
   .mat-list-base .mat-list-item {
     height: 40px;
     margin-bottom: 10px;
