@@ -1,0 +1,58 @@
+<div class="font-mont">
+  <header class="flex justify-between items-center">
+    <div class="text-pri-black text-xl">Media Search</div>
+    <div class="header__buttons text-base flex justify-between items-center gap-8">
+      <button class="text-regal-blue flex items-center gap-2">
+        <img src="/assets/images/icons/opened-folder.svg" />
+        <span>Open Saved Search</span>
+      </button>
+      <button class="flex items-center gap-2 text-regal-blue">
+        <img src="/assets/images/icons/bookmark-ribbon.svg" />
+        <span >Save Search</span>
+      </button>
+      <button class="border-regal-blue text-regal-blue rounded-xl border-2 py-2 px-3">New Search</button>
+    </div>
+  </header>
+  
+  <div class="container shadow-card rounded-md w-full my-5 relative">
+    <div class="p-5">
+      <div class="container__grid grid gap-5">
+        <app-input
+          class="col-start-1 col-end-3"
+          placeholder="Search by name or ID"
+          name="nameSearch" [disabled]="nameSearchDisabled"
+          icon="/assets/images/icons/search.svg"
+        >
+        </app-input>
+  
+        <app-select placeholder="Media Type"></app-select>
+        <app-select placeholder="Markets"></app-select>
+        <app-select placeholder="Owners"></app-select>
+  
+        <app-select>
+          <mat-checkbox valueContainer #valueContainer>Category</mat-checkbox>
+        </app-select>
+        <app-select>
+          <mat-checkbox valueContainer #valueContainer>Diverse Target</mat-checkbox>
+        </app-select>
+        <app-select>
+          <app-checkbox valueContainer #valueContainer label="Language"></app-checkbox>
+        </app-select>
+  
+        <app-checkbox label="Music"></app-checkbox>
+        <app-checkbox label="Matched in my database"></app-checkbox>
+        <app-checkbox label="Slogan"></app-checkbox>
+      </div>
+  
+      <button class="text-regal-blue text-base flex items-center gap-2 ml-auto">
+        <img src="/assets/images/icons/sorting-options.svg" />
+        <span>Selected Criteria</span>
+      </button> 
+    </div>
+  
+    <button class="text-white bg-regal-blue py-4 px-6 rounded-lg border-0 absolute right-2/4 translate-y-2/4 translate-x-2/4 bottom-0 text-xl">
+      Search
+    </button>
+  </div>
+</div>
+

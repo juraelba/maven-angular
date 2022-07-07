@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 import { SideNavService } from '../../../core/services/side-nav.service';
 import { Menu, AccessibleMenu } from '../../../core/models/side-nav.model';
@@ -123,14 +124,15 @@ export class SideNavComponent implements OnInit {
     rtlLayout: false,
   };
 
-  subscription: Subscription;
-
   unsubscribeAll: Subject<null> = new Subject<null>();
 
-  constructor(private sideNavService: SideNavService) { }
+  constructor(
+    private sideNavService: SideNavService,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
-    this.subscription = this.sideNavService.fetchMenuData()
+    this.sideNavService.fetchMenuData()
       .pipe(
         takeUntil(this.unsubscribeAll),
         map((accessibleMenu: AccessibleMenu[]) => this.sideNavService.updateDisabledState(this.navData, accessibleMenu))
@@ -145,7 +147,7 @@ export class SideNavComponent implements OnInit {
     this.unsubscribeAll.complete();
   }
 
-  selectedItem(event: any) {
-    console.log(event);
+  selectedItem(menu: Menu) {
+    this.router.navigate([`/${ menu.route }`]);
   }
 }

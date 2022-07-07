@@ -7,12 +7,17 @@ import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
-    path: '', component: HomeComponent,
+    path: '',
+    component: HomeComponent,
     canActivate: [AuthGuard],
     children: [
       {
         path: '',
-        loadChildren: () => import('./pages/home/home.module').then(m => m.HomeModule)
+        loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule)
+      },
+      {
+        path: 'media-search',
+        loadChildren: () => import('./pages/media-search/media-search.module').then(m => m.MediaSearchModule)
       },
     ]
   },

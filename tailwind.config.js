@@ -15,6 +15,9 @@ module.exports = {
         "pri-black": "#1f1f1f",
         "warn-red": "#c94a55",
         "check-green": "#018c76",
+        "light-grey": "#F8F8FE",
+        "gray": "#D7D7DC",
+        "pri-gray": "#797979"
       },
       fontFamily: {
         mont: ["Montserrat"],
@@ -23,5 +26,4 @@ module.exports = {
     },
   },
   plugins: [],
-  // important: true,
 };
