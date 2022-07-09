@@ -1,0 +1,14 @@
+<div
+  class="bg-white  h-full p-2 flex justify-between items-center"
+  [ngClass]="{ 'bg-light-grey': disabled, 'border border-gray rounded-md': border }"
+>
+  <input
+    class="text-pri-gray placeholder:text-pri-gray disabled:bg-light-grey w-full h-full outline-transparent"
+    type="text"
+    [name]="name"
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    (keyup)="onInputChange($event)"
+  >
+  <img *ngIf="icon" [src]="icon">
+<div>

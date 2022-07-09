@@ -1,0 +1,41 @@
+<app-select
+  [multiple]="true"
+  [options]="options"
+  [search]="true"
+  [borderLabel]="borderLabel"
+  (applyChanges)="onApplyChanges($event)"
+  #selectComponent
+>
+  <div valueContainer #valueContainer class="flex items-center gap-[5px]">
+    <app-checkbox
+      [checked]="isCategories || isPrimaryCategory"
+      (click)="toggleCategory()"
+    >
+    </app-checkbox>
+    <div [ngStyle]="{'max-width': width}" class="truncate">{{ value }}</div>
+  </div>
+
+  <div dropdownHeaderContainer #dropdownHeaderContainer>
+    <div class="flex justify-between items-center mb-5 cursor-pointer" (click)="toggleCategory()">
+      <div class="text-black text-base">Categories</div>
+      <app-checkbox
+        [checked]="isCategories"
+        #tooltip="matTooltip"
+        matTooltip="Include categories in result"
+        matTooltipPosition="above"
+        matTooltipHideDelay="100000"
+        matTooltipShowDelay="1000"
+      >
+      </app-checkbox>
+    </div>
+    <div class="flex justify-between items-center mb-8 cursor-pointer" (click)="togglePrimaryCategory()">
+      <div class="font-lato text-sm text-pri-black">Only primary category field</div>
+      <mat-slide-toggle
+        class="rotate-180"
+        name="primaryCategory"
+        [checked]="isPrimaryCategory"
+        color="primary"
+      ></mat-slide-toggle>
+    </div>
+  </div>
+</app-select>

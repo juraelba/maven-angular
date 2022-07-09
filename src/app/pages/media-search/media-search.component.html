@@ -29,19 +29,18 @@
         <app-select placeholder="Markets"></app-select>
         <app-select placeholder="Owners"></app-select>
   
-        <app-select>
-          <mat-checkbox valueContainer #valueContainer>Category</mat-checkbox>
-        </app-select>
+        <app-category-pick-list></app-category-pick-list>
+
         <app-select>
           <mat-checkbox valueContainer #valueContainer>Diverse Target</mat-checkbox>
         </app-select>
         <app-select>
-          <app-checkbox valueContainer #valueContainer label="Language"></app-checkbox>
+          <app-checkbox valueContainer #valueContainer>Language</app-checkbox>
         </app-select>
   
-        <app-checkbox label="Music"></app-checkbox>
-        <app-checkbox label="Matched in my database"></app-checkbox>
-        <app-checkbox label="Slogan"></app-checkbox>
+        <app-checkbox>Music</app-checkbox>
+        <app-checkbox>Matched in my database</app-checkbox>
+        <app-checkbox>Slogan</app-checkbox>
       </div>
   
       <button class="text-regal-blue text-base flex items-center gap-2 ml-auto">

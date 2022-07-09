@@ -9,6 +9,7 @@ module.exports = {
         header: "0px 4px 20px rgba(0, 0, 0, 0.15);"
       },
       colors: {
+        "blue": "#7380E7",
         "regal-blue": "#3a63cc",
         "second-blue": "#2e4fa3",
         "light-gray": "#b3b3b8",
@@ -22,7 +23,7 @@ module.exports = {
       fontFamily: {
         mont: ["Montserrat"],
         lato: ["Lato"],
-      },
+      }
     },
   },
   plugins: [],

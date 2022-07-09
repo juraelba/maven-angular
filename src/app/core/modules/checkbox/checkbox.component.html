@@ -1,0 +1,14 @@
+<div class="flex items-center gap-[5px]">
+  <div
+    *ngIf="checked"
+    class="text-white rounded-sm bg-blue min-h-[18px] min-w-[18px] font-mont font-semibold"
+  >
+    <div class="check flex justify-center items-center rotate-45 scale-x-[-1] w-full">L</div>
+  </div>
+  <div
+    *ngIf="!checked"
+    class="border-2 rounded-sm border-light-gray min-h-[18px] min-w-[18px]"
+  >
+  </div>
+  <ng-content></ng-content>
+</div>

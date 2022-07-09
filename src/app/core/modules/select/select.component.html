@@ -1,0 +1,82 @@
+<div class="relative" #selectContainer>
+  <div
+    class="text-pri-black pointer bg-white border border-gray rounded-md h-full p-[10px] relative"
+    [ngClass]="{ 'bg-light-grey': disabled }"
+  >
+    <div
+      *ngIf="borderLabel"
+      class="absolute translate-y-1/2 bottom-full font-lato text-[10px] text-pri-black bg-white "
+    >
+      {{ borderLabel }}
+    </div>
+
+    <div class="input w-full h-full flex items-center justify-between" type="text" (click)="toggleMenuOpen()">
+      <div *ngIf="!valueContainer" class="value-container">
+        <span *ngIf="!selected.length">{{ placeholder }}</span>
+        <span *ngIf="selected.length">{{ this.getSelectedOptionsLabels() }}</span>
+      </div>
+      <div *ngIf="valueContainer" class="value-container" >
+        <ng-content select="[valueContainer]"></ng-content>
+      </div>
+      <img class="ml-[10px]" [src]="arrowIcon" />
+    </div>
+  <div>
+
+  <div *ngIf="isOpened" class="dropdown-container rounded-md shadow-card rounded-md w-full bg-white absolute left-0 top-full z-10">
+    <div class="p-5">
+      <div *ngIf="dropdownHeaderContainer" class="dropdown-container__header">
+        <ng-content select="[dropdownHeaderContainer]"></ng-content>
+      </div>
+
+      <div *ngIf="search" class="bg-white border-b border-b-1 border-pri-gray mb-5">
+        <app-input
+          (click)="onSearchInputClick($event)"
+          (inputChange)="onSearchInputChange($event)"
+          [border]="false"
+          icon="/assets/images/icons/search-right.svg"
+          placeholder="Search"
+        >
+        </app-input>
+      </div>
+  
+      <app-checkbox
+        *ngIf="multiple"
+        class="select-all block mb-2.5"
+        [checked]="allSelected"
+        (click)="toggleSelectAll($event)"
+      >
+        All
+      </app-checkbox>
+
+      <div class="dropdown-container__options-container max-h-52 overflow-y-scroll pt-2.5 border-t border-t-1 border-gray">
+        <div class="mb-2.5" *ngFor="let option of dropdownOptions; index as i;" (click)="toogleSelectOption($event, option)">
+          <div *ngIf="isNewGroupLetter(options[i - 1], option)" class="border-b border-b-1 border-gray mb-2.5">
+            {{ option.groupLetter }}
+          </div>
+
+          <app-checkbox *ngIf="multiple" [checked]="option.selected">
+            <span class="truncate m-0 p-0">{{ option.label }}</span>
+          </app-checkbox>
+
+          <span *ngIf="!multiple">{{ option.label }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="dropdown-container__footer shadow-card flex justify-between items-center px-5 py-4 bg-white rounded-b-md gap-3">
+      <button
+        class="border-regal-blue text-regal-blue rounded-xl border-2 w-24 h-[30px]"
+        (click)="onCancelButtonClick($event)"
+      >
+        Cancel
+      </button>
+      <button
+        (click)="onOkButtonClick($event)"
+        class="text-white bg-regal-blue  rounded-xl border-0 w-24 h-[30px]"
+      >
+        Ok
+      </button>
+    </div>
+  </div>
+</div>
+
+
