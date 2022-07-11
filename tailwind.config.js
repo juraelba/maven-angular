@@ -6,7 +6,8 @@ module.exports = {
     extend: {
       boxShadow: {
         card: "0px 4px 20px rgba(0, 0, 0, 0.25)",
-        header: "0px 4px 20px rgba(0, 0, 0, 0.15);"
+        simple: "0px 4px 20px rgba(0, 0, 0, 0.15)",
+        button: "0px 4px 10px rgba(0, 0, 0, 0.20)"
       },
       colors: {
         "blue": "#7380E7",

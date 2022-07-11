@@ -1,20 +1,22 @@
 <div class="font-mont">
   <header class="flex justify-between items-center">
-    <div class="text-pri-black text-xl">Media Search</div>
+    <div class="text-pri-black text-xl font-medium">Media Search</div>
     <div class="header__buttons text-base flex justify-between items-center gap-8">
-      <button class="text-regal-blue flex items-center gap-2">
+      <button class="text-regal-blue font-medium flex items-center gap-[10px]">
         <img src="/assets/images/icons/opened-folder.svg" />
         <span>Open Saved Search</span>
       </button>
-      <button class="flex items-center gap-2 text-regal-blue">
+      <button class="text-regal-blue font-medium flex items-center gap-[10px]">
         <img src="/assets/images/icons/bookmark-ribbon.svg" />
         <span >Save Search</span>
       </button>
-      <button class="border-regal-blue text-regal-blue rounded-xl border-2 py-2 px-3">New Search</button>
+      <button class="shadow-button border-regal-blue text-regal-blue font-medium leading-5 rounded-md border-2 py-[6px] px-[11px]">
+        New Search
+      </button>
     </div>
   </header>
   
-  <div class="container shadow-card rounded-md w-full my-5 relative">
+  <div class="container shadow-simple rounded-md w-full my-5 relative">
     <div class="p-5">
       <div class="container__grid grid gap-5">
         <app-input
@@ -32,7 +34,7 @@
         <app-category-pick-list></app-category-pick-list>
 
         <app-select>
-          <mat-checkbox valueContainer #valueContainer>Diverse Target</mat-checkbox>
+          <app-checkbox valueContainer #valueContainer>Diverse Target</app-checkbox>
         </app-select>
         <app-select>
           <app-checkbox valueContainer #valueContainer>Language</app-checkbox>
@@ -43,13 +45,13 @@
         <app-checkbox>Slogan</app-checkbox>
       </div>
   
-      <button class="text-regal-blue text-base flex items-center gap-2 ml-auto">
+      <button class="text-regal-blue text-base font-medium flex items-center gap-[10px] ml-auto ">
         <img src="/assets/images/icons/sorting-options.svg" />
         <span>Selected Criteria</span>
       </button> 
     </div>
   
-    <button class="text-white bg-regal-blue py-4 px-6 rounded-lg border-0 absolute right-2/4 translate-y-2/4 translate-x-2/4 bottom-0 text-xl">
+    <button class="text-white bg-regal-blue text-xl font-medium leading-6 py-4 px-[25px] shadow-button rounded-md border-0 absolute right-2/4 translate-y-2/4 translate-x-2/4 bottom-0">
       Search
     </button>
   </div>

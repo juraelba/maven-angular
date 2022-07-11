@@ -22,7 +22,7 @@
     </div>
   <div>
 
-  <div *ngIf="isOpened" class="dropdown-container rounded-md shadow-card rounded-md w-full bg-white absolute left-0 top-full z-10">
+  <div *ngIf="isOpened" class="dropdown-container rounded-md shadow-simple rounded-md w-full bg-white absolute left-0 top-full z-10">
     <div class="p-5">
       <div *ngIf="dropdownHeaderContainer" class="dropdown-container__header">
         <ng-content select="[dropdownHeaderContainer]"></ng-content>
@@ -62,7 +62,7 @@
         </div>
       </div>
     </div>
-    <div class="dropdown-container__footer shadow-card flex justify-between items-center px-5 py-4 bg-white rounded-b-md gap-3">
+    <div class="dropdown-container__footer shadow-simple flex justify-between items-center px-5 py-4 bg-white rounded-b-md gap-3">
       <button
         class="border-regal-blue text-regal-blue rounded-xl border-2 w-24 h-[30px]"
         (click)="onCancelButtonClick($event)"
