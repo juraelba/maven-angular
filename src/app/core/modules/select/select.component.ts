@@ -26,8 +26,10 @@ export class SelectComponent implements OnInit {
   @Input() placeholder: string;
   @Input() options: SelectOption[] = [];
   @Input() borderLabel: string;
+  @Input() panelOpen: boolean;
 
   @Output() applyChanges: EventEmitter<SelectOption[]> = new EventEmitter();
+  @Output() cancelChanges: EventEmitter<undefined> = new EventEmitter();
 
   @ViewChild('selectContainer') selectContainer: ElementRef;
 
@@ -46,6 +48,7 @@ export class SelectComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.isOpened = this.panelOpen;
     this.setOptions(this.options);
 
     this.inputChange$
@@ -67,6 +70,10 @@ export class SelectComponent implements OnInit {
     if(shouldUpdateOptions) {
       this.setOptions(changes.options.currentValue);
     }
+
+    if(changes.panelOpen?.currentValue !== changes.panelOpen?.previousValue) {
+      this.isOpened = changes.panelOpen.currentValue;
+    }
   }
 
   ngOnDestroy(): void {
@@ -86,7 +93,7 @@ export class SelectComponent implements OnInit {
     return this.options.filter(({ label }) => label.toLocaleLowerCase().includes(labelFilter));
   }
 
-  transformOptions(options: SelectOption[]) {
+  transformOptions(options: SelectOption[]): SelectOption[] {
     return options.map((option) => {
       const groupLetter = option.label[0].toUpperCase();
 
@@ -98,7 +105,7 @@ export class SelectComponent implements OnInit {
     })
   }
 
-  sortOptionsByLabel(options: SelectOption[]) {
+  sortOptionsByLabel(options: SelectOption[]): SelectOption[] {
     return [ ...options].sort((a, b) => {
       if (a.label > b.label) {
         return 1;
@@ -111,7 +118,7 @@ export class SelectComponent implements OnInit {
     })
   }
 
-  updateOptionsWithSelected(options: SelectOption[], selectedOptions: SelectOption[]) {
+  updateOptionsWithSelected(options: SelectOption[], selectedOptions: SelectOption[]): SelectOption[] {
     return options.map((option) => {
       const selected = selectedOptions.some(({ id }) => id === option.id);
 
@@ -128,6 +135,9 @@ export class SelectComponent implements OnInit {
     this.isOpened = false;
     this.temporarySelected = [ ...this.selected ];
     this.dropdownOptions = this.updateOptionsWithSelected(this.dropdownOptions, this.selected);
+
+
+    this.cancelChanges.emit();
   }
 
   onOkButtonClick(event: MouseEvent): void {
@@ -140,14 +150,14 @@ export class SelectComponent implements OnInit {
   }
 
   toggleMenuOpen(): void {
-    this.isOpened = !this.isOpened;
+    this.isOpened = typeof this.panelOpen !== 'undefined' ? this.panelOpen : !this.isOpened;
 
     if(this.isOpened) {
       this.dropdownOptions = this.updateOptionsWithSelected(this.options, this.selected);
     }
   }
 
-  toogleSelectOption(event: MouseEvent, option: SelectOption) {
+  toogleSelectOption(event: MouseEvent, option: SelectOption): void {
     event.stopPropagation();
 
     this.dropdownOptions = this.dropdownOptions.map((dropdownOption) => {
@@ -164,27 +174,27 @@ export class SelectComponent implements OnInit {
     this.temporarySelected = this.dropdownOptions.filter(({ selected }) => selected);
   }
 
-  toggleSelectAll(event: MouseEvent) {
+  toggleSelectAll(event: MouseEvent): void {
     event.stopPropagation();
 
     this.allSelected = !this.allSelected;
 
-    this.temporarySelected = this.dropdownOptions.map((option) => ({ ...option, selected: this.allSelected }));
-    this.dropdownOptions = [ ...this.temporarySelected ];
+    this.dropdownOptions = this.dropdownOptions.map((option) => ({ ...option, selected: this.allSelected }));
+    this.temporarySelected = this.allSelected ? [ ...this.dropdownOptions ] : []
   }
 
-  isNewGroupLetter(prevOption: SelectOption | undefined, currentOption: SelectOption) {
+  isNewGroupLetter(prevOption: SelectOption | undefined, currentOption: SelectOption): boolean {
     const prevLetter = prevOption?.groupLetter;
     const currentLetter = currentOption.groupLetter;
 
     return prevLetter !== currentLetter;
   }
 
-  onSearchInputClick(event: MouseEvent) {
+  onSearchInputClick(event: MouseEvent): void {
     event.stopPropagation();
   }
 
-  onSearchInputChange(value: string) {
+  onSearchInputChange(value: string): void {
     this.inputChange$.next(value)
   }
 

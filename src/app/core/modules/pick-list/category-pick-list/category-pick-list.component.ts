@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 import { SelectOption } from '../../../models/select.model';
@@ -30,6 +30,7 @@ export class CategoryPickListComponent implements OnInit {
   };
   selectedOptions: SelectOption[] = [];
   width: string;
+  panelOpen: boolean = false;
 
   constructor(
     private listsService: ListsService
@@ -49,14 +50,18 @@ export class CategoryPickListComponent implements OnInit {
     return categories.map(({ id, name }) => ({ id, label: name, value: name }))
   }
 
-  toggleCategory(): void {
+  toggleCategory(event: MouseEvent): void {
+    event.stopPropagation();
+  
     this.isCategories = !this.isCategories;
 
     this.borderLabel = this.getBorderLabel();
     this.value = this.getValue(this.selectedOptions);
   }
 
-  togglePrimaryCategory(): void {
+  togglePrimaryCategory(event: MouseEvent): void {
+    event.stopPropagation();
+  
     this.isPrimaryCategory = !this.isPrimaryCategory;
 
     this.borderLabel = this.getBorderLabel();
@@ -74,7 +79,7 @@ export class CategoryPickListComponent implements OnInit {
     return [ label, ...optionsLabels ].join(', ');
   }
 
-  onApplyChanges(options: SelectOption[]) {
+  onApplyChanges(options: SelectOption[]): void {
     const width = this.selectComponent?.selectContainer.nativeElement.getBoundingClientRect().width;
 
     const values = options.map(({ value }) => value);
@@ -86,5 +91,20 @@ export class CategoryPickListComponent implements OnInit {
       ...this.categoryData,
       categories: values
     }
+    this.panelOpen = false;
+  }
+  
+  onCancelChanges(): void {
+    this.panelOpen = false;
+  }
+
+  onSelectClick(event: any): void {
+    const isTargetCheckbox = event.path.some((item: any) => item?.classList?.contains('checkbox'));
+
+    if(isTargetCheckbox) {
+      return;
+    }
+
+    this.panelOpen = !this.panelOpen;
   }
 }

@@ -3,32 +3,36 @@
   [options]="options"
   [search]="true"
   [borderLabel]="borderLabel"
+  [panelOpen]="panelOpen"
+  (cancelChanges)="onCancelChanges()"
   (applyChanges)="onApplyChanges($event)"
+  (click)="onSelectClick($event)"
   #selectComponent
 >
   <div valueContainer #valueContainer class="flex items-center">
     <app-checkbox
       [checked]="isCategories || isPrimaryCategory"
-      (click)="toggleCategory()"
+      (click)="toggleCategory($event)"
+      class="checkbox"
     >
     </app-checkbox>
     <div [ngStyle]="{'max-width': width}" class="ml-[10px] truncate">{{ value }}</div>
   </div>
 
   <div dropdownHeaderContainer #dropdownHeaderContainer>
-    <div class="flex justify-between items-center mb-5 cursor-pointer" (click)="toggleCategory()">
+    <div class="flex justify-between items-center mb-5 cursor-pointer" (click)="toggleCategory($event)">
       <div class="text-black text-base font-medium">Categories</div>
       <app-checkbox
         [checked]="isCategories"
         #tooltip="matTooltip"
         matTooltip="Include categories in result"
         matTooltipPosition="above"
-        matTooltipHideDelay="100000"
+        matTooltipHideDelay="200"
         matTooltipShowDelay="1000"
       >
       </app-checkbox>
     </div>
-    <div class="flex justify-between items-center mb-8 cursor-pointer" (click)="togglePrimaryCategory()">
+    <div class="flex justify-between items-center mb-8 cursor-pointer" (click)="togglePrimaryCategory($event)">
       <div class="font-lato text-sm text-pri-black">Only primary category field</div>
       <mat-slide-toggle
         class="rotate-180"
