@@ -54,7 +54,9 @@ export class SelectComponent implements OnInit {
         debounceTime(500)
       )
       .subscribe((value: string) => {
-        this.dropdownOptions = this.filterOption(value.toLocaleLowerCase());
+        const filteredByLabel = this.filterOption(value.toLocaleLowerCase());
+
+        this.dropdownOptions = this.updateOptionsWithSelected(filteredByLabel, this.temporarySelected);
       })
   }
 
@@ -109,19 +111,23 @@ export class SelectComponent implements OnInit {
     })
   }
 
-  onCancelButtonClick(event: MouseEvent): void {
-    event.stopPropagation();
-
-    this.isOpened = false;
-    this.temporarySelected = [ ...this.selected ];
-    this.dropdownOptions = this.dropdownOptions.map((option) => {
-      const selected = this.selected.some(({ id }) => id === option.id);
+  updateOptionsWithSelected(options: SelectOption[], selectedOptions: SelectOption[]) {
+    return options.map((option) => {
+      const selected = selectedOptions.some(({ id }) => id === option.id);
 
       return {
         ...option,
         selected
       }
     });
+  }
+
+  onCancelButtonClick(event: MouseEvent): void {
+    event.stopPropagation();
+
+    this.isOpened = false;
+    this.temporarySelected = [ ...this.selected ];
+    this.dropdownOptions = this.updateOptionsWithSelected(this.dropdownOptions, this.selected);
   }
 
   onOkButtonClick(event: MouseEvent): void {
@@ -135,6 +141,10 @@ export class SelectComponent implements OnInit {
 
   toggleMenuOpen(): void {
     this.isOpened = !this.isOpened;
+
+    if(this.isOpened) {
+      this.dropdownOptions = this.updateOptionsWithSelected(this.options, this.selected);
+    }
   }
 
   toogleSelectOption(event: MouseEvent, option: SelectOption) {

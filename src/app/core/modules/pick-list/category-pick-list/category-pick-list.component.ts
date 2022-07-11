@@ -17,7 +17,7 @@ interface categoryData {
 })
 export class CategoryPickListComponent implements OnInit {
   @ViewChild('selectComponent') selectComponent: any;
-
+  
   options: SelectOption[] = [];
   isCategories: boolean = false;
   isPrimaryCategory: boolean = false;
@@ -71,7 +71,7 @@ export class CategoryPickListComponent implements OnInit {
     const optionsLabels = options.map(({ label }) => label);
     const label = this.isPrimaryCategory ? 'Only primary category field' : 'Categories';
 
-    return [label, ...optionsLabels].join(', ');
+    return [ label, ...optionsLabels ].join(', ');
   }
 
   onApplyChanges(options: SelectOption[]) {
