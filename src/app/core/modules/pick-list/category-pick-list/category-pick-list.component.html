@@ -6,18 +6,18 @@
   (applyChanges)="onApplyChanges($event)"
   #selectComponent
 >
-  <div valueContainer #valueContainer class="flex items-center gap-[5px]">
+  <div valueContainer #valueContainer class="flex items-center">
     <app-checkbox
       [checked]="isCategories || isPrimaryCategory"
       (click)="toggleCategory()"
     >
     </app-checkbox>
-    <div [ngStyle]="{'max-width': width}" class="truncate">{{ value }}</div>
+    <div [ngStyle]="{'max-width': width}" class="ml-[10px] truncate">{{ value }}</div>
   </div>
 
   <div dropdownHeaderContainer #dropdownHeaderContainer>
     <div class="flex justify-between items-center mb-5 cursor-pointer" (click)="toggleCategory()">
-      <div class="text-black text-base">Categories</div>
+      <div class="text-black text-base font-medium">Categories</div>
       <app-checkbox
         [checked]="isCategories"
         #tooltip="matTooltip"

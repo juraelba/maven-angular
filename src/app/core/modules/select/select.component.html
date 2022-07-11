@@ -39,14 +39,14 @@
         </app-input>
       </div>
   
-      <app-checkbox
+      <div
         *ngIf="multiple"
-        class="select-all block mb-2.5"
-        [checked]="allSelected"
+        class="select-all block mb-2.5 flex items-center"
         (click)="toggleSelectAll($event)"
       >
-        All
-      </app-checkbox>
+        <app-checkbox [checked]="allSelected"></app-checkbox>
+        <span class="ml-[10px]">All</span>
+      </div>
 
       <div class="dropdown-container__options-container max-h-52 overflow-y-scroll pt-2.5 border-t border-t-1 border-gray">
         <div class="mb-2.5" *ngFor="let option of dropdownOptions; index as i;" (click)="toogleSelectOption($event, option)">
@@ -54,24 +54,25 @@
             {{ option.groupLetter }}
           </div>
 
-          <app-checkbox *ngIf="multiple" [checked]="option.selected">
-            <span class="truncate m-0 p-0">{{ option.label }}</span>
-          </app-checkbox>
+          <div *ngIf="multiple" class="flex items-center">
+            <app-checkbox [checked]="option.selected"></app-checkbox>
+            <span class="ml-[10px] truncate m-0 p-0">{{ option.label }}</span>
+          </div>
 
           <span *ngIf="!multiple">{{ option.label }}</span>
         </div>
       </div>
     </div>
-    <div class="dropdown-container__footer shadow-simple flex justify-between items-center px-5 py-4 bg-white rounded-b-md gap-3">
+    <div class="dropdown-container__footer shadow-simple flex justify-between items-center px-5 py-4 bg-white rounded-b-md">
       <button
-        class="border-regal-blue text-regal-blue rounded-xl border-2 w-24 h-[30px]"
+        class="border-regal-blue text-regal-blue font-medium rounded-md border-2 w-24 h-[30px] shadow-button mr-[30px]"
         (click)="onCancelButtonClick($event)"
       >
         Cancel
       </button>
       <button
         (click)="onOkButtonClick($event)"
-        class="text-white bg-regal-blue  rounded-xl border-0 w-24 h-[30px]"
+        class="text-white bg-regal-blue font-medium rounded-md border-0 w-24 h-[30px] shadow-button"
       >
         Ok
       </button>
