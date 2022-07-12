@@ -37,7 +37,7 @@ export class CategoryPickListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listsService.fetchCategories()
+    this.listsService.getCategories()
       .pipe(
         map((categories: List) => this.getOptions(categories))
       )
