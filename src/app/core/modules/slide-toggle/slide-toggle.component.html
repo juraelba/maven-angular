@@ -1,0 +1,15 @@
+<div class="w-[30px] h-[12px] relative rounded-lg flex items-center"
+  [ngClass]="{
+    'bg-dark-blue': checked,
+    'bg-light-gray': !checked
+  }"
+>
+  <div
+    class="w-[20px] h-[20px] absolute rounded-full shadow-circle circle"
+    [ngClass]="{
+      'bg-violet left-0': checked,
+      'bg-white right-0': !checked
+    }"
+  >
+  </div>
+</div>

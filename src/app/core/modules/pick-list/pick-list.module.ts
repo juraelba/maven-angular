@@ -6,6 +6,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { CategoryPickListComponent } from './category-pick-list/category-pick-list.component';
 import { SelectModule } from '../select/select.module';
 import { CheckboxModule } from '../checkbox/checkbox.module';
+import { SlideToggleModule  } from '../slide-toggle/slide-toggle.module';
 
 import { ListsService } from '../../services/lists/lists.service';
 
@@ -18,7 +19,8 @@ import { ListsService } from '../../services/lists/lists.service';
     SelectModule,
     CheckboxModule,
     MatSlideToggleModule,
-    MatTooltipModule
+    MatTooltipModule,
+    SlideToggleModule
   ],
   providers: [
     ListsService

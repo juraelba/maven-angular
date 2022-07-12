@@ -10,7 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { debounceTime, takeUntil} from 'rxjs/operators'
+import { debounceTime, takeUntil } from 'rxjs/operators'
 
 import { SelectOption } from '../../models/select.model';
 
@@ -67,12 +67,16 @@ export class SelectComponent implements OnInit {
     const shouldUpdateOptions = changes.options && changes.options.previousValue
       && changes.options.currentValue.length !== changes.options.previousValue.length;
 
-    if(shouldUpdateOptions) {
+    if (shouldUpdateOptions) {
       this.setOptions(changes.options.currentValue);
     }
 
-    if(changes.panelOpen?.currentValue !== changes.panelOpen?.previousValue) {
+    if (changes.panelOpen?.currentValue !== changes.panelOpen?.previousValue) {
       this.isOpened = changes.panelOpen.currentValue;
+
+      if (this.isOpened) {
+        this.dropdownOptions = this.updateOptionsWithSelected(this.options, this.selected);
+      }
     }
   }
 
@@ -90,7 +94,11 @@ export class SelectComponent implements OnInit {
   }
 
   filterOption(labelFilter: string): SelectOption[] {
-    return this.options.filter(({ label }) => label.toLocaleLowerCase().includes(labelFilter));
+    return this.options.filter(({ label, id }) => {
+      const selected = this.temporarySelected.some((selectedOption) => id === selectedOption.id);
+
+      return selected || label.toLocaleLowerCase().includes(labelFilter)
+    });
   }
 
   transformOptions(options: SelectOption[]): SelectOption[] {
@@ -106,7 +114,7 @@ export class SelectComponent implements OnInit {
   }
 
   sortOptionsByLabel(options: SelectOption[]): SelectOption[] {
-    return [ ...options].sort((a, b) => {
+    return [...options].sort((a, b) => {
       if (a.label > b.label) {
         return 1;
       }
@@ -133,7 +141,7 @@ export class SelectComponent implements OnInit {
     event.stopPropagation();
 
     this.isOpened = false;
-    this.temporarySelected = [ ...this.selected ];
+    this.temporarySelected = [...this.selected];
     this.dropdownOptions = this.updateOptionsWithSelected(this.dropdownOptions, this.selected);
 
 
@@ -145,14 +153,14 @@ export class SelectComponent implements OnInit {
 
     this.isOpened = false;
 
-    this.selected = [ ...this.temporarySelected ];
-    this.applyChanges.emit([ ...this.temporarySelected ]);
+    this.selected = [...this.temporarySelected];
+    this.applyChanges.emit([...this.temporarySelected]);
   }
 
   toggleMenuOpen(): void {
     this.isOpened = typeof this.panelOpen !== 'undefined' ? this.panelOpen : !this.isOpened;
 
-    if(this.isOpened) {
+    if (this.isOpened) {
       this.dropdownOptions = this.updateOptionsWithSelected(this.options, this.selected);
     }
   }
@@ -164,7 +172,7 @@ export class SelectComponent implements OnInit {
       const selected = dropdownOption.id === option.id
         ? !option.selected
         : dropdownOption.selected;
-    
+
       return {
         ...dropdownOption,
         selected
@@ -172,6 +180,7 @@ export class SelectComponent implements OnInit {
     });
 
     this.temporarySelected = this.dropdownOptions.filter(({ selected }) => selected);
+    this.allSelected = this.temporarySelected.length === this.dropdownOptions.length;
   }
 
   toggleSelectAll(event: MouseEvent): void {
@@ -180,7 +189,7 @@ export class SelectComponent implements OnInit {
     this.allSelected = !this.allSelected;
 
     this.dropdownOptions = this.dropdownOptions.map((option) => ({ ...option, selected: this.allSelected }));
-    this.temporarySelected = this.allSelected ? [ ...this.dropdownOptions ] : []
+    this.temporarySelected = this.allSelected ? [...this.dropdownOptions] : []
   }
 
   isNewGroupLetter(prevOption: SelectOption | undefined, currentOption: SelectOption): boolean {

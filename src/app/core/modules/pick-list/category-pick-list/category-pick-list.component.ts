@@ -86,7 +86,7 @@ export class CategoryPickListComponent implements OnInit {
 
     this.value = this.getValue(options);
     this.selectedOptions = options;
-    this.width = `${width}px`;
+    this.width = `${ width-80 }px`;
     this.categoryData = {
       ...this.categoryData,
       categories: values

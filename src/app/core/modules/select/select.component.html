@@ -50,7 +50,7 @@
 
       <div class="dropdown-container__options-container max-h-52 overflow-y-scroll pt-2.5 border-t border-t-1 border-gray">
         <div class="mb-2.5" *ngFor="let option of dropdownOptions; index as i;" (click)="toogleSelectOption($event, option)">
-          <div *ngIf="isNewGroupLetter(options[i - 1], option)" class="border-b border-b-1 border-gray mb-2.5">
+          <div *ngIf="isNewGroupLetter(dropdownOptions[i - 1], option)" class="border-b border-b-1 border-gray mb-2.5">
             {{ option.groupLetter }}
           </div>
 
