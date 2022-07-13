@@ -1,11 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, map } from 'rxjs/operators';
 
 import { environment } from '../../../../environments/environment';
 import { List } from '../../models/list.model';
+import { SelectOption } from '../../models/select.model';
 import { LocalStorageService } from '../local-storage/local-storage.service';
+
+const listUrls: any = {
+  'categories': '/lists/categories/',
+  'mediaTypes': '/lists/mediatypes2/'
+}
 
 @Injectable({
   providedIn: 'root'
@@ -17,25 +23,33 @@ export class ListsService {
     private localStorage: LocalStorageService
   ) { }
 
-  fetchCategories(): Observable<List> {
-    const url = environment.api + '/lists/categories/';
+  fetchListData(key: string): Observable<List> {
+    const url = environment.api + listUrls[key];
 
     return this.http.get<List>(url).pipe(
-      tap((categories) => this.localStorage.set('categories', JSON.stringify(categories)))
+      tap((categories) => this.localStorage.set(key, JSON.stringify(categories)))
     )
   }
 
-  getCachedCategories(): List | [] {
-    const categories = this.localStorage.get('categories');
+  getCachedData(key: string): List | [] {
+    const categories = this.localStorage.get(key);
 
     return categories ? JSON.parse(categories) : [];
   }
 
-  getCategories(): Observable<List> {
-    const cache = this.getCachedCategories();
+  getOptionsData(key: string): Observable<SelectOption[]> {
+    const cachedData = this.getCachedData(key);
 
-    return cache.length
-      ? of(cache)
-      : this.fetchCategories()
+    const list$ = cachedData.length
+      ? of(cachedData)
+      : this.fetchListData(key)
+
+    return list$.pipe(
+      map((list: List) => this.transformListToOptions(list))
+    )
+  }
+
+  transformListToOptions(list: List): SelectOption[] {
+    return list.map(({ id, name }) => ({ id, label: name, value: name }))
   }
 }

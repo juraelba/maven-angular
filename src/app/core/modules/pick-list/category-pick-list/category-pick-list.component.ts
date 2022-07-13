@@ -37,17 +37,10 @@ export class CategoryPickListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listsService.getCategories()
-      .pipe(
-        map((categories: List) => this.getOptions(categories))
-      )
+    this.listsService.getOptionsData('categories')
       .subscribe((options: SelectOption[]) => {
         this.options = options;
       })
-  }
-
-  getOptions(categories: List): SelectOption[] {
-    return categories.map(({ id, name }) => ({ id, label: name, value: name }))
   }
 
   toggleCategory(event: MouseEvent): void {

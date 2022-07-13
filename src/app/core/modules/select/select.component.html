@@ -18,7 +18,20 @@
     <div class="input w-full h-full flex items-center justify-between" type="text" (click)="toggleMenuOpen()">
       <div *ngIf="!valueContainer" class="value-container">
         <span *ngIf="!selected.length">{{ placeholder }}</span>
-        <span *ngIf="selected.length">{{ this.getSelectedOptionsLabels() }}</span>
+        <div *ngIf="selected.length">
+          <div
+            *ngIf="this.getSelectedOptionsLabels() as optionLabels"
+            [ngStyle]="{ 'width': valueContainerWidth }"
+            #tooltip="matTooltip"
+            class="truncate"
+            [matTooltip]="optionLabels"
+            matTooltipPosition="below"
+            matTooltipHideDelay="200"
+            matTooltipShowDelay="2000"
+          >
+            {{ optionLabels }}
+          </div>
+        </div>
       </div>
       <div *ngIf="valueContainer" class="value-container" >
         <ng-content select="[valueContainer]"></ng-content>
@@ -55,7 +68,7 @@
 
       <div class="dropdown-container__options-container max-h-52 overflow-y-scroll pt-2.5 border-t border-t-1 border-gray">
         <div class="mb-2.5" *ngFor="let option of dropdownOptions; index as i;" (click)="toogleSelectOption($event, option)">
-          <div *ngIf="isNewGroupLetter(dropdownOptions[i - 1], option)" class="border-b border-b-1 border-gray mb-2.5">
+          <div *ngIf="grouping && isNewGroupLetter(dropdownOptions[i - 1], option)" class="border-b border-b-1 border-gray mb-2.5">
             {{ option.groupLetter }}
           </div>
 

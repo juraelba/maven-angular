@@ -9,10 +9,12 @@ import { CheckboxModule } from '../checkbox/checkbox.module';
 import { SlideToggleModule  } from '../slide-toggle/slide-toggle.module';
 
 import { ListsService } from '../../services/lists/lists.service';
+import { MediaTypePickListComponent } from './media-type-pick-list/media-type-pick-list.component';
 
 @NgModule({
   declarations: [
-    CategoryPickListComponent
+    CategoryPickListComponent,
+    MediaTypePickListComponent
   ],
   imports: [
     CommonModule,
@@ -26,7 +28,8 @@ import { ListsService } from '../../services/lists/lists.service';
     ListsService
   ],
   exports: [
-    CategoryPickListComponent
+    CategoryPickListComponent,
+    MediaTypePickListComponent
   ]
 })
 export class PickListModule { }

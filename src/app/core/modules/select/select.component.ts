@@ -27,6 +27,8 @@ export class SelectComponent implements OnInit {
   @Input() options: SelectOption[] = [];
   @Input() borderLabel: string;
   @Input() panelOpen: boolean;
+  @Input() grouping: boolean = true;
+  @Input() valueContainerWidth: string = '100%';
 
   @Output() applyChanges: EventEmitter<SelectOption[]> = new EventEmitter();
   @Output() cancelChanges: EventEmitter<undefined> = new EventEmitter();
@@ -151,9 +153,12 @@ export class SelectComponent implements OnInit {
   onOkButtonClick(event: MouseEvent): void {
     event.stopPropagation();
 
-    this.isOpened = false;
+    const width = this.selectContainer.nativeElement.getBoundingClientRect().width;
 
+    this.isOpened = false;
+    this.valueContainerWidth = `${ width-60 }px`;
     this.selected = [ ...this.temporarySelected ];
+  
     this.applyChanges.emit([ ...this.temporarySelected ]);
   }
 

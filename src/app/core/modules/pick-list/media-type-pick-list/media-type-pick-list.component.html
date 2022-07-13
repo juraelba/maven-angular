@@ -1,0 +1,15 @@
+<app-select
+  [multiple]="true"
+  [grouping]="false"
+  placeholder="Media Type"
+  [options]="options"
+  [borderLabel]="borderLabel"
+  (applyChanges)="onApplyChanges($event)"
+  #selectComponent
+>
+  <div dropdownHeaderContainer #dropdownHeaderContainer>
+    <div class="flex justify-between items-center mb-5 cursor-pointer">
+      Media Type
+    </div>
+  </div>
+</app-select>

@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { CheckboxModule } from '../checkbox/checkbox.module';
 
@@ -13,7 +14,8 @@ import { InputModule } from '../input/input.module';
   imports: [
     CommonModule,
     CheckboxModule,
-    InputModule
+    InputModule,
+    MatTooltipModule
   ],
   exports: [
     SelectComponent
