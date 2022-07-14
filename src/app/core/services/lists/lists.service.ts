@@ -2,22 +2,22 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { tap, map } from 'rxjs/operators';
+import { DateTime } from 'luxon';
 
 import { environment } from '../../../../environments/environment';
-import { List } from '../../models/list.model';
+import { List, ListInfo } from '../../models/list.model';
 import { SelectOption } from '../../models/select.model';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 
 const listUrls: any = {
   'categories': '/lists/categories/',
-  'mediaTypes': '/lists/mediatypes2/'
+  'mediatypes': '/lists/mediatypes2/'
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListsService {
-
   constructor(
     private http: HttpClient,
     private localStorage: LocalStorageService
@@ -27,14 +27,31 @@ export class ListsService {
     const url = environment.api + listUrls[key];
 
     return this.http.get<List>(url).pipe(
-      tap((categories) => this.localStorage.set(key, JSON.stringify(categories)))
+      tap((categories) => this.cacheListsOptions(key, categories))
     )
   }
 
-  getCachedData(key: string): List | [] {
-    const categories = this.localStorage.get(key);
+  getCachedListModifuedDate(key: string): DateTime | null {
+    const listsCachingInformation: any = JSON.parse(this.localStorage.get('listsCachingInformation') || '[]');
+    const cachedInfo = listsCachingInformation.find((cachedInfo: any) => cachedInfo.key === key) || {};
 
-    return categories ? JSON.parse(categories) : [];
+    return cachedInfo.modifiedDate
+      ? DateTime.fromISO(cachedInfo.modifiedDate)
+      : null;
+  }
+
+  getCachedData(key: string): List | [] {
+    const initialCachingTime = DateTime.fromISO(this.localStorage.get('listsCachingTime') || '');
+    const modifiedDate = this.getCachedListModifuedDate(key);
+
+    if(modifiedDate && initialCachingTime > modifiedDate ) {
+      const cachedOptions = this.localStorage.get('cachedOptions') || '{}';
+      const categories: List = JSON.parse(cachedOptions)[key] || [];
+
+      return categories;
+    }
+  
+    return [];
   }
 
   getOptionsData(key: string): Observable<SelectOption[]> {
@@ -51,5 +68,32 @@ export class ListsService {
 
   transformListToOptions(list: List): SelectOption[] {
     return list.map(({ id, name }) => ({ id, label: name, value: name }))
+  }
+
+  storeCachingInformation() {
+    const url = environment.api + '/lists';
+
+    return this.http.get<ListInfo[]>(url)
+      .subscribe((cachingInfo: ListInfo[]) => {
+        this.localStorage.set('listsCachingInformation', JSON.stringify(cachingInfo));
+      });
+  }
+
+  cacheListsOptions(key: string, options: List): void {
+    const cachedOptions = this.localStorage.get('cachedOptions') || '{}';
+    const parsed = JSON.parse(cachedOptions);
+
+    const updatedCache = {
+      ...parsed,
+      [key]: options
+    };
+  
+    this.localStorage.set('cachedOptions', JSON.stringify(updatedCache))
+  }
+
+  clearListsCache(): void {
+    this.localStorage.removeItem('listsCachingInformation');
+    this.localStorage.removeItem('cachedOptions');
+    this.localStorage.removeItem('listsCachingTime');
   }
 }

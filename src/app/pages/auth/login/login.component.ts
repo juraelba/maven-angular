@@ -3,12 +3,14 @@ import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms
 import { Router } from '@angular/router';
 import { lastValueFrom, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { DateTime } from 'luxon';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastrService } from '../../../core/services/toastr.service';
 import { SpinnerService } from '../../../core/services/spinner.service';
 import { TokenResponse } from '../../../core/models/auth.model';
 import { MAX_VALIDATION_TRIES } from '../../../core/data/constants';
+import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +36,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private toastr: ToastrService,
-    private spinnerService: SpinnerService
+    private spinnerService: SpinnerService,
+    private localStorage: LocalStorageService
   ) { }
 
   ngOnInit(): void {
@@ -53,6 +56,8 @@ export class LoginComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribeAll)
       ).subscribe((res: TokenResponse) => {
         if (res.status === 'valid') {
+          this.localStorage.set('listsCachingTime', DateTime.now().toISO());
+
           this.router.navigate(['/']);
           this.invalidMessage = '';
         } else if (res.status === 'pending') {

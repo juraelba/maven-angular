@@ -22,16 +22,17 @@
         <app-input
           class="col-start-1 col-end-3"
           placeholder="Search by name or ID"
-          name="nameSearch" [disabled]="nameSearchDisabled"
+          name="nameSearch"
+          [disabled]="true"
           icon="/assets/images/icons/search.svg"
         >
         </app-input>
   
-        <app-media-type-pick-list></app-media-type-pick-list>
+        <app-media-type-pick-list (change)="onChange($event)"></app-media-type-pick-list>
         <app-select placeholder="Markets"></app-select>
         <app-select placeholder="Owners"></app-select>
   
-        <app-category-pick-list></app-category-pick-list>
+        <app-category-pick-list (change)="onChange($event)"></app-category-pick-list>
 
         <app-select>
           <div valueContainer #valueContainer class="flex items-center">
@@ -62,10 +63,7 @@
         </div>
       </div>
   
-      <button class="text-regal-blue text-base font-medium flex items-center ml-auto ">
-        <img class="mr-[10px]" src="/assets/images/icons/sorting-options.svg" />
-        <span>Selected Criteria</span>
-      </button> 
+      <app-selected-criteria [criteries]="criteries"></app-selected-criteria>
     </div>
   
     <button class="text-white bg-regal-blue text-xl font-medium leading-6 py-4 px-[25px] shadow-button rounded-md border-0 absolute right-2/4 translate-y-2/4 translate-x-2/4 bottom-0">

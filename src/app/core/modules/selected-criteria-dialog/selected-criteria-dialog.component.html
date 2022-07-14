@@ -1,0 +1,75 @@
+<img
+  class="block ml-auto mt-[10px] mr-[10px] w-[16px] h-[16px] cursor-pointer"
+  src="/assets/images/icons/cross.svg"
+  (click)="closeDialog()"
+/>
+
+<div class="flex justify-center" mat-dialog-title>
+  <div class="text-pri-black text-xl font-medium">Selected Criteria</div>
+</div>
+<div mat-dialog-content class="font-lato text-sm text-pri-gray mt-[40px] mb-[40px] ml-[30px] mr-[30px]">
+  <div>
+    <div class="flex mb-[10px]" *ngFor="let criteriaPair of criteries">
+      <div [ngSwitch]="criteriaPair[0]" class="basis-1/5">
+        <ng-container *ngSwitchCase="'categories'">
+          <ng-container *ngTemplateOutlet="categoriesLabel; context: { criteriaPair: criteriaPair }"></ng-container>
+        </ng-container>
+
+        <span *ngSwitchDefault>{{ labels[criteriaPair[0]] }}:</span>
+      </div>
+
+      <div [ngSwitch]="criteriaPair[0]" class="basis-4/5 flex flex-wrap">
+        <ng-container *ngSwitchCase="'categories'">
+          <ng-container *ngTemplateOutlet="categoriesValues; context: { criteriaPair: criteriaPair }"></ng-container>
+        </ng-container>
+
+        <ng-container *ngSwitchDefault>
+          <button
+            *ngFor="let criteria of criteriaPair[1]"
+            [ngStyle]="{
+              'background': config[criteriaPair[0]].bg,
+              'color': config[criteriaPair[0]].color
+            }"
+            class="mr-[10px] mb-[10px] h-[24px] flex items-center rounded-xl py-0.5 px-2"
+          >
+            <span>{{ criteria.label }}</span>
+            <img *ngIf="config[criteriaPair[0]].canDelete"  class="cursor-pointer ml-[5px]" src="/assets/images/icons/cross.svg" />
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  <div class="flex items-center text-pri-black">
+    <app-checkbox></app-checkbox>
+    <span class="ml-[10px]">Matched in my database</span>
+  </div>
+</div>
+<div class="mb-[30px] mr-[30px] w-fit ml-auto" mat-dialog-actions>
+  <button
+    (click)="closeDialog()"
+    class="ml-auto text-white bg-regal-blue font-medium rounded-md border-0 w-24 h-[30px] shadow-button text-base"
+  >
+    Ok
+  </button>
+</div>
+
+<ng-template #categoriesLabel let-criteriaPair="criteriaPair">
+  <div class="flex flex-col">
+    <span>{{ labels[criteriaPair[0]] }}:</span>
+    <span *ngIf="criteriaPair[1].isPrimaryCategory">(Only primary category)</span>
+  </div>
+</ng-template>
+
+<ng-template #categoriesValues let-criteriaPair="criteriaPair">
+  <button
+    *ngFor="let criteria of criteriaPair[1].categories"
+    [ngStyle]="{
+      'background': config[criteriaPair[0]].bg,
+      'color': config[criteriaPair[0]].color
+    }"
+    class="mr-[10px] mb-[10px] h-[24px] flex items-center rounded-xl py-0.5 px-2"
+  >
+    <span>{{ criteria.label }}</span>
+    <img *ngIf="config[criteriaPair[0]].canDelete"  class="cursor-pointer ml-[5px]" src="/assets/images/icons/cross.svg" />
+  </button>
+</ng-template>

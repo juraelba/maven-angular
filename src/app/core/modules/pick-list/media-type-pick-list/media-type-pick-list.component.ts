@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 import { ListsService } from '../../../services/lists/lists.service';
 import { SelectOption } from '../../../models/select.model';
@@ -9,6 +9,8 @@ import { SelectOption } from '../../../models/select.model';
   styleUrls: ['./media-type-pick-list.component.scss']
 })
 export class MediaTypePickListComponent implements OnInit {
+  @Output() change: EventEmitter<any> = new EventEmitter();
+
   borderLabel: string;
   options: SelectOption[] = [];
 
@@ -17,7 +19,7 @@ export class MediaTypePickListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listsService.getOptionsData('mediaTypes')
+    this.listsService.getOptionsData('mediatypes')
       .subscribe((options: SelectOption[]) => {
         this.options = options;
       })
@@ -25,5 +27,7 @@ export class MediaTypePickListComponent implements OnInit {
 
   onApplyChanges(options: SelectOption[]): void {
     this.borderLabel = options.length ? 'MediaType' : '';
+
+    this.change.emit({ key: 'mediatypes', data: options });
   }
 }

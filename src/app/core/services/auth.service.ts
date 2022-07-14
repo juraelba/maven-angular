@@ -8,6 +8,7 @@ import jwt_decode from 'jwt-decode';
 import { environment } from '../../../environments/environment';
 import { DecodedToken, TokenResponse } from '../models/auth.model';
 import { User, ChangePassword } from '../models/auth.model';
+import { ListsService } from './lists/lists.service';
 
 @Injectable({
   providedIn: 'root'
@@ -24,7 +25,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router
+    private router: Router,
+    private listsService: ListsService
   ) {
   }
 
@@ -62,6 +64,7 @@ export class AuthService {
     this.accessToken = '';
     this.isAuthenticated$.next(this.isAuthenticated);
     this.router.navigate(['/login']);
+    this.listsService.clearListsCache();
   }
 
   // Create Account Service

@@ -10,7 +10,8 @@ export class InputComponent implements OnInit {
   @Input() name: string;
   @Input() placeholder: string;
   @Input() disabled: boolean = false;
-  @Input() border: boolean = true
+  @Input() border: boolean = true;
+  @Input() value: string = '';
 
   @Output() inputChange: EventEmitter<string> = new EventEmitter();
 
@@ -22,6 +23,7 @@ export class InputComponent implements OnInit {
   onInputChange(event: Event): void {
     const target = event.target as HTMLInputElement;
 
+    this.value = target.value;
     this.inputChange.emit(target.value);
   }
 }

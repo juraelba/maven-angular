@@ -1,14 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { map } from 'rxjs/operators';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 
 import { SelectOption } from '../../../models/select.model';
-import { List } from '../../../models/list.model';
 import { ListsService } from '../../../../core/services/lists/lists.service';
 
-interface categoryData {
+interface CategoryData {
   isCategories: boolean;
   isPrimaryCategory: boolean;
-  categories: string[]
+  categories: SelectOption[]
 }
 @Component({
   selector: 'app-category-pick-list',
@@ -16,18 +14,15 @@ interface categoryData {
   styleUrls: ['./category-pick-list.component.scss']
 })
 export class CategoryPickListComponent implements OnInit {
+  @Output() change: EventEmitter<any> = new EventEmitter();
+
   @ViewChild('selectComponent') selectComponent: any;
-  
+
   options: SelectOption[] = [];
   isCategories: boolean = false;
   isPrimaryCategory: boolean = false;
   borderLabel: string = '';
   value: string = 'Categories';
-  categoryData: categoryData = {
-    isCategories: false,
-    isPrimaryCategory: false,
-    categories: []
-  };
   selectedOptions: SelectOption[] = [];
   width: string;
   panelOpen: boolean = false;
@@ -75,16 +70,17 @@ export class CategoryPickListComponent implements OnInit {
   onApplyChanges(options: SelectOption[]): void {
     const width = this.selectComponent?.selectContainer.nativeElement.getBoundingClientRect().width;
 
-    const values = options.map(({ value }) => value);
-
     this.value = this.getValue(options);
     this.selectedOptions = options;
     this.width = `${ width-80 }px`;
-    this.categoryData = {
-      ...this.categoryData,
-      categories: values
+    
+    const categoryData: CategoryData = {
+      isPrimaryCategory: this.isPrimaryCategory,
+      isCategories: this.isCategories,
+      categories: options,
     }
-    this.panelOpen = false;
+
+    this.change.emit({ key: 'categories', data: categoryData });
   }
   
   onCancelChanges(): void {

@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
-import { AuthService } from '../../core/services/auth.service';
+import { ListsService } from '../../core/services/lists/lists.service';
 
 @Component({
   selector: 'app-home',
@@ -10,9 +9,10 @@ import { AuthService } from '../../core/services/auth.service';
 export class HomeComponent implements OnInit {
 
   constructor(
-    private authService: AuthService
+    private listsService: ListsService
   ) { }
 
   ngOnInit(): void {
+    this.listsService.storeCachingInformation();
   }
 }

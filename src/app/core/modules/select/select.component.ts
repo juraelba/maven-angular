@@ -10,7 +10,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { debounceTime, takeUntil} from 'rxjs/operators'
+import { debounceTime, takeUntil, tap } from 'rxjs/operators'
 
 import { SelectOption } from '../../models/select.model';
 
@@ -46,6 +46,7 @@ export class SelectComponent implements OnInit {
   isOpened: boolean = false;
   allSelected: boolean = false;
   dropdownOptions: SelectOption[] = [];
+  searchValue: string = '';
 
   constructor() { }
 
@@ -56,6 +57,9 @@ export class SelectComponent implements OnInit {
     this.inputChange$
       .pipe(
         takeUntil(this.unsubscribeAll),
+        tap((value: string) => {
+          this.searchValue = value;
+        }),
         debounceTime(500)
       )
       .subscribe((value: string) => {
@@ -193,9 +197,13 @@ export class SelectComponent implements OnInit {
 
     this.allSelected = !this.allSelected;
 
+    if(this.allSelected) {
+      this.inputChange$.next('');
+    }
+
     const selectedOptions = this.options.map((option) => ({ ...option, selected: this.allSelected }));
 
-    this.temporarySelected = this.allSelected ? [ ...selectedOptions ] : []
+    this.temporarySelected = this.allSelected ? [ ...selectedOptions ] : [];
     this.dropdownOptions = [ ...selectedOptions ];
   }
 
