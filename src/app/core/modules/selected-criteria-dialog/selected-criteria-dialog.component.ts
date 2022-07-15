@@ -3,6 +3,9 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { toPairs } from 'ramda';
 
 import { Criteries } from '../../models/criteries.model';
+import { SelectOption } from '../../models/select.model';
+
+import { SelectedCriteriaService } from '../../services/selected-criteria/selected-criteria.service';
 
 interface Config {
   [key: string]: {
@@ -56,7 +59,8 @@ export class SelectedCriteriaDialogComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Criteries,
-    private dialogRef: MatDialogRef<SelectedCriteriaDialogComponent>
+    private dialogRef: MatDialogRef<SelectedCriteriaDialogComponent>,
+    private selectedCriteriaService: SelectedCriteriaService
   ) { }
 
   ngOnInit(): void {
@@ -65,5 +69,41 @@ export class SelectedCriteriaDialogComponent implements OnInit {
 
   closeDialog() {
     this.dialogRef.close();
+  }
+
+  filterOptions(options: SelectOption[], value: string): SelectOption[] {
+    return options.filter((option) => value !== option.value);
+  }
+
+  onRemoveCriteriaClick(key: string, option: SelectOption) {
+    const workingCriteria = this.data[key];
+
+    let newData = {};
+
+    if (key === 'categories') {
+      const newCriteriOptions = this.filterOptions(workingCriteria.categories, option.value);
+
+      newData = {
+        ...this.data,
+        [key]: {
+          ...this.data[key],
+          categories: newCriteriOptions
+        }
+      }
+    } else {
+      newData = {
+        ...this.data,
+        [key]: this.filterOptions(workingCriteria, option.value)
+      };
+    }
+
+    this.data = newData;
+    this.criteries = toPairs(newData);
+  }
+
+  finishEditing(): void {
+    this.closeDialog();
+
+    this.selectedCriteriaService.update(this.data);
   }
 }

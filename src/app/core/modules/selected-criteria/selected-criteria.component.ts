@@ -19,7 +19,8 @@ export class SelectedCriteriaComponent implements OnInit {
 
   openDialog(): void {
     this.dialog.open(SelectedCriteriaDialogComponent, {
-      data: this.criteries
+      data: this.criteries,
+      width: '640px'
     })
   }
 }

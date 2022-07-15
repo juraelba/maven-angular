@@ -96,4 +96,19 @@ export class ListsService {
     this.localStorage.removeItem('cachedOptions');
     this.localStorage.removeItem('listsCachingTime');
   }
+
+  updateOptionsWithSelected(options: SelectOption[], selectedValues: string[]): SelectOption[] {
+    return options.map((option) => ({
+      ...option,
+      selected: selectedValues.includes(option.value)
+    }));
+  }
+
+  getOptionValues(options: SelectOption[]): string[] {
+    return options.map(({ value }) => value);
+  }
+
+  getSelectedOptions(options: SelectOption[]): SelectOption[] {
+    return options.filter(({ selected }) => selected);
+  }
 }

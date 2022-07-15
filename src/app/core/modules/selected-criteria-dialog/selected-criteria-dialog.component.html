@@ -7,7 +7,7 @@
 <div class="flex justify-center" mat-dialog-title>
   <div class="text-pri-black text-xl font-medium">Selected Criteria</div>
 </div>
-<div mat-dialog-content class="font-lato text-sm text-pri-gray mt-[40px] mb-[40px] ml-[30px] mr-[30px]">
+<div mat-dialog-content class="max-h-[500px] overflow-y-auto font-lato text-sm text-pri-gray mt-[40px] mb-[40px] ml-[30px] mr-[30px]">
   <div>
     <div class="flex mb-[10px]" *ngFor="let criteriaPair of criteries">
       <div [ngSwitch]="criteriaPair[0]" class="basis-1/5">
@@ -31,6 +31,7 @@
               'color': config[criteriaPair[0]].color
             }"
             class="mr-[10px] mb-[10px] h-[24px] flex items-center rounded-xl py-0.5 px-2"
+            (click)="onRemoveCriteriaClick(criteriaPair[0], criteria)"
           >
             <span>{{ criteria.label }}</span>
             <img *ngIf="config[criteriaPair[0]].canDelete"  class="cursor-pointer ml-[5px]" src="/assets/images/icons/cross.svg" />
@@ -39,14 +40,10 @@
       </div>
     </div>
   </div>
-  <div class="flex items-center text-pri-black">
-    <app-checkbox></app-checkbox>
-    <span class="ml-[10px]">Matched in my database</span>
-  </div>
 </div>
 <div class="mb-[30px] mr-[30px] w-fit ml-auto" mat-dialog-actions>
   <button
-    (click)="closeDialog()"
+    (click)="finishEditing()"
     class="ml-auto text-white bg-regal-blue font-medium rounded-md border-0 w-24 h-[30px] shadow-button text-base"
   >
     Ok
@@ -68,6 +65,7 @@
       'color': config[criteriaPair[0]].color
     }"
     class="mr-[10px] mb-[10px] h-[24px] flex items-center rounded-xl py-0.5 px-2"
+    (click)="onRemoveCriteriaClick(criteriaPair[0], criteria)"
   >
     <span>{{ criteria.label }}</span>
     <img *ngIf="config[criteriaPair[0]].canDelete"  class="cursor-pointer ml-[5px]" src="/assets/images/icons/cross.svg" />

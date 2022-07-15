@@ -70,19 +70,12 @@ export class SelectComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    const shouldUpdateOptions = changes.options && changes.options.previousValue
-      && changes.options.currentValue.length !== changes.options.previousValue.length;
-
-    if(shouldUpdateOptions) {
-      this.setOptions(changes.options.currentValue);
+    if(changes?.options?.currentValue) {
+      this.setOptions(changes?.options?.currentValue || []);
     }
 
-    if(changes.panelOpen?.currentValue !== changes.panelOpen?.previousValue) {
-      this.isOpened = changes.panelOpen.currentValue;
-
-      if(this.isOpened) {
-        this.dropdownOptions = this.updateOptionsWithSelected(this.options, this.selected);
-      }
+    if(typeof changes.panelOpen !== 'undefined') {
+      this.isOpened = typeof this.panelOpen !== 'undefined' ? changes.panelOpen.currentValue : this.isOpened;
     }
   }
 
@@ -95,8 +88,9 @@ export class SelectComponent implements OnInit {
     const transformedOptions = this.transformOptions(options);
     const sortedOptions = this.sortOptionsByLabel(transformedOptions);
 
-    this.options = sortedOptions;
-    this.dropdownOptions = sortedOptions;
+    this.options = [ ...sortedOptions ];
+    this.dropdownOptions = [ ...sortedOptions ];
+    this.selected = sortedOptions.filter(({ selected }) => selected);
   }
 
   filterOption(labelFilter: string): SelectOption[] {
@@ -162,8 +156,9 @@ export class SelectComponent implements OnInit {
     this.isOpened = false;
     this.valueContainerWidth = `${ width-60 }px`;
     this.selected = [ ...this.temporarySelected ];
+    const selected = this.dropdownOptions.filter(({ selected }) => selected);
   
-    this.applyChanges.emit([ ...this.temporarySelected ]);
+    this.applyChanges.emit(selected);
   }
 
   toggleMenuOpen(): void {
