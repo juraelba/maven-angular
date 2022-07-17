@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         if (res.status === 'valid') {
           this.localStorage.set('listsCachingTime', DateTime.now().toISO());
 
-          this.router.navigate(['/']);
+          this.router.navigate(['/media-search']);
           this.invalidMessage = '';
         } else if (res.status === 'pending') {
           this.checkPendingUser = true;
@@ -98,7 +98,7 @@ export class LoginComponent implements OnInit, OnDestroy {
               this.authService.login(this.form.value.email, this.form.value.password).pipe(
                 takeUntil(this.unsubscribeAll)
               ).subscribe((res: TokenResponse) => {
-                this.router.navigate(['/']);
+                this.router.navigate(['/media-search']);
               });
             } else {
               this.invalidMessage = "Invalid Code. Please try again.";

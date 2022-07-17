@@ -7,15 +7,15 @@ import { CheckboxModule } from '../../core/modules/checkbox/checkbox.module';
 import { InputModule } from '../../core/modules/input/input.module';
 import { SelectModule } from '../../core/modules/select/select.module';
 import { SelectedCriteriaModule } from '../../core/modules/selected-criteria/selected-criteria.module';
+import { MediaSearchRoutingModule } from './media-search-routing.module';
 
 import { SelectedCriteriaService } from '../../core/services/selected-criteria/selected-criteria.service';
 
-import { MediaSearchRoutingModule } from './media-search-routing.module';
 import { MediaSearchComponent } from './media-search.component';
 
 @NgModule({
   declarations: [
-    MediaSearchComponent,
+    MediaSearchComponent
   ],
   providers: [
     SelectedCriteriaService

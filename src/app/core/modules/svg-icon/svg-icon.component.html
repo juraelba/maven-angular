@@ -1,0 +1,15 @@
+<ng-conainer [ngSwitch]="name">
+  <ng-container *ngSwitchCase="'cross'">
+    <ng-container *ngTemplateOutlet="cross"></ng-container>
+  </ng-container>
+
+  <ng-container *ngSwitchDefault>
+    <div>Icon</div>
+  </ng-container>
+</ng-conainer>
+
+<ng-template #cross>
+  <svg width="10" height="10" viewBox="0 0 10 10" [attr.stroke]="stroke" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M1.71924 1.27734L1.27734 1.71924L1.49951 1.93896L4.55859 5.00049L1.27734 8.28174L1.71924 8.72363L5.00049 5.44238L8.05957 8.50391L8.28174 8.72363L8.72363 8.28174L8.50391 8.05957L5.44238 5.00049L8.72363 1.71924L8.28174 1.27734L5.00049 4.55859L1.93896 1.49951L1.71924 1.27734Z" fill="#4087F3"/>
+  </svg>
+</ng-template>

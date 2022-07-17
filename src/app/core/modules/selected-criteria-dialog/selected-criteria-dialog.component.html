@@ -34,7 +34,13 @@
             (click)="onRemoveCriteriaClick(criteriaPair[0], criteria)"
           >
             <span>{{ criteria.label }}</span>
-            <img *ngIf="config[criteriaPair[0]].canDelete"  class="cursor-pointer ml-[5px]" src="/assets/images/icons/cross.svg" />
+            <app-svg-icon
+              *ngIf="config[criteriaPair[0]].canDelete"
+              class="cursor-pointer ml-[5px]"
+              name="cross"
+              [stroke]="config[criteriaPair[0]].color"
+            >
+            </app-svg-icon>
           </button>
         </ng-container>
       </div>
@@ -68,6 +74,12 @@
     (click)="onRemoveCriteriaClick(criteriaPair[0], criteria)"
   >
     <span>{{ criteria.label }}</span>
-    <img *ngIf="config[criteriaPair[0]].canDelete"  class="cursor-pointer ml-[5px]" src="/assets/images/icons/cross.svg" />
+    <app-svg-icon
+      *ngIf="config[criteriaPair[0]].canDelete"
+      class="cursor-pointer ml-[5px]"
+      name="cross"
+      [stroke]="config[criteriaPair[0]].color"
+    >
+    </app-svg-icon>
   </button>
 </ng-template>

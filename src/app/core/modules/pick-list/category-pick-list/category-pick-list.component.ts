@@ -86,14 +86,27 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
   }
 
   getBorderLabel(): string {
-    return this.isPrimaryCategory && this.isCategories ? 'Categories' : '';
+    const isSelectedItem = this.listsService.getSelectedOptions(this.options);
+
+    if(isSelectedItem.length && !this.isPrimaryCategory && !this.isCategories) {
+      return 'Categories';
+    }
+
+    if(!isSelectedItem.length && this.isCategories && !this.isPrimaryCategory) {
+      return '';
+    }
+
+
+    return this.getCheckedCheckboxLabel();
   }
 
   getValue(options: SelectOption[]): string {
     const optionsLabels = options.map(({ label }) => label);
-    const label = this.isPrimaryCategory ? 'Only primary category field' : 'Categories';
+    const label = !optionsLabels.length && 'Categories';
 
-    return [ label, ...optionsLabels ].join(', ');
+    return [ label, ...optionsLabels ]
+      .filter((label) => label)
+      .join(', ');
   }
 
   onApplyChanges(options: SelectOption[]): void {
@@ -110,6 +123,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     }
 
     this.options = this.listsService.updateOptionsWithSelected(this.options, values);
+    this.borderLabel = this.getBorderLabel();
     this.change.emit({ key: 'categories', data: categoryData });
   }
   
@@ -118,6 +132,8 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
   }
 
   onSelectClick(event: any): void {
+    event.stopPropagation();
+
     const isTargetCheckbox = event.path.some((item: any) => item?.classList?.contains('checkbox'));
 
     if(isTargetCheckbox) {
@@ -125,5 +141,21 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     }
 
     this.panelOpen = !this.panelOpen;
+  }
+
+  getCheckedCheckboxLabel(): string {
+    if(this.isPrimaryCategory) {
+      return 'Primary categories only'
+    }
+
+    if(this.isCategories) {
+      return 'Categories';
+    }
+
+    return '';
+  }
+
+  onMenuClose() {
+    this.panelOpen = false;
   }
 }

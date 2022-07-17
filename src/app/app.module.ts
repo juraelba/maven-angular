@@ -16,7 +16,7 @@ import { SideNavService } from './core/services/side-nav.service';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

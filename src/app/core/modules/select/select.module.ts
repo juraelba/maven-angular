@@ -3,13 +3,17 @@ import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { CheckboxModule } from '../checkbox/checkbox.module';
+import { InputModule } from '../input/input.module';
 
 import { SelectComponent } from './select.component';
-import { InputModule } from '../input/input.module';
+
+import { ClickOutsideDirective } from '../../directives/click-outside/click-outside.directive';
+
 
 @NgModule({
   declarations: [
-    SelectComponent
+    SelectComponent,
+    ClickOutsideDirective
   ],
   imports: [
     CommonModule,

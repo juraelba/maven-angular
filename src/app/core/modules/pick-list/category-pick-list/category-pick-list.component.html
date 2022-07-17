@@ -7,11 +7,12 @@
   (cancelChanges)="onCancelChanges()"
   (applyChanges)="onApplyChanges($event)"
   (click)="onSelectClick($event)"
+  (closeMenu)="onMenuClose()"
   #selectComponent
 >
-  <div valueContainer #valueContainer class="flex items-center">
+  <div valueContainer #valueContainer class="flex font-lato items-center">
     <app-checkbox
-      [checked]="isCategories || isPrimaryCategory"
+      [checked]="isCategories"
       (click)="toggleCategory($event)"
       class="checkbox"
     >
@@ -41,7 +42,7 @@
       </app-checkbox>
     </div>
     <div class="flex justify-between items-center mb-8 cursor-pointer" (click)="togglePrimaryCategory($event)">
-      <div class="font-lato text-sm text-pri-black">Only primary category field</div>
+      <div class="font-lato text-sm text-pri-black">Primary categories only</div>
       <app-slide-toggle
         [checked]="isPrimaryCategory"
       ></app-slide-toggle>

@@ -32,6 +32,7 @@ export class SelectComponent implements OnInit {
 
   @Output() applyChanges: EventEmitter<SelectOption[]> = new EventEmitter();
   @Output() cancelChanges: EventEmitter<undefined> = new EventEmitter();
+  @Output() closeMenu: EventEmitter<null> = new EventEmitter();
 
   @ViewChild('selectContainer') selectContainer: ElementRef;
 
@@ -146,6 +147,7 @@ export class SelectComponent implements OnInit {
 
 
     this.cancelChanges.emit();
+    this.closeMenu.emit();
   }
 
   onOkButtonClick(event: MouseEvent): void {
@@ -159,6 +161,7 @@ export class SelectComponent implements OnInit {
     const selected = this.dropdownOptions.filter(({ selected }) => selected);
   
     this.applyChanges.emit(selected);
+    this.closeMenu.emit();
   }
 
   toggleMenuOpen(): void {
@@ -219,5 +222,14 @@ export class SelectComponent implements OnInit {
 
   getSelectedOptionsLabels(): string {
     return this.selected.map(({ label }) => label).join(', ');
+  }
+
+  onClickOutside(): void {
+    this.temporarySelected = [];
+    this.isOpened = false;
+
+    this.dropdownOptions = [ ...this.options ];
+
+    this.closeMenu.emit();
   }
 }

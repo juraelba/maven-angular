@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { SelectedCriteriaDialogComponent } from './selected-criteria-dialog.component';
 import { CheckboxModule } from '../checkbox/checkbox.module';
+import { SvgIconModule } from '../svg-icon/svg-icon.module';
 
 @NgModule({
   declarations: [
@@ -10,7 +11,8 @@ import { CheckboxModule } from '../checkbox/checkbox.module';
   ],
   imports: [
     CommonModule,
-    CheckboxModule
+    CheckboxModule,
+    SvgIconModule
   ],
   exports: [
     SelectedCriteriaDialogComponent

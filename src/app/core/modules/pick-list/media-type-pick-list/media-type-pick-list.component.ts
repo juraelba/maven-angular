@@ -57,8 +57,12 @@ export class MediaTypePickListComponent implements OnInit {
     const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
     this.options = updatedOptions;
-    this.borderLabel = options.length ? 'MediaType' : '';
+    this.borderLabel = options.length ? 'Media Type' : '';
 
     this.change.emit({ key: 'mediatypes', data: [ ...options ] });
+  }
+
+  onSelectClick(event: MouseEvent) {
+    event.stopPropagation();
   }
 }
