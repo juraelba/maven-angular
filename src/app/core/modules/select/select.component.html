@@ -67,7 +67,7 @@
         <span class="ml-[10px] select-none font-lato">All</span>
       </div>
 
-      <div class="font-lato overflow-y-auto max-h-52 overflow-y-scroll pt-2.5 border-t border-t-1 border-gray">
+      <div class="font-lato overflow-y-auto max-h-52 pt-2.5 border-t border-t-1 border-gray">
         <div class="mb-2.5" *ngFor="let option of dropdownOptions; index as i;" (click)="toogleSelectOption($event, option)">
           <div *ngIf="grouping && isNewGroupLetter(dropdownOptions[i - 1], option)" class="border-b border-b-1 border-gray mb-2.5">
             {{ option.groupLetter }}

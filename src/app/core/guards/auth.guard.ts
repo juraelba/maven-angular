@@ -17,13 +17,14 @@ export class AuthGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if (this.authService.isAuthenticated) {
-      return true;
-    } else {
+    const isTokenExpired = this.authService.isTokenExpired(this.authService.accessToken);
+
+    if(isTokenExpired) {
       this.authService.logout();
+
       return false;
     }
+
+    return true;
   }
-
-
 }

@@ -123,6 +123,7 @@ export class AuthService {
     if (!token) return true;
 
     const date = this.getTokenExpirationDate(token);
+
     if (date === undefined) return false;
     return !(date.valueOf() > new Date().valueOf());
   }
@@ -133,6 +134,7 @@ export class AuthService {
 
   private getTokenExpirationDate(token: string): Date {
     const decoded = jwt_decode<DecodedToken>(token);
+
     if (decoded.exp === undefined) return new Date();
     const date = new Date(0);
     date.setUTCSeconds(decoded.exp);
