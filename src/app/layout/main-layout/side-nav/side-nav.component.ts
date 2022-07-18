@@ -118,7 +118,6 @@ export class SideNavComponent implements OnInit {
     fontColor: `#ffffff`,
     backgroundColor: `#2E4FA3`,
     selectedListFontColor: `#ffffff`,
-    highlightOnSelect: true,
     collapseOnSelect: true,
     useDividers: false,
     rtlLayout: false,

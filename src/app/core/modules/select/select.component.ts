@@ -150,6 +150,7 @@ export class SelectComponent implements OnInit {
     this.temporarySelected = [];
     this.searchValue = '';
     this.dropdownOptions = this.updateOptionsWithSelected(this.options, []);
+    this.allSelected = false;
   }
 
   onOkButtonClick(event: MouseEvent): void {

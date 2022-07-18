@@ -2,23 +2,6 @@
   padding-top: 33px;
   padding-left: 10px;
 
-  .selected-amml-item {
-    .mat-list-item-content {
-      background-color: white;
-      color: #2E4FA3;
-      font-size: 15px;
-      font-weight: 500;
-      border-radius: 50px 0px 0px 50px;
-
-      .mat-list-avatar {
-        &.amml-icon {
-          -webkit-filter: brightness(0) saturate(100%) invert(28%) sepia(12%) saturate(4848%) hue-rotate(193deg) brightness(102%) contrast(96%);
-          filter: brightness(0) saturate(100%) invert(28%) sepia(12%) saturate(4848%) hue-rotate(193deg) brightness(102%) contrast(96%);
-        }
-      }
-    }
-  }
-
   .mat-list-base .mat-list-item {
     height: 40px;
     margin-bottom: 10px;
@@ -37,21 +20,6 @@
 
     .amml-submenu {
       border-left: 1px solid #3A63CC;
-
-      ng-list-item {
-        &:last-child {
-          &::before {
-            display: inline-block;
-            left: 15px;
-            content: '';
-            height: 23px;
-            position: absolute;
-            width: 5px;
-            background-color: #2e4fa3;
-            bottom: 0;
-          }
-        }
-      }
     }
   }
 
@@ -73,7 +41,28 @@
       font-size: 15px;
       font-weight: 500;
       border-radius: 50px 0px 0px 50px;
+  
+      .mat-list-avatar {
+        &.amml-icon {
+          -webkit-filter: brightness(0) saturate(100%) invert(28%) sepia(12%) saturate(4848%) hue-rotate(193deg) brightness(102%) contrast(96%);
+          filter: brightness(0) saturate(100%) invert(28%) sepia(12%) saturate(4848%) hue-rotate(193deg) brightness(102%) contrast(96%);
+        }
+      }
+    }
+  }
 
+  .active-amml-item {
+    background-color: white !important;
+    color: #2E4FA3 !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    border-radius: 50px 0px 0px 50px !important;
+
+    &::before {
+      display: none;
+    }
+
+    .mat-list-item-content {
       .mat-list-avatar {
         &.amml-icon {
           -webkit-filter: brightness(0) saturate(100%) invert(28%) sepia(12%) saturate(4848%) hue-rotate(193deg) brightness(102%) contrast(96%);
