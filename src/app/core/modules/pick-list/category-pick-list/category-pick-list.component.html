@@ -6,8 +6,8 @@
   [panelOpen]="panelOpen"
   (cancelChanges)="onCancelChanges()"
   (applyChanges)="onApplyChanges($event)"
-  (click)="onSelectClick($event)"
   (closeMenu)="onMenuClose()"
+  (selectInpuClick)="onSelectClick($event)"
   #selectComponent
 >
   <div valueContainer #valueContainer class="flex font-lato items-center">
@@ -20,11 +20,6 @@
     <div
       [ngStyle]="{ 'width': width }"
       class="ml-[10px] truncate"
-      #tooltip="matTooltip"
-      [matTooltip]="value"
-      matTooltipPosition="below"
-      matTooltipHideDelay="200"
-      matTooltipShowDelay="2000"
     >{{ value }}</div>
   </div>
 

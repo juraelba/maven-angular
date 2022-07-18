@@ -131,9 +131,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     this.panelOpen = false;
   }
 
-  onSelectClick(event: any): void {
-    event.stopPropagation();
-
+  onSelectClick({ event, isOpened  }: any): void {
     const isTargetCheckbox = event.path.some((item: any) => item?.classList?.contains('checkbox'));
 
     if(isTargetCheckbox) {

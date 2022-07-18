@@ -14,6 +14,11 @@ import { debounceTime, takeUntil, tap } from 'rxjs/operators'
 
 import { SelectOption } from '../../models/select.model';
 
+interface SelectInpuClickEvent {
+  event: MouseEvent;
+  isOpened: boolean
+}
+
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html',
@@ -33,6 +38,7 @@ export class SelectComponent implements OnInit {
   @Output() applyChanges: EventEmitter<SelectOption[]> = new EventEmitter();
   @Output() cancelChanges: EventEmitter<undefined> = new EventEmitter();
   @Output() closeMenu: EventEmitter<null> = new EventEmitter();
+  @Output() selectInpuClick: EventEmitter<SelectInpuClickEvent> = new EventEmitter();
 
   @ViewChild('selectContainer') selectContainer: ElementRef;
 
@@ -76,7 +82,7 @@ export class SelectComponent implements OnInit {
     }
 
     if(typeof changes.panelOpen !== 'undefined') {
-      this.isOpened = typeof this.panelOpen !== 'undefined' ? changes.panelOpen.currentValue : this.isOpened;
+      this.isOpened = changes.panelOpen.currentValue;
     }
   }
 
@@ -138,16 +144,12 @@ export class SelectComponent implements OnInit {
     });
   }
 
-  onCancelButtonClick(event: MouseEvent): void {
+  onClearButtonClick(event: MouseEvent): void {
     event.stopPropagation();
 
-    this.isOpened = false;
-    this.temporarySelected = [ ...this.selected ];
-    this.dropdownOptions = this.updateOptionsWithSelected(this.dropdownOptions, this.selected);
-
-
-    this.cancelChanges.emit();
-    this.closeMenu.emit();
+    this.temporarySelected = [];
+    this.searchValue = '';
+    this.dropdownOptions = this.updateOptionsWithSelected(this.options, []);
   }
 
   onOkButtonClick(event: MouseEvent): void {
@@ -164,9 +166,13 @@ export class SelectComponent implements OnInit {
     this.closeMenu.emit();
   }
 
-  toggleMenuOpen(): void {
-    this.isOpened = typeof this.panelOpen !== 'undefined' ? this.panelOpen : !this.isOpened;
+  toggleMenuOpen(event: MouseEvent): void {
+    event.stopPropagation();
+    
+    this.isOpened = !this.isOpened;
 
+    this.selectInpuClick.emit({ event, isOpened: this.isOpened });
+  
     if(this.isOpened) {
       this.dropdownOptions = this.updateOptionsWithSelected(this.options, this.selected);
     }

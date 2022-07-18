@@ -12,8 +12,8 @@
 
       .mat-list-avatar {
         &.amml-icon {
-          -webkit-filter: grayscale(1) invert(1);
-          filter: grayscale(1) invert(1);
+          -webkit-filter: brightness(0) saturate(100%) invert(28%) sepia(12%) saturate(4848%) hue-rotate(193deg) brightness(102%) contrast(96%);
+          filter: brightness(0) saturate(100%) invert(28%) sepia(12%) saturate(4848%) hue-rotate(193deg) brightness(102%) contrast(96%);
         }
       }
     }
@@ -76,8 +76,8 @@
 
       .mat-list-avatar {
         &.amml-icon {
-          -webkit-filter: grayscale(1) invert(1);
-          filter: grayscale(1) invert(1);
+          -webkit-filter: brightness(0) saturate(100%) invert(28%) sepia(12%) saturate(4848%) hue-rotate(193deg) brightness(102%) contrast(96%);
+          filter: brightness(0) saturate(100%) invert(28%) sepia(12%) saturate(4848%) hue-rotate(193deg) brightness(102%) contrast(96%);
         }
       }
     }

@@ -15,19 +15,14 @@
       {{ borderLabel }}
     </div>
 
-    <div class="input w-full h-full flex items-center justify-between" type="text" (click)="toggleMenuOpen()">
+    <div class="input w-full h-full flex items-center justify-between" type="text" (click)="toggleMenuOpen($event)">
       <div *ngIf="!valueContainer" class="value-container font-lato">
         <span *ngIf="!selected.length">{{ placeholder }}</span>
         <div *ngIf="selected.length">
           <div
             *ngIf="this.getSelectedOptionsLabels() as optionLabels"
             [ngStyle]="{ 'width': valueContainerWidth }"
-            #tooltip="matTooltip"
             class="truncate"
-            [matTooltip]="optionLabels"
-            matTooltipPosition="below"
-            matTooltipHideDelay="200"
-            matTooltipShowDelay="2000"
           >
             {{ optionLabels }}
           </div>
@@ -90,9 +85,9 @@
     <div class="shadow-simple flex justify-between items-center px-5 py-4 bg-white rounded-b-md">
       <button
         class="border-regal-blue text-regal-blue font-medium rounded-md border-2 w-24 h-[30px] shadow-button mr-[30px]"
-        (click)="onCancelButtonClick($event)"
+        (click)="onClearButtonClick($event)"
       >
-        Cancel
+        Clear
       </button>
       <button
         (click)="onOkButtonClick($event)"
