@@ -1,5 +1,7 @@
 <app-main-layout>
   <div class="w-full p-10">
-    <router-outlet></router-outlet>
+    <div *ngIf="shouldRender">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </app-main-layout>

@@ -10,3 +10,7 @@ export interface ListInfo {
 }
 
 export type List = ListItem[];
+
+export interface ListsData {
+  [key: string]: List
+}

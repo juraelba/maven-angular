@@ -64,7 +64,6 @@ export class AuthService {
     this.accessToken = '';
     this.isAuthenticated$.next(this.isAuthenticated);
     this.router.navigate(['/login']);
-    this.listsService.clearListsCache();
   }
 
   // Create Account Service

@@ -1,11 +1,19 @@
 import { Injectable } from '@angular/core';
+import { LocalStorage as IndexDBStorage } from '@ngx-pwa/local-storage';
+import { DateTime } from 'luxon';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { ListsData, ListInfo } from '../../models/list.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalStorageService {
 
-  constructor() { }
+  constructor(
+    private indexDBStorage: IndexDBStorage
+  ) { }
 
   set(key: string, data: string) {
     localStorage.setItem(key, data);
@@ -17,5 +25,52 @@ export class LocalStorageService {
 
   removeItem(key: string): void {
     localStorage.removeItem(key);
+  }
+
+  setUserEmail(email: string): void {
+    this.set('email', email);
+  }
+
+  setPrevUserEmail(email: string): void {
+    this.set('prevEmail', email);
+  }
+
+  getUserEmail(): string {
+    return this.get('email') || '';
+  }
+
+  getPrevUserEmail(): string {
+    return this.get('prevEmail') || '';
+  }
+
+  setListCahingTime(): void {
+    this.set('listsCachingTime', DateTime.now().toISO());
+  }
+
+  storeListsCahingInformation(listsCachingInformation: ListInfo[]): void {
+    this.set('listsCachingInformation', JSON.stringify(listsCachingInformation));
+  }
+
+  storeIndexDBListOptions(listOptions: ListsData): Observable<boolean> {
+    return this.indexDBStorage.setItem('cachedOptions', listOptions);
+  }
+
+  getCachedOptionsFromIndexDB(): Observable<ListsData> {
+    return this.indexDBStorage.getItem('cachedOptions')
+      .pipe(
+        map((options) => (options || {}) as ListsData)
+      );
+  }
+
+  getIndexDBEmail(): Observable<string> {
+    return (this.indexDBStorage.getItem('email') || '') as Observable<string>;
+  }
+
+  setIndexDBEmail(email: string): Observable<boolean> {
+    return this.indexDBStorage.setItem('email', email);
+  }
+
+  getListCachingTime(): DateTime {
+    return DateTime.fromISO(this.get('listsCachingTime') || '');
   }
 }

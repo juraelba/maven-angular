@@ -2,8 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { lastValueFrom, Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-import { DateTime } from 'luxon';
+import { takeUntil, switchMap } from 'rxjs/operators';
 
 import { AuthService } from '../../../core/services/auth.service';
 import { ToastrService } from '../../../core/services/toastr.service';
@@ -11,6 +10,7 @@ import { SpinnerService } from '../../../core/services/spinner.service';
 import { TokenResponse } from '../../../core/models/auth.model';
 import { MAX_VALIDATION_TRIES } from '../../../core/data/constants';
 import { LocalStorageService } from '../../../core/services/local-storage/local-storage.service';
+import { ListsService } from 'src/app/core/services/lists/lists.service';
 
 @Component({
   selector: 'app-login',
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit, OnDestroy {
         takeUntil(this.unsubscribeAll)
       ).subscribe((res: TokenResponse) => {
         if (res.status === 'valid') {
-          this.localStorage.set('listsCachingTime', DateTime.now().toISO());
+          this.localStorage.setUserEmail(value.email);
 
           this.router.navigate(['/media-search']);
           this.invalidMessage = '';

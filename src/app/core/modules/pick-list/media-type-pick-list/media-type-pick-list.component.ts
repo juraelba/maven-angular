@@ -25,7 +25,7 @@ export class MediaTypePickListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listsService.getOptionsData('mediatypes')
+    this.listsService.getOptionsData('mediatypes2')
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
@@ -36,8 +36,8 @@ export class MediaTypePickListComponent implements OnInit {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data.mediatypes),
-        map(({ data }: SelectedCriteriaEvent) => data.mediatypes)
+        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data.mediatypes2),
+        map(({ data }: SelectedCriteriaEvent) => data.mediatypes2)
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
@@ -59,7 +59,7 @@ export class MediaTypePickListComponent implements OnInit {
     this.options = updatedOptions;
     this.borderLabel = options.length ? 'Media Type' : '';
 
-    this.change.emit({ key: 'mediatypes', data: [ ...options ] });
+    this.change.emit({ key: 'mediatypes2', data: [ ...options ] });
   }
 
   onSelectClick(event: MouseEvent) {

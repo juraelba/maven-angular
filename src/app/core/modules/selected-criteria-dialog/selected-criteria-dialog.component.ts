@@ -16,7 +16,7 @@ interface Config {
 }
 
 const labels = {
-  mediatypes: 'Media Type',
+  mediatypes2: 'Media Type',
   categories: 'Categories'
 };
 
@@ -30,7 +30,7 @@ export class SelectedCriteriaDialogComponent implements OnInit {
   labels: any = labels;
 
   config: Config = {
-    'mediatypes': {
+    'mediatypes2': {
       bg: '#E4F2FF',
       color: '#4087F3',
       canDelete: true
