@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { LayoutModule } from 'src/app/layout/layout.module';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeComponent } from './home.component';
+import { SpinnerModule } from '../../ui-kit/spinner/spinner.module';
 @NgModule({
   declarations: [
     HomeComponent
@@ -11,7 +12,8 @@ import { HomeComponent } from './home.component';
   imports: [
     CommonModule,
     LayoutModule,
-    HomeRoutingModule
+    HomeRoutingModule,
+    SpinnerModule
   ]
 })
 export class HomeModule { }

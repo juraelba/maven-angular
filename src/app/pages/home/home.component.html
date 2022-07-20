@@ -1,7 +1,11 @@
 <app-main-layout>
   <div class="w-full p-10">
-    <div *ngIf="shouldRender">
+    <div *ngIf="shouldRender; else spinner">
       <router-outlet></router-outlet>
     </div>
   </div>
 </app-main-layout>
+
+<ng-template #spinner>
+  <app-spinner [show]="true"></app-spinner>
+</ng-template>
