@@ -4,10 +4,10 @@
   [search]="true"
   [borderLabel]="borderLabel"
   [panelOpen]="panelOpen"
-  (cancelChanges)="onCancelChanges()"
   (applyChanges)="onApplyChanges($event)"
   (closeMenu)="onMenuClose()"
   (selectInpuClick)="onSelectClick($event)"
+  (clear)="onClear()"
   #selectComponent
 >
   <div valueContainer #valueContainer class="flex font-lato items-center">

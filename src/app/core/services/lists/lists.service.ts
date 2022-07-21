@@ -7,7 +7,7 @@ import { isEmpty } from 'ramda';
 
 import { environment } from '../../../../environments/environment';
 import { List, ListInfo, ListKey } from '../../models/list.model';
-import { ListUrls } from '../../enums/lists.enum';
+import { ListUrls, ListLabels } from '../../enums/lists.enum';
 import { SelectOption } from '../../models/select.model';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 
@@ -56,7 +56,7 @@ export class ListsService {
     return list.map(({ id, name }) => ({ id, label: name, value: name }))
   }
 
-  fetchListsCachingInformation(): Observable<ListInfo[]> {
+  fetchListsInformation(): Observable<ListInfo[]> {
     const url = environment.api + '/lists';
 
     return this.http.get<ListInfo[]>(url);
@@ -89,17 +89,26 @@ export class ListsService {
     return forkJoin(data);
   }
 
-  getListOptionsInfomationToFetch(listsInformation: ListInfo[], cachingTime: DateTime): ListInfo[] {
-    return listsInformation.reduce<ListInfo[]>((acc, { key, modifiedDate, route }: ListInfo) => {
-      const isoModifiedDate = DateTime.fromISO(modifiedDate);
-
-      if(isoModifiedDate && cachingTime && cachingTime > isoModifiedDate ) {
-        return acc;
+  getListOptionsInfomationToFetch(listsInformation: ListInfo[], prevListsInformation: ListInfo[]): ListInfo[] {
+    const prevListsInformationMap = prevListsInformation.reduce<{[key: string]: ListInfo}>((listsInfo, listInfo) => {
+      listsInfo[listInfo.key] = listInfo;
+  
+      return listsInfo;
+    }, {});
+  
+    return listsInformation.reduce<ListInfo[]>((acc, { key, modifiedDate, route }) => {
+      const matchedListInfo = prevListsInformationMap[key] || { modifiedDate: '' };
+      const isCurrentModifiedDateBigger = DateTime.fromISO(matchedListInfo.modifiedDate) < DateTime.fromISO(modifiedDate);
+  
+      if(isCurrentModifiedDateBigger) {
+        acc.push({ key, route, modifiedDate });
       }
-
-      acc.push({ key, route, modifiedDate });
 
       return acc;
     }, [])
+  }
+
+  getBorderLabel(options: SelectOption[], key: ListKey): string {
+    return options.length ? ListLabels[key] : '';
   }
 }

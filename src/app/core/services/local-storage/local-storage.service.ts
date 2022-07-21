@@ -35,12 +35,14 @@ export class LocalStorageService {
     return this.get('email') || '';
   }
 
-  setListCahingTime(): void {
-    this.set('listsCachingTime', DateTime.now().toISO());
+  getListsInformation(): ListInfo[] {
+    const listsInformation = this.get('listsInformation') || '[]';
+
+    return JSON.parse(listsInformation);
   }
 
-  storeListsCachingInformation(listsCachingInformation: ListInfo[]): void {
-    this.set('listsCachingInformation', JSON.stringify(listsCachingInformation));
+  storeListsInformation(listsInformation: ListInfo[]): void {
+    this.set('listsInformation', JSON.stringify(listsInformation));
   }
 
   storeIndexDBListOptions(listOptions: ListsData): Observable<boolean> {
@@ -60,9 +62,5 @@ export class LocalStorageService {
 
   setIndexDBEmail(email: string): Observable<boolean> {
     return this.indexDBStorage.setItem('email', email);
-  }
-
-  getListCachingTime(): DateTime {
-    return DateTime.fromISO(this.get('listsCachingTime') || '');
   }
 }

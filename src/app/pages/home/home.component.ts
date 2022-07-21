@@ -24,12 +24,12 @@ export class HomeComponent implements OnInit {
     this.updateCache();
   }
 
-  fetchLists(listsCachingInformation: ListInfo[], indexDBEmail: string) {
+  fetchLists(listsInformation: ListInfo[], indexDBEmail: string) {
     const storedEmail = this.localStorage.getUserEmail();
-    const initialCachingTime = this.localStorage.getListCachingTime();
-    const optionsToUpdate = this.listsService.getListOptionsInfomationToFetch(listsCachingInformation, initialCachingTime);
+    const prevListsInformation = this.localStorage.getListsInformation();
+    const optionsToUpdate = this.listsService.getListOptionsInfomationToFetch(listsInformation, prevListsInformation);
 
-    this.localStorage.storeListsCachingInformation(listsCachingInformation);
+    this.localStorage.storeListsInformation(listsInformation);
 
     if (indexDBEmail === storedEmail && isEmpty(optionsToUpdate)) {
       return of({});
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
 
     return indexDBEmail === storedEmail
       ? this.listsService.fetchListOptions(optionsToUpdate)
-      : this.listsService.fetchListOptions(listsCachingInformation);
+      : this.listsService.fetchListOptions(listsInformation);
   }
 
   updateCache(): void {
@@ -56,11 +56,11 @@ export class HomeComponent implements OnInit {
     */
     forkJoin({
       indexDBEmail: this.localStorage.getIndexDBEmail(),
-      listsCachingInformation: this.listsService.fetchListsCachingInformation()
+      listsInformation: this.listsService.fetchListsInformation()
     })
       .pipe(
-        switchMap(({ listsCachingInformation, indexDBEmail }: { listsCachingInformation: ListInfo[], indexDBEmail: string }) => {
-          return this.fetchLists(listsCachingInformation, indexDBEmail)
+        switchMap(({ listsInformation, indexDBEmail }: { listsInformation: ListInfo[], indexDBEmail: string }) => {
+          return this.fetchLists(listsInformation, indexDBEmail)
         }),
         switchMap((listsOptions: ListsData) => {
           return this.localStorage.getCachedOptionsFromIndexDB()
@@ -79,7 +79,6 @@ export class HomeComponent implements OnInit {
       )
       .subscribe(() => {
         this.shouldRender = true;
-        this.localStorage.setListCahingTime();
       });
   }
 }

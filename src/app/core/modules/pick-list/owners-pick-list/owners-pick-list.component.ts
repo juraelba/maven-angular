@@ -46,6 +46,7 @@ export class OwnersPickListComponent implements OnInit {
       const optionValues = this.listsService.getOptionValues(options);
       const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
+      this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.OWNERS);
       this.options = updatedOptions;
     });
   }
@@ -55,7 +56,7 @@ export class OwnersPickListComponent implements OnInit {
     const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
     this.options = updatedOptions;
-    this.borderLabel = options.length ? ListLabels.owners : '';
+    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.OWNERS);
 
     this.change.emit({ key: ListKeys.OWNERS, data: [ ...options ] });
   }
@@ -67,5 +68,12 @@ export class OwnersPickListComponent implements OnInit {
 
   onSelectClick(event: MouseEvent) {
     event.stopPropagation();
+  }
+
+  onClear(): void {
+    this.options = this.listsService.updateOptionsWithSelected(this.options, []);
+    this.borderLabel = '';
+
+    this.change.emit({ key: ListKeys.OWNERS, data: [] });
   }
 }

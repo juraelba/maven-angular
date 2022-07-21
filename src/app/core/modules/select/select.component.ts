@@ -36,7 +36,7 @@ export class SelectComponent implements OnInit {
   @Input() valueContainerWidth: string = '100%';
 
   @Output() applyChanges: EventEmitter<SelectOption[]> = new EventEmitter();
-  @Output() cancelChanges: EventEmitter<undefined> = new EventEmitter();
+  @Output() clear: EventEmitter<undefined> = new EventEmitter();
   @Output() closeMenu: EventEmitter<null> = new EventEmitter();
   @Output() selectInpuClick: EventEmitter<SelectInpuClickEvent> = new EventEmitter();
 
@@ -98,6 +98,7 @@ export class SelectComponent implements OnInit {
     this.options = [ ...sortedOptions ];
     this.dropdownOptions = [ ...sortedOptions ];
     this.selected = sortedOptions.filter(({ selected }) => selected);
+    this.allSelected = this.selected.length === this.options.length;
   }
 
   filterOption(labelFilter: string): SelectOption[] {
@@ -151,6 +152,7 @@ export class SelectComponent implements OnInit {
     this.searchValue = '';
     this.dropdownOptions = this.updateOptionsWithSelected(this.options, []);
     this.allSelected = false;
+    this.clear.emit();
   }
 
   onOkButtonClick(event: MouseEvent): void {
@@ -231,11 +233,18 @@ export class SelectComponent implements OnInit {
     return this.selected.map(({ label }) => label).join(', ');
   }
 
+  isAllSelected(options: SelectOption[]): boolean {
+    const selected = this.options.filter(({ selected }) => selected);
+
+    return selected.length === options.length;
+  }
+
   onClickOutside(): void {
     this.temporarySelected = [];
     this.isOpened = false;
 
     this.dropdownOptions = [ ...this.options ];
+    this.allSelected = this.isAllSelected(this.options);
 
     this.closeMenu.emit();
   }
