@@ -67,7 +67,7 @@
         <span class="ml-[10px] select-none font-lato">All</span>
       </div>
 
-      <div class="font-lato overflow-y-auto h-52 pt-2.5 border-t border-t-1 border-gray">
+      <div class="font-lato overflow-y-auto pt-2.5 border-t border-t-1 border-gray">
         <cdk-virtual-scroll-viewport itemSize="20" class="h-52">
           <div class="mb-2.5" *cdkVirtualFor="let option of dropdownOptions; index as i; templateCacheSize: 0" (click)="toogleSelectOption($event, option)">
             <div *ngIf="grouping && isNewGroupLetter(dropdownOptions[i - 1], option)" class="border-b border-b-1 border-gray mb-2.5">
