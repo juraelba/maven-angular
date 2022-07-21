@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { ListsService } from '../../../services/lists/lists.service';
 import { SelectOption } from '../../../models/select.model';
 import { SelectedCriteriaEvent } from '../../../models/criteries.model';
+import { ListChangesEvent } from '../../../models/list.model';
 import { SelectedCriteriaService } from '../../../services/selected-criteria/selected-criteria.service';
 
 @Component({
@@ -13,7 +14,7 @@ import { SelectedCriteriaService } from '../../../services/selected-criteria/sel
   styleUrls: ['./media-type-pick-list.component.scss']
 })
 export class MediaTypePickListComponent implements OnInit {
-  @Output() change: EventEmitter<any> = new EventEmitter();
+  @Output() change: EventEmitter<ListChangesEvent> = new EventEmitter();
 
   borderLabel: string;
   options: SelectOption[] = [];

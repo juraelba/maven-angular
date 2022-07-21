@@ -1,0 +1,17 @@
+<app-select
+  [multiple]="true"
+  [grouping]="false"
+  [options]="options"
+  [search]="true"
+  [placeholder]="placeholder"
+  [borderLabel]="borderLabel"
+  (applyChanges)="onApplyChanges($event)"
+  (click)="onSelectClick($event)"
+  #selectComponent
+>
+  <div dropdownHeaderContainer #dropdownHeaderContainer>
+    <div class="flex justify-between items-center mb-5 cursor-pointer text-black text-base font-medium">
+      Owners
+    </div>
+  </div>
+</app-select>

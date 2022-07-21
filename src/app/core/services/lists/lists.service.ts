@@ -1,22 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, of, forkJoin } from 'rxjs';
-import { tap, map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
-import { compose, toPairs, reduce, isEmpty } from 'ramda';
+import { isEmpty } from 'ramda';
 
 import { environment } from '../../../../environments/environment';
-import { List, ListInfo } from '../../models/list.model';
+import { List, ListInfo, ListKey } from '../../models/list.model';
+import { ListUrls } from '../../enums/lists.enum';
 import { SelectOption } from '../../models/select.model';
 import { LocalStorageService } from '../local-storage/local-storage.service';
 
 interface ListOptionsFork {
   [key: string]: Observable<List>
-}
-
-const listUrls: any = {
-  'categories': '/lists/categories/',
-  'mediatypes2': '/lists/mediatypes2/'
 }
 
 @Injectable({
@@ -28,20 +24,20 @@ export class ListsService {
     private localStorage: LocalStorageService
   ) { }
 
-  fetchListData(key: string): Observable<List> {
-    const url = environment.api + listUrls[key];
+  fetchListData(key: ListKey): Observable<List> {
+    const url = environment.api + ListUrls[key];
 
     return this.http.get<List>(url)
   }
 
-  getCachedData(key: string): Observable<List> {
+  getCachedData(key: ListKey): Observable<List> {
     return this.localStorage.getCachedOptionsFromIndexDB()
       .pipe(
         map((list: any) => list[key] || [])
       );
   }
 
-  getOptionsData(key: string): Observable<SelectOption[]> {
+  getOptionsData(key: ListKey): Observable<SelectOption[]> {
     return this.getCachedData(key)
       .pipe(
         switchMap((cachedOptions: List) => {
@@ -64,11 +60,6 @@ export class ListsService {
     const url = environment.api + '/lists';
 
     return this.http.get<ListInfo[]>(url);
-  }
-
-  clearListsCache(): void {
-    this.localStorage.removeItem('listsCachingInformation');
-    this.localStorage.removeItem('listsCachingTime');
   }
 
   updateOptionsWithSelected(options: SelectOption[], selectedValues: string[]): SelectOption[] {

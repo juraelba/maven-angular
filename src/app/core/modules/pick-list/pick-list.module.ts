@@ -10,11 +10,13 @@ import { SlideToggleModule  } from '../slide-toggle/slide-toggle.module';
 
 import { ListsService } from '../../services/lists/lists.service';
 import { MediaTypePickListComponent } from './media-type-pick-list/media-type-pick-list.component';
+import { OwnersPickListComponent } from './owners-pick-list/owners-pick-list.component';
 
 @NgModule({
   declarations: [
     CategoryPickListComponent,
-    MediaTypePickListComponent
+    MediaTypePickListComponent,
+    OwnersPickListComponent
   ],
   imports: [
     CommonModule,
@@ -29,7 +31,8 @@ import { MediaTypePickListComponent } from './media-type-pick-list/media-type-pi
   ],
   exports: [
     CategoryPickListComponent,
-    MediaTypePickListComponent
+    MediaTypePickListComponent,
+    OwnersPickListComponent
   ]
 })
 export class PickListModule { }

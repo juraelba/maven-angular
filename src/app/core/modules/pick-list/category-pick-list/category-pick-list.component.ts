@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 
 import { SelectOption } from '../../../models/select.model';
 import { SelectedCriteriaEvent } from '../../../models/criteries.model';
+import { ListChangesEvent } from '../../../models/list.model';
 import { ListsService } from '../../../../core/services/lists/lists.service';
 import { SelectedCriteriaService } from '../../../../core/services/selected-criteria/selected-criteria.service';
 
@@ -18,7 +19,7 @@ interface CategoryData {
   styleUrls: ['./category-pick-list.component.scss']
 })
 export class CategoryPickListComponent implements OnInit, OnDestroy {
-  @Output() change: EventEmitter<any> = new EventEmitter();
+  @Output() change: EventEmitter<ListChangesEvent> = new EventEmitter();
 
   @ViewChild('selectComponent') selectComponent: any;
 

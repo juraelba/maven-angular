@@ -4,21 +4,10 @@ import { toPairs } from 'ramda';
 
 import { Criteries } from '../../models/criteries.model';
 import { SelectOption } from '../../models/select.model';
+import { selectedCriteriaConfig } from '../../data/selected-criteria-config';
+import { ListLabels } from '../../enums/lists.enum';
 
 import { SelectedCriteriaService } from '../../services/selected-criteria/selected-criteria.service';
-
-interface Config {
-  [key: string]: {
-    bg: string;
-    color: string;
-    canDelete: boolean
-  }
-}
-
-const labels = {
-  mediatypes2: 'Media Type',
-  categories: 'Categories'
-};
 
 @Component({
   selector: 'app-selected-criteria-dialog',
@@ -27,35 +16,8 @@ const labels = {
 })
 export class SelectedCriteriaDialogComponent implements OnInit {
   criteries: any[][] = [];
-  labels: any = labels;
-
-  config: Config = {
-    'mediatypes2': {
-      bg: '#E4F2FF',
-      color: '#4087F3',
-      canDelete: true
-    },
-    'DMA': {
-      bg: '#FFFBD8',
-      color: '#80761E',
-      canDelete: true
-    },
-    'Owners': {
-      bg: '#E8E9FB',
-      color: '#4A5BD3',
-      canDelete: true
-    },
-    'Diverse Target': {
-      bg: '#DEF3EF',
-      color: '#018C76',
-      canDelete: true
-    },
-    'categories': {
-      bg: '#F6E4FF',
-      color: '#931ACC',
-      canDelete: true
-    }
-  }
+  labels: any = ListLabels;
+  config = selectedCriteriaConfig;
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Criteries,

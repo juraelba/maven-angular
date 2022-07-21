@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { ScrollingModule } from '@angular/cdk/scrolling';
 
 import { CheckboxModule } from '../checkbox/checkbox.module';
 import { InputModule } from '../input/input.module';
@@ -19,7 +20,8 @@ import { ClickOutsideDirective } from '../../directives/click-outside/click-outs
     CommonModule,
     CheckboxModule,
     InputModule,
-    MatTooltipModule
+    MatTooltipModule,
+    ScrollingModule
   ],
   exports: [
     SelectComponent

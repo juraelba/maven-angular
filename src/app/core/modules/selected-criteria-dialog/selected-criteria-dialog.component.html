@@ -27,8 +27,8 @@
           <button
             *ngFor="let criteria of criteriaPair[1]"
             [ngStyle]="{
-              'background': config[criteriaPair[0]].bg,
-              'color': config[criteriaPair[0]].color
+              'background': config[criteriaPair[0]]?.bg || config.default.bg,
+              'color': config[criteriaPair[0]]?.color  || config.default.color
             }"
             class="mr-[10px] mb-[10px] h-[24px] flex items-center rounded-xl py-0.5 px-2"
             (click)="onRemoveCriteriaClick(criteriaPair[0], criteria)"

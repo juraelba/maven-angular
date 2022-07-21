@@ -67,19 +67,21 @@
         <span class="ml-[10px] select-none font-lato">All</span>
       </div>
 
-      <div class="font-lato overflow-y-auto max-h-52 pt-2.5 border-t border-t-1 border-gray">
-        <div class="mb-2.5" *ngFor="let option of dropdownOptions; index as i;" (click)="toogleSelectOption($event, option)">
-          <div *ngIf="grouping && isNewGroupLetter(dropdownOptions[i - 1], option)" class="border-b border-b-1 border-gray mb-2.5">
-            {{ option.groupLetter }}
+      <div class="font-lato overflow-y-auto h-52 pt-2.5 border-t border-t-1 border-gray">
+        <cdk-virtual-scroll-viewport itemSize="20" class="h-52">
+          <div class="mb-2.5" *cdkVirtualFor="let option of dropdownOptions; index as i; templateCacheSize: 0" (click)="toogleSelectOption($event, option)">
+            <div *ngIf="grouping && isNewGroupLetter(dropdownOptions[i - 1], option)" class="border-b border-b-1 border-gray mb-2.5">
+              {{ option.groupLetter }}
+            </div>
+  
+            <div *ngIf="multiple" class="flex items-center">
+              <app-checkbox [checked]="option.selected"></app-checkbox>
+              <span class="ml-[10px] truncate m-0 p-0">{{ option.label }}</span>
+            </div>
+  
+            <span *ngIf="!multiple">{{ option.label }}</span>
           </div>
-
-          <div *ngIf="multiple" class="flex items-center">
-            <app-checkbox [checked]="option.selected"></app-checkbox>
-            <span class="ml-[10px] truncate m-0 p-0">{{ option.label }}</span>
-          </div>
-
-          <span *ngIf="!multiple">{{ option.label }}</span>
-        </div>
+        </cdk-virtual-scroll-viewport>
       </div>
     </div>
     <div class="shadow-simple flex justify-between items-center px-5 py-4 bg-white rounded-b-md">

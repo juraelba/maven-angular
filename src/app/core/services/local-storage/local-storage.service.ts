@@ -31,16 +31,8 @@ export class LocalStorageService {
     this.set('email', email);
   }
 
-  setPrevUserEmail(email: string): void {
-    this.set('prevEmail', email);
-  }
-
   getUserEmail(): string {
     return this.get('email') || '';
-  }
-
-  getPrevUserEmail(): string {
-    return this.get('prevEmail') || '';
   }
 
   setListCahingTime(): void {

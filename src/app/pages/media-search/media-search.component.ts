@@ -2,12 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 import { Criteries } from '../../core/models/criteries.model';
+import { ListChangesEvent } from '../../core/models/list.model';
 import { SelectedCriteriaService } from '../../core/services/selected-criteria/selected-criteria.service';
-
-interface CriteriesChanges {
-  key: string;
-  data: any
-}
 
 @Component({
   selector: 'app-media-search',
@@ -31,7 +27,7 @@ export class MediaSearchComponent implements OnInit {
       })
   }
   
-  onChange({ key, data }: CriteriesChanges) {
+  onChange({ key, data }: ListChangesEvent) {
     this.criteries[key] = data;
   }
 }
