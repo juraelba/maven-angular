@@ -39,7 +39,7 @@ export class LocalStorageService {
     this.set('listsCachingTime', DateTime.now().toISO());
   }
 
-  storeListsCahingInformation(listsCachingInformation: ListInfo[]): void {
+  storeListsCachingInformation(listsCachingInformation: ListInfo[]): void {
     this.set('listsCachingInformation', JSON.stringify(listsCachingInformation));
   }
 
