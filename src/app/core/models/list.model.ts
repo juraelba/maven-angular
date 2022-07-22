@@ -14,7 +14,7 @@ export interface ListInfo {
 
 export type List = ListItem[];
 
-export interface ListsData {
+export interface ListData {
   [key: string]: List
 }
 

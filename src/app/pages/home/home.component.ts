@@ -5,7 +5,7 @@ import { switchMap, map } from 'rxjs/operators';
 
 import { LocalStorageService } from 'src/app/core/services/local-storage/local-storage.service';
 import { ListsService } from '../../core/services/lists/lists.service';
-import { ListsData, ListInfo } from '../../core/models/list.model';
+import { ListData, ListInfo } from '../../core/models/list.model';
 
 @Component({
   selector: 'app-home',
@@ -24,12 +24,12 @@ export class HomeComponent implements OnInit {
     this.updateCache();
   }
 
-  fetchLists(listsInformation: ListInfo[], indexDBEmail: string) {
+  fetchLists(lists: ListInfo[], indexDBEmail: string) {
     const storedEmail = this.localStorage.getUserEmail();
-    const prevListsInformation = this.localStorage.getListsInformation();
-    const optionsToUpdate = this.listsService.getListOptionsInfomationToFetch(listsInformation, prevListsInformation);
+    const prevLists = this.localStorage.getLists();
+    const optionsToUpdate = this.listsService.getListOptionsInfomationToFetch(lists, prevLists);
 
-    this.localStorage.storeListsInformation(listsInformation);
+    this.localStorage.setLists(lists);
 
     if (indexDBEmail === storedEmail && isEmpty(optionsToUpdate)) {
       return of({});
@@ -37,7 +37,7 @@ export class HomeComponent implements OnInit {
 
     return indexDBEmail === storedEmail
       ? this.listsService.fetchListOptions(optionsToUpdate)
-      : this.listsService.fetchListOptions(listsInformation);
+      : this.listsService.fetchListOptions(lists);
   }
 
   updateCache(): void {
@@ -56,24 +56,24 @@ export class HomeComponent implements OnInit {
     */
     forkJoin({
       indexDBEmail: this.localStorage.getIndexDBEmail(),
-      listsInformation: this.listsService.fetchListsInformation()
+      lists: this.listsService.fetchLists()
     })
       .pipe(
-        switchMap(({ listsInformation, indexDBEmail }: { listsInformation: ListInfo[], indexDBEmail: string }) => {
-          return this.fetchLists(listsInformation, indexDBEmail)
+        switchMap(({ lists, indexDBEmail }: { lists: ListInfo[], indexDBEmail: string }) => {
+          return this.fetchLists(lists, indexDBEmail)
         }),
-        switchMap((listsOptions: ListsData) => {
-          return this.localStorage.getCachedOptionsFromIndexDB()
+        switchMap((listData: ListData) => {
+          return this.localStorage.getListData()
             .pipe(
-              map((chachedOptions: ListsData) => ({ ...chachedOptions, ...listsOptions }))
+              map((chachedListData: ListData) => ({ ...chachedListData, ...listData }))
             );
         }),
-        switchMap((listsOptions: ListsData) => {
+        switchMap((listData: ListData) => {
           const storedEmail = this.localStorage.getUserEmail();
 
           return forkJoin({
             isUserEmailStorade: this.localStorage.setIndexDBEmail(storedEmail),
-            isOptionsStored: this.localStorage.storeIndexDBListOptions(listsOptions)
+            isOptionsStored: this.localStorage.setListData(listData)
           })
         })
       )

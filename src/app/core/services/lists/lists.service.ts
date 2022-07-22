@@ -30,20 +30,20 @@ export class ListsService {
     return this.http.get<List>(url)
   }
 
-  getCachedData(key: ListKey): Observable<List> {
-    return this.localStorage.getCachedOptionsFromIndexDB()
+  getListData(key: ListKey): Observable<List> {
+    return this.localStorage.getListData()
       .pipe(
         map((list: any) => list[key] || [])
       );
   }
 
   getOptionsData(key: ListKey): Observable<SelectOption[]> {
-    return this.getCachedData(key)
+    return this.getListData(key)
       .pipe(
-        switchMap((cachedOptions: List) => {
-          const list$ = isEmpty(cachedOptions)
+        switchMap((list: List) => {
+          const list$ = isEmpty(list)
             ? this.fetchListData(key)
-            : of(cachedOptions)
+            : of(list)
 
           return list$.pipe(
             map((list: List) => this.transformListToOptions(list))
@@ -56,7 +56,7 @@ export class ListsService {
     return list.map(({ id, name }) => ({ id, label: name, value: name }))
   }
 
-  fetchListsInformation(): Observable<ListInfo[]> {
+  fetchLists(): Observable<ListInfo[]> {
     const url = environment.api + '/lists';
 
     return this.http.get<ListInfo[]>(url);
@@ -77,8 +77,8 @@ export class ListsService {
     return options.filter(({ selected }) => selected);
   }
 
-  fetchListOptions(listsInformation: ListInfo[]): Observable<{ [key: string]: List }> {
-    const data = listsInformation.reduce((acc: ListOptionsFork, { key, route }: ListInfo) => {
+  fetchListOptions(lists: ListInfo[]): Observable<{ [key: string]: List }> {
+    const data = lists.reduce((acc: ListOptionsFork, { key, route }: ListInfo) => {
       const url = `${ environment.api }/${ route }`;
 
       acc[key] = this.http.get<List>(url);
@@ -89,15 +89,15 @@ export class ListsService {
     return forkJoin(data);
   }
 
-  getListOptionsInfomationToFetch(listsInformation: ListInfo[], prevListsInformation: ListInfo[]): ListInfo[] {
-    const prevListsInformationMap = prevListsInformation.reduce<{[key: string]: ListInfo}>((listsInfo, listInfo) => {
+  getListOptionsInfomationToFetch(lists: ListInfo[], prevLists: ListInfo[]): ListInfo[] {
+    const prevListsMap = prevLists.reduce<{[key: string]: ListInfo}>((listsInfo, listInfo) => {
       listsInfo[listInfo.key] = listInfo;
   
       return listsInfo;
     }, {});
   
-    return listsInformation.reduce<ListInfo[]>((acc, { key, modifiedDate, route }) => {
-      const matchedListInfo = prevListsInformationMap[key] || { modifiedDate: '' };
+    return lists.reduce<ListInfo[]>((acc, { key, modifiedDate, route }) => {
+      const matchedListInfo = prevListsMap[key] || { modifiedDate: '' };
       const isCurrentModifiedDateBigger = DateTime.fromISO(matchedListInfo.modifiedDate) < DateTime.fromISO(modifiedDate);
   
       if(isCurrentModifiedDateBigger) {
