@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { LocalStorage as IndexDBStorage } from '@ngx-pwa/local-storage';
-import { Observable } from 'rxjs';
+import * as localforage from "localforage";
+import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ListData, ListInfo } from '../../models/list.model';
@@ -10,9 +10,7 @@ import { ListData, ListInfo } from '../../models/list.model';
 })
 export class LocalStorageService {
 
-  constructor(
-    private indexDBStorage: IndexDBStorage
-  ) { }
+  constructor() { }
 
   set(key: string, data: string) {
     localStorage.setItem(key, data);
@@ -40,22 +38,25 @@ export class LocalStorageService {
     this.set('lists', JSON.stringify(lists));
   }
 
-  setListData(listOptions: ListData): Observable<boolean> {
-    return this.indexDBStorage.setItem('listData', listOptions);
+  setListData(listData: ListData): Observable<ListData> {
+    return from(localforage.setItem('listData', listData))
   }
 
   getListData(): Observable<ListData> {
-    return this.indexDBStorage.getItem('listData')
+    return from(localforage.getItem<ListData>('listData'))
       .pipe(
-        map((options) => (options || {}) as ListData)
+        map((listData) => listData || {})
       );
   }
 
   getIndexDBEmail(): Observable<string> {
-    return (this.indexDBStorage.getItem('email') || '') as Observable<string>;
+    return from(localforage.getItem<string>('email'))
+      .pipe(
+        map((value) => value || '')
+      )
   }
 
-  setIndexDBEmail(email: string): Observable<boolean> {
-    return this.indexDBStorage.setItem('email', email);
+  setIndexDBEmail(email: string): Observable<string> {
+    return from(localforage.setItem<string>('email', email))
   }
 }

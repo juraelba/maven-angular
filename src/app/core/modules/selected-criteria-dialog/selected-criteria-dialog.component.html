@@ -59,7 +59,7 @@
 <ng-template #categoriesLabel let-criteriaPair="criteriaPair">
   <div class="flex flex-col">
     <span>{{ labels[criteriaPair[0]] }}:</span>
-    <span *ngIf="criteriaPair[1].isPrimaryCategory">(Only primary category)</span>
+    <span *ngIf="criteriaPair[1].isPrimaryCategory">(Primary categories only)</span>
   </div>
 </ng-template>
 

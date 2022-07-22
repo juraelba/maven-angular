@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { isEmpty } from 'ramda';
-import { forkJoin, of } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { forkJoin, Observable, of, Subject } from 'rxjs';
+import { switchMap, map, takeUntil } from 'rxjs/operators';
 
 import { LocalStorageService } from 'src/app/core/services/local-storage/local-storage.service';
 import { ListsService } from '../../core/services/lists/lists.service';
@@ -14,6 +14,7 @@ import { ListData, ListInfo } from '../../core/models/list.model';
 })
 export class HomeComponent implements OnInit {
   shouldRender: boolean = false;
+  unsubscribeAll: Subject<null> = new Subject<null>();
 
   constructor(
     private localStorage: LocalStorageService,
@@ -21,7 +22,18 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.updateCache();
+    this.updateCache()
+      .pipe(
+        takeUntil(this.unsubscribeAll),
+      )
+      .subscribe((lol) => {
+        this.shouldRender = true;
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next(null);
+    this.unsubscribeAll.complete();
   }
 
   fetchLists(lists: ListInfo[], indexDBEmail: string) {
@@ -40,7 +52,7 @@ export class HomeComponent implements OnInit {
       : this.listsService.fetchListOptions(lists);
   }
 
-  updateCache(): void {
+  updateCache(): Observable<{ email: string, listData: ListData }> {
     /*
     * * STEP 1: Get stored email from index DB (needs to identify if user is a new) and fetch list information about options modified date.
         Using forkJoin methods we are passing Observables as an object and the utput will be same object with values equal to emited values from each stream.
@@ -54,7 +66,7 @@ export class HomeComponent implements OnInit {
     * * STEP 4: After success fetching all needed data, we store new update index DB with new user email and new options, and we are storing
         in the local storage new time when we did last caching.
     */
-    forkJoin({
+    return forkJoin({
       indexDBEmail: this.localStorage.getIndexDBEmail(),
       lists: this.listsService.fetchLists()
     })
@@ -72,13 +84,10 @@ export class HomeComponent implements OnInit {
           const storedEmail = this.localStorage.getUserEmail();
 
           return forkJoin({
-            isUserEmailStorade: this.localStorage.setIndexDBEmail(storedEmail),
-            isOptionsStored: this.localStorage.setListData(listData)
+            email: this.localStorage.setIndexDBEmail(storedEmail),
+            listData: this.localStorage.setListData(listData)
           })
         })
-      )
-      .subscribe(() => {
-        this.shouldRender = true;
-      });
+      );
   }
 }

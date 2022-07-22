@@ -3,7 +3,7 @@
 <form [formGroup]="form" (ngSubmit)="login()" novalidate *ngIf="!checkPendingUser">
   <div>
     <mat-form-field class="w-full" hideRequiredMarker>
-      <input matInput class="!font-lato" placeholder="Email" formControlName="email" type="email">
+      <input matInput appAutoFocus class="!font-lato" placeholder="Email" formControlName="email" type="email">
       <mat-error *ngIf="form.controls['email'].hasError('required')">
         Email is required
       </mat-error>
