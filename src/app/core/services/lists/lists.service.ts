@@ -73,6 +73,10 @@ export class ListsService {
     return options.map(({ value }) => value);
   }
 
+  getOptionLabels(options: SelectOption[]): string[] {
+    return options.map(({ label }) => label);
+  }
+
   getSelectedOptions(options: SelectOption[]): SelectOption[] {
     return options.filter(({ selected }) => selected);
   }
@@ -110,5 +114,14 @@ export class ListsService {
 
   getBorderLabel(options: SelectOption[], key: ListKey): string {
     return options.length ? ListLabels[key] : '';
+  }
+
+  getSelectInputValue(options: SelectOption[], inputLabel: string) {
+    const optionsLabels = this.getOptionLabels(options);
+    const label = !optionsLabels.length && inputLabel;
+
+    return [ label, ...optionsLabels ]
+      .filter((label) => label)
+      .join(', ');
   }
 }

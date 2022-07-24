@@ -38,8 +38,8 @@ export class MediaTypePickListComponent implements OnInit {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data.mediatypes2),
-        map(({ data }: SelectedCriteriaEvent) => data.mediatypes2)
+        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.MEDIATYPES2]),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.MEDIATYPES2])
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);

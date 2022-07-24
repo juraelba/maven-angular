@@ -14,6 +14,7 @@ interface CategoryData {
   isPrimaryCategory: boolean;
   categories: SelectOption[]
 }
+
 @Component({
   selector: 'app-category-pick-list',
   templateUrl: './category-pick-list.component.html',
@@ -50,15 +51,15 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data.categories ),
-        map(({ data }: SelectedCriteriaEvent) => data.categories.categories)
+        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.CATEGORIES] ),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.CATEGORIES][ListKeys.CATEGORIES])
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
         this.options = updatedOptions;
-        this.value = this.getValue(options);
+        this.value = this.listsService.getSelectInputValue(options, ListLabels.categories);
       });
   }
 
@@ -74,7 +75,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
   
     this.isCategories = !this.isCategories;
     this.borderLabel = this.getBorderLabel();
-    this.value = this.getValue(selected);
+    this.value = this.listsService.getSelectInputValue(selected, ListLabels.categories);
   }
 
   togglePrimaryCategory(event: MouseEvent): void {
@@ -84,17 +85,17 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
 
     this.isPrimaryCategory = !this.isPrimaryCategory;
     this.borderLabel = this.getBorderLabel();
-    this.value = this.getValue(selected);
+    this.value = this.listsService.getSelectInputValue(selected, ListLabels.categories);
   }
 
   getBorderLabel(): string {
-    const isSelectedItem = this.listsService.getSelectedOptions(this.options);
+    const selectedOptions = this.listsService.getSelectedOptions(this.options);
 
-    if(isSelectedItem.length && !this.isPrimaryCategory && !this.isCategories) {
+    if(selectedOptions.length && !this.isPrimaryCategory && !this.isCategories) {
       return ListLabels.categories;
     }
 
-    if(!isSelectedItem.length && this.isCategories && !this.isPrimaryCategory) {
+    if(!selectedOptions.length && this.isCategories && !this.isPrimaryCategory) {
       return '';
     }
 
@@ -102,20 +103,11 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     return this.getCheckedCheckboxLabel();
   }
 
-  getValue(options: SelectOption[]): string {
-    const optionsLabels = options.map(({ label }) => label);
-    const label = !optionsLabels.length && ListLabels.categories;
-
-    return [ label, ...optionsLabels ]
-      .filter((label) => label)
-      .join(', ');
-  }
-
   onApplyChanges(options: SelectOption[]): void {
     const width = this.selectComponent?.selectContainer.nativeElement.getBoundingClientRect().width;
     const values = this.listsService.getOptionValues(options);
 
-    this.value = this.getValue(options);
+    this.value = this.listsService.getSelectInputValue(options, ListLabels.categories);
     this.width = `${ width-80 }px`;
     
     const categoryData: CategoryData = {

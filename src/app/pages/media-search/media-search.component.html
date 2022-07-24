@@ -33,21 +33,9 @@
         
         <app-owners-pick-list (change)="onChange($event)"></app-owners-pick-list>
         <app-category-pick-list (change)="onChange($event)"></app-category-pick-list>
+        <app-diverse-target-pick-list (change)="onChange($event)"></app-diverse-target-pick-list>
+        <app-language-pick-list (change)="onChange($event)"></app-language-pick-list>
 
-        <app-select>
-          <div valueContainer #valueContainer class="flex items-center">
-            <app-checkbox></app-checkbox>
-            <span class="ml-[10px] font-lato">Diverse Target</span>
-          </div>
-        </app-select>
-
-        <app-select>
-          <div valueContainer #valueContainer class="flex items-center">
-            <app-checkbox></app-checkbox>
-            <span class="ml-[10px] font-lato">Language</span>
-          </div>
-        </app-select>
-  
         <div class="flex items-center">
           <app-checkbox></app-checkbox>
           <span class="ml-[10px] font-lato text-pri-black">Music</span>

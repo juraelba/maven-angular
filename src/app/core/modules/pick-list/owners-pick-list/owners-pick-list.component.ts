@@ -39,8 +39,8 @@ export class OwnersPickListComponent implements OnInit {
   this.selectedCriteriaService.selectedCriteria$
     .pipe(
       takeUntil(this.unsubscribeAll),
-      filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data.owners),
-      map(({ data }: SelectedCriteriaEvent) => data.owners)
+      filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.OWNERS]),
+      map(({ data }: SelectedCriteriaEvent) => data[ListKeys.OWNERS])
     )
     .subscribe((options: SelectOption[]) => {
       const optionValues = this.listsService.getOptionValues(options);

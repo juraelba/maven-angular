@@ -1,0 +1,36 @@
+<app-select
+  [multiple]="true"
+  [grouping]="false"
+  [allSelectedVisible]="false"
+  [options]="options"
+  [borderLabel]="borderLabel"
+  [panelOpen]="panelOpen"
+  (applyChanges)="onApplyChanges($event)"
+  (closeMenu)="onMenuClose()"
+  (selectInpuClick)="onSelectClick($event)"
+  (clear)="onClear()"
+  #selectComponent
+>
+  <div valueContainer #valueContainer class="flex font-lato items-center">
+    <app-checkbox
+      [checked]="isDiverseTarget"
+      (click)="toggleDiverseTarget($event)"
+      class="checkbox"
+    >
+    </app-checkbox>
+    <div
+      [ngStyle]="{ 'width': width }"
+      class="ml-[10px] truncate"
+    >{{ value }}</div>
+  </div>
+
+  <div dropdownHeaderContainer #dropdownHeaderContainer>
+    <div class="flex justify-between items-center mb-5 cursor-pointer" (click)="toggleDiverseTarget($event)">
+      <div class="text-black text-base font-medium">Diverse Target</div>
+      <app-checkbox
+        [checked]="isDiverseTarget"
+      >
+      </app-checkbox>
+    </div>
+  </div>
+</app-select>

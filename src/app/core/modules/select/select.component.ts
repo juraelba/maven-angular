@@ -28,6 +28,7 @@ export class SelectComponent implements OnInit {
   @Input() multiple: boolean = false;
   @Input() disabled: boolean = false;
   @Input() search: boolean = false;
+  @Input() allSelectedVisible: boolean = true;
   @Input() placeholder: string;
   @Input() options: SelectOption[] = [];
   @Input() borderLabel: string;

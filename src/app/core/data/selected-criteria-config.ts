@@ -7,7 +7,7 @@ export const selectedCriteriaConfig: SelectedCriteriaConfig = {
     color: '#4087F3',
     canDelete: true
   },
-  DMA: {
+  [ListKeys.LANGUAGES2]: {
     bg: '#FFFBD8',
     color: '#80761E',
     canDelete: true
@@ -17,7 +17,7 @@ export const selectedCriteriaConfig: SelectedCriteriaConfig = {
     color: '#4A5BD3',
     canDelete: true
   },
-  'Diverse Target': {
+  [ListKeys.DIVERSETARGETS]: {
     bg: '#DEF3EF',
     color: '#018C76',
     canDelete: true
