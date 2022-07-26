@@ -38,14 +38,14 @@ export class MediaTypePickListComponent implements OnInit {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.MEDIATYPES2]),
-        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.MEDIATYPES2])
+        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.mediatypes2]),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.mediatypes2])
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
             
-        this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.MEDIATYPES2);
+        this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.mediatypes2);
         this.options = updatedOptions;
       });
   }
@@ -60,9 +60,9 @@ export class MediaTypePickListComponent implements OnInit {
     const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
     this.options = updatedOptions;
-    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.MEDIATYPES2);
+    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.mediatypes2);
 
-    this.change.emit({ key: ListKeys.MEDIATYPES2, data: [ ...options ] });
+    this.change.emit({ key: ListKeys.mediatypes2, data: [ ...options ] });
   }
 
   onSelectClick(event: MouseEvent) {
@@ -73,6 +73,6 @@ export class MediaTypePickListComponent implements OnInit {
     this.options = this.listsService.updateOptionsWithSelected(this.options, []);
     this.borderLabel = '';
 
-    this.change.emit({ key: ListKeys.MEDIATYPES2, data: [] });
+    this.change.emit({ key: ListKeys.mediatypes2, data: [] });
   }
 }

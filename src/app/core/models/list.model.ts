@@ -1,5 +1,5 @@
 
-import { ListUrls } from '../enums/lists.enum';
+import { ListKeys, ListUrls } from '../enums/lists.enum';
 
 interface ListItem {
   id: string;
@@ -18,11 +18,14 @@ export interface ListData {
   [key: string]: List
 }
 
-export type ListKey = keyof typeof ListUrls;
+export type ListKey = keyof typeof ListKeys;
+
+export type ListUrlsKey = keyof typeof ListUrls;
 
 export interface ListChangesEvent {
   key: ListKey;
   data: any
 }
+
 
 

@@ -35,6 +35,7 @@ export class SelectComponent implements OnInit {
   @Input() panelOpen: boolean;
   @Input() grouping: boolean = true;
   @Input() valueContainerWidth: string = '100%';
+  @Input() sort: boolean = true;
 
   @Output() applyChanges: EventEmitter<SelectOption[]> = new EventEmitter();
   @Output() clear: EventEmitter<undefined> = new EventEmitter();
@@ -45,6 +46,7 @@ export class SelectComponent implements OnInit {
 
   @ContentChild('valueContainer') valueContainer: ElementRef;
   @ContentChild('dropdownHeaderContainer') dropdownHeaderContainer: ElementRef;
+  @ContentChild('indicators') indicators: ElementRef;
 
   inputChange$ = new Subject<string>();
   unsubscribeAll: Subject<null> = new Subject<null>();
@@ -94,7 +96,7 @@ export class SelectComponent implements OnInit {
 
   setOptions(options: SelectOption[]): void {
     const transformedOptions = this.transformOptions(options);
-    const sortedOptions = this.sortOptionsByLabel(transformedOptions);
+    const sortedOptions = this.sort ? this.sortOptionsByLabel(transformedOptions) : transformedOptions;
 
     this.options = [ ...sortedOptions ];
     this.dropdownOptions = [ ...sortedOptions ];

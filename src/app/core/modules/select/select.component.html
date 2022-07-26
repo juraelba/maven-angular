@@ -46,16 +46,21 @@
         <ng-content select="[dropdownHeaderContainer]"></ng-content>
       </div>
 
-      <div *ngIf="search" class="bg-white border-b border-b-1 border-pri-gray mb-5">
-        <app-input
-          (click)="onSearchInputClick($event)"
-          (inputChange)="onSearchInputChange($event)"
-          [border]="false"
-          icon="/assets/images/icons/search-right.svg"
-          placeholder="Search"
-          [value]="searchValue"
-        >
-        </app-input>
+      <div *ngIf="search" class="bg-white mb-5 flex items-center">
+        <div class="border-b border-b-1 border-pri-gray">
+          <app-input
+            (click)="onSearchInputClick($event)"
+            (inputChange)="onSearchInputChange($event)"
+            [border]="false"
+            icon="/assets/images/icons/search-right.svg"
+            placeholder="Search"
+            [value]="searchValue"
+          >
+          </app-input>
+        </div>
+        <div *ngIf="indicators">
+          <ng-content select="[indicators]"></ng-content>
+        </div>
       </div>
   
       <div

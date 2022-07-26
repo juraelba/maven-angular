@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 import { isEmpty } from 'ramda';
 
 import { environment } from '../../../../environments/environment';
-import { List, ListInfo, ListKey } from '../../models/list.model';
+import { List, ListInfo, ListKey, ListUrlsKey } from '../../models/list.model';
 import { ListUrls, ListLabels } from '../../enums/lists.enum';
 import { SelectOption } from '../../models/select.model';
 import { LocalStorageService } from '../local-storage/local-storage.service';
@@ -24,20 +24,20 @@ export class ListsService {
     private localStorage: LocalStorageService
   ) { }
 
-  fetchListData(key: ListKey): Observable<List> {
+  fetchListData(key: ListUrlsKey): Observable<List> {
     const url = environment.api + ListUrls[key];
 
     return this.http.get<List>(url)
   }
 
-  getListData(key: ListKey): Observable<List> {
+  getListData(key: ListUrlsKey): Observable<List> {
     return this.localStorage.getListData()
       .pipe(
         map((list: any) => list[key] || [])
       );
   }
 
-  getOptionsData(key: ListKey): Observable<SelectOption[]> {
+  getOptionsData(key: ListUrlsKey): Observable<SelectOption[]> {
     return this.getListData(key)
       .pipe(
         switchMap((list: List) => {
@@ -53,7 +53,7 @@ export class ListsService {
   }
 
   transformListToOptions(list: List): SelectOption[] {
-    return list.map(({ id, name }) => ({ id, label: name, value: name }))
+    return list.map(({ id, name, ...rest }) => ({ id, label: name, value: name, ...rest }))
   }
 
   fetchLists(): Observable<ListInfo[]> {
@@ -116,7 +116,7 @@ export class ListsService {
     return options.length ? ListLabels[key] : '';
   }
 
-  getSelectInputValue(options: SelectOption[], inputLabel: string) {
+  getSelectInputValue(options: SelectOption[], inputLabel?: string) {
     const optionsLabels = this.getOptionLabels(options);
     const label = !optionsLabels.length && inputLabel;
 

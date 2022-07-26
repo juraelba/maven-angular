@@ -4,4 +4,5 @@ export interface SelectOption {
   label: string;
   selected?: boolean;
   groupLetter?: string;
+  [key: string]: any;
 }

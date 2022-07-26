@@ -28,7 +28,7 @@ export class OwnersPickListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listsService.getOptionsData(ListKeys.OWNERS)
+    this.listsService.getOptionsData(ListKeys.owners)
     .pipe(
       takeUntil(this.unsubscribeAll)
     )
@@ -39,14 +39,14 @@ export class OwnersPickListComponent implements OnInit {
   this.selectedCriteriaService.selectedCriteria$
     .pipe(
       takeUntil(this.unsubscribeAll),
-      filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.OWNERS]),
-      map(({ data }: SelectedCriteriaEvent) => data[ListKeys.OWNERS])
+      filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.owners]),
+      map(({ data }: SelectedCriteriaEvent) => data[ListKeys.owners])
     )
     .subscribe((options: SelectOption[]) => {
       const optionValues = this.listsService.getOptionValues(options);
       const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
-      this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.OWNERS);
+      this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.owners);
       this.options = updatedOptions;
     });
   }
@@ -56,9 +56,9 @@ export class OwnersPickListComponent implements OnInit {
     const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
     this.options = updatedOptions;
-    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.OWNERS);
+    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.owners);
 
-    this.change.emit({ key: ListKeys.OWNERS, data: [ ...options ] });
+    this.change.emit({ key: ListKeys.owners, data: [ ...options ] });
   }
 
   ngOnDestroy(): void {
@@ -74,6 +74,6 @@ export class OwnersPickListComponent implements OnInit {
     this.options = this.listsService.updateOptionsWithSelected(this.options, []);
     this.borderLabel = '';
 
-    this.change.emit({ key: ListKeys.OWNERS, data: [] });
+    this.change.emit({ key: ListKeys.owners, data: [] });
   }
 }

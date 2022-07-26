@@ -40,7 +40,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.listsService.getOptionsData(ListKeys.CATEGORIES)
+    this.listsService.getOptionsData(ListKeys.categories)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
@@ -51,8 +51,8 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.CATEGORIES] ),
-        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.CATEGORIES][ListKeys.CATEGORIES])
+        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.categories] ),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.categories][ListKeys.categories])
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
@@ -118,7 +118,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
 
     this.options = this.listsService.updateOptionsWithSelected(this.options, values);
     this.borderLabel = this.getBorderLabel();
-    this.change.emit({ key: ListKeys.CATEGORIES, data: categoryData });
+    this.change.emit({ key: ListKeys.categories, data: categoryData });
   }
   
   onClear(): void {
@@ -134,7 +134,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
       categories: [],
     }
 
-    this.change.emit({ key: ListKeys.CATEGORIES, data: categoryData });
+    this.change.emit({ key: ListKeys.categories, data: categoryData });
   }
 
   onSelectClick({ event, isOpened  }: any): void {

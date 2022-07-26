@@ -33,7 +33,7 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.listsService.getOptionsData(ListKeys.DIVERSETARGETS)
+    this.listsService.getOptionsData(ListKeys.diversetargets)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
@@ -44,8 +44,8 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.DIVERSETARGETS]),
-        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.DIVERSETARGETS])
+        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.diversetargets]),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.diversetargets])
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
@@ -67,7 +67,7 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
     const selected = this.listsService.getSelectedOptions(this.options);
   
     this.isDiverseTarget = !this.isDiverseTarget;
-    this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.DIVERSETARGETS);
+    this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.diversetargets);
     this.value = this.listsService.getSelectInputValue(selected, ListLabels.diversetargets);
   }
 
@@ -79,18 +79,18 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
     this.width = `${ width-80 }px`;
 
     this.options = this.listsService.updateOptionsWithSelected(this.options, values);
-    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.DIVERSETARGETS);
+    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.diversetargets);
 
-    this.change.emit({ key: ListKeys.DIVERSETARGETS, data: options });
+    this.change.emit({ key: ListKeys.diversetargets, data: options });
   }
   
   onClear(): void {
     this.options = this.listsService.updateOptionsWithSelected(this.options, []);
     this.isDiverseTarget = false;
-    this.borderLabel = this.listsService.getBorderLabel([], ListKeys.DIVERSETARGETS);
+    this.borderLabel = this.listsService.getBorderLabel([], ListKeys.diversetargets);
     this.value = ListLabels.diversetargets
 
-    this.change.emit({ key: ListKeys.DIVERSETARGETS, data: [] });
+    this.change.emit({ key: ListKeys.diversetargets, data: [] });
   }
 
   onSelectClick({ event }: any): void {

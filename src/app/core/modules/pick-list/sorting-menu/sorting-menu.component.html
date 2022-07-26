@@ -1,0 +1,7 @@
+<div class="w-full shadow-simple rounded-md bg-white flex flex-col font-lato text-pri-black p-[20px]">
+  <div *ngFor="let option of sortingOptions" class="flex items-center mb-[20px] last:mb-[0px]">
+    <app-svg-icon *ngIf="option.selected" name="checkmark"></app-svg-icon>
+    <div *ngIf="!option.selected" class="w-[16px] h-[16px]"></div>
+    <div class="ml-[10px] cursor-pointer" (click)="selectSortOption($event, option)">{{ option.label }}</div>
+  </div>
+</div>

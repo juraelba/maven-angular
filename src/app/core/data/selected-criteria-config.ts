@@ -2,27 +2,27 @@ import { SelectedCriteriaConfig } from '../models/criteries.model';
 import { ListKeys } from '../enums/lists.enum';
 
 export const selectedCriteriaConfig: SelectedCriteriaConfig = {
-  [ListKeys.MEDIATYPES2]: {
+  [ListKeys.mediatypes2]: {
     bg: '#E4F2FF',
     color: '#4087F3',
     canDelete: true
   },
-  [ListKeys.LANGUAGES2]: {
+  [ListKeys.languages2]: {
     bg: '#FFFBD8',
     color: '#80761E',
     canDelete: true
   },
-  [ListKeys.OWNERS]: {
+  [ListKeys.owners]: {
     bg: '#E8E9FB',
     color: '#4A5BD3',
     canDelete: true
   },
-  [ListKeys.DIVERSETARGETS]: {
+  [ListKeys.diversetargets]: {
     bg: '#DEF3EF',
     color: '#018C76',
     canDelete: true
   },
-  [ListKeys.CATEGORIES]: {
+  [ListKeys.categories]: {
     bg: '#F6E4FF',
     color: '#931ACC',
     canDelete: true

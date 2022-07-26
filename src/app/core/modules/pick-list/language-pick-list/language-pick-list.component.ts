@@ -33,7 +33,7 @@ export class LanguagePickListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listsService.getOptionsData(ListKeys.LANGUAGES2)
+    this.listsService.getOptionsData(ListKeys.languages2)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
@@ -44,8 +44,8 @@ export class LanguagePickListComponent implements OnInit {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.LANGUAGES2]),
-        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.LANGUAGES2])
+        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.languages2]),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.languages2])
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
@@ -67,7 +67,7 @@ export class LanguagePickListComponent implements OnInit {
     const selected = this.listsService.getSelectedOptions(this.options);
   
     this.isLanguage = !this.isLanguage;
-    this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.LANGUAGES2);
+    this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.languages2);
     this.value = this.listsService.getSelectInputValue(selected, ListLabels.languages2);
   }
 
@@ -79,18 +79,18 @@ export class LanguagePickListComponent implements OnInit {
     this.width = `${ width-80 }px`;
 
     this.options = this.listsService.updateOptionsWithSelected(this.options, values);
-    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.LANGUAGES2);
+    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.languages2);
 
-    this.change.emit({ key: ListKeys.LANGUAGES2, data: options });
+    this.change.emit({ key: ListKeys.languages2, data: options });
   }
   
   onClear(): void {
     this.options = this.listsService.updateOptionsWithSelected(this.options, []);
     this.isLanguage = false;
-    this.borderLabel = this.listsService.getBorderLabel([], ListKeys.LANGUAGES2);
+    this.borderLabel = this.listsService.getBorderLabel([], ListKeys.languages2);
     this.value = ListLabels.languages2
 
-    this.change.emit({ key: ListKeys.LANGUAGES2, data: [] });
+    this.change.emit({ key: ListKeys.languages2, data: [] });
   }
 
   onSelectClick({ event }: any): void {

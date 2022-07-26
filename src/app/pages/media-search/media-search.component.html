@@ -27,9 +27,8 @@
           icon="/assets/images/icons/search.svg"
         >
         </app-input>
-  
         <app-media-type-pick-list (change)="onChange($event)"></app-media-type-pick-list>
-        <app-select placeholder="Markets"></app-select>
+        <app-market-pick-list (change)="onChange($event)"></app-market-pick-list>
         
         <app-owners-pick-list (change)="onChange($event)"></app-owners-pick-list>
         <app-category-pick-list (change)="onChange($event)"></app-category-pick-list>

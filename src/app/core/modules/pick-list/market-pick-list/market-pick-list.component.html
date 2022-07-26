@@ -1,0 +1,46 @@
+<app-select
+  [multiple]="true"
+  [options]="options"
+  [search]="true"
+  [sort]="isSort"
+  [grouping]="grouping"
+  [borderLabel]="borderLabel"
+  placeholder="Markets"
+  (applyChanges)="onApplyChanges($event)"
+  (clear)="onClear()"
+  (closeMenu)="onMenuClose()"
+  #selectComponent
+>
+  <div valueContainer #valueContainer class="flex font-lato items-center">
+    <div
+      [ngStyle]="{ 'width': width }"
+      class="truncate"
+    >{{ value }}</div>
+  </div>
+
+  <div dropdownHeaderContainer #dropdownHeaderContainer>
+    <div class="flex border-b border-b-1 border-gray mb-[15px] font-lato text-pri-black">
+      <div
+        *ngFor="let section of sections"
+        (click)="setActiveSection($event, section)"
+        class="cursor-pointer px-[15px] py-[5px]"
+        [ngClass]="{ 'border-b-2 border-regal-blue': section.selected }"
+      >
+        {{ section.label }}
+      </div>
+    </div>
+  </div>
+
+  <div indicators #indicators class="ml-[10px] cursor-pointer">
+    <div class="relative">
+      <app-svg-icon (click)="toggleOpenSortingMenu($event)" name="sort"></app-svg-icon>
+      <app-sorting-menu
+        *ngIf="sortingMenuOpen"
+        class="absolute right-0 top-full z-10"
+        [sort]="sort"
+        (change)="onSortingOptionChange($event)"
+      >
+      </app-sorting-menu>
+    </div>
+  </div>
+</app-select>
