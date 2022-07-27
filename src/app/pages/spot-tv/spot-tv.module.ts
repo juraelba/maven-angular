@@ -1,29 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCheckboxModule } from '@angular/material/checkbox';
 
+import { SpotTvRoutingModule } from './spot-tv-routing.module';
 import { PickListModule } from '@modules/pick-list/pick-list.module';
 import { CheckboxModule } from '@modules/checkbox/checkbox.module';
 import { InputModule } from '@modules/input/input.module';
 import { SelectModule } from '@modules/select/select.module';
-import { MediaSearchRoutingModule } from './media-search-routing.module';
 import { SearchModule } from '@modules/search/search.module';
 
-import { SelectedCriteriaService } from '../../core/services/selected-criteria/selected-criteria.service';
-
-import { MediaSearchComponent } from './media-search.component';
+import { SpotTvComponent } from './spot-tv.component';
 
 @NgModule({
   declarations: [
-    MediaSearchComponent
-  ],
-  providers: [
-    SelectedCriteriaService
+    SpotTvComponent
   ],
   imports: [
     CommonModule,
-    MediaSearchRoutingModule,
-    MatCheckboxModule,
+    SpotTvRoutingModule,
     PickListModule,
     CheckboxModule,
     InputModule,
@@ -31,4 +24,4 @@ import { MediaSearchComponent } from './media-search.component';
     SearchModule
   ]
 })
-export class MediaSearchModule { }
+export class SpotTvModule { }

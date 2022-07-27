@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { SelectedCriteriaDialogComponent } from '../selected-criteria-dialog/selected-criteria-dialog.component';
-import { Criteries, CategoriesCriteria } from '../../models/criteries.model';
+import { Criteries, CategoriesCriteria } from '@models/criteries.model';
 import { compose, toPairs, reduce, isEmpty } from 'ramda';
 
 interface Validators {

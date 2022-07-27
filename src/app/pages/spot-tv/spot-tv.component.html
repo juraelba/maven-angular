@@ -1,0 +1,22 @@
+<app-search title="Spot TV Search">
+  <div class="grid-container grid gap-5 mb-[40px]">
+    <app-input
+      class="col-start-1 col-end-3"
+      placeholder="Search by name or ID"
+      name="nameSearch"
+      [disabled]="true"
+      icon="/assets/images/icons/search.svg"
+    >
+    </app-input>
+
+    <div class="flex items-center col-start-3 col-end-5">
+      <app-checkbox></app-checkbox>
+      <span class="ml-[10px] font-lato text-pri-black">Include non-comms</span>
+    </div>
+
+    <app-select placeholder="Markets (DMA)"></app-select>
+    <app-select placeholder="Networks"></app-select>
+    <app-select placeholder="Bands"></app-select>
+    <app-select placeholder="Owners"></app-select>
+  </div>
+</app-search>

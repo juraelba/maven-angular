@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { MediaSearchComponent } from './media-search.component';
+import { SpotTvComponent } from './spot-tv.component';
 
 const routes: Routes = [
-  { path: '', component: MediaSearchComponent }
+  { path: '', component: SpotTvComponent }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class MediaSearchRoutingModule { }
+export class SpotTvRoutingModule { }

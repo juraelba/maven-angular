@@ -45,7 +45,7 @@ export class SideNavComponent implements OnInit {
           label: "Spot",
           disabled: true,
           items: [
-            { name: "spot-tv", label: "Spot TV", route: "/spot-tv-search", disabled: true, permissions: [ObjectType.SpotTV] },
+            { name: "spot-tv", label: "Spot TV", route: "/spot-tv", disabled: true, permissions: [ObjectType.SpotTV] },
             { name: "spot-radio", label: "Spot Radio", route: "/spot-radio-search", disabled: true, permissions: [ObjectType.SpotRadio] },
             { name: "regional-cable", label: "Regional Cable", route: "/regional-cable-search", disabled: true, permissions: [ObjectType.SpotCable] },
             { name: "call-history", label: "Call History", route: "/call-history", disabled: true, permissions: [ObjectType.SpotRadio, ObjectType.SpotTV] }

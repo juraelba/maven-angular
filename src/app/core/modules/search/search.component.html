@@ -1,0 +1,19 @@
+<div class="font-mont">
+  <header class="flex justify-between items-center">
+    <div class="text-pri-black text-xl font-medium">{{ title }}</div>
+    <app-search-menu-bar></app-search-menu-bar>
+  </header>
+  
+  <div class="shadow-simple rounded-md w-full my-5 relative">
+    <div class="p-5">
+      <ng-content></ng-content>
+
+      <app-selected-criteria [criteries]="criteries"></app-selected-criteria>
+    </div>
+  
+    <button class="text-white bg-regal-blue text-xl font-medium leading-6 py-4 px-[25px] shadow-button rounded-md border-0 absolute right-2/4 translate-y-2/4 translate-x-2/4 bottom-0">
+      Search
+    </button>
+  </div>
+</div>
+

@@ -19,6 +19,10 @@ const routes: Routes = [
         path: 'media-search',
         loadChildren: () => import('./pages/media-search/media-search.module').then(m => m.MediaSearchModule)
       },
+      {
+        path: 'spot-tv',
+        loadChildren: () => import('./pages/spot-tv/spot-tv.module').then(m => m.SpotTvModule)
+      },
     ]
   },
   {
