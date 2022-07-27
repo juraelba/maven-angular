@@ -2,10 +2,10 @@ import { Component, OnInit, ViewChild, Output, EventEmitter, OnDestroy } from '@
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
-import { SelectOption } from '../../../models/select.model';
-import { SelectedCriteriaEvent } from '../../../models/criteries.model';
-import { ListChangesEvent } from '../../../models/list.model';
-import { ListKeys, ListLabels } from '../../../enums/lists.enum';
+import { SelectOption } from '@models/select.model';
+import { SelectedCriteriaEvent } from '@models/criteries.model';
+import { ListChangesEvent } from '@models/list.model';
+import { ListKeys, ListLabels } from '@enums/lists.enum';
 import { ListsService } from '../../../../core/services/lists/lists.service';
 import { SelectedCriteriaService } from '../../../../core/services/selected-criteria/selected-criteria.service';
 

@@ -27,6 +27,11 @@ export const selectedCriteriaConfig: SelectedCriteriaConfig = {
     color: '#931ACC',
     canDelete: true
   },
+  [ListKeys.markets]: {
+    bg: '#FFFBD8',
+    color: '#80761E',
+    canDelete: true
+  },
   default: {
     bg: '#E4F2FF',
     color: '#4087F3',

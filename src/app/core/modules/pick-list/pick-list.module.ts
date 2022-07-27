@@ -9,7 +9,7 @@ import { CheckboxModule } from '../checkbox/checkbox.module';
 import { SlideToggleModule  } from '../slide-toggle/slide-toggle.module';
 import { SvgIconModule } from '../svg-icon/svg-icon.module';
 
-import { ListsService } from '../../services/lists/lists.service';
+import { ListsService } from '@services/lists/lists.service';
 import { MediaTypePickListComponent } from './media-type-pick-list/media-type-pick-list.component';
 import { OwnersPickListComponent } from './owners-pick-list/owners-pick-list.component';
 import { DiverseTargetPickListComponent } from './diverse-target-pick-list/diverse-target-pick-list.component';

@@ -2,17 +2,17 @@ import { Component, OnInit, ViewChild, Output, EventEmitter, OnDestroy } from '@
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
-import { SelectOption } from '../../../models/select.model';
-import { SelectedCriteriaEvent } from '../../../models/criteries.model';
-import { ListChangesEvent } from '../../../models/list.model';
-import { ListKeys, ListLabels } from '../../../enums/lists.enum';
+import { SelectOption } from '@models/select.model';
+import { SelectedCriteriaEvent } from '@models/criteries.model';
+import { ListChangesEvent } from '@models/list.model';
+import { ListKeys, ListLabels } from '@enums/lists.enum';
 import { ListsService } from '../../../../core/services/lists/lists.service';
 import { SelectedCriteriaService } from '../../../../core/services/selected-criteria/selected-criteria.service';
 
 interface CategoryData {
   isCategories: boolean;
   isPrimaryCategory: boolean;
-  categories: SelectOption[]
+  options: SelectOption[]
 }
 
 @Component({
@@ -52,7 +52,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.unsubscribeAll),
         filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.categories] ),
-        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.categories][ListKeys.categories])
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.categories].options)
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
@@ -113,7 +113,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     const categoryData: CategoryData = {
       isPrimaryCategory: this.isPrimaryCategory,
       isCategories: this.isCategories,
-      categories: options,
+      options,
     }
 
     this.options = this.listsService.updateOptionsWithSelected(this.options, values);
@@ -131,7 +131,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     const categoryData: CategoryData = {
       isPrimaryCategory: this.isPrimaryCategory,
       isCategories: this.isCategories,
-      categories: [],
+      options: [],
     }
 
     this.change.emit({ key: ListKeys.categories, data: categoryData });

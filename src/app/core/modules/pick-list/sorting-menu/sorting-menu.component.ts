@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
-import { MarketSortingOption } from '../../../models/sorting-options.models';
-import { MarketSortinOptionsLabelsEnum, MarketSortingOptionsEnum } from '../../../enums/sorting-options.enum';
+import { MarketSortingOption } from '@models/sorting-options.models';
+import { MarketSortinOptionsLabelsEnum, MarketSortingOptionsEnum } from '@enums/sorting-options.enum';
 
 interface SortingOption {
   value: MarketSortingOption;

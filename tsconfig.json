@@ -23,6 +23,11 @@
       "dom"
     ],
     "strictPropertyInitialization": false,
+    "paths": {
+      "@services/*": ["./src/app/core/services/*"],
+      "@enums/*": ["./src/app/core/enums/*"],
+      "@models/*": ["./src/app/core/models/*"],
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

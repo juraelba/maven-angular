@@ -2,12 +2,12 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
-import { ListsService } from '../../../services/lists/lists.service';
-import { SelectOption } from '../../../models/select.model';
-import { SelectedCriteriaEvent } from '../../../models/criteries.model';
-import { ListChangesEvent } from '../../../models/list.model';
-import { ListKeys } from '../../../enums/lists.enum';
-import { SelectedCriteriaService } from '../../../services/selected-criteria/selected-criteria.service';
+import { ListsService } from '@services/lists/lists.service';
+import { SelectOption } from '@models/select.model';
+import { SelectedCriteriaEvent } from '@models/criteries.model';
+import { ListChangesEvent } from '@models/list.model';
+import { ListKeys } from '@enums/lists.enum';
+import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 @Component({
   selector: 'app-media-type-pick-list',

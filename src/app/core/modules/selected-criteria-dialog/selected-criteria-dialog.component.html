@@ -15,21 +15,26 @@
           <ng-container *ngTemplateOutlet="categoriesLabel; context: { criteriaPair: criteriaPair }"></ng-container>
         </ng-container>
 
+        <ng-container *ngSwitchCase="'markets'">
+          <ng-container *ngTemplateOutlet="marketsLabel; context: { criteriaPair: criteriaPair }"></ng-container>
+        </ng-container>
+
         <span *ngSwitchDefault>{{ labels[criteriaPair[0]] }}:</span>
       </div>
 
       <div [ngSwitch]="criteriaPair[0]" class="basis-4/5 flex flex-wrap">
         <ng-container *ngSwitchCase="'categories'">
-          <ng-container *ngTemplateOutlet="categoriesValues; context: { criteriaPair: criteriaPair }"></ng-container>
+          <ng-container *ngTemplateOutlet="complexCriteriaValues; context: { criteriaPair: criteriaPair }"></ng-container>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'markets'">
+          <ng-container *ngTemplateOutlet="complexCriteriaValues; context: { criteriaPair: criteriaPair }"></ng-container>
         </ng-container>
 
         <ng-container *ngSwitchDefault>
           <button
             *ngFor="let criteria of criteriaPair[1]"
-            [ngStyle]="{
-              'background': config[criteriaPair[0]]?.bg || config.default.bg,
-              'color': config[criteriaPair[0]]?.color  || config.default.color
-            }"
+            [ngStyle]="getStyles(criteriaPair[0])"
             class="mr-[10px] mb-[10px] h-[24px] flex items-center rounded-xl py-0.5 px-2"
             (click)="onRemoveCriteriaClick(criteriaPair[0], criteria)"
           >
@@ -63,13 +68,17 @@
   </div>
 </ng-template>
 
-<ng-template #categoriesValues let-criteriaPair="criteriaPair">
+<ng-template #marketsLabel let-criteriaPair="criteriaPair">
+  <div class="flex flex-col">
+    <span>{{ labels[criteriaPair[0]] }}:</span>
+    <span>({{ labels[criteriaPair[1].market] }})</span>
+  </div>
+</ng-template>
+
+<ng-template #complexCriteriaValues let-criteriaPair="criteriaPair">
   <button
-    *ngFor="let criteria of criteriaPair[1].categories"
-    [ngStyle]="{
-      'background': config[criteriaPair[0]].bg,
-      'color': config[criteriaPair[0]].color
-    }"
+    *ngFor="let criteria of criteriaPair[1].options"
+    [ngStyle]="getStyles(criteriaPair[0])"
     class="mr-[10px] mb-[10px] h-[24px] flex items-center rounded-xl py-0.5 px-2"
     (click)="onRemoveCriteriaClick(criteriaPair[0], criteria)"
   >

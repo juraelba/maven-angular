@@ -2,12 +2,12 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
-import { ListsService } from '../../../services/lists/lists.service';
-import { SelectOption } from '../../../models/select.model';
-import { SelectedCriteriaEvent } from '../../../models/criteries.model';
-import { ListChangesEvent } from '../../../models/list.model';
-import { SelectedCriteriaService } from '../../../services/selected-criteria/selected-criteria.service';
-import { ListLabels, ListKeys } from '../../../enums/lists.enum';
+import { ListsService } from '@services/lists/lists.service';
+import { SelectOption } from '@models/select.model';
+import { SelectedCriteriaEvent } from '@models/criteries.model';
+import { ListChangesEvent } from '@models/list.model';
+import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
+import { ListLabels, ListKeys } from '@enums/lists.enum';
 
 @Component({
   selector: 'app-owners-pick-list',

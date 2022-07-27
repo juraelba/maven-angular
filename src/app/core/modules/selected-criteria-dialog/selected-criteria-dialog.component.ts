@@ -2,12 +2,19 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { toPairs } from 'ramda';
 
-import { Criteries } from '../../models/criteries.model';
-import { SelectOption } from '../../models/select.model';
-import { selectedCriteriaConfig } from '../../data/selected-criteria-config';
-import { ListLabels } from '../../enums/lists.enum';
+import { Criteries } from '@models/criteries.model';
+import { SelectOption } from '@models/select.model';
+import { ListKey } from '@models/list.model';
 
-import { SelectedCriteriaService } from '../../services/selected-criteria/selected-criteria.service';
+import { selectedCriteriaConfig } from '../../data/selected-criteria-config';
+import { ListLabels, ListKeys } from '@enums/lists.enum';
+
+import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
+
+interface CriteriaValueStyles {
+  background: string;
+  color: string;
+}
 
 @Component({
   selector: 'app-selected-criteria-dialog',
@@ -37,21 +44,25 @@ export class SelectedCriteriaDialogComponent implements OnInit {
     return options.filter((option) => value !== option.value);
   }
 
+  updateCriteria(criteria: any, option: SelectOption, key: ListKey): any {
+    const options = this.filterOptions(criteria.options, option.value);
+
+    return {
+      ...this.data,
+      [key]: {
+        ...this.data[key],
+        options
+      }
+    }
+  }
+
   onRemoveCriteriaClick(key: string, option: SelectOption) {
     const workingCriteria = this.data[key];
 
     let newData = {};
 
-    if (key === 'categories') {
-      const newCriteriOptions = this.filterOptions(workingCriteria.categories, option.value);
-
-      newData = {
-        ...this.data,
-        [key]: {
-          ...this.data[key],
-          categories: newCriteriOptions
-        }
-      }
+    if (key === ListKeys.categories || key === ListKeys.markets) {
+      newData = this.updateCriteria(workingCriteria, option, key);
     } else {
       newData = {
         ...this.data,
@@ -67,5 +78,12 @@ export class SelectedCriteriaDialogComponent implements OnInit {
     this.closeDialog();
 
     this.selectedCriteriaService.update(this.data);
+  }
+
+  getStyles(key: ListKey): CriteriaValueStyles {
+    return {
+      'background': this.config[key]?.bg || this.config.default.bg,
+      'color': this.config[key]?.color  || this.config.default.color
+    }
   }
 }

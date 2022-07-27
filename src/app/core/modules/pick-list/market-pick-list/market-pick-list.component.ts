@@ -1,16 +1,18 @@
 import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, filter, map } from 'rxjs/operators';
 import { forkJoin, Subject } from 'rxjs';
-import { compose, reduce, toPairs, sort } from 'ramda';
+import * as R from 'ramda';
 
-import { SelectOption } from '../../../models/select.model';
-import { ListChangesEvent } from '../../../models/list.model';
+import { SelectOption } from '@models/select.model';
+import { ListChangesEvent } from '@models/list.model';
+import { MarketSortingOption } from '@models/sorting-options.models';
+import { SelectedCriteriaEvent } from '@models/criteries.model';
 
-import { MarketSortingOption } from '../../../models/sorting-options.models';
-import { ListKeys, ListLabels } from '../../../enums/lists.enum';
-import { MarketSortingOptionsEnum } from '../../../enums/sorting-options.enum';
-import { ListsService } from '../../../../core/services/lists/lists.service';
+import { ListKeys, ListLabels } from '@enums/lists.enum';
+import { MarketSortingOptionsEnum } from '@enums/sorting-options.enum';
+
+import { ListsService } from '@services/lists/lists.service';
+import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 type SectionKey = ListKeys.dmas | ListKeys.msas;
 type SectionLabel = ListLabels.dmas | ListLabels.msas;
@@ -23,6 +25,11 @@ interface Section {
   value: SectionKey;
   label: SectionLabel;
   selected: boolean;
+}
+
+interface MarketData {
+  options: SelectOption[];
+  market: SectionKey;
 }
 
 @Component({
@@ -64,10 +71,15 @@ export class MarketPickListComponent implements OnInit {
 
   constructor(
     private listsService: ListsService,
-    public dialog: MatDialog
+    private selectedCriteriaService: SelectedCriteriaService
   ) { }
 
   ngOnInit(): void {
+      this.fetchMarketListOptions();
+      this.listenSelectedCriteriaService();
+  }
+
+  fetchMarketListOptions(): void {
     forkJoin({
       [ListKeys.dmas]: this.listsService.getOptionsData(ListKeys.dmas),
       [ListKeys.msas]: this.listsService.getOptionsData(ListKeys.msas),
@@ -78,6 +90,22 @@ export class MarketPickListComponent implements OnInit {
       .subscribe((marketOptions: MarketOptions) => {
         this.marketOptions = marketOptions
         this.options = marketOptions[ListKeys.dmas];
+      });
+  }
+
+  listenSelectedCriteriaService(): void {
+    this.selectedCriteriaService.selectedCriteria$
+      .pipe(
+        takeUntil(this.unsubscribeAll),
+        filter(({ data }: SelectedCriteriaEvent) => data[ListKeys.markets] ),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.markets].options)
+      )
+      .subscribe((options: any) => {
+        const optionValues = this.listsService.getOptionValues(options);
+        const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
+
+        this.options = updatedOptions;
+        this.value = this.listsService.getSelectInputValue(options, ListLabels.categories);
       });
   }
 
@@ -113,16 +141,23 @@ export class MarketPickListComponent implements OnInit {
     this.width = `${ width-80 }px`;
     this.value = this.listsService.getSelectInputValue(options);
     this.borderLabel = this.getBorderLabel(options);
+
+    const marketData: MarketData = {
+      market: this.getActiveSectionKey(),
+      options,
+    }
+
+    this.change.emit({ key: ListKeys.markets, data: marketData });
   }
 
   unselectAllMarketOptions() {
-    return compose<[MarketOptions], [any, SelectOption[]][], MarketOptions>(
-      reduce<[SectionKey, SelectOption[]], any>((acc, [ key, value ]) => {
+    return R.compose<[MarketOptions], [any, SelectOption[]][], MarketOptions>(
+      R.reduce<[SectionKey, SelectOption[]], any>((acc, [ key, value ]) => {
         acc[key] = this.listsService.updateOptionsWithSelected(value, []);
 
         return acc;
       }, {}),
-      toPairs
+      R.toPairs
     )(this.marketOptions);
   }
 
@@ -133,6 +168,13 @@ export class MarketPickListComponent implements OnInit {
     this.options = this.marketOptions[activeSectionKey]
     this.borderLabel = '';
     this.value = ListLabels.markets;
+
+    const marketData: MarketData = {
+      market: this.getActiveSectionKey(),
+      options: [],
+    }
+
+    this.change.emit({ key: ListKeys.markets, data: marketData });
   }
 
   toggleOpenSortingMenu(event: MouseEvent): void {
@@ -142,7 +184,7 @@ export class MarketPickListComponent implements OnInit {
   }
 
   sortByAlphabeticalOrder(options: SelectOption[], prop: string): SelectOption[] {
-    return sort(
+    return R.sort(
       (a, b) => {
         if(a[prop] < b[prop]) {
           return -1;
@@ -159,7 +201,7 @@ export class MarketPickListComponent implements OnInit {
   }
 
   sortByNumericalOrder(options: SelectOption[], prop: string): SelectOption[] {
-    return sort(
+    return R.sort(
       (a, b) => a[prop] - b[prop],
       options
     );
@@ -186,13 +228,13 @@ export class MarketPickListComponent implements OnInit {
 
     const sortOptions = sortingStrategies[sort];
   
-    return compose<[MarketOptions], [any, SelectOption[]][], MarketOptions>(
-      reduce<[SectionKey, SelectOption[]], any>((acc, [ key, value ]) => {
+    return R.compose<[MarketOptions], [any, SelectOption[]][], MarketOptions>(
+      R.reduce<[SectionKey, SelectOption[]], any>((acc, [ key, value ]) => {
         acc[key] = sortOptions(value)
 
         return acc;
       }, {}),
-      toPairs
+      R.toPairs
     )(marketOptions)
   }
 
