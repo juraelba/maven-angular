@@ -1,0 +1,18 @@
+<app-select
+  [multiple]="true"
+  [grouping]="false"
+  [allSelectedVisible]="false"
+  [sort]="false"
+  placeholder="Bands"
+  [options]="options"
+  [borderLabel]="borderLabel"
+  (applyChanges)="onApplyChanges($event)"
+  (clear)="onClear()"
+  #selectComponent
+>
+  <div dropdownHeaderContainer #dropdownHeaderContainer>
+    <div class="flex justify-between items-center mb-5 cursor-pointer text-black text-base font-medium">
+      Bands
+    </div>
+  </div>
+</app-select>

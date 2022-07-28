@@ -10,11 +10,11 @@ import { ListKeys } from '@enums/lists.enum';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 @Component({
-  selector: 'app-media-type-pick-list',
-  templateUrl: './media-type-pick-list.component.html',
-  styleUrls: ['./media-type-pick-list.component.scss']
+  selector: 'app-networks-pick-list',
+  templateUrl: './networks-pick-list.component.html',
+  styleUrls: ['./networks-pick-list.component.scss']
 })
-export class MediaTypePickListComponent implements OnInit {
+export class NetworksPickListComponent implements OnInit {
   @Output() change: EventEmitter<ListChangesEvent> = new EventEmitter();
 
   borderLabel: string;
@@ -27,7 +27,7 @@ export class MediaTypePickListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listsService.getOptionsData(ListKeys.mediatypes2)
+    this.listsService.getOptionsData(ListKeys.tvnetworks)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
@@ -38,14 +38,14 @@ export class MediaTypePickListComponent implements OnInit {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.mediatypes2]),
-        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.mediatypes2])
+        filter(({ data }: SelectedCriteriaEvent) => data[ListKeys.tvnetworks]),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.tvnetworks])
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
             
-        this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.mediatypes2);
+        this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.tvnetworks);
         this.options = updatedOptions;
       });
   }
@@ -60,9 +60,9 @@ export class MediaTypePickListComponent implements OnInit {
     const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
     this.options = updatedOptions;
-    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.mediatypes2);
+    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.tvnetworks);
 
-    this.change.emit({ key: ListKeys.mediatypes2, data: [ ...options ] });
+    this.change.emit({ key: ListKeys.tvnetworks, data: [ ...options ] });
   }
 
   onSelectClick(event: MouseEvent) {
@@ -73,6 +73,7 @@ export class MediaTypePickListComponent implements OnInit {
     this.options = this.listsService.updateOptionsWithSelected(this.options, []);
     this.borderLabel = '';
 
-    this.change.emit({ key: ListKeys.mediatypes2, data: [] });
+    this.change.emit({ key: ListKeys.tvnetworks, data: [] });
   }
+
 }

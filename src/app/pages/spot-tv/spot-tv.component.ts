@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { map } from 'rxjs/operators';
+
+import { Criteries } from '@models/criteries.model';
+import { ListChangesEvent } from '@models/list.model';
+import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 @Component({
   selector: 'app-spot-tv',
@@ -6,10 +11,24 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./spot-tv.component.scss']
 })
 export class SpotTvComponent implements OnInit {
+  criteries: Criteries = {};
 
-  constructor() { }
+  constructor(
+    private selectedCriteriService: SelectedCriteriaService
+  ) { }
 
   ngOnInit(): void {
+    this.selectedCriteriService.selectedCriteria$
+      .pipe(
+        map(({ data }) => data)
+      )
+      .subscribe((data: Criteries) => {
+        this.criteries = data;
+      })
+  }
+  
+  onChange({ key, data }: ListChangesEvent) {
+    this.criteries[key] = data;
   }
 
 }

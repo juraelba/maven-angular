@@ -1,4 +1,4 @@
-<app-search title="Spot TV Search">
+<app-search title="Spot TV Search" [criteries]="criteries">
   <div class="grid-container grid gap-5 mb-[40px]">
     <app-input
       class="col-start-1 col-end-3"
@@ -15,8 +15,8 @@
     </div>
 
     <app-select placeholder="Markets (DMA)"></app-select>
-    <app-select placeholder="Networks"></app-select>
-    <app-select placeholder="Bands"></app-select>
-    <app-select placeholder="Owners"></app-select>
+    <app-networks-pick-list (change)="onChange($event)"></app-networks-pick-list>
+    <app-bands-pick-list (change)="onChange($event)"></app-bands-pick-list>
+    <app-owners-pick-list (change)="onChange($event)"></app-owners-pick-list>
   </div>
 </app-search>

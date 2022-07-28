@@ -16,6 +16,8 @@ import { DiverseTargetPickListComponent } from './diverse-target-pick-list/diver
 import { LanguagePickListComponent } from './language-pick-list/language-pick-list.component';
 import { MarketPickListComponent } from './market-pick-list/market-pick-list.component';
 import { SortingMenuComponent } from './sorting-menu/sorting-menu.component';
+import { BandsPickListComponent } from './bands-pick-list/bands-pick-list.component';
+import { NetworksPickListComponent } from './networks-pick-list/networks-pick-list.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { SortingMenuComponent } from './sorting-menu/sorting-menu.component';
     DiverseTargetPickListComponent,
     LanguagePickListComponent,
     MarketPickListComponent,
-    SortingMenuComponent
+    SortingMenuComponent,
+    BandsPickListComponent,
+    NetworksPickListComponent
   ],
   imports: [
     CommonModule,
@@ -45,7 +49,9 @@ import { SortingMenuComponent } from './sorting-menu/sorting-menu.component';
     OwnersPickListComponent,
     DiverseTargetPickListComponent,
     LanguagePickListComponent,
-    MarketPickListComponent
+    MarketPickListComponent,
+    BandsPickListComponent,
+    NetworksPickListComponent
   ]
 })
 export class PickListModule { }

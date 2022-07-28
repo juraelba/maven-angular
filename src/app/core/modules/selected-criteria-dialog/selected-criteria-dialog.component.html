@@ -40,10 +40,10 @@
           >
             <span>{{ criteria.label }}</span>
             <app-svg-icon
-              *ngIf="config[criteriaPair[0]].canDelete"
+              *ngIf="config[criteriaPair[0]]?.canDelete || config.default.canDelete"
               class="cursor-pointer ml-[5px]"
               name="cross"
-              [stroke]="config[criteriaPair[0]].color"
+              [stroke]="config[criteriaPair[0]]?.color|| config.default.color"
             >
             </app-svg-icon>
           </button>
@@ -84,10 +84,10 @@
   >
     <span>{{ criteria.label }}</span>
     <app-svg-icon
-      *ngIf="config[criteriaPair[0]].canDelete"
+      *ngIf="config[criteriaPair[0]]?.canDelete || config.default.canDelete"
       class="cursor-pointer ml-[5px]"
       name="cross"
-      [stroke]="config[criteriaPair[0]].color"
+      [stroke]="config[criteriaPair[0]]?.color|| config.default.color"
     >
     </app-svg-icon>
   </button>

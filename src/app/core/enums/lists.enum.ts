@@ -6,7 +6,9 @@ export enum ListLabels {
   languages2 = 'Language',
   markets = 'Markets',
   dmas = "DMA",
-  msas = "MSA"
+  msas = "MSA",
+  tvbands = 'Bands',
+  tvnetworks = 'Networks'
 };
 
 export enum ListKeys {
@@ -17,7 +19,9 @@ export enum ListKeys {
   languages2 = 'languages2',
   markets = 'markets',
   dmas = 'dmas',
-  msas = 'msas'
+  msas = 'msas',
+  tvbands = 'tvbands',
+  tvnetworks = 'tvnetworks'
 }
 
 export enum ListUrls {
@@ -27,5 +31,7 @@ export enum ListUrls {
   diversetargets = '/lists/diversetargets/',
   languages2 = '/lists/languages2/',
   dmas = '/lists/dmas/',
-  msas = '/lists/msas/'
+  msas = '/lists/msas/',
+  tvbands = '/lists/tvbands/',
+  tvnetworks = '/lists/tvnetworks/'
 }
