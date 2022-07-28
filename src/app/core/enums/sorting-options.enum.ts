@@ -9,3 +9,8 @@ export enum MarketSortinOptionsLabelsEnum {
   rank = 'Rank',
   household = 'Household'
 }
+
+export enum SortMethodsEnum {
+  ascend = 'ascend',
+  descend = 'descend'
+}

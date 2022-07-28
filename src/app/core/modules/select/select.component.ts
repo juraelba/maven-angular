@@ -34,6 +34,7 @@ export class SelectComponent implements OnInit {
   @Input() borderLabel: string;
   @Input() panelOpen: boolean;
   @Input() grouping: boolean = true;
+  @Input() customGrouping: boolean = false;
   @Input() valueContainerWidth: string = '100%';
   @Input() sort: boolean = true;
 
@@ -95,7 +96,7 @@ export class SelectComponent implements OnInit {
   }
 
   setOptions(options: SelectOption[]): void {
-    const transformedOptions = this.transformOptions(options);
+    const transformedOptions = this.customGrouping ? options: this.transformOptions(options);
     const sortedOptions = this.sort ? this.sortOptionsByLabel(transformedOptions) : transformedOptions;
 
     this.options = [ ...sortedOptions ];
