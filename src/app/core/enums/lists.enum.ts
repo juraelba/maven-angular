@@ -8,7 +8,8 @@ export enum ListLabels {
   dmas = "DMA",
   msas = "MSA",
   tvbands = 'Bands',
-  tvnetworks = 'Networks'
+  tvnetworks = 'Networks',
+  dmamarkets = 'Markets (DMA)'
 };
 
 export enum ListKeys {
@@ -21,7 +22,8 @@ export enum ListKeys {
   dmas = 'dmas',
   msas = 'msas',
   tvbands = 'tvbands',
-  tvnetworks = 'tvnetworks'
+  tvnetworks = 'tvnetworks',
+  dmamarkets = 'dmamarkets'
 }
 
 export enum ListUrls {

@@ -1,5 +1,6 @@
 
 import { ListKeys, ListUrls } from '../enums/lists.enum';
+import { SelectOption } from './select.model';
 
 interface ListItem {
   id: string;
@@ -27,5 +28,11 @@ export interface ListChangesEvent {
   data: any
 }
 
+type SectionKey = ListKeys.dmas | ListKeys.msas;
 
+export interface MarketData {
+  options: SelectOption[];
+  market: SectionKey;
+}
 
+export type Ranges = [ string, number, number ];

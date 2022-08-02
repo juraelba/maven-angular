@@ -3,12 +3,17 @@ import { Injectable } from '@angular/core';
 import { Observable, of, forkJoin } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { DateTime } from 'luxon';
-import { isEmpty } from 'ramda';
+import * as R from 'ramda';
 
 import { environment } from '../../../../environments/environment';
-import { List, ListInfo, ListKey, ListUrlsKey } from '../../models/list.model';
-import { ListUrls, ListLabels } from '../../enums/lists.enum';
-import { SelectOption } from '../../models/select.model';
+
+import { List, ListInfo, ListKey, ListUrlsKey, Ranges } from '@models/list.model';
+import { SelectOption } from '@models/select.model';
+import { MarketSortingOption, SortMethods } from '@models/sorting-options.models';
+
+import { ListUrls, ListLabels } from '@enums/lists.enum';
+import { MarketSortingOptionsEnum, SortMethodsEnum } from '@enums/sorting-options.enum';
+
 import { LocalStorageService } from '../local-storage/local-storage.service';
 
 interface ListOptionsFork {
@@ -41,7 +46,7 @@ export class ListsService {
     return this.getListData(key)
       .pipe(
         switchMap((list: List) => {
-          const list$ = isEmpty(list)
+          const list$ = R.isEmpty(list)
             ? this.fetchListData(key)
             : of(list)
 
@@ -123,5 +128,143 @@ export class ListsService {
     return [ label, ...optionsLabels ]
       .filter((label) => label)
       .join(', ');
+  }
+
+  private getGroupRangeLetter(value: number, ranges: Ranges[]): string {
+    return ranges.reduce<string>((acc, [ key, min, max ]) => {
+      return value >= min && value <= max ? key : acc;
+    }, '');
+  }
+
+  private addHouseholdSortingGroupletter(options: SelectOption[]): SelectOption[] {
+    const ranges: Ranges[] = [
+      [ '2.5M+', 2_500_000, Infinity ],
+      [ '1M - 2.5M', 1_000_000, 2_500_000 ],
+      [ '500K - 1M ', 500_000, 1_000_000 ],
+      [ '100K - 500K', 100_000, 500_000 ],
+      [ '<100K', -Infinity, 100_000 ]
+    ];
+
+    return options.map((option) => {
+      const groupLetter = this.getGroupRangeLetter(option.households, ranges);
+
+      return {
+        ...option,
+        groupLetter
+      }
+    })
+  }
+
+  private addNameSortingGroupLetter(options: SelectOption[]) {
+    return options.map((option) => {
+      const groupLetter = option.label[0].toUpperCase();
+
+      return {
+        ...option,
+        groupLetter
+      }
+    });
+  }
+
+  private defineRankRanges(options: SelectOption[]): Ranges[] {
+    const rankRanges: Ranges[] = [
+      ['1-10', 1, 10],
+      ['11-50', 11, 50],
+    ];
+
+    const allRanks: number[] = options.map(({ rank }) => rank);
+    const maxRank = Math.max(...allRanks);
+    
+    let minRank = 0;
+    const step = 50;
+
+    const calculateRanksRanges = (): void => {
+      if(minRank >= maxRank) {
+        return;
+      }
+
+      minRank = minRank + step;
+      const minRange = 1 + minRank;
+      const maxRange = minRank + step;
+
+      const key = `${ minRange }-${ maxRange }`;
+
+      rankRanges.push([key, minRange, maxRange]);
+
+      calculateRanksRanges();
+    }
+
+    calculateRanksRanges();
+
+    return rankRanges;
+  }
+
+  private addRankSortingGroupLetter(options: SelectOption[]): SelectOption[] {
+    const rankRanges = this.defineRankRanges(options);
+  
+    return options.map((option) => {
+      const groupLetter = this.getGroupRangeLetter(option.rank, rankRanges);
+
+      return {
+        ...option,
+        groupLetter
+      }
+    });
+  }
+
+  addGroupingLetter(options: SelectOption[], sort: MarketSortingOption): SelectOption[] {
+    const strategy = {
+      [MarketSortingOptionsEnum.name]: this.addNameSortingGroupLetter.bind(this),
+      [MarketSortingOptionsEnum.rank]: this.addRankSortingGroupLetter.bind(this),
+      [MarketSortingOptionsEnum.household]: this.addHouseholdSortingGroupletter.bind(this),
+    }
+
+    return strategy[sort](options);
+  }
+
+  private sortByAlphabeticalOrder(options: SelectOption[], prop: string): SelectOption[] {
+    return R.sort(
+      (a, b) => {
+        if(a[prop] < b[prop]) {
+          return -1;
+        }
+  
+        if(a[prop] > b[prop]) {
+          return 1;
+        }
+  
+        return 0;
+      },
+      options
+    );
+  }
+
+  private sortByNumericalOrder(options: SelectOption[], prop: string, order: SortMethods = SortMethodsEnum.ascend): SelectOption[] {
+    return R.sort(
+      (a, b) => order === SortMethodsEnum.ascend ? a[prop] - b[prop] : b[prop] - a[prop],
+      options
+    );
+  }
+
+  private sortByName(options: SelectOption[]): SelectOption[] {
+    return this.sortByAlphabeticalOrder(options, 'label');
+  }
+
+  private sortByRank(options: SelectOption[]): SelectOption[] {
+    return this.sortByNumericalOrder(options, 'rank');
+  }
+
+  private sortByHousehold(options: SelectOption[]): SelectOption[] {
+    return this.sortByNumericalOrder(options, 'households', SortMethodsEnum.descend);
+  }
+
+  sortOptions(options: SelectOption[], sort: MarketSortingOption): SelectOption[] {
+    const sortingStrategies = {
+      [MarketSortingOptionsEnum.name]: this.sortByName.bind(this),
+      [MarketSortingOptionsEnum.rank]: this.sortByRank.bind(this),
+      [MarketSortingOptionsEnum.household]: this.sortByHousehold.bind(this),
+    };
+
+    return sortingStrategies[sort](options);
   }
 }

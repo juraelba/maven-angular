@@ -14,7 +14,7 @@
       <span class="ml-[10px] font-lato text-pri-black">Include non-comms</span>
     </div>
 
-    <app-select placeholder="Markets (DMA)"></app-select>
+    <app-dma-markets (change)="onChange($event)"></app-dma-markets>
     <app-networks-pick-list (change)="onChange($event)"></app-networks-pick-list>
     <app-bands-pick-list (change)="onChange($event)"></app-bands-pick-list>
     <app-owners-pick-list (change)="onChange($event)"></app-owners-pick-list>

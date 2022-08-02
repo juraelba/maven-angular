@@ -1,34 +1,19 @@
 <app-select
   [multiple]="true"
-  [options]="options"
+  [grouping]="true"
   [search]="true"
   [sort]="false"
-  [grouping]="true"
   [customGrouping]="true"
+  placeholder="Markets (DMA)"
+  [options]="options"
   [borderLabel]="borderLabel"
-  placeholder="Markets"
   (applyChanges)="onApplyChanges($event)"
   (clear)="onClear()"
-  (closeMenu)="onMenuClose()"
   #selectComponent
 >
-  <div valueContainer #valueContainer class="flex font-lato items-center">
-    <div
-      [ngStyle]="{ 'width': width }"
-      class="truncate"
-    >{{ value }}</div>
-  </div>
-
   <div dropdownHeaderContainer #dropdownHeaderContainer>
-    <div class="flex border-b border-b-1 border-gray mb-[15px] font-lato text-pri-black">
-      <div
-        *ngFor="let section of sections"
-        (click)="setActiveSection($event, section)"
-        class="cursor-pointer px-[15px] py-[5px]"
-        [ngClass]="{ 'border-b-2 border-regal-blue': section.selected }"
-      >
-        {{ section.label }}
-      </div>
+    <div class="flex justify-between items-center mb-5 cursor-pointer text-black text-base font-medium">
+      Markets (DMA)
     </div>
   </div>
 
