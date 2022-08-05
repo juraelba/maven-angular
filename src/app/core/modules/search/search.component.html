@@ -11,9 +11,28 @@
       <app-selected-criteria [criteries]="criteries"></app-selected-criteria>
     </div>
   
-    <button class="text-white bg-regal-blue text-xl font-medium leading-6 py-4 px-[25px] shadow-button rounded-md border-0 absolute right-2/4 translate-y-2/4 translate-x-2/4 bottom-0">
+    <button
+      class="text-white bg-regal-blue text-xl font-medium leading-6 py-4 px-[25px] shadow-button rounded-md border-0 absolute right-2/4 translate-y-2/4 translate-x-2/4 bottom-0"
+      (click)="onSearchButtonClick($event)"
+    >
       Search
     </button>
   </div>
+
+  <div *ngIf="isFetched && totalRows" class="mt-[50px]">
+    <div class="flex justify-between mb-[20px]">
+      <span class="text-pri-gray font-lato">Result: {{ totalRows }}</span>
+      <button class="flex items-center">
+        <img src="/assets/images/icons/download-arrow.svg" alt="download-arrow" />
+        <span class="ml-[10px] text-regal-blue text-base font-mont font-medium">Excel</span>
+      </button>
+    </div>
+    <app-table [data]="tableData" [config]="config"></app-table>
+  </div>
+
+  <div *ngIf="isFetched && !totalRows">
+    No Data forund
+  </div>
+
 </div>
 

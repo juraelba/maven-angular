@@ -10,6 +10,8 @@ import { SlideToggleModule  } from '../slide-toggle/slide-toggle.module';
 import { SvgIconModule } from '../svg-icon/svg-icon.module';
 
 import { ListsService } from '@services/lists/lists.service';
+import { UtilsService } from '@services/utils/utils.service';
+
 import { MediaTypePickListComponent } from './media-type-pick-list/media-type-pick-list.component';
 import { OwnersPickListComponent } from './owners-pick-list/owners-pick-list.component';
 import { DiverseTargetPickListComponent } from './diverse-target-pick-list/diverse-target-pick-list.component';
@@ -43,7 +45,8 @@ import { DmaMarketsComponent } from './dma-markets/dma-markets.component';
     SvgIconModule
   ],
   providers: [
-    ListsService
+    ListsService,
+    UtilsService
   ],
   exports: [
     CategoryPickListComponent,

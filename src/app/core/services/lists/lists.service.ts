@@ -15,6 +15,7 @@ import { ListUrls, ListLabels } from '@enums/lists.enum';
 import { MarketSortingOptionsEnum, SortMethodsEnum } from '@enums/sorting-options.enum';
 
 import { LocalStorageService } from '../local-storage/local-storage.service';
+import { UtilsService } from '../utils/utils.service';
 
 interface ListOptionsFork {
   [key: string]: Observable<List>
@@ -26,7 +27,8 @@ interface ListOptionsFork {
 export class ListsService {
   constructor(
     private http: HttpClient,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private utilsService: UtilsService
   ) { }
 
   fetchListData(key: ListUrlsKey): Observable<List> {
@@ -222,23 +224,6 @@ export class ListsService {
     return strategy[sort](options);
   }
 
-  private sortByAlphabeticalOrder(options: SelectOption[], prop: string): SelectOption[] {
-    return R.sort(
-      (a, b) => {
-        if(a[prop] < b[prop]) {
-          return -1;
-        }
-  
-        if(a[prop] > b[prop]) {
-          return 1;
-        }
-  
-        return 0;
-      },
-      options
-    );
-  }
-
   private sortByNumericalOrder(options: SelectOption[], prop: string, order: SortMethods = SortMethodsEnum.ascend): SelectOption[] {
     return R.sort(
       (a, b) => order === SortMethodsEnum.ascend ? a[prop] - b[prop] : b[prop] - a[prop],
@@ -247,7 +232,7 @@ export class ListsService {
   }
 
   private sortByName(options: SelectOption[]): SelectOption[] {
-    return this.sortByAlphabeticalOrder(options, 'label');
+    return this.utilsService.sortByAlphabeticalOrder<SelectOption>(options, SortMethodsEnum.ascend, ['label']);
   }
 
   private sortByRank(options: SelectOption[]): SelectOption[] {

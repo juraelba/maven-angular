@@ -27,7 +27,8 @@
       "@services/*": ["./src/app/core/services/*"],
       "@enums/*": ["./src/app/core/enums/*"],
       "@models/*": ["./src/app/core/models/*"],
-      "@modules/*": ["./src/app/core/modules/*"]
+      "@modules/*": ["./src/app/core/modules/*"],
+      "@environments/*": ["./src/environments/*"]
     }
   },
   "angularCompilerOptions": {

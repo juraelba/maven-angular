@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { SearchMenuBarModule } from '../search-menu-bar/search-menu-bar.module';
 import { SelectedCriteriaModule } from '../selected-criteria/selected-criteria.module';
+import { TableModule } from '../table/table.module';
 
 import { SearchComponent } from './search.component';
 
@@ -13,7 +14,8 @@ import { SearchComponent } from './search.component';
   imports: [
     CommonModule,
     SearchMenuBarModule,
-    SelectedCriteriaModule
+    SelectedCriteriaModule,
+    TableModule
   ],
   exports: [
     SearchComponent
