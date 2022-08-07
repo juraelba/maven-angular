@@ -8,6 +8,7 @@ import { SortMethodsEnum } from '@enums/sorting-options.enum';
 
 import { UtilsService } from '@services/utils/utils.service';
 
+
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
@@ -67,5 +68,34 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   onDrop(event: CdkDragDrop<Element, Element, Column>): void {
     moveItemInArray(this.data.columns, event.previousIndex, event.currentIndex);
+  }
+
+  updateColumnsWidth({ id }: Column, diff: number): Column[] {
+    return this.data.columns.reduce<Column[]>((acc, column) => {
+      const width = column.width + diff;
+      const columnWidth = column.id === id && width > 150 ? width : column.width
+    
+      acc.push({
+        ...column,
+        width: columnWidth
+      });
+
+      return acc;
+    }, []);
+  }
+
+  onResizeEnd(event: number, column: any): void {
+    const columns = this.updateColumnsWidth(column, event);
+
+    this.data.columns = columns;
+  }
+
+  getColumnCellStyles(column: Column): { [key: string]: string } {
+    const width = `${ column.width }px`;
+  
+    return {
+      width,
+      minWidth: width
+    }
   }
 }

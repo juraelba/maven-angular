@@ -1,33 +1,36 @@
 <div class="table-width overflow-auto border rounded-md border-light-gray">
   <table #table class="border-0" style="table-layout:fixed;">
-    <thead class="">
-      <tr class="h-[45px]" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDrop($event)">
+    <thead class="header">
+      <tr class="h-[45px] header__row relative" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDrop($event)">
         <th
           *ngFor="let column of data.columns"
-          class="p-0 bg-light-grey border-b border-light-gray h-[45px]"
-          width="200"
+          class="p-0 bg-light-grey border-b border-light-gray h-[45px] header__cell"
+          [ngStyle]="getColumnCellStyles(column)"
           cdkDrag
         >
-          <div class="px-[20px] flex items-center justify-between">
-            <div
-              class="text-pri-black font-lato font-bold text-sm cursor-move flex flex-1 items-center"
-              cdkDragHandle
-            >
-              {{ column.label }}
+          <div class="flex justify-between h-full">
+            <div class="mx-[20px] flex items-center justify-between">
+              <div
+                class="text-pri-black font-lato font-bold text-sm cursor-move flex flex-1 items-center"
+                cdkDragHandle
+              >
+                {{ column.label }}
+              </div>
+              <div class="flex">
+                <img
+                  class="mr-[10px] cursor-pointer"
+                  src="/assets/images/icons/long-arrow-down.svg"
+                  alt="long-arrow-down"
+                  (click)="onSortClick($event, column)"
+                />
+                <img
+                  class="cursor-pointer"
+                  src="/assets/images/icons/filter.svg"
+                  alt="filter"
+                />
+              </div>
             </div>
-            <div class="flex">
-              <img
-                class="mr-[10px] cursor-pointer"
-                src="/assets/images/icons/long-arrow-down.svg"
-                alt="long-arrow-down"
-                (click)="onSortClick($event, column)"
-              />
-              <img
-                class="cursor-pointer"
-                src="/assets/images/icons/filter.svg"
-                alt="filter"
-              />
-            </div>
+            <app-resizer (resizeEnd)="onResizeEnd($event, column)" [column]="column" [columns]="data.columns"></app-resizer>
           </div>
         </th>
       </tr>
@@ -35,7 +38,11 @@
     <tbody>
       <cdk-virtual-scroll-viewport itemSize="20" class="h-[340px]" [ngStyle]="tableBodyStyles">
         <tr *cdkVirtualFor="let row of data.rows" class="h-[45px]">
-          <td *ngFor="let column of data.columns" class="px-[20px] border-b border-light-gray align-middle" width="200">
+          <td
+            *ngFor="let column of data.columns"
+            class="px-[20px] border-b border-light-gray align-middle"
+            [ngStyle]="getColumnCellStyles(column)"
+          >
             <div [ngStyle]="this.getCellStyles(column.id)">{{ row.data[column.id] }}</div>
           </td>
         </tr>

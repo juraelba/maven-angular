@@ -7,51 +7,63 @@ export const RECAPTCHA_KEY = '6LeuNgMTAAAAAMQ0zGESyK_KWbrf97s3vyVychg_';
 const MEDIA_SEARCH_COLUMNS = [
   {
     id: 'name',
-    label: 'Name'
+    label: 'Name',
+    width: 200
   },
   {
     id: 'mavenid',
-    label: 'MAVENID'
+    label: 'MAVENID',
+    width: 200
   },
   {
     id: 'subType',
-    label: 'Sub-Type'
+    label: 'Sub-Type',
+    width: 200
   },
   {
     id: 'market',
-    label: 'Market'
+    label: 'Market',
+    width: 200
   },
   {
     id: 'owner',
-    label: 'Owner'
+    label: 'Owner',
+    width: 200
   },
   {
     id: 'parent',
-    label: 'ParentOwner'
+    label: 'ParentOwner',
+    width: 200
   },
   {
     id: 'slogan',
-    label: 'Slogan'
+    label: 'Slogan',
+    width: 200
   },
   {
     id: 'categories',
-    label: 'Categories'
+    label: 'Categories',
+    width: 200
   },
   {
     id: 'website',
-    label: 'Website'
+    label: 'Website',
+    width: 200
   },
   {
     id: 'partners',
-    label: 'Media Partner'
+    label: 'Media Partner',
+    width: 200
   },
   {
     id: 'fullPage',
-    label: 'Full Page 4C'
+    label: 'Full Page 4C',
+    width: 200
   },
   {
     id: 'circulation',
-    label: 'Circulation'
+    label: 'Circulation',
+    width: 200
   },
 ];
 

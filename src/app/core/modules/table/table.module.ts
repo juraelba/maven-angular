@@ -7,6 +7,8 @@ import { UtilsService } from '@services/utils/utils.service';
 
 import { TableComponent } from './table.component';
 
+import { ResizerModule } from '../resizer/resizer.module';
+
 @NgModule({
   declarations: [
     TableComponent
@@ -14,7 +16,8 @@ import { TableComponent } from './table.component';
   imports: [
     CommonModule,
     ScrollingModule,
-    DragDropModule
+    DragDropModule,
+    ResizerModule
   ],
   providers: [
     UtilsService

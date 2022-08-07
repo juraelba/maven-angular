@@ -11,6 +11,7 @@ export interface Row {
 export interface Column {
   id: string;
   label: string;
+  width: number;
 }
 
 export interface Table {
