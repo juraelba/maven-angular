@@ -390,7 +390,7 @@ export class SearchService {
   transformSearchResultToTableData(searchResult: SearchResultItem[], key: SearchKey): Table {
     const columns = SEARCH_COLUMNS[key] || [];
 
-    const rows = MOCK.reduce<Row[]>((acc, cur) => {
+    const rows = searchResult.reduce<Row[]>((acc, cur) => {
       const row = {
         id: cur.mavenid,
         data: cur

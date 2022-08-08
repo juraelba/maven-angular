@@ -95,7 +95,8 @@ export class TableComponent implements OnInit, AfterViewInit {
   
     return {
       width,
-      minWidth: width
+      minWidth: width,
+      maxWidth: width
     }
   }
 }

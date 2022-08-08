@@ -36,8 +36,8 @@
       </tr>
     </thead>
     <tbody>
-      <cdk-virtual-scroll-viewport itemSize="20" class="h-[340px]" [ngStyle]="tableBodyStyles">
-        <tr *cdkVirtualFor="let row of data.rows" class="h-[45px]">
+      <cdk-virtual-scroll-viewport itemSize="30" class="h-[340px]" [ngStyle]="tableBodyStyles">
+        <tr *cdkVirtualFor="let row of data.rows; templateCacheSize: 0" class="h-[45px]">
           <td
             *ngFor="let column of data.columns"
             class="px-[20px] border-b border-light-gray align-middle"

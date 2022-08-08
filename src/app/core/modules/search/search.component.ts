@@ -21,7 +21,7 @@ export class SearchComponent implements OnInit {
 
   tableData: Table = { rows: [], columns: [] };
   totalRows: number = 0;
-  isFetched: boolean = true;
+  isFetched: boolean = false;
   config: TableConfig = {}
 
   constructor(
@@ -35,18 +35,15 @@ export class SearchComponent implements OnInit {
   onSearchButtonClick(event: MouseEvent): void {
     event.stopPropagation();
 
-    this.tableData = this.searchService.transformSearchResultToTableData([], this.key);
-    this.totalRows = 3
-
-    // this.searchService.createSearch(this.criteries, this.key)
-    //   .pipe(
-    //     switchMap(({ id }: any) => this.searchService.executeSearch(id))
-    //   )
-    //   .subscribe((data) => {
-    //     this.totalRows = data.length;
-    //     this.isFetched = true;
-    //     this.tableData = this.searchService.transformSearchResultToTableData(data, this.key);
-    //     console.log(this.tableData, 'response');
-    //   })
+    this.searchService.createSearch(this.criteries, this.key)
+      .pipe(
+        switchMap(({ id }: any) => this.searchService.executeSearch(id))
+      )
+      .subscribe((data) => {
+        this.totalRows = data.length;
+        this.isFetched = true;
+        this.tableData = this.searchService.transformSearchResultToTableData(data, this.key);
+        console.log(this.tableData, 'response');
+      })
   }
 }
