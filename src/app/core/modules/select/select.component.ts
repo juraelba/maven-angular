@@ -48,6 +48,7 @@ export class SelectComponent implements OnInit {
   @ContentChild('valueContainer') valueContainer: ElementRef;
   @ContentChild('dropdownHeaderContainer') dropdownHeaderContainer: ElementRef;
   @ContentChild('indicators') indicators: ElementRef;
+  @ContentChild('selectInputTemplate') selectInputTemplate: ElementRef;
 
   inputChange$ = new Subject<string>();
   unsubscribeAll: Subject<null> = new Subject<null>();

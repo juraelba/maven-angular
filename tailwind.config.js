@@ -22,7 +22,8 @@ module.exports = {
         "light-grey": "#F8F8FE",
         "gray": "#D7D7DC",
         "pri-gray": "#797979",
-        "violet": "#9DA4EE"
+        "violet": "#9DA4EE",
+        "light-blue": "#E4F2FF"
       },
       fontFamily: {
         mont: ["Montserrat"],

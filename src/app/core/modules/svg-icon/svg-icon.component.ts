@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class SvgIconComponent implements OnInit {
   @Input() name: string;
   @Input() stroke: string;
+  @Input() fill: string;
 
   constructor() { }
 

@@ -23,11 +23,14 @@
                   alt="long-arrow-down"
                   (click)="onSortClick($event, column)"
                 />
-                <img
-                  class="cursor-pointer"
-                  src="/assets/images/icons/filter.svg"
-                  alt="filter"
-                />
+                <app-column-filter
+                  [column]="column"
+                  [filterData]="groupedFilterData[column.id]"
+                  [panelOpen]="column.id === columnFilterId"
+                  (openFilter)="onOpenFilter($event)"
+                  (closeFilter)="onCloseFilter()"
+                >
+                </app-column-filter>
               </div>
             </div>
             <app-resizer (resizeEnd)="onResizeEnd($event, column)" [column]="column" [columns]="data.columns"></app-resizer>

@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { compose, toPairs, reduce, uniq } from 'ramda';
 
 import { Table, TableConfig, Styles, Column, Row } from '@models/table.model';
 import { SortMethods } from '@models/sorting-options.models';
@@ -8,6 +9,9 @@ import { SortMethodsEnum } from '@enums/sorting-options.enum';
 
 import { UtilsService } from '@services/utils/utils.service';
 
+interface Group {
+  [key: string]: any
+}
 
 @Component({
   selector: 'app-table',
@@ -22,13 +26,15 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   tableBodyStyles: any = {};
   sortedColumn: [ string, SortMethods ];
+  columnFilterId: null | string = null;
+  groupedFilterData: Group;
 
   constructor(
     private utilsService: UtilsService
   ) { }
 
   ngOnInit(): void {
-
+    this.groupedFilterData = this.groupRowData();
   }
 
   getCellStyles(columndId: string): Styles {
@@ -98,5 +104,35 @@ export class TableComponent implements OnInit, AfterViewInit {
       minWidth: width,
       maxWidth: width
     }
+  }
+
+  groupRowData(): Group {
+    return compose<Row[][], Group, any, Group>(
+      reduce<[string, any], Group>((acc, [ id, value ]) => {
+        acc[id] = uniq(value);
+
+        return acc;
+      }, {}),
+      toPairs,
+      reduce<Row, Group>((acc, { data }) => {
+        Object.entries(data).forEach(([ id, value ]) => {
+          if(acc[id] && value) {
+            acc[id].push(value);
+          } else {
+            acc[id] = [];
+          }
+        });
+  
+        return acc;
+      }, {})
+    )(this.data.rows);
+  }
+
+  onOpenFilter(id: string): void {
+    this.columnFilterId = id !== this.columnFilterId ? id : null;
+  }
+
+  onCloseFilter(): void {
+    this.columnFilterId = null;
   }
 }

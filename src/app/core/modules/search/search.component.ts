@@ -1,5 +1,4 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { switchMap } from 'rxjs/operators';
 
 import { Criteries } from '@models/criteries.model';
 import { SearchKey } from '@models/search.model';
@@ -8,6 +7,7 @@ import { Table, TableConfig } from '@models/table.model';
 import { SearchService } from '@services/search/search.service';
 
 import { SEARCH_COLUMNS_CONFIG } from '../../data/constants';
+import { MOCK } from '../../data/mock';
 
 @Component({
   selector: 'app-search',
@@ -35,15 +35,19 @@ export class SearchComponent implements OnInit {
   onSearchButtonClick(event: MouseEvent): void {
     event.stopPropagation();
 
-    this.searchService.createSearch(this.criteries, this.key)
-      .pipe(
-        switchMap(({ id }: any) => this.searchService.executeSearch(id))
-      )
-      .subscribe((data) => {
-        this.totalRows = data.length;
-        this.isFetched = true;
-        this.tableData = this.searchService.transformSearchResultToTableData(data, this.key);
-        console.log(this.tableData, 'response');
-      })
+    this.tableData = this.searchService.transformSearchResultToTableData(MOCK, this.key);
+    this.totalRows = 10;
+    this.isFetched = true;
+
+    // this.searchService.createSearch(this.criteries, this.key)
+    //   .pipe(
+    //     switchMap(({ id }: any) => this.searchService.executeSearch(id))
+    //   )
+    //   .subscribe((data) => {
+    //     this.totalRows = data.length;
+    //     this.isFetched = true;
+    //     this.tableData = this.searchService.transformSearchResultToTableData(data, this.key);
+    //     console.log(this.tableData, 'response');
+    //   })
   }
 }

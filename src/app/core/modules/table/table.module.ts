@@ -8,6 +8,7 @@ import { UtilsService } from '@services/utils/utils.service';
 import { TableComponent } from './table.component';
 
 import { ResizerModule } from '../resizer/resizer.module';
+import { ColumnFilterModule } from '../column-filter/column-filter.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ResizerModule } from '../resizer/resizer.module';
     CommonModule,
     ScrollingModule,
     DragDropModule,
-    ResizerModule
+    ResizerModule,
+    ColumnFilterModule
   ],
   providers: [
     UtilsService
