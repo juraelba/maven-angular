@@ -65,10 +65,6 @@ export class MediaTypePickListComponent implements OnInit {
     this.change.emit({ key: ListKeys.mediatypes2, data: [ ...options ] });
   }
 
-  onSelectClick(event: MouseEvent) {
-    event.stopPropagation();
-  }
-
   onClear(): void {
     this.options = this.listsService.updateOptionsWithSelected(this.options, []);
     this.borderLabel = '';

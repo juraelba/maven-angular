@@ -3,6 +3,10 @@ import { map } from 'rxjs/operators';
 
 import { Criteries } from '@models/criteries.model';
 import { ListChangesEvent } from '@models/list.model';
+import { SearchKey } from '@models/search.model';
+
+import { SearchEnum } from '@enums/search.enum';
+
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 @Component({
@@ -12,6 +16,7 @@ import { SelectedCriteriaService } from '@services/selected-criteria/selected-cr
 })
 export class SpotTvComponent implements OnInit {
   criteries: Criteries = {};
+  key: SearchKey = SearchEnum.media;
 
   constructor(
     private selectedCriteriService: SelectedCriteriaService

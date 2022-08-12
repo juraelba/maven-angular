@@ -1,0 +1,77 @@
+<app-select
+  [multiple]="true"
+  [grouping]="false"
+  [search]="true"
+  [options]="filterDataOptions"
+  [borderLabel]="''"
+  [panelOpen]="panelOpen"
+  (applyChanges)="onApplyChanges($event)"
+  (clear)="onClear()"
+  (closeMenu)="onMenuClose()"
+  #selectComponent
+>
+  <div dropdownHeaderContainer #dropdownHeaderContainer>
+    <div class="flex justify-between items-center mb-[20px] cursor-pointer text-black text-base font-medium font-mont">
+      <span>{{ column.label }}</span>
+      <div class="flex">
+        <img
+          class="mr-[10px] cursor-pointer"
+          src="/assets/images/icons/pin.svg"
+          alt="pin"
+        />
+        <img
+          class="cursor-pointer"
+          src="/assets/images/icons/invisible.svg"
+          alt="invisible"
+        />
+      </div>
+    </div>
+    <div class="flex items-center justify-between mb-[10px]">
+      <div class="font-lato text-sm">Clear column filters</div>
+      <app-svg-icon name="cross" fill="#797979"></app-svg-icon>
+    </div>
+    <div
+      class="flex items-center justify-between py-[10px] px-[20px] mx-[-20px] mb-[10px] hover:bg-light-blue cursor-pointer"
+      cdkOverlayOrigin
+      #trigger="cdkOverlayOrigin"
+      (click)="toggleTextFilterOverlay()"
+      [ngClass]="{ 'bg-light-blue': isTextFilterOverlayVisible }"
+    >
+      <div class="font-lato text-sm">Text filter</div>
+      <img
+        class="cursor-pointer"
+        src="/assets/images/icons/next.svg"
+        alt="next"
+      />
+    </div>
+  </div>
+
+  <div selectInputTemplate #selectInputTemplate class="w-[16px] h-[16px]">
+    <img
+      class="cursor-pointer"
+      src="/assets/images/icons/filter.svg"
+      alt="filter"
+      (click)="toggleColumnFilter($event)"
+    />
+  </div>
+</app-select>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isTextFilterOverlayVisible"
+  [cdkConnectedOverlayOffsetX]="260"
+>
+  <div
+    class="rounded-md shadow-simple rounded-md w-full bg-white"
+  >
+    <div
+      *ngFor="let textFilter of textFilters"
+      class="text-filter-option flex items-center hover:bg-light-blue text-pri-black text-sm px-[20px] py-[10px] cursor-pointer"
+      (click)="showColumnAutoFilter($event, textFilter)"
+    >
+      <app-svg-icon [name]="textFilter.iconName"></app-svg-icon>
+      <span>{{ textFilter.label }}</span>
+    </div>
+  </div>
+</ng-template>

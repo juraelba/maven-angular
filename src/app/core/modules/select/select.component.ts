@@ -37,6 +37,7 @@ export class SelectComponent implements OnInit {
   @Input() customGrouping: boolean = false;
   @Input() valueContainerWidth: string = '100%';
   @Input() sort: boolean = true;
+  @Input() isArrowIconVisible: boolean = true;
 
   @Output() applyChanges: EventEmitter<SelectOption[]> = new EventEmitter();
   @Output() clear: EventEmitter<undefined> = new EventEmitter();
@@ -49,6 +50,7 @@ export class SelectComponent implements OnInit {
   @ContentChild('dropdownHeaderContainer') dropdownHeaderContainer: ElementRef;
   @ContentChild('indicators') indicators: ElementRef;
   @ContentChild('selectInputTemplate') selectInputTemplate: ElementRef;
+  @ContentChild('dropdownTemplate') dropdownTemplate: ElementRef;
 
   inputChange$ = new Subject<string>();
   unsubscribeAll: Subject<null> = new Subject<null>();
@@ -176,7 +178,7 @@ export class SelectComponent implements OnInit {
 
   toggleMenuOpen(event: MouseEvent): void {
     event.stopPropagation();
-    
+
     this.isOpened = !this.isOpened;
 
     this.selectInpuClick.emit({ event, isOpened: this.isOpened });
@@ -186,9 +188,29 @@ export class SelectComponent implements OnInit {
     }
   }
 
-  toogleSelectOption(event: MouseEvent, option: SelectOption): void {
+  toggleSelectOption(event: MouseEvent, option: SelectOption): void {
     event.stopPropagation();
 
+    if(this.multiple) {
+      this.toggleMultipleSelectOption(option);
+    } else {
+      this.toggleSingleSelectOption(option);
+    }
+
+  }
+
+  toggleSingleSelectOption(option: SelectOption): void {
+    this.dropdownOptions = this.dropdownOptions.map((dropdownOption) => {
+      const selected = dropdownOption.id === option.id ? true : false
+    
+      return {
+        ...dropdownOption,
+        selected
+      }
+    });
+  }
+
+  toggleMultipleSelectOption(option: SelectOption): void {
     this.dropdownOptions = this.dropdownOptions.map((dropdownOption) => {
       const selected = dropdownOption.id === option.id
         ? !option.selected

@@ -79,4 +79,66 @@ export class SearchService {
       columns
     }
   }
+
+  // filterDataBasedOnColumnAutoFilters(rows: Row[], filters: any): any {
+  //   const filterPairs = toPairs(filters);
+
+  //   const a: any = [
+  //       "mavenid",
+  //       [
+  //           {
+  //               "id": "1660314674820",
+  //               "textFilterType": "startsWith",
+  //               "textFilterLabel": "Starts With",
+  //               "value": "С",
+  //               "operator": "AND"
+  //           },
+  //           {
+  //               "id": "1660314680359",
+  //               "textFilterType": "endsWith",
+  //               "textFilterLabel": "Ends With",
+  //               "value": "156",
+  //               "operator": "AND"
+  //           }
+  //       ]
+  //   ];
+
+  //   const ANDFilters = filters.map(([ key, value ]: any) => {
+  //     const filteredValue = value.filter(({ operator }: any) => operator === 'AND');
+
+  //     return [ key, filteredValue ];
+  //   });
+
+  //   const ORFilters = filters.map(([ key, value ]: any) => {
+  //     const filteredValue = value.filter(({ operator }: any) => operator === 'OR');
+
+  //     return [ key, filteredValue ];
+  //   });
+
+  //   const filtered = rows.filter((row) => {
+  //     const isValid = filterPairs.every(([ key, value ]) => {
+  //       const cellValue = row.data[key];
+
+  //       const isANDValid = value.every(({ textFilterType, value }) => {
+  //         if(validate) {
+
+  //         }
+  //       });
+
+  //       const isORValid = value.some(({ textFilterType, value }) => {
+  //         if(validate) {
+
+  //         }
+  //       });
+
+  //       return isANDValid && isORValid;
+  //     });
+
+  //     return isValid;
+  //   });
+
+  //   console.log(filtered);
+
+  //   return filtered;
+  // } 
 }

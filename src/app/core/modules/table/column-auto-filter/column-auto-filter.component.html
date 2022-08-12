@@ -1,0 +1,71 @@
+<div class="p-[20px] rounded-md shadow-simple rounded-md w-full bg-white max-w-[500px] w-[500px] min-w-[500px]">
+  <div class="header font-mont font-medium text-base text-black">
+    Custom auto-filter on column: {{ column.label }}
+  </div>
+
+  <div class="body py-[20px] max-h-[200px] overflow-y-auto">
+    <div *ngFor="let filter of _filters; index as index; trackBy: trackByFilterId">
+      <app-filter
+        [filter]="filter"
+        (removeFilter)="onFilterRemove($event)"
+        (selectFilter)="onFilterSelect($event)"
+        (changeFilterValue)="onFilterValueChange($event)"
+      ></app-filter>
+
+      <div
+        *ngIf="_filters.length !== index + 1" class="flex items-center font-mont text-base font-medium"
+        class="my-[20px]"
+      >
+        <button
+          (click)="changeOperator($event, 'AND', filter.id)"
+          class="p-[5px] rounded-l-md border-2"
+          [ngClass]="{
+            'text-white bg-regal-blue border-regal-blue shadow-button': filter.operator === 'AND',
+            'text-light-gray bg-white border-gray': filter.operator === 'OR'
+          }"
+        >
+          And
+        </button>
+        <button
+          (click)="changeOperator($event, 'OR', filter.id)"
+          class="p-[5px] rounded-r-md border-2"
+          [ngClass]="{
+            'text-light-gray bg-white border-gray': filter.operator === 'AND',
+            'text-white bg-regal-blue border-regal-blue shadow-button': filter.operator === 'OR'
+          }"
+        >
+          Or
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="flex items-center cursor-pointer mt-[25px]"
+    (click)="addFilter($event)"
+  >
+    <app-svg-icon name="plus"></app-svg-icon>
+    <div class="ml-[10px]">Add Filter</div>
+  </div>
+
+  <div class="footer flex items-center mt-[30px]">
+    <button
+      class="border-regal-blue text-regal-blue font-medium rounded-md border-2 p-[5px] shadow-button mr-[20px] ml-auto font-mont text-base"
+      (click)="onClearFilterButtonClick($event)"
+    >
+      Clear Filter
+    </button>
+    <button
+      (click)="onCancelButtonClick($event)"
+      class="border-regal-blue text-regal-blue font-medium rounded-md border-2 p-[5px] shadow-button mr-[20px] font-mont text-base"
+    >
+      Cancel
+    </button>
+    <button
+      (click)="onApplyButtonClick($event)"
+      class="text-white bg-regal-blue font-medium rounded-md border-0 p-[5px] shadow-button font-mont text-base"
+    >
+      Apply
+    </button>
+  </div>
+</div>

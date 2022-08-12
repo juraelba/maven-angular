@@ -9,13 +9,12 @@ import { InputModule } from '../input/input.module';
 
 import { SelectComponent } from './select.component';
 
-import { ClickOutsideDirective } from '../../directives/click-outside/click-outside.directive';
+import { DirectivesModule } from '../../directives/directives.module';
 
 
 @NgModule({
   declarations: [
-    SelectComponent,
-    ClickOutsideDirective
+    SelectComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +22,8 @@ import { ClickOutsideDirective } from '../../directives/click-outside/click-outs
     InputModule,
     MatTooltipModule,
     ScrollingModule,
-    OverlayModule
+    OverlayModule,
+    DirectivesModule
   ],
   exports: [
     SelectComponent

@@ -18,75 +18,20 @@
       class="dropdown-container rounded-md shadow-simple rounded-md w-full bg-white mt-[5px]"
       (clickOutside)="onClickOutside()"
     >
-      <div class="p-5">
-        <div *ngIf="dropdownHeaderContainer" class="dropdown-container__header">
-          <ng-content select="[dropdownHeaderContainer]"></ng-content>
-        </div>
+      <ng-container *ngIf="dropdownTemplate">
+        <ng-content select="[dropdownTemplate]"></ng-content>
+      </ng-container>
 
-        <div *ngIf="search" class="bg-white mb-5 flex items-center">
-          <div class="border-b border-b-1 border-pri-gray flex-1">
-            <app-input
-              (click)="onSearchInputClick($event)"
-              (inputChange)="onSearchInputChange($event)"
-              [border]="false"
-              icon="/assets/images/icons/search-right.svg"
-              placeholder="Search"
-              [value]="searchValue"
-            >
-            </app-input>
-          </div>
-          <div *ngIf="indicators">
-            <ng-content select="[indicators]"></ng-content>
-          </div>
-        </div>
-    
-        <div
-          *ngIf="allSelectedVisible"
-          class="select-all block pb-2.5 flex items-center border-b border-b-1 border-gray"
-          (click)="toggleSelectAll($event)"
-        >
-          <app-checkbox [checked]="allSelected"></app-checkbox>
-          <span class="ml-[10px] select-none font-lato">All</span>
-        </div>
-
-        <div class="font-lato overflow-y-auto pt-2.5">
-          <cdk-virtual-scroll-viewport itemSize="20" class="h-52">
-            <div class="mb-2.5" *cdkVirtualFor="let option of dropdownOptions; index as i; templateCacheSize: 0" (click)="toogleSelectOption($event, option)">
-              <div *ngIf="grouping && isNewGroupLetter(dropdownOptions[i - 1], option)" class="border-b border-b-1 border-gray mb-2.5">
-                {{ option.groupLetter }}
-              </div>
-    
-              <div *ngIf="multiple" class="flex items-center">
-                <app-checkbox [checked]="option.selected"></app-checkbox>
-                <span class="ml-[10px] truncate m-0 p-0">{{ option.label }}</span>
-              </div>
-    
-              <span *ngIf="!multiple">{{ option.label }}</span>
-            </div>
-          </cdk-virtual-scroll-viewport>
-        </div>
-      </div>
-      <div class="shadow-simple flex justify-between items-center px-5 py-4 bg-white rounded-b-md">
-        <button
-          class="border-regal-blue text-regal-blue font-medium rounded-md border-2 w-24 h-[30px] shadow-button mr-[30px]"
-          (click)="onClearButtonClick($event)"
-        >
-          Clear
-        </button>
-        <button
-          (click)="onOkButtonClick($event)"
-          class="text-white bg-regal-blue font-medium rounded-md border-0 w-24 h-[30px] shadow-button"
-        >
-          Ok
-        </button>
-      </div>
+      <ng-container *ngIf="!dropdownTemplate">
+        <ng-container *ngTemplateOutlet="defaultDropdownTemplate"></ng-container>
+      </ng-container>
     </div>
   </ng-template>
 </div>
 
 <ng-template #defaultSelectTemplate>
   <div
-    class="text-pri-black pointer border rounded-md h-full p-[10px] relative"
+    class="text-pri-black pointer border rounded-md h-full p-[10px] relative select-container"
     [ngClass]="{
       'bg-light-grey': disabled,
       'bg-white': !disabled,
@@ -96,7 +41,7 @@
   >
     <div
       *ngIf="borderLabel"
-      class="absolute translate-y-1/2 bottom-full font-lato text-[10px] text-pri-black bg-white "
+      class="absolute translate-y-1/2 bottom-full font-lato text-[10px] text-pri-black bg-white border-label"
     >
       {{ borderLabel }}
     </div>
@@ -118,7 +63,78 @@
         <ng-content select="[valueContainer]"></ng-content>
       </div>
       
-      <img class="ml-[10px]" [src]="arrowIcon" />
+      <img *ngIf="isArrowIconVisible" class="ml-[10px]" [src]="arrowIcon" />
     </div>
   </div>
+</ng-template>
+
+
+<ng-template #defaultDropdownTemplate>
+  <div class="p-5">
+    <div *ngIf="dropdownHeaderContainer" class="dropdown-container__header">
+      <ng-content select="[dropdownHeaderContainer]"></ng-content>
+    </div>
+
+    <div *ngIf="search" class="bg-white mb-5 flex items-center">
+      <div class="border-b border-b-1 border-pri-gray flex-1">
+        <app-input
+          (click)="onSearchInputClick($event)"
+          (inputChange)="onSearchInputChange($event)"
+          [border]="false"
+          icon="/assets/images/icons/search-right.svg"
+          placeholder="Search"
+          [value]="searchValue"
+        >
+        </app-input>
+      </div>
+      <div *ngIf="indicators">
+        <ng-content select="[indicators]"></ng-content>
+      </div>
+    </div>
+
+    <div
+      *ngIf="allSelectedVisible"
+      class="select-all block pb-2.5 flex items-center border-b border-b-1 border-gray"
+      (click)="toggleSelectAll($event)"
+    >
+      <app-checkbox [checked]="allSelected"></app-checkbox>
+      <span class="ml-[10px] select-none font-lato">All</span>
+    </div>
+
+    <div class="font-lato overflow-y-auto pt-2.5">
+      <cdk-virtual-scroll-viewport itemSize="20" class="h-52">
+        <div
+          *cdkVirtualFor="let option of dropdownOptions; index as i; templateCacheSize: 0"
+          [ngClass]="{ 'bg-light-blue': option.selected && !multiple }"
+          class="py-[5px]"
+          (click)="toggleSelectOption($event, option)"
+        >
+          <div *ngIf="grouping && isNewGroupLetter(dropdownOptions[i - 1], option)" class="border-b border-b-1 border-gray mb-2.5">
+            {{ option.groupLetter }}
+          </div>
+
+          <div *ngIf="multiple" class="flex items-center">
+            <app-checkbox [checked]="option.selected"></app-checkbox>
+            <span class="ml-[10px] truncate m-0 p-0">{{ option.label }}</span>
+          </div>
+
+          <span *ngIf="!multiple">{{ option.label }}</span>
+        </div>
+      </cdk-virtual-scroll-viewport>
+    </div>
+  </div>
+  <div class="shadow-simple flex justify-between items-center px-5 py-4 bg-white rounded-b-md">
+    <button
+      class="border-regal-blue text-regal-blue font-medium rounded-md border-2 w-24 h-[30px] shadow-button mr-[30px]"
+      (click)="onClearButtonClick($event)"
+    >
+      Clear
+    </button>
+    <button
+      (click)="onOkButtonClick($event)"
+      class="text-white bg-regal-blue font-medium rounded-md border-0 w-24 h-[30px] shadow-button"
+    >
+      Ok
+    </button>
+  </div>  
 </ng-template>

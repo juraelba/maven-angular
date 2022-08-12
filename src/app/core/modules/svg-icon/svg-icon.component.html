@@ -1,19 +1,3 @@
-<!-- <ng-conainer [ngSwitch]="name">
-  <ng-container *ngSwitchCase="'cross'">
-    <ng-container *ngTemplateOutlet="cross"></ng-container>
-  </ng-container>
-  <ng-container *ngSwitchCase="'sort'">
-    <ng-container *ngTemplateOutlet="sort"></ng-container>
-  </ng-container>
-  <ng-container *ngSwitchCase="'checkmark'">
-    <ng-container *ngTemplateOutlet="checkmark"></ng-container>
-  </ng-container>
-
-  <ng-container *ngSwitchDefault>
-    <div>Icon</div>
-  </ng-container>
-</ng-conainer> -->
-
 <ng-conainer [ngSwitch]="name">
   <ng-container *ngSwitchCase="'cross'">
     <ng-container *ngTemplateOutlet="cross"></ng-container>
@@ -54,11 +38,16 @@
   <ng-container *ngSwitchCase="'crossedOutCircle'">
     <ng-container *ngTemplateOutlet="crossedOutCircle"></ng-container>
   </ng-container>
+  <ng-container *ngSwitchCase="'plus'">
+    <ng-container *ngTemplateOutlet="plus"></ng-container>
+  </ng-container>
 
   <ng-container *ngSwitchDefault>
     <div>Icon</div>
   </ng-container>
 </ng-conainer>
+
+<!-- <ng-container [ngTemplateOutlet]="this.name"></ng-container> -->
 
 <ng-template #cross>
   <svg width="16" height="16" viewBox="0 0 10 10" [attr.stroke]="stroke" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -138,4 +127,10 @@
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M12 6C8.69141 6 6 8.69141 6 12C6 13.0898 6.29688 14.1328 6.83594 15.0469L7.58203 14.2969C7.21484 13.5938 7 12.8164 7 12C7 9.24219 9.24219 7 12 7C12.8164 7 13.5938 7.21484 14.2969 7.58203L15.0469 6.83594C14.1328 6.29688 13.0898 6 12 6ZM17.1445 6.14844L6.14844 17.1445L6.85156 17.8555L8.12891 16.5781C9.17578 17.4648 10.5273 18 12 18C15.3086 18 18 15.3086 18 12C18 10.5273 17.4609 9.17578 16.5781 8.12891L17.8555 6.85156L17.1445 6.14844ZM15.8555 8.85156C16.5625 9.71484 17 10.7969 17 12C17 14.7695 14.7695 17 12 17C10.7969 17 9.71484 16.5625 8.85156 15.8555L15.8555 8.85156Z" fill="#797979"/>
   </svg>    
+</ng-template>
+
+<ng-template #plus>
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M7 0.300293C3.41797 0.300293 0.5 3.21826 0.5 6.80029C0.5 10.3823 3.41797 13.3003 7 13.3003C10.582 13.3003 13.5 10.3823 13.5 6.80029C13.5 3.21826 10.582 0.300293 7 0.300293ZM7 1.30029C10.043 1.30029 12.5 3.75732 12.5 6.80029C12.5 9.84326 10.043 12.3003 7 12.3003C3.95703 12.3003 1.5 9.84326 1.5 6.80029C1.5 3.75732 3.95703 1.30029 7 1.30029ZM6.5 4.30029V6.30029H4.5V7.30029H6.5V9.30029H7.5V7.30029H9.5V6.30029H7.5V4.30029H6.5Z" fill="#3A63CC"/>
+  </svg>
 </ng-template>

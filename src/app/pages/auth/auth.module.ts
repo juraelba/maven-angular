@@ -15,7 +15,7 @@ import { ForgotPasswordEmailComponent } from './forgot-password/forgot-password-
 import { ForgotPasswordCodeComponent } from './forgot-password/forgot-password-code/forgot-password-code.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { TermsComponent } from './terms/terms.component';
-import { AutoFocusDirective } from '../../core/directives/auto-focus/auto-focus.directive';
+import { DirectivesModule } from '../../core/directives/directives.module';
 
 const globalSettings: RecaptchaSettings = { siteKey: RECAPTCHA_KEY };
 
@@ -27,8 +27,7 @@ const globalSettings: RecaptchaSettings = { siteKey: RECAPTCHA_KEY };
     ForgotPasswordEmailComponent,
     ForgotPasswordCodeComponent,
     ChangePasswordComponent,
-    TermsComponent,
-    AutoFocusDirective
+    TermsComponent
   ],
   imports: [
     AuthRoutingModule,
@@ -37,7 +36,8 @@ const globalSettings: RecaptchaSettings = { siteKey: RECAPTCHA_KEY };
     FormsModule,
     ReactiveFormsModule,
     MatModule,
-    RecaptchaModule
+    RecaptchaModule,
+    DirectivesModule
   ],
   exports: [
     LoginComponent,

@@ -1,4 +1,6 @@
 
+import { TextFiltersValuesEnum, TextFiltersLabelsEnum, FilterOperatorEnum } from '../enums/filters.enum';
+
 interface RowData {
   [key: string]: any;
 }
@@ -29,4 +31,23 @@ interface ConfigDescription {
 
 export interface TableConfig {
   [key: string]: ConfigDescription
+}
+
+export type FilterOperatorKey = keyof typeof FilterOperatorEnum;
+
+export interface Filter {
+  id: string;
+  textFilterType: TextFilterKey | '';
+  textFilterLabel: TextFiltersLabelsEnum | '';
+  value: string;
+  operator: FilterOperatorKey;
+}
+
+export type TextFilterKey = keyof typeof TextFiltersValuesEnum;
+
+export interface TextFilter {
+  id: TextFilterKey;
+  label: TextFiltersLabelsEnum;
+  value: TextFilterKey;
+  iconName: string;
 }

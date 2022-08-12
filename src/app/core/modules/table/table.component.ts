@@ -2,15 +2,35 @@ import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { compose, toPairs, reduce, uniq } from 'ramda';
 
-import { Table, TableConfig, Styles, Column, Row } from '@models/table.model';
+import { Table, TableConfig, Styles, Column, Row, TextFilter, Filter } from '@models/table.model';
 import { SortMethods } from '@models/sorting-options.models';
 
 import { SortMethodsEnum } from '@enums/sorting-options.enum';
+import { FilterOperatorEnum } from '@enums/filters.enum';
 
 import { UtilsService } from '@services/utils/utils.service';
 
 interface Group {
   [key: string]: any
+}
+
+interface TextFilterSelectEvent {
+  column: Column,
+  textFilter: TextFilter
+}
+
+interface ColumnAutoFilterValue {
+  column: Column;
+  filters: Filter[];
+}
+
+interface ColumnAutoFilterData {
+  [key: string]: ColumnAutoFilterValue;
+}
+
+interface ApplyFilterEvent {
+  id: string;
+  filters: Filter[];
 }
 
 @Component({
@@ -23,18 +43,26 @@ export class TableComponent implements OnInit, AfterViewInit {
   @Input() config: TableConfig = {};
 
   @ViewChild('table') table: ElementRef;
+  @ViewChild('tableContainer') tableContainer: ElementRef;
 
   tableBodyStyles: any = {};
   sortedColumn: [ string, SortMethods ];
-  columnFilterId: null | string = null;
-  groupedFilterData: Group;
+  columnFilterId: string = '';
+  activeColumnAutoFilterId: string = '';
+  columnAutoFilterData: ColumnAutoFilterData;
+  groupedRowFilterData: Group;
+  isColumnAutoFilterVisible: boolean = false;
+  columnAutoFilterPosition: any = {
+    offsetX: 0,
+    offsetY: 0
+  }
 
   constructor(
     private utilsService: UtilsService
   ) { }
 
   ngOnInit(): void {
-    this.groupedFilterData = this.groupRowData();
+    this.groupedRowFilterData = this.groupRowData();
   }
 
   getCellStyles(columndId: string): Styles {
@@ -129,10 +157,75 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   onOpenFilter(id: string): void {
-    this.columnFilterId = id !== this.columnFilterId ? id : null;
+    this.columnFilterId = id !== this.columnFilterId ? id : '';
   }
 
   onCloseFilter(): void {
-    this.columnFilterId = null;
+    this.columnFilterId = '';
+  }
+
+  onTextFilterSelect({ column, textFilter }: TextFilterSelectEvent): void {
+    const { width, height } = this.tableContainer.nativeElement.getBoundingClientRect();
+
+    this.columnAutoFilterPosition = {
+      offsetX: width / 2 - 250,
+      offsetY: height / 2 + 100
+    };
+
+    this.columnAutoFilterData = {
+      ...this.columnAutoFilterData,
+      [column.id]: {
+        column,
+        filters: [
+          {
+            id: new Date().getTime().toString(),
+            textFilterType: textFilter.value,
+            textFilterLabel: textFilter.label,
+            value: '',
+            operator: FilterOperatorEnum.AND
+          }
+        ]
+      }
+    };
+
+    this.activeColumnAutoFilterId = column.id;
+    this.isColumnAutoFilterVisible = true;
+  }
+
+  onClickOutside(): void {
+    this.columnAutoFilterPosition = {
+      offsetX: 0,
+      offsetY: 0
+    };
+
+    this.isColumnAutoFilterVisible = false;
+  }
+
+  updateAutoColumnFiltersById(id: string, filters: Filter[]): ColumnAutoFilterData {
+    return compose<[ColumnAutoFilterData], [string, ColumnAutoFilterValue][], ColumnAutoFilterData>(
+      reduce<[string, ColumnAutoFilterValue], ColumnAutoFilterData>((acc, [ key, value ]) => {
+        acc[key] = key === id
+          ? { column: value.column, filters }
+          : value;
+
+        return acc;
+      }, {}),
+      toPairs
+    )(this.columnAutoFilterData);
+  }
+
+  onFilterClear(id: string): void {
+    this.columnAutoFilterData = this.updateAutoColumnFiltersById(id, []);
+  }
+
+  onFilterApply({ id, filters }: ApplyFilterEvent): void {
+    this.columnAutoFilterData = this.updateAutoColumnFiltersById(id, filters);
+
+    console.log(this.columnAutoFilterData);
+  }
+
+  onFilterCancel(id: string): void {
+    this.isColumnAutoFilterVisible = false;
+    this.columnFilterId = id;
   }
 }

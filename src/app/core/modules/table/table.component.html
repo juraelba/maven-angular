@@ -1,4 +1,4 @@
-<div class="table-width overflow-auto border rounded-md border-light-gray">
+<div #tableContainer class="table-width overflow-auto border rounded-md border-light-gray" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
   <table #table class="border-0" style="table-layout:fixed;">
     <thead class="header">
       <tr class="h-[45px] header__row relative" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDrop($event)">
@@ -25,10 +25,11 @@
                 />
                 <app-column-filter
                   [column]="column"
-                  [filterData]="groupedFilterData[column.id]"
+                  [rowFilterData]="groupedRowFilterData[column.id]"
                   [panelOpen]="column.id === columnFilterId"
                   (openFilter)="onOpenFilter($event)"
                   (closeFilter)="onCloseFilter()"
+                  (textFilterSelect)="onTextFilterSelect($event)"
                 >
                 </app-column-filter>
               </div>
@@ -53,3 +54,22 @@
     </tbody>
   </table>
 </div>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isColumnAutoFilterVisible"
+  [cdkConnectedOverlayOffsetX]="columnAutoFilterPosition.offsetX"
+  [cdkConnectedOverlayOffsetY]="columnAutoFilterPosition.offsetY"
+>
+  <app-column-auto-filter
+    appClickOutside
+    (clickOutside)="onClickOutside()"
+    [column]="columnAutoFilterData[activeColumnAutoFilterId].column"
+    [filters]="columnAutoFilterData[activeColumnAutoFilterId].filters"
+    (applyFilter)="onFilterApply($event)"
+    (cancelFilter)="onFilterCancel($event)"
+    (clearFilter)="onFilterClear($event)"
+  >
+  </app-column-auto-filter>
+</ng-template>

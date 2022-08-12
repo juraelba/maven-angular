@@ -28,6 +28,7 @@
       "@enums/*": ["./src/app/core/enums/*"],
       "@models/*": ["./src/app/core/models/*"],
       "@modules/*": ["./src/app/core/modules/*"],
+      "@directives/*": ["./src/app/core/directives/*"],
       "@environments/*": ["./src/environments/*"]
     }
   },

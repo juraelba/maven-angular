@@ -1,0 +1,49 @@
+<div class="flex items-center justify-between">
+  <app-select
+    class="mr-[10px] grow-1 shrink-1 basis-[45%]"
+    [isArrowIconVisible]="false"
+    [options]="options"
+    [borderLabel]="getBorderLabel(filter)"
+    #selectComponent
+  >
+    <div valueContainer #valueContainer class="flex items-center">
+      <img
+        src="/assets/images/icons/filter.svg"
+        alt="filter"
+      />
+      <div *ngIf="filter.textFilterLabel" class="ml-[10px] text-lato text-pri-gray">{{ filter.textFilterLabel }}</div>
+      <div *ngIf="!filter.textFilterLabel" class="ml-[10px] text-lato text-light-gray">Select Filter</div>
+    </div>
+
+    <div dropdownTemplate #dropdownTemplate>
+      <div
+        *ngFor="let textFilter of options"
+        class="text-filter-option flex items-center hover:bg-light-blue text-pri-black text-sm px-[20px] py-[10px] cursor-pointer"
+        [ngClass]="{ 'bg-light-blue': textFilter.value === filter.textFilterType }"
+        (click)="selectTextFilterOption($event, textFilter)"
+      >
+        <app-svg-icon [name]="textFilter.iconName"></app-svg-icon>
+        <span>{{ textFilter.label }}</span>
+      </div>
+    </div>
+  </app-select>
+
+
+  <div class="mr-[20xp] grow-1 shrink-1 basis-[45%] border-b border-pri-gray p-[10px]">
+    <input
+      class="text-lato text-pri-gray placeholder:text-light-gray outline-none"
+      type="text"
+      name="filterValue"
+      placeholder="Add filter value"
+      [formControl]="filterValueFormControl"
+    />
+  </div>
+
+  <app-svg-icon
+    class="cursor-pointer"
+    name="cross"
+    fill="#797979"
+    (click)="onRemoveFilterClick($event, filter.id)"
+  >
+  </app-svg-icon>
+</div>
