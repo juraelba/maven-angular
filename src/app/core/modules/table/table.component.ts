@@ -1,17 +1,20 @@
 import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { compose, toPairs, reduce, uniq } from 'ramda';
+import { compose, toPairs, reduce, uniq, isNil } from 'ramda';
 
-import { Table, TableConfig, Styles, Column, Row, TextFilter, Filter } from '@models/table.model';
+import { Table, TableConfig, Styles, Column, Row, TextFilter, Filter, ColumnAutoFilterData, ColumnAutoFilterValue } from '@models/table.model';
 import { SortMethods } from '@models/sorting-options.models';
+import { SelectOption } from '@models/select.model';
 
 import { SortMethodsEnum } from '@enums/sorting-options.enum';
 import { FilterOperatorEnum } from '@enums/filters.enum';
 
 import { UtilsService } from '@services/utils/utils.service';
+import { SearchService } from '@services/search/search.service';
+import { ListsService } from '@services/lists/lists.service';
 
 interface Group {
-  [key: string]: any
+  [key: string]: SelectOption[] | null;
 }
 
 interface TextFilterSelectEvent {
@@ -19,18 +22,14 @@ interface TextFilterSelectEvent {
   textFilter: TextFilter
 }
 
-interface ColumnAutoFilterValue {
-  column: Column;
-  filters: Filter[];
-}
-
-interface ColumnAutoFilterData {
-  [key: string]: ColumnAutoFilterValue;
-}
-
 interface ApplyFilterEvent {
   id: string;
   filters: Filter[];
+}
+
+interface ColumnFilterChangeEvent {
+  id: string;
+  options: SelectOption[]
 }
 
 @Component({
@@ -45,6 +44,9 @@ export class TableComponent implements OnInit, AfterViewInit {
   @ViewChild('table') table: ElementRef;
   @ViewChild('tableContainer') tableContainer: ElementRef;
 
+  rows: Row[] = [];
+  columns: Column[] = [];
+
   tableBodyStyles: any = {};
   sortedColumn: [ string, SortMethods ];
   columnFilterId: string = '';
@@ -58,11 +60,17 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   constructor(
-    private utilsService: UtilsService
+    private utilsService: UtilsService,
+    private searchService: SearchService,
+    private listsService: ListsService
   ) { }
 
   ngOnInit(): void {
+    this.rows = [ ...this.data.rows ];
+    this.columns = [ ...this.data.columns ];
+
     this.groupedRowFilterData = this.groupRowData();
+    console.log(this.groupedRowFilterData)
   }
 
   getCellStyles(columndId: string): Styles {
@@ -134,20 +142,36 @@ export class TableComponent implements OnInit, AfterViewInit {
     }
   }
 
+  getColumnFilterDataOptions(rowFilterData: any[] = []): SelectOption[] {
+    const uniqValues = uniq(rowFilterData);
+
+    return uniqValues.map((data) => ({
+      id: data,
+      value: data,
+      label: data,
+      selected: true
+    }));
+  }
+
   groupRowData(): Group {
     return compose<Row[][], Group, any, Group>(
       reduce<[string, any], Group>((acc, [ id, value ]) => {
-        acc[id] = uniq(value);
+        acc[id] = this.getColumnFilterDataOptions(value);
 
         return acc;
       }, {}),
       toPairs,
       reduce<Row, Group>((acc, { data }) => {
         Object.entries(data).forEach(([ id, value ]) => {
-          if(acc[id] && value) {
-            acc[id].push(value);
+          const isValueNill = isNil(value);
+          const groupValue = acc[id];
+        
+          if(groupValue && !isValueNill) {
+            groupValue.push(value);
+          } else if(!isValueNill) {
+            acc[id] = [ value ];
           } else {
-            acc[id] = [];
+            acc[id] = null;
           }
         });
   
@@ -172,21 +196,23 @@ export class TableComponent implements OnInit, AfterViewInit {
       offsetY: height / 2 + 100
     };
 
-    this.columnAutoFilterData = {
-      ...this.columnAutoFilterData,
-      [column.id]: {
-        column,
-        filters: [
-          {
-            id: new Date().getTime().toString(),
-            textFilterType: textFilter.value,
-            textFilterLabel: textFilter.label,
-            value: '',
-            operator: FilterOperatorEnum.AND
-          }
-        ]
-      }
-    };
+    this.columnAutoFilterData = this.columnAutoFilterData && this.columnAutoFilterData[column.id]
+      ? this.columnAutoFilterData
+      : {
+        ...this.columnAutoFilterData,
+        [column.id]: {
+          column,
+          filters: [
+            {
+              id: new Date().getTime().toString(),
+              textFilterType: textFilter.value,
+              textFilterLabel: textFilter.label,
+              value: '',
+              operator: FilterOperatorEnum.AND
+            }
+          ]
+        }
+      };
 
     this.activeColumnAutoFilterId = column.id;
     this.isColumnAutoFilterVisible = true;
@@ -216,16 +242,98 @@ export class TableComponent implements OnInit, AfterViewInit {
 
   onFilterClear(id: string): void {
     this.columnAutoFilterData = this.updateAutoColumnFiltersById(id, []);
+
+    const mapedFilters = this.searchService.mapFilters(this.columnAutoFilterData);
+
+    this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(this.data.rows, mapedFilters);
+    this.isColumnAutoFilterVisible = false;
   }
 
   onFilterApply({ id, filters }: ApplyFilterEvent): void {
     this.columnAutoFilterData = this.updateAutoColumnFiltersById(id, filters);
 
-    console.log(this.columnAutoFilterData);
+    const mapedFilters = this.searchService.mapFilters(this.columnAutoFilterData);
+
+    this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(this.data.rows, mapedFilters);
+    this.isColumnAutoFilterVisible = false;
   }
 
   onFilterCancel(id: string): void {
     this.isColumnAutoFilterVisible = false;
     this.columnFilterId = id;
+  }
+
+  updateGroupedRowFilterData(id: string, options: SelectOption[]): Group {
+    const selectedOptions = options.reduce<{[key: string]: any}>((acc, { value }) => {
+      acc[value] = value;
+
+      return acc;
+    }, {});
+
+    const rowFilterDataOptions = this.groupedRowFilterData[id];
+
+    const updatedColumnFilter = !isNil(rowFilterDataOptions)
+      ? rowFilterDataOptions.map((option) => ({
+        ...option,
+        selected: selectedOptions[option.value] ? true : false
+        }))
+      : null;
+
+    return {
+      ...this.groupedRowFilterData,
+      [id]: updatedColumnFilter
+    }
+  }
+
+  getSelectedGroupedRowFilterData(): Group {
+    return compose<[Group], [string, SelectOption[]][], Group>(
+      reduce<[string, SelectOption[]], Group>((acc, [ key, value ]) => {
+        acc[key] = this.listsService.getSelectedOptions(value);
+
+        return acc;
+      }, {}),
+      toPairs
+    )(this.groupedRowFilterData);
+  }
+
+  validateRowData(value: any, availableOptions: SelectOption[]): boolean {
+    const found = availableOptions.find((option) => option.label === value);
+
+    return Boolean(found);
+  }
+
+  filterBySelectedGroupRowFilterData(rows: Row[], selected: Group): Row[] {
+    return rows.filter((row) => {
+      const rowDataPairs = toPairs(row.data);
+
+      const isRowValid = rowDataPairs.every(([ key, value ]) => {
+        const selectedOptions = selected[key];
+
+        return isNil(selectedOptions) || isNil(value)
+          ? true
+          : this.validateRowData(value, selectedOptions);
+      });
+
+      return isRowValid;
+    });
+  }
+
+  onColumnFilterChange({ id, options }: ColumnFilterChangeEvent): void {
+    if(isNil(this.groupedRowFilterData[id])) {
+      return;
+    }
+
+    this.groupedRowFilterData = this.updateGroupedRowFilterData(id, options);
+
+    const selectedGroupedRowFilterData = this.getSelectedGroupedRowFilterData();
+    const filteredByGroupRowFilters = this.filterBySelectedGroupRowFilterData(this.data.rows, selectedGroupedRowFilterData);
+
+    const mapedFilters = this.searchService.mapFilters(this.columnAutoFilterData);
+
+    const filteredRows = this.searchService.filterDataBasedOnColumnAutoFilters(filteredByGroupRowFilters, mapedFilters);
+
+    console.log(filteredRows, 'filteredRows');
+
+    this.rows = filteredRows;
   }
 }

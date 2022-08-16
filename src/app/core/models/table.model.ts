@@ -43,11 +43,20 @@ export interface Filter {
   operator: FilterOperatorKey;
 }
 
-export type TextFilterKey = keyof typeof TextFiltersValuesEnum;
+export type TextFilterKey = keyof typeof TextFiltersValuesEnum | '';
 
 export interface TextFilter {
   id: TextFilterKey;
   label: TextFiltersLabelsEnum;
   value: TextFilterKey;
   iconName: string;
+}
+
+export interface ColumnAutoFilterValue {
+  column: Column;
+  filters: Filter[];
+}
+
+export interface ColumnAutoFilterData {
+  [key: string]: ColumnAutoFilterValue;
 }

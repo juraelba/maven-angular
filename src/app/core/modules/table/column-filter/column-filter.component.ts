@@ -12,12 +12,13 @@ import { TEXT_FILTERS } from '../../../data/constants';
 })
 export class ColumnFilterComponent implements OnInit {
   @Input() column: Column;
-  @Input() rowFilterData: any[];
+  @Input() rowFilterData: any[] = [];
   @Input() panelOpen: boolean = false;
 
   @Output() openFilter: EventEmitter<string> = new EventEmitter();
   @Output() closeFilter: EventEmitter<undefined> = new EventEmitter();
   @Output() textFilterSelect: EventEmitter<{ column: Column, textFilter: TextFilter }> = new EventEmitter();
+  @Output() columnFilterChange: EventEmitter<{ id: string, options: SelectOption[] }> = new EventEmitter();
 
   filterDataOptions: SelectOption[];
   isTextFilterOverlayVisible: boolean = false;
@@ -28,30 +29,21 @@ export class ColumnFilterComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.filterDataOptions = this.getFilteredDataOptions(this.rowFilterData);
+    this.filterDataOptions = [ ...this.rowFilterData || [] ];
   }
 
-  onApplyChanges($event: any) {
-
+  onApplyChanges(options: SelectOption[]) {
+    this.columnFilterChange.emit({ id: this.column.id, options });
   }
 
   onClear() {
-
+    this.columnFilterChange.emit({ id: this.column.id, options: [] });
   }
 
   toggleColumnFilter(event: MouseEvent): void {
     event.stopPropagation();
 
     this.openFilter.emit(this.column.id)
-  }
-
-  getFilteredDataOptions(rowFilterData: any[] = []): SelectOption[] {
-    return rowFilterData.map((data) => ({
-      id: data,
-      value: data,
-      label: data,
-      selected: true
-    }));
   }
 
   toggleTextFilterOverlay(): void {

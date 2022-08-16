@@ -84,7 +84,7 @@ export class ColumnAutoFilterComponent implements OnInit {
         return {
           ...filter,
           textFilterType,
-          textFilterLabel: TextFiltersLabelsEnum[textFilterType]
+          textFilterLabel: textFilterType ? TextFiltersLabelsEnum[textFilterType] : ''
         }
       }
 

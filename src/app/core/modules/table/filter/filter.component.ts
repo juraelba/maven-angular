@@ -38,7 +38,6 @@ export class FilterComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit(): void {
-    console.log(this.filter);
     this.borderLabel = this.getBorderLabel(this.filter);
     this.options = this.getFilterOptions(this.filter);
 

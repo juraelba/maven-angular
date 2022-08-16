@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { switchMap } from 'rxjs/operators'; 
 
 import { Criteries } from '@models/criteries.model';
 import { SearchKey } from '@models/search.model';

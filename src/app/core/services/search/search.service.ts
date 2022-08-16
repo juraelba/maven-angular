@@ -1,13 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { compose, toPairs, reduce } from 'ramda';
+import { compose, toPairs, reduce, always, isEmpty } from 'ramda';
 import { Observable } from 'rxjs';
 
 import { environment } from '@environments/environment';
 
 import { SearchKey, SearchResultItem } from '@models/search.model';
-import { Table, Row } from '@models/table.model';
+import { Table, Row, TextFilterKey, Filter, FilterOperatorKey, ColumnAutoFilterData, ColumnAutoFilterValue } from '@models/table.model';
+
 import { ListKeys } from '@enums/lists.enum';
+import { TextFiltersValuesEnum, FilterOperatorEnum } from '@enums/filters.enum';
 
 import { SEARCH_COLUMNS } from '../../data/constants';
 
@@ -80,65 +82,114 @@ export class SearchService {
     }
   }
 
-  // filterDataBasedOnColumnAutoFilters(rows: Row[], filters: any): any {
-  //   const filterPairs = toPairs(filters);
+  isValueContain(value: any, target: string): boolean {
+    return value.includes(target);
+  }
 
-  //   const a: any = [
-  //       "mavenid",
-  //       [
-  //           {
-  //               "id": "1660314674820",
-  //               "textFilterType": "startsWith",
-  //               "textFilterLabel": "Starts With",
-  //               "value": "С",
-  //               "operator": "AND"
-  //           },
-  //           {
-  //               "id": "1660314680359",
-  //               "textFilterType": "endsWith",
-  //               "textFilterLabel": "Ends With",
-  //               "value": "156",
-  //               "operator": "AND"
-  //           }
-  //       ]
-  //   ];
+  isValueNotContain(value: string, target: string): boolean {
+    return !value.includes(target);
+  }
 
-  //   const ANDFilters = filters.map(([ key, value ]: any) => {
-  //     const filteredValue = value.filter(({ operator }: any) => operator === 'AND');
+  isValueStartsWith(value: string, target: string): boolean {
+    return value.startsWith(target);
+  }
 
-  //     return [ key, filteredValue ];
-  //   });
+  isValueEndsWith(value: string, target: string): boolean {
+    return value.endsWith(target);
+  }
 
-  //   const ORFilters = filters.map(([ key, value ]: any) => {
-  //     const filteredValue = value.filter(({ operator }: any) => operator === 'OR');
+  isValueEquals(value: string, target: string): boolean {
+    return value === target;
+  }
+  
+  isValueNotEqual(value: any, target: string): boolean {
+    return value !== target;
+  }
 
-  //     return [ key, filteredValue ];
-  //   });
+  isValueEmpty(value: string): boolean {
+    return isEmpty(value);
+  }
 
-  //   const filtered = rows.filter((row) => {
-  //     const isValid = filterPairs.every(([ key, value ]) => {
-  //       const cellValue = row.data[key];
+  isValueNotEmpty(value: string): boolean {
+    return !isEmpty(value);
+  }
 
-  //       const isANDValid = value.every(({ textFilterType, value }) => {
-  //         if(validate) {
+  isValueNull(value: any): boolean {
+    return value === null;
+  }
 
-  //         }
-  //       });
+  isValueNotNull(value: any): boolean {
+    return value !== null;
+  }
 
-  //       const isORValid = value.some(({ textFilterType, value }) => {
-  //         if(validate) {
+  validate(textFilterType: TextFilterKey, filterValue: string, cellValue: any) {
+    const validators = {
+      [TextFiltersValuesEnum.contain]: this.isValueContain.bind(this),
+      [TextFiltersValuesEnum.notContain]: this.isValueNotContain.bind(this),
+      [TextFiltersValuesEnum.startsWith]: this.isValueStartsWith.bind(this),
+      [TextFiltersValuesEnum.endsWith]: this.isValueEndsWith.bind(this),
+      [TextFiltersValuesEnum.equals]: this.isValueEquals.bind(this),
+      [TextFiltersValuesEnum.notEqual]: this.isValueNotEqual.bind(this),
+      [TextFiltersValuesEnum.empty]: this.isValueEmpty.bind(this),
+      [TextFiltersValuesEnum.notEmpty]: this.isValueNotEmpty.bind(this),
+      [TextFiltersValuesEnum.null]: this.isValueNull.bind(this),
+      [TextFiltersValuesEnum.notNull]: this.isValueNotNull.bind(this),
+      '': always(true)
+    }
 
-  //         }
-  //       });
+    const validator = validators[textFilterType];
 
-  //       return isANDValid && isORValid;
-  //     });
+    return validator(cellValue, filterValue);
+  }
 
-  //     return isValid;
-  //   });
+  getFilterByOperator(filters: Filter[], operator: FilterOperatorKey): Filter[] {
+    return filters.filter((filter) => filter.operator === operator);
+  }
 
-  //   console.log(filtered);
+  validateCell(filterOperator: FilterOperatorKey, filters: Filter[], cellValue: any): boolean {
+    const method = filterOperator === FilterOperatorEnum.AND ? 'every' : 'some';
 
-  //   return filtered;
-  // } 
+    return filters.length 
+      ? filters[method](({ textFilterType, value }) => this.validate(textFilterType, value, cellValue))
+      : true;
+  }
+
+  filterDataBasedOnColumnAutoFilters(rows: Row[], filters: { [key: string]: Filter[] }): Row[] {
+    return rows.filter((row) => {
+      const pair = toPairs(row.data);
+
+      const isValidRowData = pair.every(([key, cellValue]: any) => {
+        const cellFilters = filters[key] || [];
+
+        const cellANDFilters = this.getFilterByOperator(cellFilters, FilterOperatorEnum.AND);
+        const cellORFilters = this.getFilterByOperator(cellFilters, FilterOperatorEnum.OR);
+
+        const isANDValid = this.validateCell(FilterOperatorEnum.AND, cellANDFilters, cellValue);
+        const isORValid = this.validateCell(FilterOperatorEnum.OR, cellORFilters, cellValue);
+
+        if(cellANDFilters.length && !cellORFilters.length) {
+          return isANDValid;
+        }
+    
+        if(cellORFilters.length && !cellANDFilters.length) {
+          return isORValid;
+        }
+    
+        return isANDValid || isORValid;
+      });
+
+      return isValidRowData;
+    });
+  }
+
+  mapFilters(filters: ColumnAutoFilterData): { [key: string]: Filter[] } {
+    return compose<[ColumnAutoFilterData], [string, ColumnAutoFilterValue][], { [key: string]: Filter[] }>(
+      reduce<[string, ColumnAutoFilterValue], { [key: string]: Filter[] }>((acc, [ key, value ]) => {
+        acc[key] = value.filters;
+
+        return acc;
+      }, {}),
+      toPairs
+    )(filters);
+  }
 }

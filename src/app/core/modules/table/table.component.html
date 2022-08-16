@@ -3,7 +3,7 @@
     <thead class="header">
       <tr class="h-[45px] header__row relative" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDrop($event)">
         <th
-          *ngFor="let column of data.columns"
+          *ngFor="let column of columns"
           class="p-0 bg-light-grey border-b border-light-gray h-[45px] header__cell"
           [ngStyle]="getColumnCellStyles(column)"
           cdkDrag
@@ -25,25 +25,26 @@
                 />
                 <app-column-filter
                   [column]="column"
-                  [rowFilterData]="groupedRowFilterData[column.id]"
+                  [rowFilterData]="groupedRowFilterData[column.id] || []"
                   [panelOpen]="column.id === columnFilterId"
                   (openFilter)="onOpenFilter($event)"
                   (closeFilter)="onCloseFilter()"
                   (textFilterSelect)="onTextFilterSelect($event)"
+                  (columnFilterChange)="onColumnFilterChange($event)"
                 >
                 </app-column-filter>
               </div>
             </div>
-            <app-resizer (resizeEnd)="onResizeEnd($event, column)" [column]="column" [columns]="data.columns"></app-resizer>
+            <app-resizer (resizeEnd)="onResizeEnd($event, column)" [column]="column" [columns]="columns"></app-resizer>
           </div>
         </th>
       </tr>
     </thead>
     <tbody>
       <cdk-virtual-scroll-viewport itemSize="30" class="h-[340px]" [ngStyle]="tableBodyStyles">
-        <tr *cdkVirtualFor="let row of data.rows; templateCacheSize: 0" class="h-[45px]">
+        <tr *cdkVirtualFor="let row of rows; templateCacheSize: 0" class="h-[45px]">
           <td
-            *ngFor="let column of data.columns"
+            *ngFor="let column of columns"
             class="px-[20px] border-b border-light-gray align-middle"
             [ngStyle]="getColumnCellStyles(column)"
           >
