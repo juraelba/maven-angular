@@ -3,11 +3,11 @@ import { filter, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { SelectOption } from '@models/select.model';
-import { SelectedCriteriaEvent } from '@models/criteries.model';
+import { SelectedCriteriaEvent, DiverseTargestCriteria } from '@models/criteries.model';
 import { ListChangesEvent } from '@models/list.model';
 import { ListKeys, ListLabels } from '@enums/lists.enum';
-import { ListsService } from '../../../../core/services/lists/lists.service';
-import { SelectedCriteriaService } from '../../../../core/services/selected-criteria/selected-criteria.service';
+import { ListsService } from '@services/lists/lists.service';
+import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 @Component({
   selector: 'app-diverse-target-pick-list',
@@ -81,16 +81,26 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
     this.options = this.listsService.updateOptionsWithSelected(this.options, values);
     this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.diversetargets);
 
-    this.change.emit({ key: ListKeys.diversetargets, data: options });
+    const data: DiverseTargestCriteria = {
+      isDiverseTarget: this.isDiverseTarget,
+      options
+    }
+
+    this.change.emit({ key: ListKeys.diversetargets, data });
   }
   
   onClear(): void {
     this.options = this.listsService.updateOptionsWithSelected(this.options, []);
     this.isDiverseTarget = false;
     this.borderLabel = this.listsService.getBorderLabel([], ListKeys.diversetargets);
-    this.value = ListLabels.diversetargets
+    this.value = ListLabels.diversetargets;
 
-    this.change.emit({ key: ListKeys.diversetargets, data: [] });
+    const data: DiverseTargestCriteria = {
+      isDiverseTarget: this.isDiverseTarget,
+      options: []
+    }
+
+    this.change.emit({ key: ListKeys.diversetargets, data });
   }
 
   onSelectClick({ event }: any): void {

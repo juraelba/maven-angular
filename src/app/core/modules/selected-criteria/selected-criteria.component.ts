@@ -1,13 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-
-import { SelectedCriteriaDialogComponent } from '../selected-criteria-dialog/selected-criteria-dialog.component';
-import { Criteries, CategoriesCriteria } from '@models/criteries.model';
 import { compose, toPairs, reduce, isEmpty } from 'ramda';
 
-interface Validators {
-  [categories: string]: (value: CategoriesCriteria) => boolean;
-  default: (value: any) => boolean
+import { SelectedCriteriaDialogComponent } from '../selected-criteria-dialog/selected-criteria-dialog.component';
+import { Criteries, CategoriesCriteria, LanguageCriteria } from '@models/criteries.model';
+import { ListKey } from '@models/list.model';
+
+import { ListKeys } from '@enums/lists.enum';
+
+type Validators = {
+  [key: string]: (value: any) => boolean;
 }
 
 @Component({
@@ -27,15 +29,19 @@ export class SelectedCriteriaComponent implements OnInit {
     return isEmpty(categories);
   }
 
-  omitEmtyCriteries(criteries: Criteries): Criteries {
+  isLanguageEmpty({ options }: LanguageCriteria): boolean {
+    return isEmpty(options);
+  }
+
+  omitEmptyCriteries(criteries: Criteries): Criteries {
     const criteriaValidators: Validators = {
-      categories: this.isCategoriesEmpty,
-      default: isEmpty
+      [ListKeys.categories]: this.isCategoriesEmpty.bind(this),
+      [ListKeys.languages2]: this.isLanguageEmpty,
     }
   
     return compose<[Criteries], Array<[string, any]>, Criteries>(
       reduce<[ string, any ], Criteries>((acc, [ key, value ]) => {
-        const validator = criteriaValidators[key] || criteriaValidators.default;
+        const validator = criteriaValidators[key] || isEmpty
   
         if(validator(value)) {
           return acc;
@@ -51,7 +57,7 @@ export class SelectedCriteriaComponent implements OnInit {
 
   openDialog(): void {
     this.dialog.open(SelectedCriteriaDialogComponent, {
-      data: this.omitEmtyCriteries(this.criteries),
+      data: this.omitEmptyCriteries(this.criteries),
       width: '640px'
     })
   }

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { compose, toPairs, reduce, uniq, isNil } from 'ramda';
 
@@ -37,9 +37,9 @@ interface ColumnFilterChangeEvent {
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.scss']
 })
-export class TableComponent implements OnInit, AfterViewInit {
-  @Input() data: Table = { rows: [], columns: [] };
+export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() config: TableConfig = {};
+  @Input() data: Table = { rows: [], columns: [] };
 
   @ViewChild('table') table: ElementRef;
   @ViewChild('tableContainer') tableContainer: ElementRef;
@@ -70,21 +70,35 @@ export class TableComponent implements OnInit, AfterViewInit {
     this.columns = [ ...this.data.columns ];
 
     this.groupedRowFilterData = this.groupRowData();
-    console.log(this.groupedRowFilterData)
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    console.log(changes)
+    if(changes.data && !changes.data.firstChange) {
+      this.rows = [ ...changes.data.currentValue.rows ];
+      this.columns = [ ...changes.data.currentValue.columns ];
+
+      this.resetAllFilters();
+      this.updateTableBidyStyles();
+    }
+  }
+
+  updateTableBidyStyles(): void {
+    setTimeout(() => {
+      this.tableBodyStyles = {
+        width: `${ this.table.nativeElement.offsetWidth}px`
+      }
+    }, 0);
+  }
+
+  ngAfterViewInit(): void {
+    this.updateTableBidyStyles();
   }
 
   getCellStyles(columndId: string): Styles {
     const columnConfig = this.config[columndId];
 
     return columnConfig ? columnConfig.cellStyles : {}
-  }
-
-  ngAfterViewInit(): void {
-    setTimeout(() => {
-      this.tableBodyStyles = {
-        width: `${ this.table.nativeElement.offsetWidth}px`
-      }
-    }, 0);
   }
 
   private getSortMethod(columnId: string): SortMethods {
@@ -156,7 +170,7 @@ export class TableComponent implements OnInit, AfterViewInit {
   groupRowData(): Group {
     return compose<Row[][], Group, any, Group>(
       reduce<[string, any], Group>((acc, [ id, value ]) => {
-        acc[id] = this.getColumnFilterDataOptions(value);
+        acc[id] = !isNil(value) ? this.getColumnFilterDataOptions(value) : null;
 
         return acc;
       }, {}),
@@ -286,9 +300,9 @@ export class TableComponent implements OnInit, AfterViewInit {
   }
 
   getSelectedGroupedRowFilterData(): Group {
-    return compose<[Group], [string, SelectOption[]][], Group>(
-      reduce<[string, SelectOption[]], Group>((acc, [ key, value ]) => {
-        acc[key] = this.listsService.getSelectedOptions(value);
+    return compose<[Group], [string, SelectOption[] | null][], Group>(
+      reduce<[string, SelectOption[] | null], Group>((acc, [ key, value ]) => {
+        acc[key] = !isNil(value) ? this.listsService.getSelectedOptions(value) : null;
 
         return acc;
       }, {}),
@@ -332,8 +346,11 @@ export class TableComponent implements OnInit, AfterViewInit {
 
     const filteredRows = this.searchService.filterDataBasedOnColumnAutoFilters(filteredByGroupRowFilters, mapedFilters);
 
-    console.log(filteredRows, 'filteredRows');
-
     this.rows = filteredRows;
+  }
+
+  resetAllFilters(): void {
+    this.groupedRowFilterData = this.groupRowData();
+    this.columnAutoFilterData = {};
   }
 }

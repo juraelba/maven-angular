@@ -17,16 +17,14 @@
     <app-language-pick-list (change)="onChange($event)"></app-language-pick-list>
 
     <div class="flex items-center">
-      <app-checkbox></app-checkbox>
-      <span class="ml-[10px] font-lato text-pri-black">Music</span>
+      <app-checkbox (change)="onCheckboxChange('metric', $event)"></app-checkbox>
+      <span class="ml-[10px] font-lato text-pri-black">Metric</span>
     </div>
 
+    <app-matched-to (dataChange)="onChange($event)"></app-matched-to>
+
     <div class="flex items-center">
-      <app-checkbox></app-checkbox>
-      <span class="ml-[10px] font-lato text-pri-black">Matched in my database</span>
-    </div>
-    <div class="flex items-center">
-      <app-checkbox></app-checkbox>
+      <app-checkbox (change)="onCheckboxChange('slogan', $event)"></app-checkbox>
       <span class="ml-[10px] font-lato text-pri-black">Slogan</span>
     </div>
   </div>

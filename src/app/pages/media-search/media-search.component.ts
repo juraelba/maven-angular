@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { map } from 'rxjs/operators';
 
 import { Criteries } from '@models/criteries.model';
-import { ListChangesEvent } from '@models/list.model';
-import { SearchKey } from '@models/search.model';
+import { SearchKey, SearchFiledChangeEvent } from '@models/search.model';
 
 import { SearchEnum } from '@enums/search.enum';
 
@@ -32,7 +31,11 @@ export class MediaSearchComponent implements OnInit {
       })
   }
   
-  onChange({ key, data }: ListChangesEvent) {
+  onChange({ key, data }: SearchFiledChangeEvent): void {
     this.criteries[key] = data;
+  }
+
+  onCheckboxChange(id: string, value: boolean): void {
+    this.criteries[id] = value;
   }
 }

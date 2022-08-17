@@ -1,17 +1,39 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { compose, toPairs, reduce, always, isEmpty } from 'ramda';
+import { compose, toPairs, reduce, always, isEmpty, keys, omit } from 'ramda';
 import { Observable } from 'rxjs';
 
 import { environment } from '@environments/environment';
 
-import { SearchKey, SearchResultItem } from '@models/search.model';
-import { Table, Row, TextFilterKey, Filter, FilterOperatorKey, ColumnAutoFilterData, ColumnAutoFilterValue } from '@models/table.model';
+import { SearchKey, SearchResultItem, MatchedToSearchField, SearchColumnsKey } from '@models/search.model';
+import { Table, Row, TextFilterKey, Filter, FilterOperatorKey, ColumnAutoFilterData, ColumnAutoFilterValue, Column } from '@models/table.model';
+import { MarketData } from '@models/list.model';
+import { SelectOption } from '@models/select.model';
 
 import { ListKeys } from '@enums/lists.enum';
 import { TextFiltersValuesEnum, FilterOperatorEnum } from '@enums/filters.enum';
+import { SearchFiedlsEnum, SearchColumnsEnum } from '@enums/search.enum';
 
-import { SEARCH_COLUMNS } from '../../data/constants';
+import { COLUMNS_TO_OMIT } from '../../data/constants';
+
+interface SelectedCheckboxes {
+  [key: string]: boolean
+}
+
+interface SearchColumns {
+  [key: string]: boolean
+}
+
+interface SearchOption {
+  id: string;
+  name: string;
+}
+
+interface TransformedSearchData {
+  searchOptions: SearchOption[] | string;
+  columns: { [key: string]: boolean };
+  criteriaKey?: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -25,9 +47,15 @@ export class SearchService {
   createSearch(criterias: any, key: SearchKey): Observable<any> {
     const url = environment.api + '/search/' + key;
 
-    const searchOptions = this.transformCriteriasToSearchOptions(criterias);
+    const { columns, criteria } = this.transformCriteriasToSearchOptions(criterias);
 
-    return this.http.post(url, searchOptions)
+    const body = {
+      id: 0,
+      columns,
+      criteria
+    }
+
+    return this.http.post(url, body)
   }
 
   executeSearch(id: number): Observable<any> {
@@ -36,38 +64,119 @@ export class SearchService {
     return this.http.get(url);
   }
 
-  transformOptions(options: any): any {
-    return options.map(({ id, value }: any) => ({ id, name: value }));
+  getColumnByKey(key: string): string {
+    const mapper: any = {
+      isLanguage: 'language',
+      isCategories: 'categories',
+      isDiverseTarget: 'diverseTarget',
+      isPrimaryCategory: 'primaryCategory',
+      slogan: 'slogan',
+      metric: 'metric'
+    }
+
+    return mapper[key] || '';
   }
 
-  transformCategories(data: any): any {
-    return this.transformOptions(data.options);
+  transformToColumns(selectedCheckboxes: SelectedCheckboxes): SearchColumns {
+    return compose<[SelectedCheckboxes], [ string, boolean ][], SearchColumns>(
+      reduce<[ string, boolean ], SearchColumns>((acc, [ key, value ]) => {
+        const columnKey = this.getColumnByKey(key);
+
+        acc[columnKey] = value;
+
+        return acc;
+      }, {}),
+      toPairs
+    )(selectedCheckboxes);
+  }
+
+  transformOptions(options: SelectOption[]): { searchOptions: SearchOption[] } {
+    const searchOptions = options.map(({ id, value }) => ({ id, name: value }));
+
+    return { searchOptions };
+  }
+
+  transformComplexData({ options, ...rest }: any): TransformedSearchData {
+    const { searchOptions } = this.transformOptions(options);
+    const columns = this.transformToColumns(rest);
+
+    return { searchOptions, columns };
+  }
+
+  transformDiverseTargets(criteriaData: any): TransformedSearchData {
+    const { searchOptions, columns } = this.transformComplexData(criteriaData);
+
+    return { searchOptions, columns, criteriaKey: 'diverseTargets' };
+  }
+
+  transformDefaultData(options: any): TransformedSearchData {
+    const { searchOptions } = this.transformOptions(options);
+
+    return { searchOptions, columns: {} };
+  }
+
+  transformMarketsData({ options, market }: MarketData): TransformedSearchData {
+    const { searchOptions } = this.transformOptions(options);
+
+    return { searchOptions, columns: {}, criteriaKey: market };
+  }
+
+  transformMatchedToData({ matchedTo, matched }: MatchedToSearchField): TransformedSearchData {
+    return { searchOptions: matchedTo, columns: { matched } };
+  }
+
+  booleanCriteriaToData(key: string, value: boolean): TransformedSearchData {
+    return { searchOptions: [], columns: { [key]: value } };
   }
 
   transformCriteriasToSearchOptions(criterias: any) {
     const trasformers: any = {
-      [ListKeys.categories]: this.transformCategories.bind(this),
-      default: this.transformOptions.bind(this)
+      [ListKeys.categories]: this.transformComplexData.bind(this),
+      [ListKeys.languages2]: this.transformComplexData.bind(this),
+      [ListKeys.diversetargets]: this.transformDiverseTargets.bind(this),
+      [ListKeys.markets]: this.transformMarketsData.bind(this),
+      [SearchFiedlsEnum.matchedTo]: this.transformMatchedToData,
+      [SearchFiedlsEnum.metric]: this.booleanCriteriaToData.bind(this, SearchFiedlsEnum.metric),
+      [SearchFiedlsEnum.slogan]: this.booleanCriteriaToData.bind(this, SearchFiedlsEnum.slogan),
+      default: this.transformOptions
     }
 
     return compose<any, any, any>(
       reduce<any, any>((acc, [ key, value ]: any) => {
         const transformer = trasformers[key] || trasformers.default;
 
-        acc[key] = transformer(value);
+        const { columns, searchOptions, criteriaKey } = transformer(value);
+        
+        acc.criteria[criteriaKey || key] = searchOptions;
+
+        acc.columns = {
+          ...acc.columns,
+          ...columns
+        };
 
         return acc;
-      }, {}),
+      }, { columns: {}, criteria: {} }),
       toPairs
     )(criterias)
   }
 
+  getColumnsFromSearchResult(searchResult: SearchResultItem[]): Column[] {
+    const omitedColumns = omit(COLUMNS_TO_OMIT, searchResult[0]);
+    const columnIds = Object.keys(omitedColumns) as SearchColumnsKey[];
+
+    return columnIds.map((columnId) => ({
+        id: columnId,
+        label: SearchColumnsEnum[columnId] || columnId,
+        width: 200
+      }));
+  }
+
   transformSearchResultToTableData(searchResult: SearchResultItem[], key: SearchKey): Table {
-    const columns = SEARCH_COLUMNS[key] || [];
+    const columns = this.getColumnsFromSearchResult(searchResult);
 
     const rows = searchResult.reduce<Row[]>((acc, cur) => {
       const row = {
-        id: cur.mavenid,
+        id: cur.mavenid as string,
         data: cur
       };
 

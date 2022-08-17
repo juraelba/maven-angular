@@ -9,6 +9,7 @@ import {
   EventEmitter,
   ViewChild
 } from '@angular/core';
+import { is } from 'ramda';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil, tap } from 'rxjs/operators'
 
@@ -118,7 +119,8 @@ export class SelectComponent implements OnInit {
 
   transformOptions(options: SelectOption[]): SelectOption[] {
     return options.map((option) => {
-      const groupLetter = option.label[0].toUpperCase();
+      const { label } = option;
+      const groupLetter = is(String, label) ? label[0].toUpperCase() : '';
 
       return {
         ...option,

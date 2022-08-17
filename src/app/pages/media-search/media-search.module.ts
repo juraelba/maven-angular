@@ -9,13 +9,15 @@ import { SelectModule } from '@modules/select/select.module';
 import { MediaSearchRoutingModule } from './media-search-routing.module';
 import { SearchModule } from '@modules/search/search.module';
 
-import { SelectedCriteriaService } from '../../core/services/selected-criteria/selected-criteria.service';
+import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 import { MediaSearchComponent } from './media-search.component';
+import { MatchedToComponent } from './matched-to/matched-to.component';
 
 @NgModule({
   declarations: [
-    MediaSearchComponent
+    MediaSearchComponent,
+    MatchedToComponent
   ],
   providers: [
     SelectedCriteriaService

@@ -3,11 +3,13 @@ import { filter, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { SelectOption } from '@models/select.model';
-import { SelectedCriteriaEvent } from '@models/criteries.model';
+import { SelectedCriteriaEvent, LanguageCriteria } from '@models/criteries.model';
 import { ListChangesEvent } from '@models/list.model';
+
 import { ListKeys, ListLabels } from '@enums/lists.enum';
-import { ListsService } from '../../../../core/services/lists/lists.service';
-import { SelectedCriteriaService } from '../../../../core/services/selected-criteria/selected-criteria.service';
+
+import { ListsService } from '@services/lists/lists.service';
+import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 @Component({
   selector: 'app-language-pick-list',
@@ -81,7 +83,12 @@ export class LanguagePickListComponent implements OnInit {
     this.options = this.listsService.updateOptionsWithSelected(this.options, values);
     this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.languages2);
 
-    this.change.emit({ key: ListKeys.languages2, data: options });
+    const languageData: LanguageCriteria = {
+      isLanguage: this.isLanguage,
+      options
+    }
+
+    this.change.emit({ key: ListKeys.languages2, data: languageData });
   }
   
   onClear(): void {

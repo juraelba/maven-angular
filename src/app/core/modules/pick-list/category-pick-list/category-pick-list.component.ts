@@ -6,8 +6,8 @@ import { SelectOption } from '@models/select.model';
 import { SelectedCriteriaEvent } from '@models/criteries.model';
 import { ListChangesEvent } from '@models/list.model';
 import { ListKeys, ListLabels } from '@enums/lists.enum';
-import { ListsService } from '../../../../core/services/lists/lists.service';
-import { SelectedCriteriaService } from '../../../../core/services/selected-criteria/selected-criteria.service';
+import { ListsService } from '@services/lists/lists.service';
+import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 interface CategoryData {
   isCategories: boolean;

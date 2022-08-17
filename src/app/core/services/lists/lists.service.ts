@@ -252,4 +252,8 @@ export class ListsService {
 
     return sortingStrategies[sort](options);
   }
+
+  selectAll(options: SelectOption[]): SelectOption[] {
+    return options.map((options) => ({ ...options, selected: true }));
+  }
 }

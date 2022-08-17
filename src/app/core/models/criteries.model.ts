@@ -32,3 +32,13 @@ export interface CategoriesCriteria {
   isCategories: boolean,
   isPrimaryCategory: boolean
 }
+
+export interface LanguageCriteria {
+  isLanguage: boolean;
+  options: SelectOption[]
+}
+
+export interface DiverseTargestCriteria {
+  isDiverseTarget: boolean;
+  options: SelectOption[];
+}
