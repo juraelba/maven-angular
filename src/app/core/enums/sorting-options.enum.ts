@@ -12,5 +12,6 @@ export enum MarketSortinOptionsLabelsEnum {
 
 export enum SortMethodsEnum {
   ascend = 'ascend',
-  descend = 'descend'
+  descend = 'descend',
+  none = 'none'
 }

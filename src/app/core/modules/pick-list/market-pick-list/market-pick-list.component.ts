@@ -100,7 +100,7 @@ export class MarketPickListComponent implements OnInit {
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
         this.options = updatedOptions;
-        this.value = this.listsService.getSelectInputValue(options, ListLabels.categories);
+        this.value = this.listsService.getSelectInputValue(options, ListLabels.markets);
       });
   }
 
@@ -135,7 +135,7 @@ export class MarketPickListComponent implements OnInit {
     const width = this.selectComponent?.selectContainer.nativeElement.getBoundingClientRect().width;
 
     this.width = `${ width-80 }px`;
-    this.value = this.listsService.getSelectInputValue(options);
+    this.value = this.listsService.getSelectInputValue(options, ListLabels.markets);
     this.borderLabel = this.getBorderLabel(options);
 
     const marketData: MarketData = {

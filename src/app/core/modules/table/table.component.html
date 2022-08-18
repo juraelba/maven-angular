@@ -13,6 +13,7 @@
               <div
                 class="text-pri-black font-lato font-bold text-sm cursor-move flex flex-1 items-center"
                 cdkDragHandle
+                (click)="onSortClick($event, column)"
               >
                 {{ column.label }}
               </div>
@@ -21,6 +22,7 @@
                   class="mr-[10px] cursor-pointer"
                   src="/assets/images/icons/long-arrow-down.svg"
                   alt="long-arrow-down"
+                  [ngClass]="getSortIconClass(column)"
                   (click)="onSortClick($event, column)"
                 />
                 <app-column-filter

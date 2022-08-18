@@ -50,7 +50,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   columns: Column[] = [];
 
   tableBodyStyles: any = {};
-  sortedColumn: [ string, SortMethods ];
+  sortedColumn: [ string, SortMethods ] = [ '', SortMethodsEnum.none ];
   columnFilterId: string = '';
   activeColumnAutoFilterId: string = '';
   columnAutoFilterData: ColumnAutoFilterData;
@@ -105,22 +105,36 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   private getSortMethod(columnId: string): SortMethods {
     const [ id, sortMethod ] = this.sortedColumn || [];
 
-    if(id === columnId) {
-      return sortMethod === SortMethodsEnum.ascend ? SortMethodsEnum.descend : SortMethodsEnum.ascend;
+    const sortMethodMapper = {
+      [SortMethodsEnum.none]: SortMethodsEnum.ascend,
+      [SortMethodsEnum.ascend]: SortMethodsEnum.descend,
+      [SortMethodsEnum.descend]: SortMethodsEnum.none
     }
 
-    return SortMethodsEnum.ascend;
+    if(id === columnId) {
+      return sortMethodMapper[sortMethod];
+    }
+
+    return sortMethodMapper[SortMethodsEnum.none];
   }
 
   onSortClick(event: MouseEvent, column: Column): void {
     event.stopPropagation();
-  
+
     const propertyPath = [ 'data', column.id ];
     const sortMethod = this.getSortMethod(column.id);
 
     this.sortedColumn = [ column.id, sortMethod ];
 
-    this.data.rows = this.utilsService.sortByAlphabeticalOrder<Row>(this.data.rows, sortMethod,  propertyPath);
+    if(sortMethod === SortMethodsEnum.none) {
+      const mapedFilters = this.searchService.mapFilters(this.columnAutoFilterData);
+      const selectedGroupedRowFilterData = this.getSelectedGroupedRowFilterData();
+      const filteredByGroupRowFilters = this.filterBySelectedGroupRowFilterData(this.data.rows, selectedGroupedRowFilterData);
+
+      this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(filteredByGroupRowFilters, mapedFilters);
+    } else {
+      this.rows = this.utilsService.sortByAlphabeticalOrder<Row>(this.rows, sortMethod,  propertyPath);
+    }
   }
 
   onDrop(event: CdkDragDrop<Element, Element, Column>): void {
@@ -364,5 +378,21 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   resetAllFilters(): void {
     this.groupedRowFilterData = this.groupRowData();
     this.columnAutoFilterData = {};
+  }
+
+  getSortIconClass({ id }: Column): string {
+    const [ columnId, sortMethod ] = this.sortedColumn;
+
+    const classMapper = {
+      [SortMethodsEnum.ascend]: 'rotate-180',
+      [SortMethodsEnum.descend]: 'rotate-0',
+      [SortMethodsEnum.none]: 'hidden'
+    }
+
+    if(columnId === id) {
+      return classMapper[sortMethod];
+    }
+
+    return 'hidden';
   }
 }
