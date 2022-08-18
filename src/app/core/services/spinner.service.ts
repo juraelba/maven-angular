@@ -7,7 +7,9 @@ import { Subject } from 'rxjs';
   providedIn: 'root'
 })
 export class SpinnerService {
-  spinnerSubject$ = new Subject<SpinnerState>();
+  private spinnerSubject$ = new Subject<SpinnerState>();
+
+  spinner$ = this.spinnerSubject$.asObservable();
 
   constructor() { }
 

@@ -73,7 +73,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes)
     if(changes.data && !changes.data.firstChange) {
       this.rows = [ ...changes.data.currentValue.rows ];
       this.columns = [ ...changes.data.currentValue.columns ];

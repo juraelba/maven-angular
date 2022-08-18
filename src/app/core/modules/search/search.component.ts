@@ -6,9 +6,9 @@ import { SearchKey } from '@models/search.model';
 import { Table, TableConfig } from '@models/table.model';
 
 import { SearchService } from '@services/search/search.service';
+import { SpinnerService } from '@services/spinner.service';
 
 import { SEARCH_COLUMNS_CONFIG } from '../../data/constants';
-import { MOCK } from '../../data/mock';
 
 @Component({
   selector: 'app-search',
@@ -26,7 +26,8 @@ export class SearchComponent implements OnInit {
   config: TableConfig = {}
 
   constructor(
-    private searchService: SearchService
+    private searchService: SearchService,
+    private spinnerService: SpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -36,6 +37,8 @@ export class SearchComponent implements OnInit {
   onSearchButtonClick(event: MouseEvent): void {
     event.stopPropagation();
 
+    this.spinnerService.show();
+
     this.searchService.createSearch(this.criteries, this.key)
       .pipe(
         switchMap(({ id }: any) => this.searchService.executeSearch(id))
@@ -44,6 +47,8 @@ export class SearchComponent implements OnInit {
         this.totalRows = data.length;
         this.isFetched = true;
         this.tableData = this.searchService.transformSearchResultToTableData(data, this.key);
+
+        this.spinnerService.hide();
       })
   }
 }

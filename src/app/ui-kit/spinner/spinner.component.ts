@@ -20,7 +20,7 @@ export class SpinnerComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.spinnerService.spinnerSubject$.asObservable().pipe(
+    this.spinnerService.spinner$.pipe(
       takeUntil(this.unsubscribeAll)
     ).subscribe((state: SpinnerState) => {
       this.show = state.show;

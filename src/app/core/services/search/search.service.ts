@@ -126,7 +126,7 @@ export class SearchService {
   }
 
   booleanCriteriaToData(key: string, value: boolean): TransformedSearchData {
-    return { searchOptions: [], columns: { [key]: value } };
+    return { searchOptions: '', columns: { [key]: value } };
   }
 
   transformCriteriasToSearchOptions(criterias: any) {
@@ -146,8 +146,11 @@ export class SearchService {
         const transformer = trasformers[key] || trasformers.default;
 
         const { columns, searchOptions, criteriaKey } = transformer(value);
+
+        if(searchOptions) {
+          acc.criteria[criteriaKey || key] = searchOptions;
+        }
         
-        acc.criteria[criteriaKey || key] = searchOptions;
 
         acc.columns = {
           ...acc.columns,
