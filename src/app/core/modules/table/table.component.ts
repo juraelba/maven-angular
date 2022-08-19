@@ -170,11 +170,23 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     const columns = this.updateColumnsWidth(column, diff);
 
     this.columns = columns;
+
+    this.updateTableBidyStyles();
   }
 
   getColumnCellStyles(column: Column): { [key: string]: string } {
     const width = `${ column.width }px`;
   
+    return {
+      width,
+      minWidth: width,
+      maxWidth: width
+    }
+  }
+
+  getColumnTextStyles(column: Column): { [key: string]: string } {
+    const width = `${ column.width - 40 }px`;
+
     return {
       width,
       minWidth: width,

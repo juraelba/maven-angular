@@ -9,17 +9,18 @@
           cdkDrag
         >
           <div class="flex justify-between h-full">
-            <div class="mx-[20px] flex items-center justify-between flex-auto overflow-hidden">
+            <div class="flex items-center grow">
               <div
-                class="text-pri-black font-lato font-bold text-sm cursor-move flex flex-1 items-center"
+                class="text-pri-black font-lato font-bold text-sm cursor-move flex flex-1 items-center pl-[20px] pr-[10px]"
                 cdkDragHandle
                 (click)="onSortClick($event, column)"
+                [ngStyle]="getColumnTextStyles(column)"
               >
-                {{ column.label }}
+                <span class="text-ellipsis overflow-hidden">{{ column.label }}</span>
               </div>
               <div class="flex">
                 <img
-                  class="mr-[10px] cursor-pointer"
+                  class="cursor-pointer"
                   src="/assets/images/icons/long-arrow-down.svg"
                   alt="long-arrow-down"
                   [ngClass]="getSortIconClass(column)"

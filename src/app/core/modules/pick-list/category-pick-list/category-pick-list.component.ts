@@ -76,6 +76,14 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     this.isCategories = !this.isCategories;
     this.borderLabel = this.getBorderLabel();
     this.value = this.listsService.getSelectInputValue(selected, ListLabels.categories);
+
+    const categoryData = {
+      isCategories: this.isCategories,
+      isPrimaryCategory: this.isPrimaryCategory,
+      options: selected
+    };
+  
+    this.change.emit({ key: ListKeys.categories, data: categoryData });
   }
 
   togglePrimaryCategory(event: MouseEvent): void {
@@ -86,6 +94,14 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     this.isPrimaryCategory = !this.isPrimaryCategory;
     this.borderLabel = this.getBorderLabel();
     this.value = this.listsService.getSelectInputValue(selected, ListLabels.categories);
+
+    const categoryData = {
+      isCategories: this.isCategories,
+      isPrimaryCategory: this.isPrimaryCategory,
+      options: selected
+    };
+
+    this.change.emit({ key: ListKeys.categories, data: categoryData });
   }
 
   getBorderLabel(): string {

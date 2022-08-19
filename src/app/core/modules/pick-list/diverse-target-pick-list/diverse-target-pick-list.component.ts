@@ -69,6 +69,13 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
     this.isDiverseTarget = !this.isDiverseTarget;
     this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.diversetargets);
     this.value = this.listsService.getSelectInputValue(selected, ListLabels.diversetargets);
+
+    const data: DiverseTargestCriteria = {
+      isDiverseTarget: this.isDiverseTarget,
+      options: selected
+    };
+
+    this.change.emit({ key: ListKeys.diversetargets, data });
   }
 
   onApplyChanges(options: SelectOption[]): void {
@@ -84,7 +91,7 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
     const data: DiverseTargestCriteria = {
       isDiverseTarget: this.isDiverseTarget,
       options
-    }
+    };
 
     this.change.emit({ key: ListKeys.diversetargets, data });
   }

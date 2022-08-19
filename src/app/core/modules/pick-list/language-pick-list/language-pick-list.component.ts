@@ -71,6 +71,13 @@ export class LanguagePickListComponent implements OnInit {
     this.isLanguage = !this.isLanguage;
     this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.languages2);
     this.value = this.listsService.getSelectInputValue(selected, ListLabels.languages2);
+
+    const data: LanguageCriteria = {
+      isLanguage: this.isLanguage,
+      options: selected
+    };
+
+    this.change.emit({ key: ListKeys.languages2, data });
   }
 
   onApplyChanges(options: SelectOption[]): void {
@@ -86,7 +93,7 @@ export class LanguagePickListComponent implements OnInit {
     const languageData: LanguageCriteria = {
       isLanguage: this.isLanguage,
       options
-    }
+    };
 
     this.change.emit({ key: ListKeys.languages2, data: languageData });
   }
