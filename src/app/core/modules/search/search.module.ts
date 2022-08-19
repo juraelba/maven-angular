@@ -8,6 +8,8 @@ import { SpinnerModule } from '../../../ui-kit/spinner/spinner.module';
 
 import { SearchComponent } from './search.component';
 
+import { ExcelService } from '@services/excel/excel.service';
+
 @NgModule({
   declarations: [
     SearchComponent
@@ -18,6 +20,9 @@ import { SearchComponent } from './search.component';
     SelectedCriteriaModule,
     TableModule,
     SpinnerModule
+  ],
+  providers: [
+    ExcelService
   ],
   exports: [
     SearchComponent

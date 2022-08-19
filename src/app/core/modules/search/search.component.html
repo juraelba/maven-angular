@@ -22,12 +22,20 @@
   <div *ngIf="isFetched && totalRows" class="mt-[50px]">
     <div class="flex justify-between mb-[20px]">
       <span class="text-pri-gray font-lato">Result: {{ totalRows }}</span>
-      <button class="flex items-center">
+      <button class="flex items-center" (click)="exportToExcel($event)">
         <img src="/assets/images/icons/download-arrow.svg" alt="download-arrow" />
-        <span class="ml-[10px] text-regal-blue text-base font-mont font-medium">Excel</span>
+        <span class="ml-[10px] text-regal-blue text-base font-mont font-medium">
+          Excel
+        </span>
       </button>
     </div>
-    <app-table [data]="tableData" [config]="config"></app-table>
+    <app-table
+      [data]="tableData"
+      [config]="config"
+      (rowsChange)="onRowsChange($event)"
+      (columnsChange)="onColumnsChange($event)"
+    >
+    </app-table>
   </div>
 
   <div *ngIf="isFetched && !totalRows">

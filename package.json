@@ -28,6 +28,7 @@
     "ramda": "^0.28.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.18.10/xlsx-0.18.10.tgz",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

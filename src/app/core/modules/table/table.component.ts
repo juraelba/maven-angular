@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { compose, toPairs, reduce, uniq, isNil } from 'ramda';
 
@@ -43,6 +43,9 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() config: TableConfig = {};
   @Input() data: Table = { rows: [], columns: [] };
 
+  @Output() rowsChange: EventEmitter<Row[]> = new EventEmitter();
+  @Output() columnsChange: EventEmitter<Column[]> = new EventEmitter();
+
   @ViewChild('table') table: ElementRef;
   @ViewChild('tableContainer') tableContainer: ElementRef;
 
@@ -78,6 +81,9 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     if(changes.data && !changes.data.firstChange) {
       this.rows = [ ...changes.data.currentValue.rows ];
       this.columns = [ ...changes.data.currentValue.columns ];
+
+      this.rowsChange.emit(this.rows);
+      this.columnsChange.emit(this.columns);
 
       this.resetAllFilters();
       this.updateTableBidyStyles();
@@ -135,10 +141,14 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     } else {
       this.rows = this.utilsService.sortByAlphabeticalOrder<Row>(this.rows, sortMethod,  propertyPath);
     }
+
+    this.rowsChange.emit(this.rows);
   }
 
   onDrop(event: CdkDragDrop<Element, Element, Column>): void {
     moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
+
+    this.columnsChange.emit(this.columns);
   }
 
   updateColumnsWidth({ id }: Column, diff: number): Column[] {
@@ -299,6 +309,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(this.data.rows, mapedFilters);
     this.isColumnAutoFilterVisible = false;
+
+    this.rowsChange.emit(this.rows);
   }
 
   onFilterApply({ id, filters }: ApplyFilterEvent): void {
@@ -308,6 +320,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(this.data.rows, mapedFilters);
     this.isColumnAutoFilterVisible = false;
+
+    this.rowsChange.emit(this.rows);
   }
 
   onFilterCancel(id: string): void {
@@ -385,6 +399,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     const filteredRows = this.searchService.filterDataBasedOnColumnAutoFilters(filteredByGroupRowFilters, mapedFilters);
 
     this.rows = filteredRows;
+
+    this.rowsChange.emit(this.rows);
   }
 
   resetAllFilters(): void {
