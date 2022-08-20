@@ -19,3 +19,16 @@ table th {
 .cdk-drag-animating {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
+
+.cdk-drag-preview {
+  border: 1px solid #b3b3b8;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.cdk-drag-placeholder .header__template {
+  border: 2px solid #3a63cc;
+}
+
+.cdk-drag-placeholder .header__content {
+  opacity: 0.3;
+}
