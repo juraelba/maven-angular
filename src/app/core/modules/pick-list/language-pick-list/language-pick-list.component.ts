@@ -46,8 +46,8 @@ export class LanguagePickListComponent implements OnInit {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.languages2]),
-        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.languages2])
+        filter(({ data }: SelectedCriteriaEvent) => data[ListKeys.languages2]),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.languages2].options)
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);

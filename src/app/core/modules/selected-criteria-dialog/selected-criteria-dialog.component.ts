@@ -56,12 +56,13 @@ export class SelectedCriteriaDialogComponent implements OnInit {
     }
   }
 
-  onRemoveCriteriaClick(key: string, option: SelectOption) {
+  onRemoveCriteriaClick(key: ListKeys, option: SelectOption) {
     const workingCriteria = this.data[key];
+    const complexCriteriaData = [ ListKeys.categories, ListKeys.markets, ListKeys.diversetargets, ListKeys.languages2 ];
 
     let newData = {};
 
-    if (key === ListKeys.categories || key === ListKeys.markets) {
+    if (complexCriteriaData.includes(key)) {
       newData = this.updateCriteria(workingCriteria, option, key);
     } else {
       newData = {

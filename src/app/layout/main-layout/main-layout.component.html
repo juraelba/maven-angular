@@ -1,7 +1,9 @@
-<div>
+<div class="header-area">
   <app-top-nav></app-top-nav>
-  <div class="flex">
-    <app-side-nav></app-side-nav>
-    <ng-content></ng-content>
-  </div>
+</div>
+<div class="sidebar-area">
+  <app-side-nav></app-side-nav>
+</div>
+<div class="content-area">
+  <ng-content></ng-content>
 </div>

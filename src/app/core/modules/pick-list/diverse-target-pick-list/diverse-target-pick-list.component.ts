@@ -44,8 +44,8 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.diversetargets]),
-        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.diversetargets])
+        filter(({ data }: SelectedCriteriaEvent) => data[ListKeys.diversetargets]),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.diversetargets].options)
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);

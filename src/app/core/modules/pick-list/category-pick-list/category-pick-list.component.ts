@@ -3,17 +3,13 @@ import { filter, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { SelectOption } from '@models/select.model';
-import { SelectedCriteriaEvent } from '@models/criteries.model';
+import { SelectedCriteriaEvent, CategoriesCriteria } from '@models/criteries.model';
 import { ListChangesEvent } from '@models/list.model';
+
 import { ListKeys, ListLabels } from '@enums/lists.enum';
+
 import { ListsService } from '@services/lists/lists.service';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
-
-interface CategoryData {
-  isCategories: boolean;
-  isPrimaryCategory: boolean;
-  options: SelectOption[]
-}
 
 @Component({
   selector: 'app-category-pick-list',
@@ -51,7 +47,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.categories] ),
+        filter(({ action, data }: SelectedCriteriaEvent) => data[ListKeys.categories] ),
         map(({ data }: SelectedCriteriaEvent) => data[ListKeys.categories].options)
       )
       .subscribe((options: SelectOption[]) => {
@@ -77,7 +73,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     this.borderLabel = this.getBorderLabel();
     this.value = this.listsService.getSelectInputValue(selected, ListLabels.categories);
 
-    const categoryData = {
+    const categoryData: CategoriesCriteria = {
       isCategories: this.isCategories,
       isPrimaryCategory: this.isPrimaryCategory,
       options: selected
@@ -95,7 +91,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     this.borderLabel = this.getBorderLabel();
     this.value = this.listsService.getSelectInputValue(selected, ListLabels.categories);
 
-    const categoryData = {
+    const categoryData: CategoriesCriteria = {
       isCategories: this.isCategories,
       isPrimaryCategory: this.isPrimaryCategory,
       options: selected
@@ -126,7 +122,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     this.value = this.listsService.getSelectInputValue(options, ListLabels.categories);
     this.width = `${ width-80 }px`;
     
-    const categoryData: CategoryData = {
+    const categoryData: CategoriesCriteria = {
       isPrimaryCategory: this.isPrimaryCategory,
       isCategories: this.isCategories,
       options,
@@ -134,6 +130,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
 
     this.options = this.listsService.updateOptionsWithSelected(this.options, values);
     this.borderLabel = this.getBorderLabel();
+
     this.change.emit({ key: ListKeys.categories, data: categoryData });
   }
   
@@ -144,7 +141,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
     this.borderLabel = this.getBorderLabel();
     this.value = ListLabels.categories
 
-    const categoryData: CategoryData = {
+    const categoryData: CategoriesCriteria = {
       isPrimaryCategory: this.isPrimaryCategory,
       isCategories: this.isCategories,
       options: [],

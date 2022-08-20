@@ -28,7 +28,7 @@ export interface SelectedCriteriaConfig {
 }
 
 export interface CategoriesCriteria {
-  categories: SelectOption[],
+  options: SelectOption[],
   isCategories: boolean,
   isPrimaryCategory: boolean
 }

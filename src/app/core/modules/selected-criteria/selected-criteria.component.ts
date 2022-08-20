@@ -1,16 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { compose, toPairs, reduce, isEmpty } from 'ramda';
+import { compose, toPairs, reduce, isEmpty, always } from 'ramda';
 
 import { SelectedCriteriaDialogComponent } from '../selected-criteria-dialog/selected-criteria-dialog.component';
 import { Criteries, CategoriesCriteria, LanguageCriteria } from '@models/criteries.model';
-import { ListKey } from '@models/list.model';
 
-import { ListKeys } from '@enums/lists.enum';
+import { SearchFiedlsEnum } from '@enums/search.enum';
 
 type Validators = {
   [key: string]: (value: any) => boolean;
 }
+
+type ComplexCriteriaData = CategoriesCriteria | LanguageCriteria;
 
 @Component({
   selector: 'app-selected-criteria',
@@ -25,18 +26,18 @@ export class SelectedCriteriaComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  isCategoriesEmpty({ categories }: CategoriesCriteria): boolean {
-    return isEmpty(categories);
-  }
-
-  isLanguageEmpty({ options }: LanguageCriteria): boolean {
+  isComplexCriteriaDataEmpty({ options }: ComplexCriteriaData): boolean {
     return isEmpty(options);
   }
 
-  omitEmptyCriteries(criteries: Criteries): Criteries {
+  omitNotValidCriteries(criteries: Criteries): Criteries {
     const criteriaValidators: Validators = {
-      [ListKeys.categories]: this.isCategoriesEmpty.bind(this),
-      [ListKeys.languages2]: this.isLanguageEmpty,
+      [SearchFiedlsEnum.categories]: this.isComplexCriteriaDataEmpty,
+      [SearchFiedlsEnum.languages2]: this.isComplexCriteriaDataEmpty,
+      [SearchFiedlsEnum.diversetargets]: this.isComplexCriteriaDataEmpty,
+      [SearchFiedlsEnum.metric]: always(true),
+      [SearchFiedlsEnum.matchedTo]: always(true),
+      [SearchFiedlsEnum.slogan]: always(true)
     }
   
     return compose<[Criteries], Array<[string, any]>, Criteries>(
@@ -57,7 +58,7 @@ export class SelectedCriteriaComponent implements OnInit {
 
   openDialog(): void {
     this.dialog.open(SelectedCriteriaDialogComponent, {
-      data: this.omitEmptyCriteries(this.criteries),
+      data: this.omitNotValidCriteries(this.criteries),
       width: '640px'
     })
   }

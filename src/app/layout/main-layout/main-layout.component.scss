@@ -1,0 +1,21 @@
+:host {
+  height: 100vh;
+  display: grid;
+  grid-template-areas:
+    'header header'
+    'sidebar main';
+  grid-template-rows: 68px 1fr;
+  grid-template-columns: 260px 1fr;
+}
+
+.header-area {
+  grid-area: header
+}
+
+.sidebar-area {
+  grid-area: sidebar;
+}
+
+.content-area {
+  grid-area: main;
+}

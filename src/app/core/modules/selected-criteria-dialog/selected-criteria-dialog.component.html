@@ -31,6 +31,14 @@
           <ng-container *ngTemplateOutlet="complexCriteriaValues; context: { criteriaPair: criteriaPair }"></ng-container>
         </ng-container>
 
+        <ng-container *ngSwitchCase="'languages2'">
+          <ng-container *ngTemplateOutlet="complexCriteriaValues; context: { criteriaPair: criteriaPair }"></ng-container>
+        </ng-container>
+
+        <ng-container *ngSwitchCase="'diversetargets'">
+          <ng-container *ngTemplateOutlet="complexCriteriaValues; context: { criteriaPair: criteriaPair }"></ng-container>
+        </ng-container>
+
         <ng-container *ngSwitchDefault>
           <button
             *ngFor="let criteria of criteriaPair[1]"
