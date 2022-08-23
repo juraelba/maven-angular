@@ -362,26 +362,46 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     )(this.groupedRowFilterData);
   }
 
-  validateRowData(value: any, availableOptions: SelectOption[]): boolean {
-    const found = availableOptions.find((option) => option.label === value);
+  createHashMapFromSelectedGroup(selectedGroup: Group): { [key: string]: any } {
+    const selectedPairs = toPairs(selectedGroup);
 
-    return Boolean(found);
+    return selectedPairs.reduce<{ [key: string]: any }>((acc, [ key, pairValue ]) => {
+      acc[key] = pairValue?.reduce<{ [key: string]: any }>((valueAcc, { label }: SelectOption) => {
+        valueAcc[label] = label;
+
+        return valueAcc;
+      }, {})
+
+      return acc;
+    },{});
   }
-
+  
   filterBySelectedGroupRowFilterData(rows: Row[], selected: Group): Row[] {
-    return rows.filter((row) => {
-      const rowDataPairs = toPairs(row.data);
+    const data = [];
 
-      const isRowValid = rowDataPairs.every(([ key, value ]) => {
-        const selectedOptions = selected[key];
+    const selectedGroupHashMap = this.createHashMapFromSelectedGroup(selected);
 
-        return isNil(selectedOptions) || isNil(value)
-          ? true
-          : this.validateRowData(value, selectedOptions);
-      });
+    for(let i = 0; i < rows.length; i++) {
+        const rowDataPairs = Object.entries(rows[i].data);
 
-      return isRowValid;
-    });
+        const isRowValid = rowDataPairs.every(([ key, value ]) => {
+          const selectedOptions = selectedGroupHashMap[key];
+
+          if(isNil(selectedOptions) || isNil(value)){
+            return true;
+          } else {
+            const found = selectedOptions[value];
+
+            return Boolean(found);
+          }
+        });
+  
+        if(isRowValid) {
+          data.push(rows[i]);
+        };
+    }
+
+    return data;
   }
 
   onColumnFilterChange({ id, options }: ColumnFilterChangeEvent): void {
@@ -392,9 +412,9 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     this.groupedRowFilterData = this.updateGroupedRowFilterData(id, options);
 
     const selectedGroupedRowFilterData = this.getSelectedGroupedRowFilterData();
-    const filteredByGroupRowFilters = this.filterBySelectedGroupRowFilterData(this.data.rows, selectedGroupedRowFilterData);
-
     const mapedFilters = this.searchService.mapFilters(this.columnAutoFilterData);
+
+    const filteredByGroupRowFilters = this.filterBySelectedGroupRowFilterData(this.data.rows, selectedGroupedRowFilterData);
 
     const filteredRows = this.searchService.filterDataBasedOnColumnAutoFilters(filteredByGroupRowFilters, mapedFilters);
 
