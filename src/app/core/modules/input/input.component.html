@@ -1,19 +1,35 @@
 <div
-  class="h-full p-2 flex justify-between items-center"
+  class="h-full flex justify-between items-center relative p-[10px]"
   [ngClass]="{
     'bg-light-grey': disabled,
     'bg-white': !disabled,
-    'border border-gray rounded-md': border
+    'border rounded-md': border,
+    'border-regal-blue': isFocused,
+    'border-gray': !isFocused
   }"
 >
+  <ng-container *ngIf="suffix">
+    <ng-content select="[suffix]"></ng-content>
+  </ng-container>
+
   <input
-    class="font-lato text-pri-black placeholder:text-pri-gray placeholder:font-lato disabled:bg-light-grey w-full h-full outline-transparent"
+    class="font-lato text-pri-black placeholder:text-pri-black placeholder:font-lato disabled:bg-light-grey w-full h-fit outline-transparent"
     type="text"
     [name]="name"
-    [placeholder]="placeholder"
+    [placeholder]="_placeholder"
     [disabled]="disabled"
     (keyup)="onInputChange($event)"
+    (focus)="onInputFocus()"
+    (blur)="onInputBlur()"
     [value]="value"
+    tabindex="0"
   >
   <img *ngIf="icon" [src]="icon">
+
+  <div
+    *ngIf="isFocused || value"
+    class="absolute translate-y-1/2 bottom-full font-lato text-[10px] text-pri-black bg-white border-label"
+  >
+    {{ label }}
+  </div>
 <div>

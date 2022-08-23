@@ -1,5 +1,4 @@
 
-<div class="flex items-center border-b border-b-1 border-pri-gray">
-  <app-checkbox [checked]="matched" (change)="onCheckboxChange($event)"></app-checkbox>
-  <app-input [border]="false" (inputChange)="onInputChange($event)" placeholder="Matched To" [value]="matchedTo"></app-input>
-</div>
+<app-input (inputChange)="onInputChange($event)" placeholder="Matched To" [value]="matchedTo" label="Matched To">
+  <app-checkbox class="mr-[10px]" suffix #suffix [checked]="matched" (change)="onCheckboxChange($event)"></app-checkbox>
+</app-input>
