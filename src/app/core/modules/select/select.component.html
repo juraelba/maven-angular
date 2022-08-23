@@ -102,7 +102,7 @@
     </div>
 
     <div class="font-lato overflow-y-auto pt-2.5">
-      <cdk-virtual-scroll-viewport itemSize="20" class="h-52">
+      <cdk-virtual-scroll-viewport itemSize="20" class="h-[170px]">
         <div
           *cdkVirtualFor="let option of dropdownOptions; index as i; templateCacheSize: 0"
           [ngClass]="{ 'bg-light-blue': option.selected && !multiple }"

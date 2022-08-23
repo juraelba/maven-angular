@@ -1,6 +1,6 @@
 export enum ListLabels {
   owners = 'Owners',
-  mediatypes2 = 'Media Type',
+  mediatypes2 = 'Media Types',
   categories = 'Categories',
   diversetargets = 'Diverse Target',
   languages2 = 'Language',
