@@ -10,9 +10,11 @@ import { SelectedCriteriaEvent } from '@models/criteries.model';
 
 import { ListKeys, ListLabels } from '@enums/lists.enum';
 import { MarketSortingOptionsEnum } from '@enums/sorting-options.enum';
+import { SearchActionTypesEnum } from '@enums/search.enum'
 
 import { ListsService } from '@services/lists/lists.service';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
+import { SearchService } from '@services/search/search.service';
 
 type SectionKey = ListKeys.dmas | ListKeys.msas;
 type SectionLabel = ListLabels.dmas | ListLabels.msas;
@@ -64,12 +66,14 @@ export class MarketPickListComponent implements OnInit {
 
   constructor(
     private listsService: ListsService,
-    private selectedCriteriaService: SelectedCriteriaService
+    private selectedCriteriaService: SelectedCriteriaService,
+    private searchService: SearchService
   ) { }
 
   ngOnInit(): void {
       this.fetchMarketListOptions();
       this.listenSelectedCriteriaService();
+      this.listenSearchBarMenuActions();
   }
 
   fetchMarketListOptions(): void {
@@ -101,6 +105,17 @@ export class MarketPickListComponent implements OnInit {
 
         this.options = updatedOptions;
         this.value = this.listsService.getSelectInputValue(options, ListLabels.markets);
+      });
+  }
+
+  listenSearchBarMenuActions(): void {
+    this.searchService.searchBarEvents$
+      .pipe(
+        takeUntil(this.unsubscribeAll),
+        filter(({ action }) => SearchActionTypesEnum.NEW_SEARCH === action)
+      )
+      .subscribe(() => {
+        this.onClear();
       });
   }
 

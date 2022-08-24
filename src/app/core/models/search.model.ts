@@ -1,5 +1,4 @@
-import { SearchEnum, SearchColumnsEnum } from '@enums/search.enum';
-import { ListKey } from './list.model';
+import { SearchEnum, SearchColumnsEnum, SearchActionTypesEnum } from '@enums/search.enum';
 
 export interface MatchedToSearchField {
   matched: boolean;
@@ -17,4 +16,11 @@ export type SearchResultItem = {
 export interface SearchFiledChangeEvent {
   key: string;
   data: any
+}
+
+export type SearchActionTypes = keyof typeof SearchActionTypesEnum;
+
+export interface SearchAction {
+  action: SearchActionTypes,
+  payload?: any
 }

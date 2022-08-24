@@ -1,12 +1,11 @@
-<app-search [title]="'Media Search'" [criteries]="criteries" [key]="key">
+<app-search
+  [title]="'Media Search'"
+  [criteries]="criteries"
+  [key]="key"
+>
   <div class="grid-container grid gap-5">
-    <app-input
-      class="col-start-1 col-end-3"
-      placeholder="Search by name or ID"
-      name="nameSearch"
-      icon="/assets/images/icons/search.svg"
-    >
-    </app-input>
+    <app-name-input class="col-start-1 col-end-3" (changeData)="onChange($event)"></app-name-input>
+
     <app-media-type-pick-list (change)="onChange($event)"></app-media-type-pick-list>
     <app-market-pick-list (change)="onChange($event)"></app-market-pick-list>
     
@@ -16,14 +15,14 @@
     <app-language-pick-list (change)="onChange($event)"></app-language-pick-list>
 
     <div class="flex items-center">
-      <app-checkbox (change)="onCheckboxChange('metric', $event)"></app-checkbox>
+      <app-checkbox [checked]="criteries['metric']" (change)="onCheckboxChange('metric', $event)"></app-checkbox>
       <span class="ml-[10px] font-lato text-pri-black">Metric</span>
     </div>
 
     <app-matched-to (dataChange)="onChange($event)"></app-matched-to>
 
     <div class="flex items-center">
-      <app-checkbox (change)="onCheckboxChange('slogan', $event)"></app-checkbox>
+      <app-checkbox [checked]="criteries['slogan']" (change)="onCheckboxChange('slogan', $event)"></app-checkbox>
       <span class="ml-[10px] font-lato text-pri-black">Slogan</span>
     </div>
   </div>

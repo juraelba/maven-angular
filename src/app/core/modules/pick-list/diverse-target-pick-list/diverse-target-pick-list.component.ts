@@ -4,10 +4,14 @@ import { Subject } from 'rxjs';
 
 import { SelectOption } from '@models/select.model';
 import { SelectedCriteriaEvent, DiverseTargestCriteria } from '@models/criteries.model';
+
 import { ListChangesEvent } from '@models/list.model';
 import { ListKeys, ListLabels } from '@enums/lists.enum';
+import { SearchActionTypesEnum } from '@enums/search.enum';
+
 import { ListsService } from '@services/lists/lists.service';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
+import { SearchService } from '@services/search/search.service';
 
 @Component({
   selector: 'app-diverse-target-pick-list',
@@ -29,7 +33,8 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
 
   constructor(
     private listsService: ListsService,
-    private selectedCriteriaService: SelectedCriteriaService
+    private selectedCriteriaService: SelectedCriteriaService,
+    private searchService: SearchService
   ) { }
 
   ngOnInit(): void {
@@ -54,11 +59,24 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
         this.options = updatedOptions;
         this.value = this.listsService.getSelectInputValue(options, ListLabels.diversetargets);
       });
+
+    this.listenSearchBarMenuActions();
   }
 
   ngOnDestroy(): void {
     this.unsubscribeAll.next(null);
     this.unsubscribeAll.complete();
+  }
+
+  listenSearchBarMenuActions(): void {
+    this.searchService.searchBarEvents$
+      .pipe(
+        takeUntil(this.unsubscribeAll),
+        filter(({ action }) => SearchActionTypesEnum.NEW_SEARCH === action)
+      )
+      .subscribe(() => {
+        this.onClear();
+      });
   }
 
   toggleDiverseTarget(event: MouseEvent): void {

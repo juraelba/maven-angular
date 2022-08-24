@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, EventEmitter, Output, ContentChild, ElementRef, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, ContentChild, ElementRef, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
 
 @Component({
   selector: 'app-input',
@@ -6,7 +6,7 @@ import { Component, OnInit, Input, EventEmitter, Output, ContentChild, ElementRe
   styleUrls: ['./input.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InputComponent implements OnInit {
+export class InputComponent implements OnInit, OnChanges {
   @Input() icon: string;
   @Input() name: string;
   @Input() placeholder: string;
@@ -17,7 +17,7 @@ export class InputComponent implements OnInit {
 
   @Output() inputChange: EventEmitter<string> = new EventEmitter();
 
-  @ContentChild('suffix') suffix: ElementRef;
+  @ContentChild('prefix') prefix: ElementRef;
 
   isFocused: boolean = false;
   _placeholder: string = '';
@@ -26,6 +26,12 @@ export class InputComponent implements OnInit {
 
   ngOnInit(): void {
     this._placeholder = this.placeholder;
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+      if(changes.value && !changes.value.firstChange && !changes.value.currentValue) {
+        this._placeholder = this.placeholder;
+      }
   }
 
   onInputChange(event: Event): void {

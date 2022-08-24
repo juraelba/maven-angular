@@ -9,7 +9,8 @@ export const SearchFiedlsEnum = {
   ...ListKeys,
   metric: 'metric',
   matchedTo: 'matchedTo',
-  slogan: 'slogan'
+  slogan: 'slogan',
+  name: 'name'
 };
 
 export enum SearchColumnsEnum {
@@ -25,4 +26,8 @@ export enum SearchColumnsEnum {
   partners = 'Media Partner',
   fullPage = 'Full Page 4C',
   circulation = 'Circulation'
+}
+
+export enum SearchActionTypesEnum {
+  NEW_SEARCH = 'NEW_SEARCH'
 }

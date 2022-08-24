@@ -1,18 +1,18 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { compose, toPairs, reduce, always, isEmpty, keys, omit } from 'ramda';
-import { Observable } from 'rxjs';
+import { compose, toPairs, reduce, always, isEmpty, omit } from 'ramda';
+import { Observable, Subject } from 'rxjs';
 
 import { environment } from '@environments/environment';
 
-import { SearchKey, SearchResultItem, MatchedToSearchField, SearchColumnsKey } from '@models/search.model';
+import { SearchKey, SearchResultItem, MatchedToSearchField, SearchColumnsKey, SearchActionTypes, SearchAction } from '@models/search.model';
 import { Table, Row, TextFilterKey, Filter, FilterOperatorKey, ColumnAutoFilterData, ColumnAutoFilterValue, Column } from '@models/table.model';
 import { MarketData } from '@models/list.model';
 import { SelectOption } from '@models/select.model';
 
 import { ListKeys } from '@enums/lists.enum';
 import { TextFiltersValuesEnum, FilterOperatorEnum } from '@enums/filters.enum';
-import { SearchFiedlsEnum, SearchColumnsEnum } from '@enums/search.enum';
+import { SearchFiedlsEnum, SearchColumnsEnum, SearchActionTypesEnum } from '@enums/search.enum';
 
 import { COLUMNS_TO_OMIT } from '../../data/constants';
 
@@ -39,10 +39,17 @@ interface TransformedSearchData {
   providedIn: 'root'
 })
 export class SearchService {
+  private subject$ = new Subject<SearchAction>();
+
+  searchBarEvents$ = this.subject$.asObservable();
 
   constructor(
     private http: HttpClient
   ) { }
+
+  newSearch(): void {
+    this.subject$.next({ action: SearchActionTypesEnum.NEW_SEARCH });
+  }
 
   createSearch(criterias: any, key: SearchKey): Observable<any> {
     const url = environment.api + '/search/' + key;
@@ -129,6 +136,10 @@ export class SearchService {
     return { searchOptions: '', columns: { [key]: value } };
   }
 
+  transformSearchNameToData(value: string): TransformedSearchData {
+    return { searchOptions: value, columns: {} };
+  }
+
   transformCriteriasToSearchOptions(criterias: any) {
     const trasformers: any = {
       [ListKeys.categories]: this.transformComplexData.bind(this),
@@ -138,6 +149,7 @@ export class SearchService {
       [SearchFiedlsEnum.matchedTo]: this.transformMatchedToData,
       [SearchFiedlsEnum.metric]: this.booleanCriteriaToData.bind(this, SearchFiedlsEnum.metric),
       [SearchFiedlsEnum.slogan]: this.booleanCriteriaToData.bind(this, SearchFiedlsEnum.slogan),
+      [SearchFiedlsEnum.name]: this.transformSearchNameToData,
       default: this.transformOptions
     }
 

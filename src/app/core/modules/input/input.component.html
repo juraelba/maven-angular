@@ -1,5 +1,5 @@
 <div
-  class="h-full flex justify-between items-center relative p-[10px]"
+  class="h-full flex justify-between items-center relative p-[10px] container"
   [ngClass]="{
     'bg-light-grey': disabled,
     'bg-white': !disabled,
@@ -8,12 +8,12 @@
     'border-gray': !isFocused
   }"
 >
-  <ng-container *ngIf="suffix">
-    <ng-content select="[suffix]"></ng-content>
+  <ng-container *ngIf="prefix">
+    <ng-content select="[prefix]"></ng-content>
   </ng-container>
 
   <input
-    class="font-lato text-pri-black placeholder:text-pri-black placeholder:font-lato disabled:bg-light-grey w-full h-fit outline-transparent"
+    class="font-lato text-pri-black placeholder:text-pri-gray placeholder:font-lato disabled:bg-light-grey w-full h-fit outline-none input"
     type="text"
     [name]="name"
     [placeholder]="_placeholder"

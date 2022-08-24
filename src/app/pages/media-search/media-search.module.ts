@@ -8,6 +8,7 @@ import { InputModule } from '@modules/input/input.module';
 import { SelectModule } from '@modules/select/select.module';
 import { MediaSearchRoutingModule } from './media-search-routing.module';
 import { SearchModule } from '@modules/search/search.module';
+import { NameInputModule } from '@modules/name-input/name-input.module';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
@@ -30,7 +31,8 @@ import { MatchedToComponent } from './matched-to/matched-to.component';
     CheckboxModule,
     InputModule,
     SelectModule,
-    SearchModule
+    SearchModule,
+    NameInputModule
   ]
 })
 export class MediaSearchModule { }

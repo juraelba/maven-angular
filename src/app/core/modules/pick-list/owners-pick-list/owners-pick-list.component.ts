@@ -2,12 +2,16 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
-import { ListsService } from '@services/lists/lists.service';
 import { SelectOption } from '@models/select.model';
 import { SelectedCriteriaEvent } from '@models/criteries.model';
 import { ListChangesEvent } from '@models/list.model';
-import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
+
 import { ListLabels, ListKeys } from '@enums/lists.enum';
+import { SearchActionTypesEnum } from '@enums/search.enum';
+
+import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
+import { SearchService } from '@services/search/search.service';
+import { ListsService } from '@services/lists/lists.service';
 
 @Component({
   selector: 'app-owners-pick-list',
@@ -24,31 +28,50 @@ export class OwnersPickListComponent implements OnInit {
 
   constructor(
     private listsService: ListsService,
-    private selectedCriteriaService: SelectedCriteriaService
+    private selectedCriteriaService: SelectedCriteriaService,
+    private searchService: SearchService
   ) { }
 
   ngOnInit(): void {
     this.listsService.getOptionsData(ListKeys.owners)
-    .pipe(
-      takeUntil(this.unsubscribeAll)
-    )
-    .subscribe((options: SelectOption[]) => {
-      this.options = options;
-    });
+      .pipe(
+        takeUntil(this.unsubscribeAll)
+      )
+      .subscribe((options: SelectOption[]) => {
+        this.options = options;
+      });
 
-  this.selectedCriteriaService.selectedCriteria$
-    .pipe(
-      takeUntil(this.unsubscribeAll),
-      filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.owners]),
-      map(({ data }: SelectedCriteriaEvent) => data[ListKeys.owners])
-    )
-    .subscribe((options: SelectOption[]) => {
-      const optionValues = this.listsService.getOptionValues(options);
-      const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
+    this.selectedCriteriaService.selectedCriteria$
+      .pipe(
+        takeUntil(this.unsubscribeAll),
+        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.owners]),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.owners])
+      )
+      .subscribe((options: SelectOption[]) => {
+        const optionValues = this.listsService.getOptionValues(options);
+        const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
-      this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.owners);
-      this.options = updatedOptions;
-    });
+        this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.owners);
+        this.options = updatedOptions;
+      });
+
+    this.listenSearchBarMenuActions();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next(null);
+    this.unsubscribeAll.complete();
+  }
+
+  listenSearchBarMenuActions(): void {
+    this.searchService.searchBarEvents$
+      .pipe(
+        takeUntil(this.unsubscribeAll),
+        filter(({ action }) => SearchActionTypesEnum.NEW_SEARCH === action)
+      )
+      .subscribe(() => {
+        this.onClear();
+      });
   }
 
   onApplyChanges(options: SelectOption[]): void {
@@ -59,11 +82,6 @@ export class OwnersPickListComponent implements OnInit {
     this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.owners);
 
     this.change.emit({ key: ListKeys.owners, data: [ ...options ] });
-  }
-
-  ngOnDestroy(): void {
-    this.unsubscribeAll.next(null);
-    this.unsubscribeAll.complete();
   }
 
   onSelectClick(event: MouseEvent) {

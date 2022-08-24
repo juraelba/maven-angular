@@ -1,16 +1,18 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { switchMap } from 'rxjs/operators'; 
+import { Subject } from 'rxjs';
+import { switchMap, takeUntil, filter } from 'rxjs/operators'; 
 
 import { Criteries } from '@models/criteries.model';
 import { SearchKey } from '@models/search.model';
 import { Table, TableConfig, Row, Column } from '@models/table.model';
+
+import { SearchActionTypesEnum } from '@enums/search.enum';
 
 import { SearchService } from '@services/search/search.service';
 import { SpinnerService } from '@services/spinner.service';
 import { ExcelService } from '@services/excel/excel.service';
 
 import { SEARCH_COLUMNS_CONFIG } from '../../data/constants';
-
 
 @Component({
   selector: 'app-search',
@@ -26,9 +28,9 @@ export class SearchComponent implements OnInit {
   totalRows: number = 0;
   isFetched: boolean = false;
   config: TableConfig = {};
-
   tableRowsInView: Row[] = [];
   tableColumnsInView: Column[] = [];
+  unsubscribeAll: Subject<null> = new Subject();
 
   constructor(
     private searchService: SearchService,
@@ -38,6 +40,24 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.config = SEARCH_COLUMNS_CONFIG[this.key];
+
+    this.listenSearchBarMenuActions();
+  }
+
+  listenSearchBarMenuActions(): void {
+    this.searchService.searchBarEvents$
+      .pipe(
+        takeUntil(this.unsubscribeAll),
+        filter(({ action }) => SearchActionTypesEnum.NEW_SEARCH === action)
+      )
+      .subscribe(() => {
+        this.totalRows = 0;
+        this.isFetched = false;
+        this.tableData = { rows: [], columns: [] };
+
+        this.tableRowsInView = [ ...this.tableData.rows ];
+        this.tableColumnsInView = [ ...this.tableData.columns ];
+      });
   }
 
   onSearchButtonClick(event: MouseEvent): void {
@@ -54,8 +74,8 @@ export class SearchComponent implements OnInit {
         this.isFetched = true;
         this.tableData = this.searchService.transformSearchResultToTableData(data, this.key);
 
-        this.tableRowsInView = [ ...this.tableData.rows ]
-        this.tableColumnsInView = [ ...this.tableData.columns ]
+        this.tableRowsInView = [ ...this.tableData.rows ];
+        this.tableColumnsInView = [ ...this.tableData.columns ];
 
         this.spinnerService.hide();
       })

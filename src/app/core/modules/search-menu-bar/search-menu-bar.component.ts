@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { SearchService } from '@services/search/search.service';
 
 @Component({
   selector: 'app-search-menu-bar',
@@ -6,10 +7,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-menu-bar.component.scss']
 })
 export class SearchMenuBarComponent implements OnInit {
-
-  constructor() { }
+  constructor(
+    private searchService: SearchService
+  ) { }
 
   ngOnInit(): void {
   }
 
+  onNewSearchClick(event: MouseEvent): void {
+    event.stopPropagation();
+
+    this.searchService.newSearch();
+  }
 }

@@ -37,7 +37,8 @@ export class SelectedCriteriaComponent implements OnInit {
       [SearchFiedlsEnum.diversetargets]: this.isComplexCriteriaDataEmpty,
       [SearchFiedlsEnum.metric]: always(true),
       [SearchFiedlsEnum.matchedTo]: always(true),
-      [SearchFiedlsEnum.slogan]: always(true)
+      [SearchFiedlsEnum.slogan]: always(true),
+      [SearchFiedlsEnum.name]: always(true)
     }
   
     return compose<[Criteries], Array<[string, any]>, Criteries>(

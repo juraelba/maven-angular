@@ -7,9 +7,11 @@ import { SelectedCriteriaEvent, LanguageCriteria } from '@models/criteries.model
 import { ListChangesEvent } from '@models/list.model';
 
 import { ListKeys, ListLabels } from '@enums/lists.enum';
+import { SearchActionTypesEnum } from '@enums/search.enum'
 
 import { ListsService } from '@services/lists/lists.service';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
+import { SearchService } from '@services/search/search.service';
 
 @Component({
   selector: 'app-language-pick-list',
@@ -31,7 +33,8 @@ export class LanguagePickListComponent implements OnInit {
 
   constructor(
     private listsService: ListsService,
-    private selectedCriteriaService: SelectedCriteriaService
+    private selectedCriteriaService: SelectedCriteriaService,
+    private searchService: SearchService
   ) { }
 
   ngOnInit(): void {
@@ -56,11 +59,24 @@ export class LanguagePickListComponent implements OnInit {
         this.options = updatedOptions;
         this.value = this.listsService.getSelectInputValue(options, ListLabels.languages2);
       });
+
+    this.listenSearchBarMenuActions();
   }
 
   ngOnDestroy(): void {
     this.unsubscribeAll.next(null);
     this.unsubscribeAll.complete();
+  }
+
+  listenSearchBarMenuActions(): void {
+    this.searchService.searchBarEvents$
+      .pipe(
+        takeUntil(this.unsubscribeAll),
+        filter(({ action }) => SearchActionTypesEnum.NEW_SEARCH === action)
+      )
+      .subscribe(() => {
+        this.onClear();
+      });
   }
 
   toggleLanguage(event: MouseEvent): void {
@@ -102,9 +118,14 @@ export class LanguagePickListComponent implements OnInit {
     this.options = this.listsService.updateOptionsWithSelected(this.options, []);
     this.isLanguage = false;
     this.borderLabel = this.listsService.getBorderLabel([], ListKeys.languages2);
-    this.value = ListLabels.languages2
+    this.value = ListLabels.languages2;
 
-    this.change.emit({ key: ListKeys.languages2, data: [] });
+    const languageData: LanguageCriteria = {
+      isLanguage: this.isLanguage,
+      options: []
+    };
+
+    this.change.emit({ key: ListKeys.languages2, data: languageData });
   }
 
   onSelectClick({ event }: any): void {
