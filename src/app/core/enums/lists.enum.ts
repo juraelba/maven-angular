@@ -1,9 +1,9 @@
 export enum ListLabels {
   owners = 'Owners',
-  mediatypes2 = 'Media Types',
+  mediatypes = 'Media Types',
   categories = 'Categories',
   diversetargets = 'Diverse Target',
-  languages2 = 'Language',
+  languages = 'Language',
   markets = 'Markets',
   dmas = "DMA",
   msas = "MSA",
@@ -14,10 +14,10 @@ export enum ListLabels {
 
 export enum ListKeys {
   owners = 'owners',
-  mediatypes2 = 'mediatypes2',
+  mediatypes = 'mediatypes',
   categories = 'categories',
   diversetargets = 'diversetargets',
-  languages2 = 'languages2',
+  languages = 'languages',
   markets = 'markets',
   dmas = 'dmas',
   msas = 'msas',
@@ -28,10 +28,10 @@ export enum ListKeys {
 
 export enum ListUrls {
   categories = '/lists/categories/',
-  mediatypes2 = '/lists/mediatypes2/',
+  mediatypes = '/lists/mediatypes/',
   owners = '/lists/owners/',
   diversetargets = '/lists/diversetargets/',
-  languages2 = '/lists/languages2/',
+  languages = '/lists/languages/',
   dmas = '/lists/dmas/',
   msas = '/lists/msas/',
   tvbands = '/lists/tvbands/',

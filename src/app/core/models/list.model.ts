@@ -7,13 +7,20 @@ interface ListItem {
   name: string;
 };
 
+export interface MediaTypeListItem {
+  subType: string;
+  subTypeID: number;
+  type: string;
+  typeID: number;
+}
+
 export interface ListInfo {
   key: string;
   modifiedDate: string;
   route: string;
 }
 
-export type List = ListItem[];
+export type List<T = ListItem[]> = T;
 
 export interface ListData {
   [key: string]: List

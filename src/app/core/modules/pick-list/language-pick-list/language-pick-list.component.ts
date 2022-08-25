@@ -26,7 +26,7 @@ export class LanguagePickListComponent implements OnInit {
   options: SelectOption[] = [];
   isLanguage: boolean = false;
   borderLabel: string = '';
-  value: string = ListLabels.languages2;
+  value: string = ListLabels.languages;
   width: string;
   panelOpen: boolean = false;
   unsubscribeAll: Subject<null> = new Subject();
@@ -38,7 +38,7 @@ export class LanguagePickListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listsService.getOptionsData(ListKeys.languages2)
+    this.listsService.getOptionsData(ListKeys.languages)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
@@ -49,15 +49,15 @@ export class LanguagePickListComponent implements OnInit {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ data }: SelectedCriteriaEvent) => data[ListKeys.languages2]),
-        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.languages2].options)
+        filter(({ data }: SelectedCriteriaEvent) => data[ListKeys.languages]),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.languages].options)
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
         this.options = updatedOptions;
-        this.value = this.listsService.getSelectInputValue(options, ListLabels.languages2);
+        this.value = this.listsService.getSelectInputValue(options, ListLabels.languages);
       });
 
     this.listenSearchBarMenuActions();
@@ -85,47 +85,47 @@ export class LanguagePickListComponent implements OnInit {
     const selected = this.listsService.getSelectedOptions(this.options);
   
     this.isLanguage = !this.isLanguage;
-    this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.languages2);
-    this.value = this.listsService.getSelectInputValue(selected, ListLabels.languages2);
+    this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.languages);
+    this.value = this.listsService.getSelectInputValue(selected, ListLabels.languages);
 
     const data: LanguageCriteria = {
       isLanguage: this.isLanguage,
       options: selected
     };
 
-    this.change.emit({ key: ListKeys.languages2, data });
+    this.change.emit({ key: ListKeys.languages, data });
   }
 
   onApplyChanges(options: SelectOption[]): void {
     const width = this.selectComponent?.selectContainer.nativeElement.getBoundingClientRect().width;
     const values = this.listsService.getOptionValues(options);
 
-    this.value = this.listsService.getSelectInputValue(options, ListLabels.languages2);
+    this.value = this.listsService.getSelectInputValue(options, ListLabels.languages);
     this.width = `${ width-80 }px`;
 
     this.options = this.listsService.updateOptionsWithSelected(this.options, values);
-    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.languages2);
+    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.languages);
 
     const languageData: LanguageCriteria = {
       isLanguage: this.isLanguage,
       options
     };
 
-    this.change.emit({ key: ListKeys.languages2, data: languageData });
+    this.change.emit({ key: ListKeys.languages, data: languageData });
   }
   
   onClear(): void {
     this.options = this.listsService.updateOptionsWithSelected(this.options, []);
     this.isLanguage = false;
-    this.borderLabel = this.listsService.getBorderLabel([], ListKeys.languages2);
-    this.value = ListLabels.languages2;
+    this.borderLabel = this.listsService.getBorderLabel([], ListKeys.languages);
+    this.value = ListLabels.languages;
 
     const languageData: LanguageCriteria = {
       isLanguage: this.isLanguage,
       options: []
     };
 
-    this.change.emit({ key: ListKeys.languages2, data: languageData });
+    this.change.emit({ key: ListKeys.languages, data: languageData });
   }
 
   onSelectClick({ event }: any): void {

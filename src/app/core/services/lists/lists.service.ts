@@ -7,11 +7,11 @@ import * as R from 'ramda';
 
 import { environment } from '../../../../environments/environment';
 
-import { List, ListInfo, ListKey, ListUrlsKey, Ranges } from '@models/list.model';
+import { List, ListInfo, ListKey, ListUrlsKey, Ranges, MediaTypeListItem } from '@models/list.model';
 import { SelectOption } from '@models/select.model';
 import { MarketSortingOption, SortMethods } from '@models/sorting-options.models';
 
-import { ListUrls, ListLabels } from '@enums/lists.enum';
+import { ListUrls, ListLabels, ListKeys } from '@enums/lists.enum';
 import { MarketSortingOptionsEnum, SortMethodsEnum } from '@enums/sorting-options.enum';
 
 import { LocalStorageService } from '../local-storage/local-storage.service';
@@ -20,6 +20,13 @@ import { UtilsService } from '../utils/utils.service';
 interface ListOptionsFork {
   [key: string]: Observable<List>
 }
+
+interface ListOptionsTransformer {
+  [ListKeys.mediatypes]: (list: List<MediaTypeListItem[]>) => SelectOption[],
+  default: (list: List) => SelectOption[],
+}
+
+type TransformListToOptionsExecutor = (list: List | List<MediaTypeListItem[]>) => SelectOption[];
 
 @Injectable({
   providedIn: 'root'
@@ -53,14 +60,33 @@ export class ListsService {
             : of(list)
 
           return list$.pipe(
-            map((list: List) => this.transformListToOptions(list))
+            map((list: List) => this.transformListToOptions(key, list))
           )
         })
       )
   }
 
-  transformListToOptions(list: List): SelectOption[] {
+  transformMediaTypesListToOptions(list: List<MediaTypeListItem[]>): SelectOption[] {
+    return list.map(({ subType }) => ({
+      id: subType,
+      value: subType,
+      label: subType
+    }));
+  }
+
+  defaultListToOptionsTransformer(list: List): SelectOption[] {
     return list.map(({ id, name, ...rest }) => ({ id, label: name, value: name, ...rest }))
+  }
+
+  transformListToOptions(key: ListKey, list: List): SelectOption[] {
+    const transformers: ListOptionsTransformer = {
+      [ListKeys.mediatypes]: this.transformMediaTypesListToOptions,
+      default: this.defaultListToOptionsTransformer
+    };
+
+    const executor =  transformers[key as keyof ListOptionsTransformer] || transformers.default;
+
+    return (executor as TransformListToOptionsExecutor)(list);
   }
 
   fetchLists(): Observable<ListInfo[]> {

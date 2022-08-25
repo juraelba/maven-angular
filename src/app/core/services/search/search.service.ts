@@ -143,7 +143,7 @@ export class SearchService {
   transformCriteriasToSearchOptions(criterias: any) {
     const trasformers: any = {
       [ListKeys.categories]: this.transformComplexData.bind(this),
-      [ListKeys.languages2]: this.transformComplexData.bind(this),
+      [ListKeys.languages]: this.transformComplexData.bind(this),
       [ListKeys.diversetargets]: this.transformDiverseTargets.bind(this),
       [ListKeys.markets]: this.transformMarketsData.bind(this),
       [SearchFiedlsEnum.matchedTo]: this.transformMatchedToData,
