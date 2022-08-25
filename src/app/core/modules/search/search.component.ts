@@ -89,6 +89,8 @@ export class SearchComponent implements OnInit {
 
   onRowsChange(rows: Row[]): void {
     this.tableRowsInView = rows;
+
+    this.totalRows = rows.length;
   }
 
   onColumnsChange(columns: Column[]): void {

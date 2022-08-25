@@ -12,6 +12,7 @@ import { SpinnerState } from '../../core/models/spinner.model';
 })
 export class SpinnerComponent implements OnInit, OnDestroy {
   @Input() show: boolean = false;
+  @Input() spinnerClass: string = '';
 
   private unsubscribeAll: Subject<any> = new Subject<any>();
 

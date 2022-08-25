@@ -1,22 +1,27 @@
 <div #tableContainer class="table-width overflow-auto border rounded-md border-light-gray" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
   <table #table class="border-0" style="table-layout:fixed;">
     <thead class="header">
-      <tr class="h-[45px] header__row relative" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDrop($event)">
+      <tr #headerRow  class="h-[45px] header__row relative" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDrop($event)">
         <th
           *ngFor="let column of columns"
-          class="p-0 bg-light-grey border-b border-light-gray h-[45px] header__cell"
+          [id]="column.id"
+          class="p-0 bg-light-grey border-b cursor-pointer border-light-gray h-[45px] header__cell"
           [ngStyle]="getColumnCellStyles(column)"
           cdkDrag
+          (cdkDragStarted)="onDragStart($event)"
+          (cdkDragEnded)="onDragEnd($event)"
         >
           <div class="flex justify-between h-full header__template">
             <div class="flex items-center grow header__content">
               <div
-                class="text-pri-black font-lato font-bold text-sm cursor-move flex flex-1 items-center pl-[20px] pr-[10px]"
+                class="text-pri-black font-lato font-bold text-sm flex flex-1 items-center pl-[20px] pr-[10px]"
                 cdkDragHandle
                 (click)="onSortClick($event, column)"
+                (mousedown)="onHeaderCellMouseDown($event)"
+                (mouseup)="onHeaderCellMouseUp($event)"
                 [ngStyle]="getColumnTextStyles(column)"
               >
-                <span class="text-ellipsis overflow-hidden">{{ column.label }}</span>
+                <div class="text-ellipsis overflow-hidden">{{ column.label }}</div>
               </div>
               <div class="flex">
                 <img
@@ -29,6 +34,7 @@
                 <app-column-filter
                   [column]="column"
                   [rowFilterData]="groupedRowFilterData[column.id] || []"
+                  [columnAutoFilterData]="columnAutoFilterData"
                   [panelOpen]="column.id === columnFilterId"
                   (openFilter)="onOpenFilter($event)"
                   (closeFilter)="onCloseFilter()"

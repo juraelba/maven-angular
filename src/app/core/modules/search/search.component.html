@@ -19,7 +19,7 @@
     </button>
   </div>
 
-  <div *ngIf="isFetched && totalRows" class="mt-[50px]">
+  <div *ngIf="isFetched && this.tableData.rows" class="mt-[50px]">
     <div class="flex justify-between mb-[20px]">
       <span class="text-pri-gray font-lato">Result: {{ totalRows }}</span>
       <button class="flex items-center" (click)="exportToExcel($event)">
@@ -38,7 +38,7 @@
     </app-table>
   </div>
 
-  <div *ngIf="isFetched && !totalRows">
+  <div *ngIf="isFetched && !this.tableData.rows">
     No Data found
   </div>
 

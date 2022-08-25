@@ -1,5 +1,5 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, Renderer2 } from '@angular/core';
+import { CdkDragDrop, moveItemInArray, CdkDragStart, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { compose, toPairs, reduce, uniq, isNil } from 'ramda';
 
 import { Table, TableConfig, Styles, Column, Row, TextFilter, Filter, ColumnAutoFilterData, ColumnAutoFilterValue } from '@models/table.model';
@@ -48,6 +48,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
   @ViewChild('table') table: ElementRef;
   @ViewChild('tableContainer') tableContainer: ElementRef;
+  @ViewChild('headerRow') headerRow: ElementRef;
 
   rows: Row[] = [];
   columns: Column[] = [];
@@ -63,11 +64,13 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     offsetX: 0,
     offsetY: 0
   }
+  draggableElement: EventTarget | null;
 
   constructor(
     private utilsService: UtilsService,
     private searchService: SearchService,
-    private listsService: ListsService
+    private listsService: ListsService,
+    private renderer: Renderer2
   ) { }
 
   ngOnInit(): void {
@@ -442,5 +445,34 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     }
 
     return 'hidden';
+  }
+
+  onHeaderCellMouseDown(event: MouseEvent): void {
+    this.renderer.removeClass(event.target, 'cursor-pointer'); 
+  
+    this.renderer.addClass(event.target, 'cursor-move');
+    this.renderer.addClass(document.body, 'cursor-move');
+  }
+
+  onHeaderCellMouseUp(event: MouseEvent): void {
+    this.renderer.removeClass(event.target, 'cursor-move'); 
+    this.renderer.removeClass(document.body, 'cursor-move');
+
+    this.renderer.addClass(event.target, 'cursor-pointer'); 
+  }
+
+  onDragStart({ event }: CdkDragStart): void {
+    this.draggableElement = event.target;
+
+    this.renderer.addClass(document.body, 'cursor-move');
+  }
+
+  onDragEnd(event: CdkDragEnd): void {
+    this.renderer.removeClass(this.draggableElement, 'cursor-move'); 
+    this.renderer.addClass(this.draggableElement, 'cursor-pointer');
+
+    this.draggableElement = null;
+
+    this.renderer.removeClass(document.body, 'cursor-move');
   }
 }

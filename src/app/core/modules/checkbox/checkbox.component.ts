@@ -5,7 +5,7 @@ import { Component, OnInit, Input, HostListener, Output, EventEmitter, OnChanges
   templateUrl: './checkbox.component.html',
   styleUrls: ['./checkbox.component.scss']
 })
-export class CheckboxComponent implements OnInit, OnChanges {
+export class CheckboxComponent implements OnInit {
   @Input() checked: boolean | undefined = false;
 
   @Output() change: EventEmitter<boolean> = new EventEmitter();
@@ -13,10 +13,6 @@ export class CheckboxComponent implements OnInit, OnChanges {
   constructor() { }
 
   ngOnInit(): void {
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-      console.log(changes)
   }
 
   @HostListener('click', ['$event'])

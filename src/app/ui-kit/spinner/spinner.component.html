@@ -1,5 +1,5 @@
 <div [class.spinner-hidden]="!show">
   <div class="spinner-overlay">
-    <mat-progress-spinner mode="indeterminate" *ngIf="show"></mat-progress-spinner>
+    <mat-progress-spinner [class]="spinnerClass" mode="indeterminate" *ngIf="show"></mat-progress-spinner>
   </div>
 </div>

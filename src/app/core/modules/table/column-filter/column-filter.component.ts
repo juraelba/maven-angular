@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
-import { Column, TextFilter } from '@models/table.model';
+import { Column, TextFilter, ColumnAutoFilterData } from '@models/table.model';
 import { SelectOption } from '@models/select.model';
 
 import { TEXT_FILTERS } from '../../../data/constants';
@@ -14,6 +14,7 @@ export class ColumnFilterComponent implements OnInit {
   @Input() column: Column;
   @Input() rowFilterData: any[] = [];
   @Input() panelOpen: boolean = false;
+  @Input() columnAutoFilterData: ColumnAutoFilterData;
 
   @Output() openFilter: EventEmitter<string> = new EventEmitter();
   @Output() closeFilter: EventEmitter<undefined> = new EventEmitter();
@@ -60,5 +61,11 @@ export class ColumnFilterComponent implements OnInit {
 
     this.onMenuClose();
     this.textFilterSelect.emit({ column: this.column, textFilter });
+  }
+
+  getSvgPathFillColor(): string {
+    const columnAutofilter = this.columnAutoFilterData?.[this.column.id] || {};
+
+    return columnAutofilter.filters && columnAutofilter.filters.length ? '#3a63cc' : '#B3B3B8';
   }
 }

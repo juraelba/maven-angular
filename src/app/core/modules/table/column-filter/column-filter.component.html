@@ -47,12 +47,12 @@
   </div>
 
   <div selectInputTemplate #selectInputTemplate class="w-[16px] h-[16px]">
-    <img
-      class="cursor-pointer"
-      src="/assets/images/icons/filter.svg"
-      alt="filter"
+    <app-svg-icon
       (click)="toggleColumnFilter($event)"
-    />
+      [name]="'filter'"
+      [fill]="getSvgPathFillColor()"
+    >
+    </app-svg-icon>
   </div>
 </app-select>
 
