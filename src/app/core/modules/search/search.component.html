@@ -19,28 +19,41 @@
     </button>
   </div>
 
-  <div *ngIf="isFetched && this.tableData.rows" class="mt-[50px]">
-    <div class="flex justify-between mb-[20px]">
-      <span class="text-pri-gray font-lato">Result: {{ totalRows }}</span>
-      <button class="flex items-center" (click)="exportToExcel($event)">
-        <img src="/assets/images/icons/download-arrow.svg" alt="download-arrow" />
-        <span class="ml-[10px] text-regal-blue text-base font-mont font-medium">
-          Excel
-        </span>
-      </button>
-    </div>
-    <app-table
-      [data]="tableData"
-      [config]="config"
-      (rowsChange)="onRowsChange($event)"
-      (columnsChange)="onColumnsChange($event)"
+  <div
+    class="mt-[50px] relative"
+  >
+    <app-spinner
+      class="absolute right-2/4 translate-y-2/4 translate-x-2/4 z-[100]"
+      [ngClass]="{
+        'top-[20px]': !this.tableData.rows.length && isFetching,
+        'bottom-2/4': this.tableData.rows.length && isFetching
+      }"
+      *ngIf="isFetching"
+      [show]="true"
     >
-    </app-table>
-  </div>
+    </app-spinner>
 
-  <div *ngIf="isFetched && !this.tableData.rows">
-    No Data found
-  </div>
+    <div *ngIf="isFetched && this.tableData.rows">
+      <div class="flex justify-between mb-[20px]">
+        <span class="text-pri-gray font-lato">Result: {{ totalRows }}</span>
+        <button class="flex items-center" (click)="exportToExcel($event)">
+          <img src="/assets/images/icons/download-arrow.svg" alt="download-arrow" />
+          <span class="ml-[10px] text-regal-blue text-base font-mont font-medium">
+            Excel
+          </span>
+        </button>
+      </div>
+      <app-table
+        [data]="tableData"
+        [config]="config"
+        (rowsChange)="onRowsChange($event)"
+        (columnsChange)="onColumnsChange($event)"
+      >
+      </app-table>
+    </div>
 
-  <app-spinner></app-spinner>
+    <div *ngIf="isFetched && !this.tableData.rows">
+      No Data found
+    </div>
+  </div>
 </div>

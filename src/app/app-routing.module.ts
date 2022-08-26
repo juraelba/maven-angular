@@ -13,7 +13,8 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('./pages/dashboard/dashboard.module').then(m => m.DashboardModule)
+        redirectTo: 'media-search',
+        pathMatch: 'full'
       },
       {
         path: 'media-search',

@@ -17,8 +17,6 @@
                 class="text-pri-black font-lato font-bold text-sm flex flex-1 items-center pl-[20px] pr-[10px]"
                 cdkDragHandle
                 (click)="onSortClick($event, column)"
-                (mousedown)="onHeaderCellMouseDown($event)"
-                (mouseup)="onHeaderCellMouseUp($event)"
                 [ngStyle]="getColumnTextStyles(column)"
               >
                 <div class="text-ellipsis overflow-hidden">{{ column.label }}</div>
@@ -40,6 +38,7 @@
                   (closeFilter)="onCloseFilter()"
                   (textFilterSelect)="onTextFilterSelect($event)"
                   (columnFilterChange)="onColumnFilterChange($event)"
+                  (clearColumnFilter)="onFilterClear($event)"
                 >
                 </app-column-filter>
               </div>

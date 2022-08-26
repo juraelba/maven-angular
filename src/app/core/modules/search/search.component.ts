@@ -6,10 +6,9 @@ import { Criteries } from '@models/criteries.model';
 import { SearchKey } from '@models/search.model';
 import { Table, TableConfig, Row, Column } from '@models/table.model';
 
-import { SearchActionTypesEnum } from '@enums/search.enum';
+import { SearchActionTypesEnum, SearchExcelFileNamesEnum } from '@enums/search.enum';
 
 import { SearchService } from '@services/search/search.service';
-import { SpinnerService } from '@services/spinner.service';
 import { ExcelService } from '@services/excel/excel.service';
 
 import { SEARCH_COLUMNS_CONFIG } from '../../data/constants';
@@ -26,15 +25,15 @@ export class SearchComponent implements OnInit {
 
   tableData: Table = { rows: [], columns: [] };
   totalRows: number = 0;
-  isFetched: boolean = false;
   config: TableConfig = {};
   tableRowsInView: Row[] = [];
   tableColumnsInView: Column[] = [];
   unsubscribeAll: Subject<null> = new Subject();
+  isFetched: boolean = false;
+  isFetching: boolean = false;
 
   constructor(
     private searchService: SearchService,
-    private spinnerService: SpinnerService,
     private excelService: ExcelService
   ) { }
 
@@ -63,7 +62,7 @@ export class SearchComponent implements OnInit {
   onSearchButtonClick(event: MouseEvent): void {
     event.stopPropagation();
 
-    this.spinnerService.show();
+    this.isFetching = true;
 
     this.searchService.createSearch(this.criteries, this.key)
       .pipe(
@@ -71,20 +70,20 @@ export class SearchComponent implements OnInit {
       )
       .subscribe((data) => {
         this.totalRows = data.length;
-        this.isFetched = true;
         this.tableData = this.searchService.transformSearchResultToTableData(data, this.key);
 
         this.tableRowsInView = [ ...this.tableData.rows ];
         this.tableColumnsInView = [ ...this.tableData.columns ];
 
-        this.spinnerService.hide();
+        this.isFetching = false;
+        this.isFetched = true;
       })
   }
 
   exportToExcel(event: MouseEvent): void {
     event.stopPropagation();
 
-    this.excelService.exportSearchToExcel(this.tableRowsInView, this.tableColumnsInView);
+    this.excelService.exportSearchToExcel(this.tableRowsInView, this.tableColumnsInView, SearchExcelFileNamesEnum[this.key]);
   }
 
   onRowsChange(rows: Row[]): void {

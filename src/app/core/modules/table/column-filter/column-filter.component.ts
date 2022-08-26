@@ -20,6 +20,7 @@ export class ColumnFilterComponent implements OnInit {
   @Output() closeFilter: EventEmitter<undefined> = new EventEmitter();
   @Output() textFilterSelect: EventEmitter<{ column: Column, textFilter: TextFilter }> = new EventEmitter();
   @Output() columnFilterChange: EventEmitter<{ id: string, options: SelectOption[] }> = new EventEmitter();
+  @Output() clearColumnFilter: EventEmitter<string> = new EventEmitter();
 
   filterDataOptions: SelectOption[];
   isTextFilterOverlayVisible: boolean = false;
@@ -67,5 +68,9 @@ export class ColumnFilterComponent implements OnInit {
     const columnAutofilter = this.columnAutoFilterData?.[this.column.id] || {};
 
     return columnAutofilter.filters && columnAutofilter.filters.length ? '#3a63cc' : '#B3B3B8';
+  }
+
+  onClearColumnFilters(event: MouseEvent): void {
+    this.clearColumnFilter.emit(this.column.id);
   }
 }

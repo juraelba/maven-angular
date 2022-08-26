@@ -31,3 +31,8 @@ export enum SearchColumnsEnum {
 export enum SearchActionTypesEnum {
   NEW_SEARCH = 'NEW_SEARCH'
 }
+
+export enum SearchExcelFileNamesEnum {
+  media = 'Media-Search.xlsx',
+  'spot-tv' = 'Spot-TV-Search.xlsx'
+}

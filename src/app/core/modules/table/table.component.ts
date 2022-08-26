@@ -447,20 +447,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     return 'hidden';
   }
 
-  onHeaderCellMouseDown(event: MouseEvent): void {
-    this.renderer.removeClass(event.target, 'cursor-pointer'); 
-  
-    this.renderer.addClass(event.target, 'cursor-move');
-    this.renderer.addClass(document.body, 'cursor-move');
-  }
-
-  onHeaderCellMouseUp(event: MouseEvent): void {
-    this.renderer.removeClass(event.target, 'cursor-move'); 
-    this.renderer.removeClass(document.body, 'cursor-move');
-
-    this.renderer.addClass(event.target, 'cursor-pointer'); 
-  }
-
   onDragStart({ event }: CdkDragStart): void {
     this.draggableElement = event.target;
 

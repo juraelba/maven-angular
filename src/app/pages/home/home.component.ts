@@ -26,7 +26,7 @@ export class HomeComponent implements OnInit {
       .pipe(
         takeUntil(this.unsubscribeAll),
       )
-      .subscribe((lol) => {
+      .subscribe(() => {
         this.shouldRender = true;
       });
   }
