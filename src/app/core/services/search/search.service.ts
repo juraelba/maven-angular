@@ -140,16 +140,29 @@ export class SearchService {
     return { searchOptions: value, columns: {} };
   }
 
+  transformLanguagesData(criteriaData: any): TransformedSearchData {
+    const { searchOptions, columns } = this.transformComplexData(criteriaData);
+
+    return { searchOptions, columns, criteriaKey: ListKeys.languages };
+  }
+
+  transformMediatypesData(criteriaData: any): TransformedSearchData {
+    const { searchOptions } = this.transformOptions(criteriaData);
+
+    return { searchOptions, columns: {}, criteriaKey: ListKeys.types };
+  }
+
   transformCriteriasToSearchOptions(criterias: any) {
     const trasformers: any = {
       [ListKeys.categories]: this.transformComplexData.bind(this),
-      [ListKeys.languages]: this.transformComplexData.bind(this),
+      [ListKeys.languages2]: this.transformLanguagesData.bind(this),
       [ListKeys.diversetargets]: this.transformDiverseTargets.bind(this),
       [ListKeys.markets]: this.transformMarketsData.bind(this),
       [SearchFiedlsEnum.matchedTo]: this.transformMatchedToData,
       [SearchFiedlsEnum.metric]: this.booleanCriteriaToData.bind(this, SearchFiedlsEnum.metric),
       [SearchFiedlsEnum.slogan]: this.booleanCriteriaToData.bind(this, SearchFiedlsEnum.slogan),
       [SearchFiedlsEnum.name]: this.transformSearchNameToData,
+      [ListKeys.mediatypes2]: this.transformMediatypesData.bind(this),
       default: this.transformOptions
     }
 

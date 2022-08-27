@@ -22,7 +22,7 @@ interface ListOptionsFork {
 }
 
 interface ListOptionsTransformer {
-  [ListKeys.mediatypes]: (list: List<MediaTypeListItem[]>) => SelectOption[],
+  // [ListKeys.mediatypes2]: (list: List<MediaTypeListItem[]>) => SelectOption[],
   default: (list: List) => SelectOption[],
 }
 
@@ -80,7 +80,7 @@ export class ListsService {
 
   transformListToOptions(key: ListKey, list: List): SelectOption[] {
     const transformers: ListOptionsTransformer = {
-      [ListKeys.mediatypes]: this.transformMediaTypesListToOptions,
+      // [ListKeys.mediatypes2]: this.transformMediaTypesListToOptions,
       default: this.defaultListToOptionsTransformer
     };
 

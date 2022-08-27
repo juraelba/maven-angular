@@ -2,12 +2,12 @@ import { SelectedCriteriaConfig } from '../models/criteries.model';
 import { ListKeys } from '../enums/lists.enum';
 
 export const selectedCriteriaConfig: SelectedCriteriaConfig = {
-  [ListKeys.mediatypes]: {
+  [ListKeys.mediatypes2]: {
     bg: '#E4F2FF',
     color: '#4087F3',
     canDelete: true
   },
-  [ListKeys.languages]: {
+  [ListKeys.languages2]: {
     bg: '#FFFBD8',
     color: '#80761E',
     canDelete: true

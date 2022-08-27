@@ -33,7 +33,7 @@ export class SelectedCriteriaComponent implements OnInit {
   omitNotValidCriteries(criteries: Criteries): Criteries {
     const criteriaValidators: Validators = {
       [SearchFiedlsEnum.categories]: this.isComplexCriteriaDataEmpty,
-      [SearchFiedlsEnum.languages]: this.isComplexCriteriaDataEmpty,
+      [SearchFiedlsEnum.languages2]: this.isComplexCriteriaDataEmpty,
       [SearchFiedlsEnum.diversetargets]: this.isComplexCriteriaDataEmpty,
       [SearchFiedlsEnum.metric]: always(true),
       [SearchFiedlsEnum.matchedTo]: always(true),
