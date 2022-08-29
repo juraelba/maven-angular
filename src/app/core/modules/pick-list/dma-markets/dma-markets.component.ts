@@ -6,7 +6,7 @@ import { ListsService } from '@services/lists/lists.service';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 import { SelectOption } from '@models/select.model';
-import { SelectedCriteriaEvent } from '@models/criteries.model';
+import { SelectedCriteriaEvent, MarketCriteria } from '@models/criteries.model';
 import { ListChangesEvent } from '@models/list.model';
 import { MarketSortingOption } from '@models/sorting-options.models';
 
@@ -70,7 +70,7 @@ export class DmaMarketsComponent implements OnInit {
     this.options = updatedOptions;
     this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.dmamarkets);
 
-    const marketData: any = {
+    const marketData: MarketCriteria = {
       market: ListKeys.dmas,
       options,
     }

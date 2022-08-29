@@ -2,6 +2,13 @@ import { Injectable } from '@angular/core';
 import { Toastr, ToastrType } from '../models/toastr.model';
 import { Subject } from 'rxjs';
 
+interface Error {
+  error: {
+    message: string | string[];
+  };
+  status: number;
+  message: string;
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -31,7 +38,7 @@ export class ToastrService {
     this.sendToastr$.next({type: ToastrType.Danger, title, text});
   }
 
-  error(error: any, custom: string) {
+  error(error: Error, custom: string) {
     if (error && error.error && error.message && typeof error.error.message === 'string') {
       this.danger(error.error.message);
     } else if (error && error.error && error.message && typeof error.error.message === 'object') {

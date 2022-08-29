@@ -6,11 +6,9 @@ import { Component, Input, OnInit, ViewChild, TemplateRef } from '@angular/core'
   styleUrls: ['./svg-icon.component.scss']
 })
 export class SvgIconComponent implements OnInit {
-  @Input() name: any;
+  @Input() name: string;
   @Input() stroke: string;
   @Input() fill: string;
-
-  @ViewChild('cross') cross: TemplateRef<any>;
 
   constructor() { }
 

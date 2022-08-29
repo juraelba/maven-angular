@@ -1,14 +1,22 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { compose, toPairs, reduce, always, isEmpty, omit } from 'ramda';
+import { compose, toPairs, reduce, always, isEmpty, omit, is } from 'ramda';
 import { Observable, Subject } from 'rxjs';
 
 import { environment } from '@environments/environment';
 
-import { SearchKey, SearchResultItem, MatchedToSearchField, SearchColumnsKey, SearchActionTypes, SearchAction } from '@models/search.model';
+import {
+  SearchKey,
+  SearchColumnsKey,
+  SearchAction,
+  CreateSearchResponse,
+  SearchResponse,
+  SearchQuery,
+  SearchOption
+} from '@models/search.model';
 import { Table, Row, TextFilterKey, Filter, FilterOperatorKey, ColumnAutoFilterData, ColumnAutoFilterValue, Column } from '@models/table.model';
-import { MarketData } from '@models/list.model';
 import { SelectOption } from '@models/select.model';
+import { MarketCriteria, MatchedToCriteria, Criteries } from '@models/criteries.model';
 
 import { ListKeys } from '@enums/lists.enum';
 import { TextFiltersValuesEnum, FilterOperatorEnum } from '@enums/filters.enum';
@@ -24,15 +32,16 @@ interface SearchColumns {
   [key: string]: boolean
 }
 
-interface SearchOption {
-  id: string;
-  name: string;
-}
-
 interface TransformedSearchData {
   searchOptions: SearchOption[] | string;
-  columns: { [key: string]: boolean };
+  columns?: { [key: string]: boolean };
   criteriaKey?: string;
+}
+
+type ComplexDataStructure = { options: SelectOption[] } & { [key: string]: boolean };
+
+interface Transformers {
+  [key: string]: (value: any) => TransformedSearchData
 }
 
 @Injectable({
@@ -51,8 +60,10 @@ export class SearchService {
     this.subject$.next({ action: SearchActionTypesEnum.NEW_SEARCH });
   }
 
-  createSearch(criterias: any, key: SearchKey): Observable<any> {
+  createSearch(criterias: Criteries, key: SearchKey): Observable<CreateSearchResponse> {
     const url = environment.api + '/search/' + key;
+
+    console.log(criterias, 'criterias');
 
     const { columns, criteria } = this.transformCriteriasToSearchOptions(criterias);
 
@@ -62,17 +73,17 @@ export class SearchService {
       criteria
     }
 
-    return this.http.post(url, body)
+    return this.http.post<CreateSearchResponse>(url, body)
   }
 
-  executeSearch(id: number): Observable<any> {
+  executeSearch(id: number): Observable<SearchResponse> {
     const url = `${ environment.api }/savedsearch/${ id }/run`;
 
-    return this.http.get(url);
+    return this.http.get<SearchResponse>(url);
   }
 
   getColumnByKey(key: string): string {
-    const mapper: any = {
+    const mapper: { [key: string]: string } = {
       isLanguage: 'language',
       isCategories: 'categories',
       isDiverseTarget: 'diverseTarget',
@@ -103,32 +114,32 @@ export class SearchService {
     return { searchOptions };
   }
 
-  transformComplexData({ options, ...rest }: any): TransformedSearchData {
+  transformComplexData({ options, ...rest }: ComplexDataStructure): TransformedSearchData {
     const { searchOptions } = this.transformOptions(options);
     const columns = this.transformToColumns(rest);
 
     return { searchOptions, columns };
   }
 
-  transformDiverseTargets(criteriaData: any): TransformedSearchData {
+  transformDiverseTargets(criteriaData: ComplexDataStructure): TransformedSearchData { 
     const { searchOptions, columns } = this.transformComplexData(criteriaData);
 
     return { searchOptions, columns, criteriaKey: 'diverseTargets' };
   }
 
-  transformDefaultData(options: any): TransformedSearchData {
+  transformDefaultData(options: SelectOption[]): TransformedSearchData {
     const { searchOptions } = this.transformOptions(options);
 
     return { searchOptions, columns: {} };
   }
 
-  transformMarketsData({ options, market }: MarketData): TransformedSearchData {
+  transformMarketsData({ options, market }: MarketCriteria): TransformedSearchData {
     const { searchOptions } = this.transformOptions(options);
 
     return { searchOptions, columns: {}, criteriaKey: market };
   }
 
-  transformMatchedToData({ matchedTo, matched }: MatchedToSearchField): TransformedSearchData {
+  transformMatchedToData({ matchedTo, matched }: MatchedToCriteria): TransformedSearchData {
     return { searchOptions: matchedTo, columns: { matched } };
   }
 
@@ -140,20 +151,20 @@ export class SearchService {
     return { searchOptions: value, columns: {} };
   }
 
-  transformLanguagesData(criteriaData: any): TransformedSearchData {
+  transformLanguagesData(criteriaData: ComplexDataStructure): TransformedSearchData {
     const { searchOptions, columns } = this.transformComplexData(criteriaData);
 
     return { searchOptions, columns, criteriaKey: ListKeys.languages };
   }
 
-  transformMediatypesData(criteriaData: any): TransformedSearchData {
+  transformMediatypesData(criteriaData: SelectOption[]): TransformedSearchData {
     const { searchOptions } = this.transformOptions(criteriaData);
 
     return { searchOptions, columns: {}, criteriaKey: ListKeys.types };
   }
 
-  transformCriteriasToSearchOptions(criterias: any) {
-    const trasformers: any = {
+  transformCriteriasToSearchOptions(criterias: Criteries): SearchQuery {
+    const trasformers: Transformers = {
       [ListKeys.categories]: this.transformComplexData.bind(this),
       [ListKeys.languages2]: this.transformLanguagesData.bind(this),
       [ListKeys.diversetargets]: this.transformDiverseTargets.bind(this),
@@ -166,8 +177,8 @@ export class SearchService {
       default: this.transformOptions
     }
 
-    return compose<any, any, any>(
-      reduce<any, any>((acc, [ key, value ]: any) => {
+    return compose<[Criteries], [string, Criteries][], SearchQuery>(
+      reduce<[string, Criteries], SearchQuery>((acc, [ key, value ]) => {
         const transformer = trasformers[key] || trasformers.default;
 
         const { columns, searchOptions, criteriaKey } = transformer(value);
@@ -188,7 +199,7 @@ export class SearchService {
     )(criterias)
   }
 
-  getColumnsFromSearchResult(searchResult: SearchResultItem[]): Column[] {
+  getColumnsFromSearchResult(searchResult: SearchResponse): Column[] {
     const omitedColumns = omit(COLUMNS_TO_OMIT, searchResult[0]);
     const columnIds = Object.keys(omitedColumns) as SearchColumnsKey[];
 
@@ -199,7 +210,7 @@ export class SearchService {
       }));
   }
 
-  transformSearchResultToTableData(searchResult: SearchResultItem[], key: SearchKey): Table {
+  transformSearchResultToTableData(searchResult: SearchResponse, key: SearchKey): Table {
     const columns = this.getColumnsFromSearchResult(searchResult);
 
     const rows = searchResult.reduce<Row[]>((acc, cur) => {
@@ -219,47 +230,47 @@ export class SearchService {
     }
   }
 
-  isValueContain(value: any, target: string): boolean {
-    return value.includes(target);
+  isValueContain(value: unknown, target: string): boolean {
+    return is(String, value) ? value.includes(target) : false;
   }
 
-  isValueNotContain(value: string, target: string): boolean {
-    return !value.includes(target);
+  isValueNotContain(value: unknown, target: string): boolean {
+    return is(String, value) ? !value.includes(target) : false;
   }
 
-  isValueStartsWith(value: string, target: string): boolean {
-    return value.startsWith(target);
+  isValueStartsWith(value: unknown, target: string): boolean {
+    return is(String, value) ? value.startsWith(target) : false;
   }
 
-  isValueEndsWith(value: string, target: string): boolean {
-    return value.endsWith(target);
+  isValueEndsWith(value: unknown, target: string): boolean {
+    return is(String, value) ? value.endsWith(target) : false;
   }
 
-  isValueEquals(value: string, target: string): boolean {
+  isValueEquals(value: unknown, target: string): boolean {
     return value === target;
   }
   
-  isValueNotEqual(value: any, target: string): boolean {
+  isValueNotEqual(value: unknown, target: string): boolean {
     return value !== target;
   }
 
-  isValueEmpty(value: string): boolean {
+  isValueEmpty(value: unknown): boolean {
     return isEmpty(value);
   }
 
-  isValueNotEmpty(value: string): boolean {
+  isValueNotEmpty(value: unknown): boolean {
     return !isEmpty(value);
   }
 
-  isValueNull(value: any): boolean {
+  isValueNull(value: unknown): boolean {
     return value === null;
   }
 
-  isValueNotNull(value: any): boolean {
+  isValueNotNull(value: unknown): boolean {
     return value !== null;
   }
 
-  validate(textFilterType: TextFilterKey, filterValue: string, cellValue: any) {
+  validate(textFilterType: TextFilterKey, filterValue: string, cellValue: unknown) {
     const validators = {
       [TextFiltersValuesEnum.contain]: this.isValueContain.bind(this),
       [TextFiltersValuesEnum.notContain]: this.isValueNotContain.bind(this),
@@ -283,7 +294,7 @@ export class SearchService {
     return filters.filter((filter) => filter.operator === operator);
   }
 
-  validateCell(filterOperator: FilterOperatorKey, filters: Filter[], cellValue: any): boolean {
+  validateCell(filterOperator: FilterOperatorKey, filters: Filter[], cellValue: unknown): boolean {
     const method = filterOperator === FilterOperatorEnum.AND ? 'every' : 'some';
 
     return filters.length 
@@ -295,7 +306,7 @@ export class SearchService {
     return rows.filter((row) => {
       const pair = toPairs(row.data);
 
-      const isValidRowData = pair.every(([key, cellValue]: any) => {
+      const isValidRowData = pair.every(([key, cellValue]) => {
         const cellFilters = filters[key] || [];
 
         const cellANDFilters = this.getFilterByOperator(cellFilters, FilterOperatorEnum.AND);

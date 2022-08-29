@@ -14,7 +14,7 @@ export class SideNavService {
   fetchMenuData(): Observable<AccessibleMenu[]> {
     const url = environment.api + '/menu';
 
-    return this.http.get<any>(url);
+    return this.http.get<AccessibleMenu[]>(url);
   }
 
   isAvailable(permissions: string[] = [], accessibleMenu: AccessibleMenu[]): boolean {

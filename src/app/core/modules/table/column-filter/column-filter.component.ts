@@ -12,7 +12,7 @@ import { TEXT_FILTERS } from '../../../data/constants';
 })
 export class ColumnFilterComponent implements OnInit {
   @Input() column: Column;
-  @Input() rowFilterData: any[] = [];
+  @Input() rowFilterData: SelectOption[] = [];
   @Input() panelOpen: boolean = false;
   @Input() columnAutoFilterData: ColumnAutoFilterData;
 

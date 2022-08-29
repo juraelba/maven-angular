@@ -13,6 +13,8 @@ import { ListsService } from '@services/lists/lists.service';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { SearchService } from '@services/search/search.service';
 
+import { SelectComponent } from '@modules/select/select.component';
+
 @Component({
   selector: 'app-diverse-target-pick-list',
   templateUrl: './diverse-target-pick-list.component.html',
@@ -21,7 +23,7 @@ import { SearchService } from '@services/search/search.service';
 export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
   @Output() change: EventEmitter<ListChangesEvent> = new EventEmitter();
 
-  @ViewChild('selectComponent') selectComponent: any;
+  @ViewChild('selectComponent') selectComponent: SelectComponent;
 
   options: SelectOption[] = [];
   isDiverseTarget: boolean = false;
@@ -129,7 +131,7 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
   }
 
   onSelectClick({ event }: any): void {
-    const isTargetCheckbox = event.path.some((item: any) => item?.classList?.contains('checkbox'));
+    const isTargetCheckbox = event.path.some((item: Element) => item?.classList?.contains('checkbox'));
 
     if(isTargetCheckbox) {
       return;

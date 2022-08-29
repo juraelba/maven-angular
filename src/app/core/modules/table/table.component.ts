@@ -32,6 +32,15 @@ interface ColumnFilterChangeEvent {
   options: SelectOption[]
 }
 
+interface ColumnAutoFilterPosition {
+  offsetX: number;
+  offsetY: number;
+}
+
+interface SelectedGroupHashMap {
+  [key: string]: { [key: string]: string; } | undefined;
+}
+
 const MIN_COLUMN_WIDTH = 100;
 
 @Component({
@@ -53,14 +62,14 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   rows: Row[] = [];
   columns: Column[] = [];
 
-  tableBodyStyles: any = {};
+  tableBodyStyles: { [key: string]: string } = {};
   sortedColumn: [ string, SortMethods ] = [ '', SortMethodsEnum.none ];
   columnFilterId: string = '';
   activeColumnAutoFilterId: string = '';
   columnAutoFilterData: ColumnAutoFilterData;
   groupedRowFilterData: Group;
   isColumnAutoFilterVisible: boolean = false;
-  columnAutoFilterPosition: any = {
+  columnAutoFilterPosition: ColumnAutoFilterPosition = {
     offsetX: 0,
     offsetY: 0
   }
@@ -207,7 +216,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
-  getColumnFilterDataOptions(rowFilterData: any[] = []): SelectOption[] {
+  getColumnFilterDataOptions(rowFilterData: string[] = []): SelectOption[] {
     const uniqValues = uniq(rowFilterData);
 
     return uniqValues.map((data) => ({
@@ -219,8 +228,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   groupRowData(): Group {
-    return compose<Row[][], Group, any, Group>(
-      reduce<[string, any], Group>((acc, [ id, value ]) => {
+    return compose<Row[][], Group, [string, string[]][], Group>(
+      reduce<[string, string[]], Group>((acc, [ id, value ]) => {
         acc[id] = !isNil(value) ? this.getColumnFilterDataOptions(value) : null;
 
         return acc;
@@ -333,7 +342,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   updateGroupedRowFilterData(id: string, options: SelectOption[]): Group {
-    const selectedOptions = options.reduce<{[key: string]: any}>((acc, { value }) => {
+    const selectedOptions = options.reduce<{[key: string]: string}>((acc, { value }) => {
       acc[value] = value;
 
       return acc;
@@ -365,11 +374,11 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     )(this.groupedRowFilterData);
   }
 
-  createHashMapFromSelectedGroup(selectedGroup: Group): { [key: string]: any } {
+  createHashMapFromSelectedGroup(selectedGroup: Group): SelectedGroupHashMap {
     const selectedPairs = toPairs(selectedGroup);
 
-    return selectedPairs.reduce<{ [key: string]: any }>((acc, [ key, pairValue ]) => {
-      acc[key] = pairValue?.reduce<{ [key: string]: any }>((valueAcc, { label }: SelectOption) => {
+    return selectedPairs.reduce<SelectedGroupHashMap>((acc, [ key, pairValue ]) => {
+      acc[key] = pairValue?.reduce<{ [key: string]: string }>((valueAcc, { label }: SelectOption) => {
         valueAcc[label] = label;
 
         return valueAcc;

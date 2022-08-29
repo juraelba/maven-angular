@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   codeForm: UntypedFormGroup = this.fb.group({
     code: ['', Validators.required],
   });
-  private unsubscribeAll: Subject<any> = new Subject<any>();
+  private unsubscribeAll: Subject<null> = new Subject<null>();
 
   constructor(
     private fb: UntypedFormBuilder,

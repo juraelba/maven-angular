@@ -21,7 +21,7 @@ export class ForgotPasswordEmailComponent implements OnInit, OnDestroy {
     validators: [Validators.required, Validators.email]
   });
 
-  private unsubscribeAll: Subject<any> = new Subject<any>();
+  private unsubscribeAll: Subject<null> = new Subject<null>();
 
   constructor(
     private fb: UntypedFormBuilder,

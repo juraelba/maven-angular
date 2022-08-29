@@ -22,7 +22,7 @@ interface CriteriaValueStyles {
   styleUrls: ['./selected-criteria-dialog.component.scss']
 })
 export class SelectedCriteriaDialogComponent implements OnInit {
-  criteries: any[][] = [];
+  criteries: [string, any][] = [];
   labels: any = ListLabels;
   config = selectedCriteriaConfig;
 
@@ -44,7 +44,7 @@ export class SelectedCriteriaDialogComponent implements OnInit {
     return options.filter((option) => value !== option.value);
   }
 
-  updateCriteria(criteria: any, option: SelectOption, key: ListKey): any {
+  updateCriteria(criteria: Criteries, option: SelectOption, key: string): Criteries {
     const options = this.filterOptions(criteria.options, option.value);
 
     return {
@@ -56,9 +56,9 @@ export class SelectedCriteriaDialogComponent implements OnInit {
     }
   }
 
-  onRemoveCriteriaClick(key: ListKeys, option: SelectOption) {
+  onRemoveCriteriaClick(key: string, option: SelectOption) {
     const workingCriteria = this.data[key];
-    const complexCriteriaData = [ ListKeys.categories, ListKeys.markets, ListKeys.diversetargets, ListKeys.languages2 ];
+    const complexCriteriaData = [ ListKeys.categories, ListKeys.markets, ListKeys.diversetargets, ListKeys.languages2 ] as string[];
 
     let newData = {};
 
@@ -81,7 +81,7 @@ export class SelectedCriteriaDialogComponent implements OnInit {
     this.selectedCriteriaService.update(this.data);
   }
 
-  getStyles(key: ListKey): CriteriaValueStyles {
+  getStyles(key: string): CriteriaValueStyles {
     return {
       'background': this.config[key]?.bg || this.config.default.bg,
       'color': this.config[key]?.color  || this.config.default.color

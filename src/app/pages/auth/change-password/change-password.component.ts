@@ -21,7 +21,7 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
 
   public form: UntypedFormGroup;
 
-  private unsubscribeAll: Subject<any> = new Subject<any>();
+  private unsubscribeAll: Subject<null> = new Subject<null>();
 
   constructor(
     private route: ActivatedRoute,

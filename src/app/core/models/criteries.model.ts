@@ -1,8 +1,6 @@
 import { SelectOption } from './select.model';
+import { ListKeys } from '@enums/lists.enum';
 
-export interface Criteries {
-  [key: string]: any;
-}
 
 export interface SelectedCriteriaEventData {
   key: string;
@@ -41,4 +39,18 @@ export interface LanguageCriteria {
 export interface DiverseTargestCriteria {
   isDiverseTarget: boolean;
   options: SelectOption[];
+}
+
+export interface MarketCriteria {
+  options: SelectOption[];
+  market: ListKeys.dmas | ListKeys.msas;
+}
+
+export interface MatchedToCriteria {
+  matched: boolean;
+  matchedTo: string;
+}
+
+export interface Criteries {
+  [key: string]: any
 }

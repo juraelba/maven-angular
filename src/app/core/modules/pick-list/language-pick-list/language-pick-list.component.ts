@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
@@ -13,6 +13,8 @@ import { ListsService } from '@services/lists/lists.service';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { SearchService } from '@services/search/search.service';
 
+import { SelectComponent } from '@modules/select/select.component';
+
 @Component({
   selector: 'app-language-pick-list',
   templateUrl: './language-pick-list.component.html',
@@ -21,7 +23,7 @@ import { SearchService } from '@services/search/search.service';
 export class LanguagePickListComponent implements OnInit {
   @Output() change: EventEmitter<ListChangesEvent> = new EventEmitter();
 
-  @ViewChild('selectComponent') selectComponent: any;
+  @ViewChild('selectComponent') selectComponent: SelectComponent;
 
   options: SelectOption[] = [];
   isLanguage: boolean = false;
@@ -129,7 +131,7 @@ export class LanguagePickListComponent implements OnInit {
   }
 
   onSelectClick({ event }: any): void {
-    const isTargetCheckbox = event.path.some((item: any) => item?.classList?.contains('checkbox'));
+    const isTargetCheckbox = event.path.some((item: Element) => item?.classList?.contains('checkbox'));
 
     if(isTargetCheckbox) {
       return;

@@ -6,12 +6,12 @@ import { map, debounceTime, take, switchMap } from "rxjs/operators";
 import { ValidationService } from '../services/validation.service';
 
 
-function isEmptyInputValue(value: any): boolean {
+function isEmptyInputValue(value: string | null): boolean {
   // we don't check for string here so it also works with arrays
   return value === null || value.length === 0;
 }
 
-function isEmpty(value: any): boolean {
+function isEmpty(value: string | null): boolean {
   return value === null || value.length === 0;
 }
 
@@ -72,21 +72,21 @@ export class CustomValidator {
 }
 
 export function PasswordNumberValidator(): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: any } | null => {
+  return (control: AbstractControl): { [key: string]: boolean } | null => {
     if (isEmpty(control.value)) return null;
     return hasNumber(control.value) ? null : { 'passwordNoNumber': true };
   };
 }
 
 export function PasswordUpperValidator(): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: any } | null => {
+  return (control: AbstractControl): { [key: string]: boolean } | null => {
     if (isEmpty(control.value)) return null;
     return hasUpper(control.value) ? null : { 'passwordNoUpper': true };
   };
 }
 
 export function PasswordLowerValidator(): ValidatorFn {
-  return (control: AbstractControl): { [key: string]: any } | null => {
+  return (control: AbstractControl): { [key: string]: boolean } | null => {
     if (isEmpty(control.value)) return null;
     return hasLower(control.value) ? null : { 'passwordNoLower': true };
   };

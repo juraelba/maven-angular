@@ -50,7 +50,7 @@ export class CreateAccountComponent implements OnInit, OnDestroy {
     code: ['', Validators.required],
   });
 
-  private unsubscribeAll: Subject<any> = new Subject<any>();
+  private unsubscribeAll: Subject<null> = new Subject<null>();
 
   constructor(
     private fb: UntypedFormBuilder,

@@ -7,7 +7,7 @@ import * as R from 'ramda';
 
 import { environment } from '../../../../environments/environment';
 
-import { List, ListInfo, ListKey, ListUrlsKey, Ranges, MediaTypeListItem } from '@models/list.model';
+import { List, ListInfo, ListKey, ListUrlsKey, Ranges, MediaTypeListItem, ListData } from '@models/list.model';
 import { SelectOption } from '@models/select.model';
 import { MarketSortingOption, SortMethods } from '@models/sorting-options.models';
 
@@ -47,7 +47,7 @@ export class ListsService {
   getListData(key: ListUrlsKey): Observable<List> {
     return this.localStorage.getListData()
       .pipe(
-        map((list: any) => list[key] || [])
+        map((list: ListData) => list[key] || [])
       );
   }
 

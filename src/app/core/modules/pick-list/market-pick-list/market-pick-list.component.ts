@@ -4,9 +4,9 @@ import { forkJoin, Subject } from 'rxjs';
 import * as R from 'ramda';
 
 import { SelectOption } from '@models/select.model';
-import { ListChangesEvent, MarketData } from '@models/list.model';
+import { ListChangesEvent } from '@models/list.model';
 import { MarketSortingOption } from '@models/sorting-options.models';
-import { SelectedCriteriaEvent } from '@models/criteries.model';
+import { SelectedCriteriaEvent, MarketCriteria } from '@models/criteries.model';
 
 import { ListKeys, ListLabels } from '@enums/lists.enum';
 import { MarketSortingOptionsEnum } from '@enums/sorting-options.enum';
@@ -15,6 +15,9 @@ import { SearchActionTypesEnum } from '@enums/search.enum'
 import { ListsService } from '@services/lists/lists.service';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { SearchService } from '@services/search/search.service';
+
+import { SelectComponent } from '@modules/select/select.component';
+
 
 type SectionKey = ListKeys.dmas | ListKeys.msas;
 type SectionLabel = ListLabels.dmas | ListLabels.msas;
@@ -37,7 +40,7 @@ interface Section {
 export class MarketPickListComponent implements OnInit {
   @Output() change: EventEmitter<ListChangesEvent> = new EventEmitter();
 
-  @ViewChild('selectComponent') selectComponent: any;
+  @ViewChild('selectComponent') selectComponent: SelectComponent;
 
   options: SelectOption[] = [];
   marketOptions: MarketOptions = {
@@ -99,7 +102,7 @@ export class MarketPickListComponent implements OnInit {
         filter(({ data }: SelectedCriteriaEvent) => data[ListKeys.markets] ),
         map(({ data }: SelectedCriteriaEvent) => data[ListKeys.markets].options)
       )
-      .subscribe((options: any) => {
+      .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
@@ -153,7 +156,7 @@ export class MarketPickListComponent implements OnInit {
     this.value = this.listsService.getSelectInputValue(options, ListLabels.markets);
     this.borderLabel = this.getBorderLabel(options);
 
-    const marketData: MarketData = {
+    const marketData: MarketCriteria = {
       market: this.getActiveSectionKey(),
       options,
     }
@@ -161,7 +164,7 @@ export class MarketPickListComponent implements OnInit {
     this.change.emit({ key: ListKeys.markets, data: marketData });
   }
 
-  unselectAllMarketOptions() {
+  unselectAllMarketOptions(): MarketOptions {
     return R.compose<[MarketOptions], [any, SelectOption[]][], MarketOptions>(
       R.reduce<[SectionKey, SelectOption[]], any>((acc, [ key, value ]) => {
         acc[key] = this.listsService.updateOptionsWithSelected(value, []);
@@ -180,7 +183,7 @@ export class MarketPickListComponent implements OnInit {
     this.borderLabel = '';
     this.value = ListLabels.markets;
 
-    const marketData: MarketData = {
+    const marketData: MarketCriteria = {
       market: this.getActiveSectionKey(),
       options: [],
     }

@@ -35,11 +35,4 @@ export interface ListChangesEvent {
   data: any
 }
 
-type SectionKey = ListKeys.dmas | ListKeys.msas;
-
-export interface MarketData {
-  options: SelectOption[];
-  market: SectionKey;
-}
-
 export type Ranges = [ string, number, number ];

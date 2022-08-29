@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { switchMap, takeUntil, filter } from 'rxjs/operators'; 
 
 import { Criteries } from '@models/criteries.model';
-import { SearchKey } from '@models/search.model';
+import { SearchKey, CreateSearchResponse } from '@models/search.model';
 import { Table, TableConfig, Row, Column } from '@models/table.model';
 
 import { SearchActionTypesEnum, SearchExcelFileNamesEnum } from '@enums/search.enum';
@@ -66,7 +66,7 @@ export class SearchComponent implements OnInit {
 
     this.searchService.createSearch(this.criteries, this.key)
       .pipe(
-        switchMap(({ id }: any) => this.searchService.executeSearch(id))
+        switchMap(({ id }: CreateSearchResponse) => this.searchService.executeSearch(id))
       )
       .subscribe((data) => {
         this.totalRows = data.length;
