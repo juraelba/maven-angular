@@ -8,6 +8,8 @@ interface JSONSheetRow {
   [key: string]: string | number;
 }
 
+const MAX_COLUMN_WIDTH = 100;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -41,7 +43,7 @@ export class ExcelService {
 
       const maxLengthInsideGroup = Math.max(...group, columnLabel.length);
 
-      acc[columnLabel] = maxLengthInsideGroup;
+      acc[columnLabel] = maxLengthInsideGroup > MAX_COLUMN_WIDTH ? MAX_COLUMN_WIDTH : maxLengthInsideGroup;
   
       return acc;
     }, {});

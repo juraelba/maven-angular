@@ -58,6 +58,7 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
+        this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.diversetargets);
         this.options = updatedOptions;
         this.value = this.listsService.getSelectInputValue(options, ListLabels.diversetargets);
       });

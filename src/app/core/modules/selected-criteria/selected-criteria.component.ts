@@ -35,6 +35,7 @@ export class SelectedCriteriaComponent implements OnInit {
       [SearchFiedlsEnum.categories]: this.isComplexCriteriaDataEmpty,
       [SearchFiedlsEnum.languages2]: this.isComplexCriteriaDataEmpty,
       [SearchFiedlsEnum.diversetargets]: this.isComplexCriteriaDataEmpty,
+      [SearchFiedlsEnum.markets]: this.isComplexCriteriaDataEmpty,
       [SearchFiedlsEnum.metric]: always(true),
       [SearchFiedlsEnum.matchedTo]: always(true),
       [SearchFiedlsEnum.slogan]: always(true),

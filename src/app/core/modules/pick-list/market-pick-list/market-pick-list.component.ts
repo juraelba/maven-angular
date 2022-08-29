@@ -107,6 +107,7 @@ export class MarketPickListComponent implements OnInit {
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
         this.options = updatedOptions;
+        this.borderLabel = this.getBorderLabel(options);
         this.value = this.listsService.getSelectInputValue(options, ListLabels.markets);
       });
   }

@@ -9,7 +9,7 @@
 </div>
 <div mat-dialog-content class="max-h-[500px] overflow-y-auto font-lato text-sm text-pri-gray mt-[40px] mb-[40px] ml-[30px] mr-[30px]">
   <div>
-    <div class="flex mb-[10px]" *ngFor="let criteriaPair of criteries">
+    <div class="flex mb-[10px] min-h-[35px]" *ngFor="let criteriaPair of criteries">
       <div [ngSwitch]="criteriaPair[0]" class="basis-1/5">
         <ng-container *ngSwitchCase="'categories'">
           <ng-container *ngTemplateOutlet="categoriesLabel; context: { criteriaPair: criteriaPair }"></ng-container>

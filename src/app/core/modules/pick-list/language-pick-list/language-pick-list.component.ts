@@ -58,6 +58,7 @@ export class LanguagePickListComponent implements OnInit {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
+        this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.languages2);
         this.options = updatedOptions;
         this.value = this.listsService.getSelectInputValue(options, ListLabels.languages2);
       });

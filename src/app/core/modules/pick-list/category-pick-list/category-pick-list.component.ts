@@ -60,6 +60,7 @@ export class CategoryPickListComponent implements OnInit, OnDestroy {
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
         this.options = updatedOptions;
+        this.borderLabel = this.getBorderLabel();
         this.value = this.listsService.getSelectInputValue(options, ListLabels.categories);
       });
 

@@ -14,12 +14,12 @@
     <app-diverse-target-pick-list (change)="onChange($event)"></app-diverse-target-pick-list>
     <app-language-pick-list (change)="onChange($event)"></app-language-pick-list>
 
+    <app-matched-to (dataChange)="onChange($event)"></app-matched-to>
+
     <div class="flex items-center">
       <app-checkbox [checked]="criteries['metric']" (change)="onCheckboxChange('metric', $event)"></app-checkbox>
       <span class="ml-[10px] font-lato text-pri-black">Metric</span>
     </div>
-
-    <app-matched-to (dataChange)="onChange($event)"></app-matched-to>
 
     <div class="flex items-center">
       <app-checkbox [checked]="criteries['slogan']" (change)="onCheckboxChange('slogan', $event)"></app-checkbox>

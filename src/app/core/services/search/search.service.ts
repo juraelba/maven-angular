@@ -230,28 +230,33 @@ export class SearchService {
     }
   }
 
+
   isValueContain(value: unknown, target: string): boolean {
-    return is(String, value) ? value.includes(target) : false;
+    return is(String, value) ? value.toLowerCase().includes(target.toLowerCase()) : false;
   }
 
   isValueNotContain(value: unknown, target: string): boolean {
-    return is(String, value) ? !value.includes(target) : false;
+    return is(String, value) ? !value.toLowerCase().includes(target.toLowerCase()) : false;
   }
 
   isValueStartsWith(value: unknown, target: string): boolean {
-    return is(String, value) ? value.startsWith(target) : false;
+    return is(String, value) ? value.toLowerCase().startsWith(target.toLowerCase()) : false;
   }
 
   isValueEndsWith(value: unknown, target: string): boolean {
-    return is(String, value) ? value.endsWith(target) : false;
+    return is(String, value) ? value.toLowerCase().endsWith(target.toLowerCase()) : false;
   }
 
   isValueEquals(value: unknown, target: string): boolean {
-    return value === target;
+    const stringValue = `${ value }`;
+
+    return stringValue.toLowerCase() === target.toLowerCase();
   }
   
   isValueNotEqual(value: unknown, target: string): boolean {
-    return value !== target;
+    const stringValue = `${ value }`;
+
+    return stringValue.toLowerCase() !== target.toLowerCase();
   }
 
   isValueEmpty(value: unknown): boolean {
