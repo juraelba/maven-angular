@@ -5,8 +5,7 @@ import { TextFiltersLabelsEnum, TextFiltersValuesEnum } from '@enums/filters.enu
 export const MAX_VALIDATION_TRIES = 3;
 export const RECAPTCHA_KEY = '6LeuNgMTAAAAAMQ0zGESyK_KWbrf97s3vyVychg_';
 
-
-const MEDIA_SEARCH_COLUMNS_CONFIG: TableConfig = {
+export const SEARCH_COLUMNS_CONFIG: TableConfig = {
   market: {
     cellStyles: {
       color: '#3A63CC'
@@ -22,10 +21,6 @@ const MEDIA_SEARCH_COLUMNS_CONFIG: TableConfig = {
       color: '#3A63CC'
     }
   }
-}
-
-export const SEARCH_COLUMNS_CONFIG: any = {
-  media: MEDIA_SEARCH_COLUMNS_CONFIG
 }
 
 export const TEXT_FILTERS: TextFilter[] = [

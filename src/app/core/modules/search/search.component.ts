@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { switchMap, takeUntil, filter } from 'rxjs/operators'; 
+import { switchMap, takeUntil, filter, catchError } from 'rxjs/operators'; 
 
 import { Criteries } from '@models/criteries.model';
 import { SearchKey, CreateSearchResponse } from '@models/search.model';
@@ -38,7 +38,7 @@ export class SearchComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.config = SEARCH_COLUMNS_CONFIG[this.key];
+    this.config = SEARCH_COLUMNS_CONFIG;
 
     this.listenSearchBarMenuActions();
   }
@@ -64,19 +64,31 @@ export class SearchComponent implements OnInit {
 
     this.isFetching = true;
 
-    this.searchService.createSearch(this.criteries, this.key)
+    this.searchService.createSearch(this.criteries)
       .pipe(
-        switchMap(({ id }: CreateSearchResponse) => this.searchService.executeSearch(id))
+        switchMap(({ id }: CreateSearchResponse) => this.searchService.executeSearch(id)),
       )
-      .subscribe((data) => {
-        this.totalRows = data.length;
-        this.tableData = this.searchService.transformSearchResultToTableData(data, this.key);
-
-        this.tableRowsInView = [ ...this.tableData.rows ];
-        this.tableColumnsInView = [ ...this.tableData.columns ];
-
-        this.isFetching = false;
-        this.isFetched = true;
+      .subscribe({
+        next: (data) => {
+          this.totalRows = data.length;
+          this.tableData = this.searchService.transformSearchResultToTableData(data, this.key);
+  
+          this.tableRowsInView = [ ...this.tableData.rows ];
+          this.tableColumnsInView = [ ...this.tableData.columns ];
+  
+          this.isFetching = false;
+          this.isFetched = true;
+        },
+        error: () => {
+          this.totalRows = 0;
+          this.tableData = { rows: [], columns: [] }
+  
+          this.tableRowsInView = [ ...this.tableData.rows ];
+          this.tableColumnsInView = [ ...this.tableData.columns ];
+  
+          this.isFetching = false;
+          this.isFetched = true;
+        }
       })
   }
 

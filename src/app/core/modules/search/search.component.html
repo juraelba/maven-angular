@@ -33,9 +33,9 @@
     >
     </app-spinner>
 
-    <div *ngIf="isFetched && this.tableData.rows">
+    <div *ngIf="isFetched && this.tableData.rows.length">
       <div class="flex justify-between mb-[20px]">
-        <span class="text-pri-gray font-lato">Result: {{ totalRows }}</span>
+        <span class="text-pri-gray font-lato">Results: {{ totalRows }}</span>
         <button class="flex items-center" (click)="exportToExcel($event)">
           <img src="/assets/images/icons/download-arrow.svg" alt="download-arrow" />
           <span class="ml-[10px] text-regal-blue text-base font-mont font-medium">
@@ -52,7 +52,7 @@
       </app-table>
     </div>
 
-    <div *ngIf="isFetched && !this.tableData.rows">
+    <div *ngIf="isFetched && !this.tableData.rows.length">
       No Data found
     </div>
   </div>

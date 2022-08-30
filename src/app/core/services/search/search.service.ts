@@ -60,10 +60,8 @@ export class SearchService {
     this.subject$.next({ action: SearchActionTypesEnum.NEW_SEARCH });
   }
 
-  createSearch(criterias: Criteries, key: SearchKey): Observable<CreateSearchResponse> {
-    const url = environment.api + '/search/' + key;
-
-    console.log(criterias, 'criterias');
+  createSearch(criterias: Criteries): Observable<CreateSearchResponse> {
+    const url = environment.api + '/search/media';
 
     const { columns, criteria } = this.transformCriteriasToSearchOptions(criterias);
 

@@ -21,6 +21,7 @@ import { SortingMenuComponent } from './sorting-menu/sorting-menu.component';
 import { BandsPickListComponent } from './bands-pick-list/bands-pick-list.component';
 import { NetworksPickListComponent } from './networks-pick-list/networks-pick-list.component';
 import { DmaMarketsComponent } from './dma-markets/dma-markets.component';
+import { SubTypesComponent } from './sub-types/sub-types.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { DmaMarketsComponent } from './dma-markets/dma-markets.component';
     SortingMenuComponent,
     BandsPickListComponent,
     NetworksPickListComponent,
-    DmaMarketsComponent
+    DmaMarketsComponent,
+    SubTypesComponent
   ],
   imports: [
     CommonModule,
@@ -57,7 +59,8 @@ import { DmaMarketsComponent } from './dma-markets/dma-markets.component';
     MarketPickListComponent,
     BandsPickListComponent,
     NetworksPickListComponent,
-    DmaMarketsComponent
+    DmaMarketsComponent,
+    SubTypesComponent
   ]
 })
 export class PickListModule { }

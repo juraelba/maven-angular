@@ -1,0 +1,16 @@
+<app-select
+  [multiple]="true"
+  [grouping]="false"
+  placeholder="Subtypes"
+  [options]="options"
+  [borderLabel]="borderLabel"
+  (applyChanges)="onApplyChanges($event)"
+  (clear)="onClear()"
+  #selectComponent
+>
+  <div dropdownHeaderContainer #dropdownHeaderContainer>
+    <div class="flex justify-between items-center mb-5 cursor-pointer text-black text-base font-medium">
+      Subtypes
+    </div>
+  </div>
+</app-select>
