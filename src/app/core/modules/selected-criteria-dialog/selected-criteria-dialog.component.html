@@ -39,6 +39,10 @@
           <ng-container *ngTemplateOutlet="complexCriteriaValues; context: { criteriaPair: criteriaPair }"></ng-container>
         </ng-container>
 
+        <ng-container *ngSwitchCase="'matchedTo'">
+          <ng-container *ngTemplateOutlet="matchedToCriteriaValues; context: { criteriaPair: criteriaPair }"></ng-container>
+        </ng-container>
+
         <ng-container *ngSwitchDefault>
           <button
             *ngFor="let criteria of criteriaPair[1]"
@@ -81,6 +85,23 @@
     <span>{{ labels[criteriaPair[0]] }}:</span>
     <span>({{ labels[criteriaPair[1].market] }})</span>
   </div>
+</ng-template>
+
+<ng-template #matchedToCriteriaValues let-criteriaPair="criteriaPair">
+  <button
+    *ngIf="criteriaPair[1].matchedTo"
+    [ngStyle]="getStyles(criteriaPair[0])"
+    class="mr-[10px] mb-[10px] h-[24px] flex items-center rounded-xl py-0.5 px-2"
+    (click)="onRemoveMatchedToCriteriaClick($event)"
+    >
+  <span>{{ criteriaPair[1].matchedTo }}</span>
+  <app-svg-icon
+    class="cursor-pointer ml-[5px]"
+    name="cross"
+    [stroke]="config[criteriaPair[0]]?.color|| config.default.color"
+  >
+  </app-svg-icon>
+</button>
 </ng-template>
 
 <ng-template #complexCriteriaValues let-criteriaPair="criteriaPair">

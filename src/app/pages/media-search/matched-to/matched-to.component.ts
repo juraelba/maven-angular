@@ -1,12 +1,14 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil, filter } from 'rxjs/operators';
+import { takeUntil, filter, map } from 'rxjs/operators';
 
 import { SearchFiledChangeEvent } from '@models/search.model';
+import { SelectedCriteriaEvent } from '@models/criteries.model';
 
 import { SearchFiedlsEnum, SearchActionTypesEnum } from '@enums/search.enum';
 
 import { SearchService } from '@services/search/search.service';
+import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 @Component({
   selector: 'app-matched-to',
@@ -21,11 +23,30 @@ export class MatchedToComponent implements OnInit {
   unsubscribeAll: Subject<null> = new Subject();
 
   constructor(
-    private searchService: SearchService
+    private searchService: SearchService,
+    private selectedCriteriaService: SelectedCriteriaService
   ) { }
 
   ngOnInit(): void {
     this.listenSearchBarMenuActions();
+    this.listenSelectedCriteriaDialogEvent();
+  }
+
+  listenSelectedCriteriaDialogEvent(): void {
+    this.selectedCriteriaService.selectedCriteria$
+      .pipe(
+        takeUntil(this.unsubscribeAll),
+        filter(({ data }: SelectedCriteriaEvent) => {
+          console.log(data);
+    
+          return data[SearchFiedlsEnum.matchedTo]
+        }),
+        map(({ data }: SelectedCriteriaEvent) => data[SearchFiedlsEnum.matchedTo].matchedTo)
+      )
+      .subscribe((value: string) => {
+        console.log(value);
+        this.matchedTo = value;
+      });
   }
 
   onCheckboxChange(value: boolean): void {

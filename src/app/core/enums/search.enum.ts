@@ -1,4 +1,4 @@
-import { ListKeys } from '@enums/lists.enum';
+import { ListKeys, ListLabels } from '@enums/lists.enum';
 
 export enum SearchEnum {
   media = 'media',
@@ -13,6 +13,11 @@ export const SearchFiedlsEnum = {
   slogan: 'slogan',
   name: 'name'
 };
+
+export const SearchFieldsLabelsEnum = {
+  ...ListLabels,
+  matchedTo: 'Matched in my database'
+}
 
 export enum SearchColumnsEnum {
   name = 'Name',

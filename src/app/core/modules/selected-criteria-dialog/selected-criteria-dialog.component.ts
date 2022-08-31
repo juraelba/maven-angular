@@ -8,6 +8,7 @@ import { ListKey } from '@models/list.model';
 
 import { selectedCriteriaConfig } from '../../data/selected-criteria-config';
 import { ListLabels, ListKeys } from '@enums/lists.enum';
+import { SearchFieldsLabelsEnum, SearchFiedlsEnum } from '@enums/search.enum';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
@@ -23,7 +24,7 @@ interface CriteriaValueStyles {
 })
 export class SelectedCriteriaDialogComponent implements OnInit {
   criteries: [string, any][] = [];
-  labels: any = ListLabels;
+  labels: any = SearchFieldsLabelsEnum;
   config = selectedCriteriaConfig;
 
   constructor(
@@ -86,5 +87,16 @@ export class SelectedCriteriaDialogComponent implements OnInit {
       'background': this.config[key]?.bg || this.config.default.bg,
       'color': this.config[key]?.color  || this.config.default.color
     }
+  }
+
+  onRemoveMatchedToCriteriaClick(event: MouseEvent): void {
+    event.stopPropagation();
+
+    this.data[SearchFiedlsEnum.matchedTo] = {
+      ...this.data[SearchFiedlsEnum.matchedTo],
+      matchedTo: ''
+    };
+
+    this.criteries = toPairs(this.data);
   }
 }

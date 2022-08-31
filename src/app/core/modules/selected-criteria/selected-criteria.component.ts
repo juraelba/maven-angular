@@ -3,7 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { compose, toPairs, reduce, isEmpty, always, mapObjIndexed } from 'ramda';
 
 import { SelectedCriteriaDialogComponent } from '../selected-criteria-dialog/selected-criteria-dialog.component';
-import { Criteries, CategoriesCriteria, LanguageCriteria } from '@models/criteries.model';
+import { Criteries, CategoriesCriteria, LanguageCriteria, MatchedToCriteria } from '@models/criteries.model';
 
 import { SearchFiedlsEnum } from '@enums/search.enum';
 
@@ -30,6 +30,10 @@ export class SelectedCriteriaComponent implements OnInit {
     return isEmpty(options);
   }
 
+  isMatchedToEmpty({ matchedTo }: MatchedToCriteria): boolean {
+    return isEmpty(matchedTo);
+  }
+
   omitNotValidCriteries(criteries: Criteries): Criteries {
     const criteriaValidators: Validators = {
       [SearchFiedlsEnum.categories]: this.isComplexCriteriaDataEmpty,
@@ -37,10 +41,10 @@ export class SelectedCriteriaComponent implements OnInit {
       [SearchFiedlsEnum.diversetargets]: this.isComplexCriteriaDataEmpty,
       [SearchFiedlsEnum.markets]: this.isComplexCriteriaDataEmpty,
       [SearchFiedlsEnum.metric]: always(true),
-      [SearchFiedlsEnum.matchedTo]: always(true),
+      [SearchFiedlsEnum.matchedTo]: this.isMatchedToEmpty,
       [SearchFiedlsEnum.slogan]: always(true),
       [SearchFiedlsEnum.name]: always(true)
-    }
+    };
 
     return compose<[Criteries], Array<[string, any]>, Criteries>(
       reduce<[ string, any ], Criteries>((acc, [ key, value ]) => {
