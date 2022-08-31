@@ -1,11 +1,13 @@
 import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
-import { takeUntil, filter } from 'rxjs/operators';
+import { takeUntil, filter, map } from 'rxjs/operators';
 
 import { SearchFiedlsEnum, SearchActionTypesEnum } from '@enums/search.enum';
 
-import { CriteriesChangesEvent } from '@models/criteries.model';
+import { CriteriesChangesEvent, SelectedCriteriaEvent } from '@models/criteries.model';
+
 import { SearchService } from '@services/search/search.service';
+import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 @Component({
   selector: 'app-name-input',
@@ -19,7 +21,8 @@ export class NameInputComponent implements OnInit, OnDestroy {
   value: string = '';
 
   constructor(
-    private searchService: SearchService
+    private searchService: SearchService,
+    private selectedCriteriaService: SelectedCriteriaService
   ) { }
 
   ngOnInit(): void {
@@ -32,6 +35,20 @@ export class NameInputComponent implements OnInit, OnDestroy {
         this.value = '';
 
         this.changeData.emit({ key: SearchFiedlsEnum.name, data: '' });
+      });
+
+      this.listenSelectedCriteriaDialogEvent();
+  }
+
+  listenSelectedCriteriaDialogEvent(): void {
+    this.selectedCriteriaService.selectedCriteria$
+      .pipe(
+        takeUntil(this.unsubscribeAll),
+        filter(({ data }: SelectedCriteriaEvent) => SearchFiedlsEnum.name in data),
+        map(({ data }: SelectedCriteriaEvent) => data[SearchFiedlsEnum.name])
+      )
+      .subscribe((value: string) => {
+        this.value = value;
       });
   }
 

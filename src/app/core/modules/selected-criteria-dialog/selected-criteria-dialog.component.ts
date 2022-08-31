@@ -99,4 +99,12 @@ export class SelectedCriteriaDialogComponent implements OnInit {
 
     this.criteries = toPairs(this.data);
   }
+
+  onRemoveSearchNameCriteriaClick(event: MouseEvent): void {
+    event.stopPropagation();
+
+    this.data[SearchFiedlsEnum.name] = '';
+
+    this.criteries = toPairs(this.data);
+  }
 }

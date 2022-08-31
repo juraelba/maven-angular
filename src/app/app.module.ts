@@ -12,6 +12,7 @@ import { LayoutModule } from './layout/layout.module';
 import { ToastrModule } from './ui-kit/toastr/toastr.module';
 import { SpinnerModule } from './ui-kit/spinner/spinner.module';
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 import { SideNavService } from './core/services/side-nav.service';
 
 @NgModule({

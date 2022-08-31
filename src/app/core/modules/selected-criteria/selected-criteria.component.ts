@@ -34,6 +34,10 @@ export class SelectedCriteriaComponent implements OnInit {
     return isEmpty(matchedTo);
   }
 
+  isSearchNameEmpty(name: string): boolean {
+    return isEmpty(name);
+  }
+
   omitNotValidCriteries(criteries: Criteries): Criteries {
     const criteriaValidators: Validators = {
       [SearchFiedlsEnum.categories]: this.isComplexCriteriaDataEmpty,
@@ -43,7 +47,7 @@ export class SelectedCriteriaComponent implements OnInit {
       [SearchFiedlsEnum.metric]: always(true),
       [SearchFiedlsEnum.matchedTo]: this.isMatchedToEmpty,
       [SearchFiedlsEnum.slogan]: always(true),
-      [SearchFiedlsEnum.name]: always(true)
+      [SearchFiedlsEnum.name]: this.isSearchNameEmpty
     };
 
     return compose<[Criteries], Array<[string, any]>, Criteries>(

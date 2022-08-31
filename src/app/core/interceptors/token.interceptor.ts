@@ -22,15 +22,20 @@ export class TokenInterceptor implements HttpInterceptor {
       const duplicate = request.clone({
         headers: request.headers.set('Authorization', this.authService.accessToken ? 'bearer ' + this.authService.accessToken : 'bearer')
       });
+
       return next.handle(duplicate).pipe(
         catchError((err) => {
-          if (err.status === 401) {
+          if (err.status === 401 || err.status === 403) {
             this.authService.logout();
           }
+  
           return throwError(() => err);
         })
       );
     }
+
+    this.authService.logout();
+
     return next.handle(request);
   }
 }

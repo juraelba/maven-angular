@@ -36,15 +36,10 @@ export class MatchedToComponent implements OnInit {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ data }: SelectedCriteriaEvent) => {
-          console.log(data);
-    
-          return data[SearchFiedlsEnum.matchedTo]
-        }),
+        filter(({ data }: SelectedCriteriaEvent) => data[SearchFiedlsEnum.matchedTo]),
         map(({ data }: SelectedCriteriaEvent) => data[SearchFiedlsEnum.matchedTo].matchedTo)
       )
       .subscribe((value: string) => {
-        console.log(value);
         this.matchedTo = value;
       });
   }

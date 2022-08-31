@@ -16,7 +16,8 @@ export const SearchFiedlsEnum = {
 
 export const SearchFieldsLabelsEnum = {
   ...ListLabels,
-  matchedTo: 'Matched in my database'
+  matchedTo: 'Matched in my database',
+  name: 'Search by name or ID'
 }
 
 export enum SearchColumnsEnum {
