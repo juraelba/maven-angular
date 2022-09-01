@@ -20,6 +20,7 @@ export class BandsPickListComponent implements OnInit {
   borderLabel: string;
   options: SelectOption[] = [];
   unsubscribeAll: Subject<null> = new Subject();
+  preselectedOptions: string[] = [ 'DT', 'TV', 'CA' ]
 
   constructor(
     private listsService: ListsService,
@@ -32,7 +33,12 @@ export class BandsPickListComponent implements OnInit {
         takeUntil(this.unsubscribeAll)
       )
       .subscribe((options: SelectOption[]) => {
-        this.options = options;
+        this.options = this.listsService.updateOptionsWithSelected(options, this.preselectedOptions);
+        const selected = this.listsService.getSelectedOptions(this.options);
+
+        this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.tvbands);
+
+        this.change.emit({ key: ListKeys.tvbands, data: selected });
       });
 
     this.selectedCriteriaService.selectedCriteria$

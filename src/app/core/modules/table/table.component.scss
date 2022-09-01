@@ -32,3 +32,14 @@ table th {
 .cdk-drag-placeholder .header__content {
   opacity: 0.3;
 }
+
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-thumb {
+  border: 5px solid rgba(0, 0, 0, 0);
+  background-clip: padding-box;
+  border-radius: 50px;
+  background-color: #D7D7DC;
+}

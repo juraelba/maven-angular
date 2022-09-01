@@ -26,6 +26,7 @@ export class DmaMarketsComponent implements OnInit {
   unsubscribeAll: Subject<null> = new Subject();
   sortingMenuOpen: boolean = false;
   sort: MarketSortingOption = MarketSortingOptionsEnum.name;
+  optionsToOmit: string[] = [ 'National (USA)', 'International' ]
 
   constructor(
     private listsService: ListsService,
@@ -39,8 +40,9 @@ export class DmaMarketsComponent implements OnInit {
       )
       .subscribe((options: SelectOption[]) => {
         const sortedOptions = this.listsService.sortOptions(options, this.sort);
+        const workedOptions = this.listsService.filterOptions(sortedOptions, this.optionsToOmit);
 
-        this.options = this.listsService.addGroupingLetter(sortedOptions, this.sort);
+        this.options = this.listsService.addGroupingLetter(workedOptions, this.sort);
       });
 
     this.selectedCriteriaService.selectedCriteria$

@@ -12,7 +12,9 @@ export enum ListLabels {
   dmamarkets = 'Markets (DMA)',
   languages = 'Language',
   types = 'Types',
-  subtypes = 'Subtypes'
+  subtypes = 'Subtypes',
+  networks = 'Networks',
+  bands = 'Bands'
 };
 
 export enum ListKeys {
@@ -29,7 +31,9 @@ export enum ListKeys {
   tvnetworks = 'tvnetworks',
   dmamarkets = 'dmamarkets',
   languages = 'languages',
-  subtypes = 'subtypes'
+  subtypes = 'subtypes',
+  networks = 'networks',
+  bands = 'bands'
 }
 
 export enum ListUrls {

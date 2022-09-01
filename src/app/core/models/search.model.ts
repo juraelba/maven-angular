@@ -1,7 +1,9 @@
-import { SearchEnum, SearchColumnsEnum, SearchActionTypesEnum } from '@enums/search.enum';
+import { SearchEnum, SearchColumnsEnum, SearchActionTypesEnum, SearchFiedlsEnum } from '@enums/search.enum';
 import { Criteries } from './criteries.model';
 
 export type SearchKey = keyof typeof SearchEnum;
+
+export type SearchFiledsKey = keyof typeof SearchFiedlsEnum;
 
 export type SearchColumnsKey = keyof typeof SearchColumnsEnum;
 
@@ -45,7 +47,7 @@ export interface SearchOption {
 
 export interface SearchQuery {
   criteria: {
-    [key: string]: SearchOption[] | string;
+    [key: string]: SearchOption[] | string | boolean;
   },
   columns: {
     [key: string]: boolean;

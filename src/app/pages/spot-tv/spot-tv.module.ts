@@ -7,6 +7,7 @@ import { CheckboxModule } from '@modules/checkbox/checkbox.module';
 import { InputModule } from '@modules/input/input.module';
 import { SelectModule } from '@modules/select/select.module';
 import { SearchModule } from '@modules/search/search.module';
+import { NameInputModule } from '@modules/name-input/name-input.module';
 
 import { SpotTvComponent } from './spot-tv.component';
 
@@ -21,7 +22,8 @@ import { SpotTvComponent } from './spot-tv.component';
     CheckboxModule,
     InputModule,
     SelectModule,
-    SearchModule
+    SearchModule,
+    NameInputModule
   ]
 })
 export class SpotTvModule { }

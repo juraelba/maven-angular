@@ -47,7 +47,8 @@ export class SelectedCriteriaComponent implements OnInit {
       [SearchFiedlsEnum.metric]: always(true),
       [SearchFiedlsEnum.matchedTo]: this.isMatchedToEmpty,
       [SearchFiedlsEnum.slogan]: always(true),
-      [SearchFiedlsEnum.name]: this.isSearchNameEmpty
+      [SearchFiedlsEnum.name]: this.isSearchNameEmpty,
+      [SearchFiedlsEnum.nonComms]: always(true),
     };
 
     return compose<[Criteries], Array<[string, any]>, Criteries>(

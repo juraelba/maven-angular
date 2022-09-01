@@ -11,7 +11,8 @@ export const SearchFiedlsEnum = {
   metric: 'metric',
   matchedTo: 'matchedTo',
   slogan: 'slogan',
-  name: 'name'
+  name: 'name',
+  nonComms: 'nonComms'
 };
 
 export const SearchFieldsLabelsEnum = {

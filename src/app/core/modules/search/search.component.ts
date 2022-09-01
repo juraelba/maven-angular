@@ -64,7 +64,7 @@ export class SearchComponent implements OnInit {
 
     this.isFetching = true;
 
-    this.searchService.createSearch(this.criteries)
+    this.searchService.createSearch(this.criteries, this.key)
       .pipe(
         switchMap(({ id }: CreateSearchResponse) => this.searchService.executeSearch(id)),
       )

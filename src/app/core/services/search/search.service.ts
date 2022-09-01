@@ -17,6 +17,7 @@ import {
 import { Table, Row, TextFilterKey, Filter, FilterOperatorKey, ColumnAutoFilterData, ColumnAutoFilterValue, Column } from '@models/table.model';
 import { SelectOption } from '@models/select.model';
 import { MarketCriteria, MatchedToCriteria, Criteries } from '@models/criteries.model';
+import { SearchFiledsKey } from '@models/search.model';
 
 import { ListKeys } from '@enums/lists.enum';
 import { TextFiltersValuesEnum, FilterOperatorEnum } from '@enums/filters.enum';
@@ -33,7 +34,7 @@ interface SearchColumns {
 }
 
 interface TransformedSearchData {
-  searchOptions: SearchOption[] | string;
+  searchOptions: SearchOption[] | string | boolean;
   columns?: { [key: string]: boolean };
   criteriaKey?: string;
 }
@@ -60,8 +61,8 @@ export class SearchService {
     this.subject$.next({ action: SearchActionTypesEnum.NEW_SEARCH });
   }
 
-  createSearch(criterias: Criteries): Observable<CreateSearchResponse> {
-    const url = environment.api + '/search/media';
+  createSearch(criterias: Criteries, key: SearchKey): Observable<CreateSearchResponse> {
+    const url = environment.api + `/search/${ key }`;
 
     const { columns, criteria } = this.transformCriteriasToSearchOptions(criterias);
 
@@ -155,10 +156,16 @@ export class SearchService {
     return { searchOptions, columns, criteriaKey: ListKeys.languages };
   }
 
-  transformMediatypesData(criteriaData: SelectOption[]): TransformedSearchData {
-    const { searchOptions } = this.transformOptions(criteriaData);
+  transformNonComsCriteriaData(value: boolean): TransformedSearchData {
+    return { searchOptions: value, columns: {}, criteriaKey: SearchFiedlsEnum.nonComms };
+  }
 
-    return { searchOptions, columns: {}, criteriaKey: ListKeys.types };
+  transformCriteriaKey(key: SearchFiledsKey): (criteriaOptions: SelectOption[]) => TransformedSearchData {
+    return (criteriaOptions) => {
+      const { searchOptions } = this.transformOptions(criteriaOptions);
+    
+      return { searchOptions, columns: {}, criteriaKey: SearchFiedlsEnum[key] };
+    }
   }
 
   transformCriteriasToSearchOptions(criterias: Criteries): SearchQuery {
@@ -171,7 +178,10 @@ export class SearchService {
       [SearchFiedlsEnum.metric]: this.booleanCriteriaToData.bind(this, SearchFiedlsEnum.metric),
       [SearchFiedlsEnum.slogan]: this.booleanCriteriaToData.bind(this, SearchFiedlsEnum.slogan),
       [SearchFiedlsEnum.name]: this.transformSearchNameToData,
-      [ListKeys.mediatypes2]: this.transformMediatypesData.bind(this),
+      [ListKeys.mediatypes2]: this.transformCriteriaKey(SearchFiedlsEnum.types),
+      [SearchFiedlsEnum.nonComms]: this.transformNonComsCriteriaData,
+      [SearchFiedlsEnum.tvnetworks]: this.transformCriteriaKey(SearchFiedlsEnum.networks),
+      [SearchFiedlsEnum.tvbands]: this.transformCriteriaKey(SearchFiedlsEnum.bands),
       default: this.transformOptions
     }
 
@@ -192,7 +202,7 @@ export class SearchService {
         };
 
         return acc;
-      }, { columns: {}, criteria: {} }),
+      }, { columns: {}, criteria: { nonComms: false } }),
       toPairs
     )(criterias)
   }

@@ -80,7 +80,6 @@ export class ListsService {
 
   transformListToOptions(key: ListKey, list: List): SelectOption[] {
     const transformers: ListOptionsTransformer = {
-      // [ListKeys.mediatypes2]: this.transformMediaTypesListToOptions,
       default: this.defaultListToOptionsTransformer
     };
 
@@ -280,6 +279,10 @@ export class ListsService {
   }
 
   selectAll(options: SelectOption[]): SelectOption[] {
-    return options.map((options) => ({ ...options, selected: true }));
+    return options.map((option) => ({ ...option, selected: true }));
+  }
+
+  filterOptions(options: SelectOption[], optionsToOmit: string[]): SelectOption[] {
+    return options.filter(({ value }) => !optionsToOmit.includes(value));
   }
 }

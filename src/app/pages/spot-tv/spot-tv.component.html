@@ -1,16 +1,9 @@
 <app-search [title]="'Spot TV Search'" [criteries]="criteries" [key]="key">
   <div class="grid-container grid gap-5 mb-[40px]">
-    <app-input
-      class="col-start-1 col-end-3"
-      placeholder="Search by name or ID"
-      name="nameSearch"
-      [disabled]="true"
-      icon="/assets/images/icons/search.svg"
-    >
-    </app-input>
+    <app-name-input class="col-start-1 col-end-3" (changeData)="onChange($event)"></app-name-input>
 
     <div class="flex items-center col-start-3 col-end-5">
-      <app-checkbox></app-checkbox>
+      <app-checkbox [checked]="criteries['nonComms']" (change)="onCheckboxChange('nonComms', $event)"></app-checkbox>
       <span class="ml-[10px] font-lato text-pri-black">Include non-comms</span>
     </div>
 
