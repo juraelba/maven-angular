@@ -1,4 +1,4 @@
-import { SearchEnum, SearchColumnsEnum, SearchActionTypesEnum, SearchFiedlsEnum } from '@enums/search.enum';
+import { SearchEnum, SearchColumnsEnum, SearchActionTypesEnum, SearchFiedlsEnum, SearchColumnsIdEnum } from '@enums/search.enum';
 import { Criteries } from './criteries.model';
 
 export type SearchKey = keyof typeof SearchEnum;
@@ -6,6 +6,8 @@ export type SearchKey = keyof typeof SearchEnum;
 export type SearchFiledsKey = keyof typeof SearchFiedlsEnum;
 
 export type SearchColumnsKey = keyof typeof SearchColumnsEnum;
+
+export type SearchColumnsIdKey = keyof typeof SearchColumnsIdEnum;
 
 export type SearchResultItem = {
   [key: string]: unknown;

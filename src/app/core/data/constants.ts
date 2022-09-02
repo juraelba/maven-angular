@@ -85,5 +85,3 @@ export const TEXT_FILTERS: TextFilter[] = [
     iconName: 'crossedOutCircle'
   },
 ];
-
-export const COLUMNS_TO_OMIT = [ 'marketID', 'ownerID', 'parentID', 'partnerID', 'subTypeID', 'typeID' ];

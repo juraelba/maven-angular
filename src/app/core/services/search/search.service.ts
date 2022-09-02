@@ -23,7 +23,7 @@ import { ListKeys } from '@enums/lists.enum';
 import { TextFiltersValuesEnum, FilterOperatorEnum } from '@enums/filters.enum';
 import { SearchFiedlsEnum, SearchColumnsEnum, SearchActionTypesEnum } from '@enums/search.enum';
 
-import { COLUMNS_TO_OMIT } from '../../data/constants';
+import { TABLE_COLUMNS, COLUMNS_TO_OMIT } from '../../data/table-columns-config';
 
 interface SelectedCheckboxes {
   [key: string]: boolean
@@ -61,10 +61,8 @@ export class SearchService {
     this.subject$.next({ action: SearchActionTypesEnum.NEW_SEARCH });
   }
 
-  createSearch(criterias: Criteries, key: SearchKey): Observable<CreateSearchResponse> {
+  createSearch({ columns, criteria }: SearchQuery, key: SearchKey): Observable<CreateSearchResponse> {
     const url = environment.api + `/search/${ key }`;
-
-    const { columns, criteria } = this.transformCriteriasToSearchOptions(criterias);
 
     const body = {
       id: 0,
@@ -218,8 +216,26 @@ export class SearchService {
       }));
   }
 
-  transformSearchResultToTableData(searchResult: SearchResponse, key: SearchKey): Table {
-    const columns = this.getColumnsFromSearchResult(searchResult);
+  getColumns(searchResult: SearchResponse, searchQuery: SearchQuery, searchKey: SearchKey): Column[] {
+    const configColumns = TABLE_COLUMNS[searchKey];
+
+    if(isEmpty(configColumns)) {
+      return this.getColumnsFromSearchResult(searchResult);
+    }
+
+    return configColumns.reduce<Column[]>((acc, { id, label, predicator }) => {
+      const columnValidator = predicator || always(true);
+
+      if(columnValidator(searchQuery)) {
+        acc.push({ id, label, width: 200 })
+      }
+
+      return acc;
+    }, [])
+  }
+
+  transformSearchResultToTableData(searchResult: SearchResponse, searchQuery: SearchQuery, searchKey: SearchKey): Table {
+    const columns = this.getColumns(searchResult, searchQuery, searchKey);
 
     const rows = searchResult.reduce<Row[]>((acc, cur) => {
       const row = {
@@ -237,7 +253,6 @@ export class SearchService {
       columns
     }
   }
-
 
   isValueContain(value: unknown, target: string): boolean {
     return is(String, value) ? value.toLowerCase().includes(target.toLowerCase()) : false;

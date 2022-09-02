@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 import { switchMap, takeUntil, filter, catchError } from 'rxjs/operators'; 
 
 import { Criteries } from '@models/criteries.model';
-import { SearchKey, CreateSearchResponse } from '@models/search.model';
+import { SearchKey, CreateSearchResponse, SearchQuery } from '@models/search.model';
 import { Table, TableConfig, Row, Column } from '@models/table.model';
 
 import { SearchActionTypesEnum, SearchExcelFileNamesEnum } from '@enums/search.enum';
@@ -64,14 +64,16 @@ export class SearchComponent implements OnInit {
 
     this.isFetching = true;
 
-    this.searchService.createSearch(this.criteries, this.key)
+    const searchQuery: SearchQuery =  this.searchService.transformCriteriasToSearchOptions(this.criteries);
+
+    this.searchService.createSearch(searchQuery, this.key)
       .pipe(
         switchMap(({ id }: CreateSearchResponse) => this.searchService.executeSearch(id)),
       )
       .subscribe({
         next: (data) => {
           this.totalRows = data.length;
-          this.tableData = this.searchService.transformSearchResultToTableData(data, this.key);
+          this.tableData = this.searchService.transformSearchResultToTableData(data, searchQuery, this.key);
   
           this.tableRowsInView = [ ...this.tableData.rows ];
           this.tableColumnsInView = [ ...this.tableData.columns ];

@@ -22,7 +22,7 @@ export const SearchFieldsLabelsEnum = {
 }
 
 export enum SearchColumnsEnum {
-  name = 'Name',
+  name = 'Station',
   mavenid = 'MAVENID',
   subType = 'Sub-Type',
   market = 'Market',
@@ -33,7 +33,32 @@ export enum SearchColumnsEnum {
   website = 'Website',
   partners = 'Media Partner',
   fullPage = 'Full Page 4C',
-  circulation = 'Circulation'
+  circulation = 'Circulation',
+  networks = 'Networks',
+  commercial = 'Commercial',
+  digitalChannel = 'Digital Channel',
+  displayChannel = 'Display Channel',
+  parent = 'Parent'
+}
+
+export enum SearchColumnsIdEnum {
+  name = 'name',
+  mavenid = 'mavenid',
+  subType = 'subType',
+  market = 'market',
+  owner = 'owner',
+  partner = 'partner',
+  slogan = 'slogan',
+  categories = 'categories',
+  website = 'website',
+  partners = 'partners',
+  fullPage = 'fullPage',
+  circulation = 'circulation',
+  networks = 'networks',
+  commercial = 'commercial',
+  digitalChannel = 'digitalChannel',
+  displayChannel = 'displayChannel',
+  parent = 'parent'
 }
 
 export enum SearchActionTypesEnum {

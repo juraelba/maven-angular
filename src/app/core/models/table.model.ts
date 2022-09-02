@@ -1,5 +1,7 @@
 
 import { TextFiltersValuesEnum, TextFiltersLabelsEnum, FilterOperatorEnum } from '../enums/filters.enum';
+import { SearchKey, SearchQuery } from './search.model';
+import { SearchColumnsEnum, SearchColumnsIdEnum } from '@enums/search.enum';
 
 interface RowData {
   [key: string]: any;
@@ -59,4 +61,12 @@ export interface ColumnAutoFilterValue {
 
 export interface ColumnAutoFilterData {
   [key: string]: ColumnAutoFilterValue;
+}
+
+export type TableColumnsConfig = {
+  [key in SearchKey]: {
+    id: SearchColumnsIdEnum,
+    label: SearchColumnsEnum,
+    predicator?: (searchQery: SearchQuery) => boolean
+  }[]
 }
