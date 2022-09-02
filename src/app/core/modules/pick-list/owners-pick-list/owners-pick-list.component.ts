@@ -1,10 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { SelectOption } from '@models/select.model';
 import { SelectedCriteriaEvent } from '@models/criteries.model';
-import { ListChangesEvent } from '@models/list.model';
+import { ListChangesEvent, ListUrlsKey } from '@models/list.model';
 
 import { ListLabels, ListKeys } from '@enums/lists.enum';
 import { SearchActionTypesEnum } from '@enums/search.enum';
@@ -19,6 +19,8 @@ import { ListsService } from '@services/lists/lists.service';
   styleUrls: ['./owners-pick-list.component.scss']
 })
 export class OwnersPickListComponent implements OnInit {
+  @Input() listUrlKey: ListUrlsKey = ListKeys.owners;
+
   @Output() change: EventEmitter<ListChangesEvent> = new EventEmitter();
 
   borderLabel: string;
@@ -33,7 +35,7 @@ export class OwnersPickListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listsService.getOptionsData(ListKeys.owners)
+    this.listsService.getOptionsData(this.listUrlKey)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )

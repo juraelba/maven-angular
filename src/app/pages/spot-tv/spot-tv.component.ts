@@ -4,8 +4,10 @@ import { Subject } from 'rxjs';
 
 import { Criteries } from '@models/criteries.model';
 import { SearchKey, SearchFiledChangeEvent } from '@models/search.model';
+import { ListUrlsKey } from '@models/list.model';
 
 import { SearchEnum, SearchActionTypesEnum, SearchFiedlsEnum } from '@enums/search.enum';
+import { ListKeys } from '@enums/lists.enum';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { SearchService } from '@services/search/search.service';
@@ -19,6 +21,8 @@ export class SpotTvComponent implements OnInit, OnDestroy {
   criteries: Criteries = {};
   key: SearchKey = SearchEnum['spot-tv'];
   unsubscribeAll: Subject<null> = new Subject();
+
+  ownerListUrlKey: ListUrlsKey = ListKeys.ownersLimit;
 
   constructor(
     private selectedCriteriService: SelectedCriteriaService,

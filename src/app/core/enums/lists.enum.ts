@@ -14,7 +14,8 @@ export enum ListLabels {
   types = 'Types',
   subtypes = 'Subtypes',
   networks = 'Networks',
-  bands = 'Bands'
+  bands = 'Bands',
+  ownersLimit = 'Owners'
 };
 
 export enum ListKeys {
@@ -33,7 +34,8 @@ export enum ListKeys {
   languages = 'languages',
   subtypes = 'subtypes',
   networks = 'networks',
-  bands = 'bands'
+  bands = 'bands',
+  ownersLimit = 'ownersLimit'
 }
 
 export enum ListUrls {
@@ -47,5 +49,6 @@ export enum ListUrls {
   msas = '/lists/msas/',
   tvbands = '/lists/tvbands/',
   tvnetworks = '/lists/tvnetworks/',
-  subtypes = '/lists/subtypes'
+  subtypes = '/lists/subtypes',
+  ownersLimit = '/lists/owners/11'
 }
