@@ -1,0 +1,17 @@
+<app-search [title]="'Spot Radio Search'" [criteries]="criteries" [key]="key">
+  <div class="grid-container grid gap-5 mb-[40px]">
+    <app-name-input class="col-start-1 col-end-3" (changeData)="onChange($event)"></app-name-input>
+
+    <div class="flex items-center col-start-3 col-end-5">
+      <app-checkbox [checked]="criteries['nonComms']" (change)="onCheckboxChange('nonComms', $event)"></app-checkbox>
+      <span class="ml-[10px] font-lato text-pri-black">Include non-comms</span>
+    </div>
+
+    <app-market-pick-list (change)="onChange($event)"></app-market-pick-list>
+    
+    <div></div>
+
+    <app-spot-radio-bands (change)="onChange($event)"></app-spot-radio-bands>
+    <app-owners-pick-list (change)="onChange($event)"></app-owners-pick-list>
+  </div>
+</app-search>

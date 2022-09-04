@@ -22,6 +22,7 @@ import { BandsPickListComponent } from './bands-pick-list/bands-pick-list.compon
 import { NetworksPickListComponent } from './networks-pick-list/networks-pick-list.component';
 import { DmaMarketsComponent } from './dma-markets/dma-markets.component';
 import { SubTypesComponent } from './sub-types/sub-types.component';
+import { SpotRadioBandsComponent } from './spot-radio-bands/spot-radio-bands.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { SubTypesComponent } from './sub-types/sub-types.component';
     BandsPickListComponent,
     NetworksPickListComponent,
     DmaMarketsComponent,
-    SubTypesComponent
+    SubTypesComponent,
+    SpotRadioBandsComponent
   ],
   imports: [
     CommonModule,
@@ -60,7 +62,8 @@ import { SubTypesComponent } from './sub-types/sub-types.component';
     BandsPickListComponent,
     NetworksPickListComponent,
     DmaMarketsComponent,
-    SubTypesComponent
+    SubTypesComponent,
+    SpotRadioBandsComponent
   ]
 })
 export class PickListModule { }

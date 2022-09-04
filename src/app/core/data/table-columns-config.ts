@@ -57,6 +57,7 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
     }
   ],
   [SearchEnum['broadcast-networks']]: [],
+  [SearchEnum['spot-radio-search']]: [],
 };
 
 export const COLUMNS_TO_OMIT = [ 'marketID', 'ownerID', 'parentID', 'partnerID', 'subTypeID', 'typeID' ];

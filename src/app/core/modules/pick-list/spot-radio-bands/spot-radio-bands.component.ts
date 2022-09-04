@@ -10,17 +10,16 @@ import { ListKeys } from '@enums/lists.enum';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 @Component({
-  selector: 'app-bands-pick-list',
-  templateUrl: './bands-pick-list.component.html',
-  styleUrls: ['./bands-pick-list.component.scss']
+  selector: 'app-spot-radio-bands',
+  templateUrl: './spot-radio-bands.component.html',
+  styleUrls: ['./spot-radio-bands.component.scss']
 })
-export class BandsPickListComponent implements OnInit {
+export class SpotRadioBandsComponent implements OnInit {
   @Output() change: EventEmitter<ListChangesEvent> = new EventEmitter();
 
   borderLabel: string;
   options: SelectOption[] = [];
   unsubscribeAll: Subject<null> = new Subject();
-  preselectedOptions: string[] = [ 'DT', 'TV', 'CA' ]
 
   constructor(
     private listsService: ListsService,
@@ -28,30 +27,30 @@ export class BandsPickListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listsService.getOptionsData(ListKeys.tvbands)
+    this.listsService.getOptionsData(ListKeys.radiobands)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
       .subscribe((options: SelectOption[]) => {
-        this.options = this.listsService.updateOptionsWithSelected(options, this.preselectedOptions);
+        this.options = options;
         const selected = this.listsService.getSelectedOptions(this.options);
 
-        this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.tvbands);
+        this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.radiobands);
 
-        this.change.emit({ key: ListKeys.tvbands, data: selected });
+        this.change.emit({ key: ListKeys.radiobands, data: selected });
       });
 
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ data }: SelectedCriteriaEvent) => data[ListKeys.tvbands]),
-        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.tvbands])
+        filter(({ data }: SelectedCriteriaEvent) => data[ListKeys.radiobands]),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.radiobands])
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
             
-        this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.tvbands);
+        this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.radiobands);
         this.options = updatedOptions;
       });
   }
@@ -66,9 +65,9 @@ export class BandsPickListComponent implements OnInit {
     const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
     this.options = updatedOptions;
-    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.tvbands);
+    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.radiobands);
 
-    this.change.emit({ key: ListKeys.tvbands, data: [ ...options ] });
+    this.change.emit({ key: ListKeys.radiobands, data: [ ...options ] });
   }
 
   onSelectClick(event: MouseEvent) {
@@ -79,6 +78,7 @@ export class BandsPickListComponent implements OnInit {
     this.options = this.listsService.updateOptionsWithSelected(this.options, []);
     this.borderLabel = '';
 
-    this.change.emit({ key: ListKeys.tvbands, data: [] });
+    this.change.emit({ key: ListKeys.radiobands, data: [] });
   }
+
 }

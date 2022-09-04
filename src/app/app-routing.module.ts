@@ -28,6 +28,10 @@ const routes: Routes = [
         path: 'broadcast-networks',
         loadChildren: () => import('./pages/broadcast-networks/broadcast-networks.module').then(m => m.BroadcastNetworksModule)
       },
+      {
+        path: 'spot-radio-search',
+        loadChildren: () => import('./pages/spot-radio-search/spot-radio-search.module').then(m => m.SpotRadioSearchModule)
+      },
     ]
   },
   {
