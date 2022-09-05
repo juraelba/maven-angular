@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ConnectedPosition } from '@angular/cdk/overlay';
 
 import { Column, TextFilter, ColumnAutoFilterData } from '@models/table.model';
 import { SelectOption } from '@models/select.model';
@@ -25,6 +26,20 @@ export class ColumnFilterComponent implements OnInit {
   filterDataOptions: SelectOption[];
   isTextFilterOverlayVisible: boolean = false;
   isColumnAutoFilterVisible: boolean = false;
+  connectedPositions: ConnectedPosition[] =  [
+    {
+      overlayX: 'start',
+      overlayY: 'top',
+      originX: 'end',
+      originY: 'bottom',
+    },
+    {
+      overlayX: 'end',
+      overlayY: 'top',
+      originX: 'start',
+      originY: 'bottom',
+    }
+  ];
 
   textFilters: TextFilter[] = TEXT_FILTERS;
 

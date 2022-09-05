@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 
 import { ListsService } from '@services/lists/lists.service';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
+import { SearchService } from '@services/search/search.service';
 
 import { SelectOption } from '@models/select.model';
 import { SelectedCriteriaEvent, MarketCriteria } from '@models/criteries.model';
@@ -12,6 +13,7 @@ import { MarketSortingOption } from '@models/sorting-options.models';
 
 import { ListKeys } from '@enums/lists.enum';
 import { MarketSortingOptionsEnum } from '@enums/sorting-options.enum';
+import { SearchActionTypesEnum } from '@enums/search.enum';
 
 @Component({
   selector: 'app-dma-markets',
@@ -30,7 +32,8 @@ export class DmaMarketsComponent implements OnInit {
 
   constructor(
     private listsService: ListsService,
-    private selectedCriteriaService: SelectedCriteriaService
+    private selectedCriteriaService: SelectedCriteriaService,
+    private searchService: SearchService
   ) { }
 
   ngOnInit(): void {
@@ -57,6 +60,19 @@ export class DmaMarketsComponent implements OnInit {
             
         this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.dmamarkets);
         this.options = updatedOptions;
+      });
+
+      this.listenSearchBarMenuActions();
+  }
+
+  listenSearchBarMenuActions(): void {
+    this.searchService.searchBarEvents$
+      .pipe(
+        takeUntil(this.unsubscribeAll),
+        filter(({ action }) => SearchActionTypesEnum.NEW_SEARCH === action)
+      )
+      .subscribe(() => {
+        this.onClear();
       });
   }
 
