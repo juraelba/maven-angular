@@ -1,0 +1,32 @@
+<app-select
+  [multiple]="true"
+  [grouping]="true"
+  [search]="true"
+  [sort]="false"
+  [customGrouping]="true"
+  [placeholder]="label"
+  [options]="options"
+  [borderLabel]="borderLabel"
+  (applyChanges)="onApplyChanges($event)"
+  (clear)="onClear()"
+  #selectComponent
+>
+  <div dropdownHeaderContainer #dropdownHeaderContainer>
+    <div class="flex justify-between items-center mb-5 cursor-pointer text-black text-base font-medium">
+      {{ label }}
+    </div>
+  </div>
+
+  <div indicators #indicators class="ml-[10px] cursor-pointer">
+    <div class="relative">
+      <app-svg-icon (click)="toggleOpenSortingMenu($event)" name="sort"></app-svg-icon>
+      <app-sorting-menu
+        *ngIf="sortingMenuOpen"
+        class="absolute right-0 top-full z-10"
+        [sort]="sort"
+        (change)="onSortingOptionChange($event)"
+      >
+      </app-sorting-menu>
+    </div>
+  </div>
+</app-select>
