@@ -57,7 +57,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
   @ViewChild('table') table: ElementRef;
   @ViewChild('tableContainer') tableContainer: ElementRef;
-  @ViewChild('headerRow') headerRow: ElementRef;
 
   rows: Row[] = [];
   columns: Column[] = [];
@@ -98,20 +97,20 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       this.columnsChange.emit(this.columns);
 
       this.resetAllFilters();
-      this.updateTableBidyStyles();
+      this.defineContainerLength()
     }
   }
+  
+  defineContainerLength(): void {
+    const columnsWidths = this.columns.reduce<number>((acc, { width }) => acc + width, 0);
 
-  updateTableBidyStyles(): void {
-    setTimeout(() => {
-      this.tableBodyStyles = {
-        width: `${ this.table.nativeElement.offsetWidth}px`
-      }
-    }, 0);
+    const cdkVirtualScrollWrapper = this.tableContainer.nativeElement.querySelector('.cdk-virtual-scroll-content-wrapper');
+
+    cdkVirtualScrollWrapper.style.width = columnsWidths + 'px';
   }
 
   ngAfterViewInit(): void {
-    this.updateTableBidyStyles();
+    this.defineContainerLength();
   }
 
   getCellStyles(columndId: string): Styles {
@@ -193,7 +192,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.columns = columns;
 
-    this.updateTableBidyStyles();
+    this.defineContainerLength()
   }
 
   getColumnCellStyles(column: Column): { [key: string]: string } {

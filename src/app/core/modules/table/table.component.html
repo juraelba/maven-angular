@@ -1,67 +1,67 @@
-<div #tableContainer class="table-width overflow-auto border rounded-md border-light-gray" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
-  <table #table class="border-0" style="table-layout:fixed;">
-    <thead class="header">
-      <tr #headerRow  class="h-[45px] header__row relative" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDrop($event)">
-        <th
-          *ngFor="let column of columns"
-          [id]="column.id"
-          class="p-0 bg-light-grey border-b cursor-pointer border-light-gray h-[45px] header__cell"
-          [ngStyle]="getColumnCellStyles(column)"
-          cdkDrag
-          (cdkDragStarted)="onDragStart($event)"
-          (cdkDragEnded)="onDragEnd($event)"
-        >
-          <div class="flex justify-between h-full header__template">
-            <div class="flex items-center grow header__content">
-              <div
-                class="text-pri-black font-lato font-bold text-sm flex flex-1 items-center pl-[20px] pr-[10px]"
-                cdkDragHandle
-                (click)="onSortClick($event, column)"
-                [ngStyle]="getColumnTextStyles(column)"
-              >
-                <div class="text-ellipsis overflow-hidden">{{ column.label }}</div>
-              </div>
-              <div class="flex">
-                <img
-                  class="cursor-pointer"
-                  src="/assets/images/icons/long-arrow-down.svg"
-                  alt="long-arrow-down"
-                  [ngClass]="getSortIconClass(column)"
-                  (click)="onSortClick($event, column)"
-                />
-                <app-column-filter
-                  [column]="column"
-                  [rowFilterData]="groupedRowFilterData[column.id] || []"
-                  [columnAutoFilterData]="columnAutoFilterData"
-                  [panelOpen]="column.id === columnFilterId"
-                  (openFilter)="onOpenFilter($event)"
-                  (closeFilter)="onCloseFilter()"
-                  (textFilterSelect)="onTextFilterSelect($event)"
-                  (columnFilterChange)="onColumnFilterChange($event)"
-                  (clearColumnFilter)="onFilterClear($event)"
-                >
-                </app-column-filter>
-              </div>
-            </div>
-            <app-resizer (resizeEnd)="onResizeEnd($event, column)" [column]="column" [columns]="columns"></app-resizer>
-          </div>
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <cdk-virtual-scroll-viewport itemSize="30" class="h-[340px]" [ngStyle]="tableBodyStyles">
-        <tr *cdkVirtualFor="let row of rows; templateCacheSize: 0" class="h-[45px]">
-          <td
+<div #tableContainer class="border rounded-md border-light-gray" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+  <cdk-virtual-scroll-viewport itemSize="50" class="table-width overflow-auto h-[340px]">
+    <div class="border-0">
+      <div class="header">
+        <div class="h-[45px] header__row relative flex" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDrop($event)">
+          <div
             *ngFor="let column of columns"
-            class="px-[20px] border-b border-light-gray align-middle"
+            [id]="column.id"
+            class="p-0 bg-light-grey border-b cursor-pointer border-light-gray h-[45px] header__cell"
+            [ngStyle]="getColumnCellStyles(column)"
+            cdkDrag
+            (cdkDragStarted)="onDragStart($event)"
+            (cdkDragEnded)="onDragEnd($event)"
+          >
+            <div class="flex justify-between h-full header__template">
+              <div class="flex items-center grow header__content">
+                <div
+                  class="text-pri-black font-lato font-bold text-sm flex flex-1 items-center pl-[20px] pr-[10px]"
+                  cdkDragHandle
+                  (click)="onSortClick($event, column)"
+                  [ngStyle]="getColumnTextStyles(column)"
+                >
+                  <div class="text-ellipsis overflow-hidden">{{ column.label }}</div>
+                </div>
+                <div class="flex">
+                  <img
+                    class="cursor-pointer"
+                    src="/assets/images/icons/long-arrow-down.svg"
+                    alt="long-arrow-down"
+                    [ngClass]="getSortIconClass(column)"
+                    (click)="onSortClick($event, column)"
+                  />
+                  <app-column-filter
+                    [column]="column"
+                    [rowFilterData]="groupedRowFilterData[column.id] || []"
+                    [columnAutoFilterData]="columnAutoFilterData"
+                    [panelOpen]="column.id === columnFilterId"
+                    (openFilter)="onOpenFilter($event)"
+                    (closeFilter)="onCloseFilter()"
+                    (textFilterSelect)="onTextFilterSelect($event)"
+                    (columnFilterChange)="onColumnFilterChange($event)"
+                    (clearColumnFilter)="onFilterClear($event)"
+                  >
+                  </app-column-filter>
+                </div>
+              </div>
+              <app-resizer (resizeEnd)="onResizeEnd($event, column)" [column]="column" [columns]="columns"></app-resizer>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div *cdkVirtualFor="let row of rows; templateCacheSize: 0" class="h-[45px] flex">
+          <div
+            *ngFor="let column of columns"
+            class="px-[20px] border-b border-light-gray align-middle overflow-hidden whitespace-nowrap"
             [ngStyle]="getColumnCellStyles(column)"
           >
             <div [ngStyle]="this.getCellStyles(column.id)">{{ row.data[column.id] }}</div>
-          </td>
-        </tr>
-      </cdk-virtual-scroll-viewport>
-    </tbody>
-  </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </cdk-virtual-scroll-viewport>
 </div>
 
 <ng-template
