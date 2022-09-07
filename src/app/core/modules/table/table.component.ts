@@ -197,6 +197,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
   getColumnCellStyles(column: Column): { [key: string]: string } {
     const width = `${ column.width }px`;
+
+    console.log('hello')
   
     return {
       width,

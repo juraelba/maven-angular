@@ -1,5 +1,5 @@
 <div #tableContainer class="border rounded-md border-light-gray" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
-  <cdk-virtual-scroll-viewport itemSize="50" class="table-width overflow-auto h-[340px]">
+  <cdk-virtual-scroll-viewport itemSize="50" class="table-width overflow-auto h-[330px]">
     <div class="border-0">
       <div class="header">
         <div class="h-[45px] header__row relative flex" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDrop($event)">
@@ -53,10 +53,10 @@
         <div *cdkVirtualFor="let row of rows; templateCacheSize: 0" class="h-[45px] flex">
           <div
             *ngFor="let column of columns"
-            class="px-[20px] border-b border-light-gray align-middle overflow-hidden whitespace-nowrap"
+            class="px-[20px] border-b border-light-gray flex items-center"
             [ngStyle]="getColumnCellStyles(column)"
           >
-            <div [ngStyle]="this.getCellStyles(column.id)">{{ row.data[column.id] }}</div>
+            <div [ngStyle]="this.getCellStyles(column.id)" class="overflow-hidden whitespace-nowrap">{{ row.data[column.id] }}</div>
           </div>
         </div>
       </div>
