@@ -22,7 +22,7 @@ export class SpotTvComponent implements OnInit, OnDestroy {
   key: SearchKey = SearchEnum['spot-tv'];
   unsubscribeAll: Subject<null> = new Subject();
 
-  ownerListUrlKey: ListUrlsKey = ListKeys.ownersLimit;
+  ownerListUrlKey: ListUrlsKey = ListKeys.owners11;
 
   constructor(
     private selectedCriteriService: SelectedCriteriaService,
@@ -35,7 +35,6 @@ export class SpotTvComponent implements OnInit, OnDestroy {
         map(({ data }) => data)
       )
       .subscribe((data: Criteries) => {
-        console.log(data, 'data');
         this.criteries = {
           ...data,
           [SearchFiedlsEnum.nonComms]: this.criteries[SearchFiedlsEnum.nonComms],

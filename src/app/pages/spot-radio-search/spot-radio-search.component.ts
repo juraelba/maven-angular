@@ -23,7 +23,7 @@ export class SpotRadioSearchComponent implements OnInit {
   key: SearchKey = SearchEnum['spot-radio-search'];
   unsubscribeAll: Subject<null> = new Subject();
 
-  ownerListUrlKey: ListUrlsKey = ListKeys.ownersLimit;
+  ownerListUrlKey: ListUrlsKey = ListKeys.owners11;
 
   constructor(
     private selectedCriteriService: SelectedCriteriaService,
@@ -36,7 +36,6 @@ export class SpotRadioSearchComponent implements OnInit {
         map(({ data }) => data)
       )
       .subscribe((data: Criteries) => {
-        console.log(data, 'data');
         this.criteries = {
           ...data,
           [SearchFiedlsEnum.nonComms]: this.criteries[SearchFiedlsEnum.nonComms],

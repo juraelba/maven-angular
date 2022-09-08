@@ -58,6 +58,44 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
   ],
   [SearchEnum['broadcast-networks']]: [],
   [SearchEnum['spot-radio-search']]: [],
+  [SearchEnum['network-cable']]: [
+    {
+      id: SearchColumnsIdEnum.mavenid,
+      label: SearchColumnsEnum[SearchColumnsIdEnum.mavenid]
+    },
+    {
+      id: SearchColumnsIdEnum.networks,
+      label: SearchColumnsEnum[SearchColumnsIdEnum.networks]
+    },
+    {
+      id: SearchColumnsIdEnum.subType,
+      label: SearchColumnsEnum[SearchColumnsIdEnum.subType]
+    },
+    {
+      id: SearchColumnsIdEnum.owner,
+      label: SearchColumnsEnum[SearchColumnsIdEnum.owner]
+    },
+    {
+      id: SearchColumnsIdEnum.parent,
+      label: SearchColumnsEnum[SearchColumnsIdEnum.parent]
+    },
+    {
+      id: SearchColumnsIdEnum.slogan,
+      label: SearchColumnsEnum[SearchColumnsIdEnum.slogan]
+    },
+    {
+      id: SearchColumnsIdEnum.categories,
+      label: SearchColumnsEnum[SearchColumnsIdEnum.categories]
+    },
+    {
+      id: SearchColumnsIdEnum.website,
+      label: SearchColumnsEnum[SearchColumnsIdEnum.website]
+    },
+    {
+      id: SearchColumnsIdEnum.partners,
+      label: SearchColumnsEnum[SearchColumnsIdEnum.partners]
+    },
+  ],
 };
 
 export const COLUMNS_TO_OMIT = [ 'marketID', 'ownerID', 'parentID', 'partnerID', 'subTypeID', 'typeID' ];

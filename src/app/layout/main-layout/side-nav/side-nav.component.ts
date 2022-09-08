@@ -30,7 +30,7 @@ export class SideNavComponent implements OnInit {
           disabled: true,
           items: [
             { name: "network-tv", label: "Broadcast Networks", route: "/broadcast-networks", disabled: true, permissions: [ObjectType.NetworkTV] },
-            { name: "network-cable", label: "Cable Networks", route: "/network-cable-search", disabled: true, permissions: [ObjectType.NetworkCable] },
+            { name: "network-cable", label: "Cable Networks", route: "/cable-networks", disabled: true, permissions: [ObjectType.NetworkCable] },
             { name: "network-radio", label: "National Audio", route: "/network-radio-search", disabled: true, permissions: [ObjectType.NetworkRadio] },
           ]
         },

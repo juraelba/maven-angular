@@ -1,25 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil, filter } from 'rxjs/operators';
 
 import { Criteries } from '@models/criteries.model';
 import { SearchKey, SearchFiledChangeEvent } from '@models/search.model';
+import { ListUrlsKey } from '@models/list.model';
 
 import { SearchEnum } from '@enums/search.enum';
 import { SearchActionTypesEnum } from '@enums/search.enum';
+import { ListKeys  } from '@enums/lists.enum';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { SearchService } from '@services/search/search.service';
 
 @Component({
-  selector: 'app-broadcast-networks',
-  templateUrl: './broadcast-networks.component.html',
-  styleUrls: ['./broadcast-networks.component.scss']
+  selector: 'app-cable-networks',
+  templateUrl: './cable-networks.component.html',
+  styleUrls: ['./cable-networks.component.scss']
 })
-export class BroadcastNetworksComponent implements OnInit {
+export class CableNetworksComponent implements OnInit, OnDestroy{
   criteries: Criteries = {};
-  key: SearchKey = SearchEnum['broadcast-networks'];
+  key: SearchKey = SearchEnum['network-cable'];
   unsubscribeAll: Subject<null> = new Subject();
+
+  owners3ListUrlKey: ListUrlsKey = ListKeys.owners3;
+  mediatypes3ListUrlKey: ListUrlsKey = ListKeys.mediatypes3;
 
   constructor(
     private selectedCriteriService: SelectedCriteriaService,
@@ -62,4 +67,5 @@ export class BroadcastNetworksComponent implements OnInit {
         this.criteries = {}
       });
   }
+
 }

@@ -32,6 +32,10 @@ const routes: Routes = [
         path: 'spot-radio-search',
         loadChildren: () => import('./pages/spot-radio-search/spot-radio-search.module').then(m => m.SpotRadioSearchModule)
       },
+      {
+        path: 'cable-networks',
+        loadChildren: () => import('./pages/cable-networks/cable-networks.module').then(m => m.CableNetworksModule)
+      },
     ]
   },
   {

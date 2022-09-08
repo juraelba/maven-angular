@@ -1,10 +1,10 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { filter, map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
 import { SelectOption } from '@models/select.model';
 import { SelectedCriteriaEvent } from '@models/criteries.model';
-import { ListChangesEvent } from '@models/list.model';
+import { ListChangesEvent, ListUrlsKey } from '@models/list.model';
 
 import { ListKeys } from '@enums/lists.enum';
 import { SearchActionTypesEnum } from '@enums/search.enum'
@@ -19,6 +19,8 @@ import { SearchService } from '@services/search/search.service';
   styleUrls: ['./sub-types.component.scss']
 })
 export class SubTypesComponent implements OnInit {
+  @Input() listUrlKey: ListUrlsKey = ListKeys.subTypes;
+
   @Output() change: EventEmitter<ListChangesEvent> = new EventEmitter();
 
   borderLabel: string;
@@ -32,7 +34,7 @@ export class SubTypesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.listsService.getOptionsData(ListKeys.subtypes)
+    this.listsService.getOptionsData(this.listUrlKey)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
@@ -43,14 +45,14 @@ export class SubTypesComponent implements OnInit {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.subtypes]),
-        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.subtypes])
+        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.subTypes]),
+        map(({ data }: SelectedCriteriaEvent) => data[ListKeys.subTypes])
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
             
-        this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.subtypes);
+        this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.subTypes);
         this.options = updatedOptions;
       });
 
@@ -74,16 +76,16 @@ export class SubTypesComponent implements OnInit {
     const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
 
     this.options = updatedOptions;
-    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.subtypes);
+    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.subTypes);
 
-    this.change.emit({ key: ListKeys.subtypes, data: [ ...options ] });
+    this.change.emit({ key: ListKeys.subTypes, data: [ ...options ] });
   }
 
   onClear(): void {
     this.options = this.listsService.updateOptionsWithSelected(this.options, []);
     this.borderLabel = '';
 
-    this.change.emit({ key: ListKeys.subtypes, data: [] });
+    this.change.emit({ key: ListKeys.subTypes, data: [] });
   }
 
 }
