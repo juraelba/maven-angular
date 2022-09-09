@@ -2,6 +2,7 @@ export enum ListLabels {
   owners = 'Owners',
   mediatypes2 = 'Media Types',
   mediatypes3 = 'Media Types',
+  mediatypes5 = 'Media Types',
   categories = 'Categories',
   diversetargets = 'Diverse Target',
   languages2 = 'Language',
@@ -18,6 +19,7 @@ export enum ListLabels {
   bands = 'Bands',
   owners11 = 'Owners',
   owners3 = 'Owners',
+  owners5 = 'Owners',
   radiobands = 'Bands',
   formats = 'Formats'
 };
@@ -26,6 +28,7 @@ export enum ListKeys {
   owners = 'owners',
   mediatypes2 = 'mediatypes2',
   mediatypes3 = 'mediatypes3',
+  mediatypes5 = 'mediatypes5',
   types = 'types',
   categories = 'categories',
   diversetargets = 'diversetargets',
@@ -42,6 +45,7 @@ export enum ListKeys {
   bands = 'bands',
   owners11 = 'owners11',
   owners3 = 'owners3',
+  owners5 = 'owners5',
   radiobands = 'radiobands',
   formats = 'formats'
 }
@@ -50,6 +54,7 @@ export enum ListUrls {
   categories = '/lists/categories/',
   mediatypes2 = '/lists/mediatypes2/',
   mediatypes3 = '/lists/mediatypes/3',
+  mediatypes5 = '/lists/mediatypes/5',
   diversetargets = '/lists/diversetargets/',
   languages2 = '/lists/languages2/',
   languages = '/lists/languages/',
@@ -61,6 +66,7 @@ export enum ListUrls {
   owners = '/lists/owners/',
   owners11 = '/lists/owners/11',
   owners3 = '/lists/owners/3',
+  owners5 = '/lists/owners/5',
   radiobands = '/lists/radiobands',
   formats = '/lists/formats'
 }

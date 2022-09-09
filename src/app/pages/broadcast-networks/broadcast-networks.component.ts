@@ -4,9 +4,11 @@ import { map, takeUntil, filter } from 'rxjs/operators';
 
 import { Criteries } from '@models/criteries.model';
 import { SearchKey, SearchFiledChangeEvent } from '@models/search.model';
+import { ListUrlsKey } from '@models/list.model';
 
 import { SearchEnum } from '@enums/search.enum';
 import { SearchActionTypesEnum } from '@enums/search.enum';
+import { ListKeys  } from '@enums/lists.enum';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { SearchService } from '@services/search/search.service';
@@ -18,8 +20,11 @@ import { SearchService } from '@services/search/search.service';
 })
 export class BroadcastNetworksComponent implements OnInit {
   criteries: Criteries = {};
-  key: SearchKey = SearchEnum['broadcast-networks'];
+  key: SearchKey = SearchEnum['network-tv'];
   unsubscribeAll: Subject<null> = new Subject();
+
+  owners5ListUrlKey: ListUrlsKey = ListKeys.owners5;
+  mediatypes5ListUrlKey: ListUrlsKey = ListKeys.mediatypes5;
 
   constructor(
     private selectedCriteriService: SelectedCriteriaService,

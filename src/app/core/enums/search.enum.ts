@@ -3,7 +3,7 @@ import { ListKeys, ListLabels } from '@enums/lists.enum';
 export enum SearchEnum {
   media = 'media',
   'spot-tv' = 'spot-tv',
-  'broadcast-networks' = 'broadcast-networks',
+  'network-tv' = 'network-tv',
   'spot-radio-search' = 'spot-radio-search',
   'network-cable' = 'network-cable'
 }
@@ -70,7 +70,7 @@ export enum SearchActionTypesEnum {
 export enum SearchExcelFileNamesEnum {
   media = 'Media-Search.xlsx',
   'spot-tv' = 'Spot-TV-Search.xlsx',
-  'broadcast-networks' = 'Broadcast-Networks.xlsx',
+  'network-tv' = 'Broadcast-Networks.xlsx',
   'spot-radio-search' = 'Spot-Radio-Search.xlsx',
   'network-cable' = 'Cable-Networks-Search.xlsx',
 }
