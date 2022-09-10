@@ -36,6 +36,10 @@ const routes: Routes = [
         path: 'cable-networks',
         loadChildren: () => import('./pages/cable-networks/cable-networks.module').then(m => m.CableNetworksModule)
       },
+      {
+        path: 'national-audio',
+        loadChildren: () => import('./pages/national-audio/national-audio.module').then(m => m.NationalAudioModule)
+      },
     ]
   },
   {
@@ -43,7 +47,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
   }
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],

@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, Renderer2, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { CdkDragDrop, moveItemInArray, CdkDragStart, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { compose, toPairs, reduce, uniq, isNil } from 'ramda';
 
@@ -73,12 +74,14 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     offsetY: 0
   }
   draggableElement: EventTarget | null;
+  tableStyles: { height: string } | {} = {};
 
   constructor(
     private utilsService: UtilsService,
     private searchService: SearchService,
     private listsService: ListsService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document
   ) { }
 
   ngOnInit(): void {
@@ -86,6 +89,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     this.columns = [ ...this.data.columns ];
 
     this.groupedRowFilterData = this.groupRowData();
+    this.tableStyles = this.getTableStyles();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -99,6 +103,23 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       this.resetAllFilters();
       this.defineContainerLength()
     }
+  }
+
+  getTableStyles(): { height: string } {
+    const searchHeader = this.document.querySelector('.search-header') as Element;
+    const criteriesContiner = this.document.querySelector('.criteries-container') as Element;
+
+    const { height: searchHeaderHeight } =  searchHeader.getBoundingClientRect();
+    const { height: criteriesContinerHeight } =  criteriesContiner.getBoundingClientRect();
+
+    const navBarHeight = 68;
+    const marginAndPaddings = 200;
+
+    const tableWidth = window.innerHeight - searchHeaderHeight - criteriesContinerHeight - navBarHeight - marginAndPaddings;
+
+    return {
+      height: tableWidth + 'px'
+    };
   }
   
   defineContainerLength(): void {

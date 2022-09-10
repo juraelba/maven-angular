@@ -98,6 +98,7 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
   [SearchEnum['network-tv']]: NETWORK_COLUMNS,
   [SearchEnum['spot-radio-search']]: [],
   [SearchEnum['network-cable']]: NETWORK_COLUMNS,
+  [SearchEnum['network-radio']]: NETWORK_COLUMNS,
 };
 
 export const COLUMNS_TO_OMIT = [ 'marketID', 'ownerID', 'parentID', 'partnerID', 'subTypeID', 'typeID' ];
