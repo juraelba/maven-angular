@@ -52,8 +52,9 @@
       </app-table>
     </div>
 
-    <div *ngIf="isFetched && !this.tableData.rows.length">
-      No data found
+    <div *ngIf="isFetched && !this.tableData.rows.length" class="flex flex-col items-center mt-[100px]">
+      <div class="text-light-gray font-lato text-lg mb-[20px]">Your search did not match any results</div>
+      <img src="/assets/images/icons/no-results.svg" alt="download-arrow" />
     </div>
   </div>
 </div>
