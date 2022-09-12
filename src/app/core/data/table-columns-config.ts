@@ -6,39 +6,39 @@ import { TableColumnsConfig } from '@models/table.model';
 const NETWORK_COLUMNS = [
   {
     id: SearchColumnsIdEnum.mavenid,
-    label: SearchColumnsEnum[SearchColumnsIdEnum.mavenid]
+    label: SearchColumnsEnum.mavenid
   },
   {
     id: SearchColumnsIdEnum.networks,
-    label: SearchColumnsEnum[SearchColumnsIdEnum.networks]
+    label: SearchColumnsEnum.networks
   },
   {
     id: SearchColumnsIdEnum.subType,
-    label: SearchColumnsEnum[SearchColumnsIdEnum.subType]
+    label: SearchColumnsEnum.subType
   },
   {
     id: SearchColumnsIdEnum.owner,
-    label: SearchColumnsEnum[SearchColumnsIdEnum.owner]
+    label: SearchColumnsEnum.owner
   },
   {
     id: SearchColumnsIdEnum.parent,
-    label: SearchColumnsEnum[SearchColumnsIdEnum.parent]
+    label: SearchColumnsEnum.parent
   },
   {
     id: SearchColumnsIdEnum.slogan,
-    label: SearchColumnsEnum[SearchColumnsIdEnum.slogan]
+    label: SearchColumnsEnum.slogan
   },
   {
     id: SearchColumnsIdEnum.categories,
-    label: SearchColumnsEnum[SearchColumnsIdEnum.categories]
+    label: SearchColumnsEnum.categories
   },
   {
     id: SearchColumnsIdEnum.website,
-    label: SearchColumnsEnum[SearchColumnsIdEnum.website]
+    label: SearchColumnsEnum.website
   },
   {
     id: SearchColumnsIdEnum.partners,
-    label: SearchColumnsEnum[SearchColumnsIdEnum.partners]
+    label: SearchColumnsEnum.partners
   }
 ];
 
@@ -47,56 +47,106 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
   [SearchEnum['spot-tv']]: [
     {
       id: SearchColumnsIdEnum.mavenid,
-      label: SearchColumnsEnum[SearchColumnsIdEnum.mavenid]
+      label: SearchColumnsEnum.mavenid
     },
     {
       id: SearchColumnsIdEnum.name,
-      label: SearchColumnsEnum[SearchColumnsIdEnum.name]
+      label: SearchColumnsEnum.name
     },
     {
       id: SearchColumnsIdEnum.market,
-      label: SearchColumnsEnum[SearchColumnsIdEnum.market]
+      label: SearchColumnsEnum.market
     },
     {
       id: SearchColumnsIdEnum.owner,
-      label: SearchColumnsEnum[SearchColumnsIdEnum.owner]
+      label: SearchColumnsEnum.owner
     },
     {
       id: SearchColumnsIdEnum.parent,
-      label: SearchColumnsEnum[SearchColumnsIdEnum.parent]
+      label: SearchColumnsEnum.parent
     },
     {
       id: SearchColumnsIdEnum.networks,
-      label: SearchColumnsEnum[SearchColumnsIdEnum.networks]
+      label: SearchColumnsEnum.networks
     },
     {
       id: SearchColumnsIdEnum.digitalChannel,
-      label: SearchColumnsEnum[SearchColumnsIdEnum.digitalChannel]
+      label: SearchColumnsEnum.digitalChannel
     },
     {
       id: SearchColumnsIdEnum.displayChannel,
-      label: SearchColumnsEnum[SearchColumnsIdEnum.displayChannel]
+      label: SearchColumnsEnum.displayChannel
     },
     {
       id: SearchColumnsIdEnum.slogan,
-      label: SearchColumnsEnum[SearchColumnsIdEnum.slogan]
+      label: SearchColumnsEnum.slogan
     },
     {
       id: SearchColumnsIdEnum.website,
-      label: SearchColumnsEnum[SearchColumnsIdEnum.website]
+      label: SearchColumnsEnum.website
     },
     {
       id: SearchColumnsIdEnum.partners,
-      label: SearchColumnsEnum[SearchColumnsIdEnum.partners]
+      label: SearchColumnsEnum.partners
     },
     {
       id: SearchColumnsIdEnum.commercial,
-      label: SearchColumnsEnum[SearchColumnsIdEnum.commercial],
+      label: SearchColumnsEnum.commercial,
       predicator: (searchCriteria: SearchQuery) => Boolean(searchCriteria.criteria[SearchFiedlsEnum.nonComms])
     }
   ],
   [SearchEnum['network-tv']]: NETWORK_COLUMNS,
-  [SearchEnum['spot-radio-search']]: [],
+  [SearchEnum['spot-radio']]: [
+    {
+      id: SearchColumnsIdEnum.mavenid,
+      label: SearchColumnsEnum.mavenid
+    },
+    {
+      id: SearchColumnsIdEnum.name,
+      label: SearchColumnsEnum.name
+    },
+    {
+      id: SearchColumnsIdEnum.dma,
+      label: SearchColumnsEnum.dma
+    },
+    {
+      id: SearchColumnsIdEnum.msa,
+      label: SearchColumnsEnum.msa
+    },
+    {
+      id: SearchColumnsIdEnum.owner,
+      label: SearchColumnsEnum.owner
+    },
+    {
+      id: SearchColumnsIdEnum.parent,
+      label: SearchColumnsEnum.parent
+    },
+    {
+      id: SearchColumnsIdEnum.format,
+      label: SearchColumnsEnum.format
+    },
+    {
+      id: SearchColumnsIdEnum.frequency,
+      label: SearchColumnsEnum.frequency
+    },
+    {
+      id: SearchColumnsIdEnum.slogan,
+      label: SearchColumnsEnum.slogan
+    },
+    {
+      id: SearchColumnsIdEnum.website,
+      label: SearchColumnsEnum.website
+    },
+    {
+      id: SearchColumnsIdEnum.partners,
+      label: SearchColumnsEnum.partners
+    },
+    {
+      id: SearchColumnsIdEnum.commercial,
+      label: SearchColumnsEnum.commercial,
+      predicator: (searchCriteria: SearchQuery) => Boolean(searchCriteria.criteria[SearchFiedlsEnum.nonComms])
+    }
+  ],
   [SearchEnum['network-cable']]: NETWORK_COLUMNS,
   [SearchEnum['network-radio']]: NETWORK_COLUMNS,
 };

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
 import { takeUntil, filter, map } from 'rxjs/operators';
 import { forkJoin, Subject } from 'rxjs';
 import * as R from 'ramda';
@@ -38,6 +38,9 @@ interface Section {
   styleUrls: ['./market-pick-list.component.scss']
 })
 export class MarketPickListComponent implements OnInit {
+  @Input() dmaOptionsToOmit: string[] = [];
+  @Input() msaOptionsToOmit: string[] = [];
+
   @Output() change: EventEmitter<ListChangesEvent> = new EventEmitter();
 
   @ViewChild('selectComponent') selectComponent: SelectComponent;
@@ -85,7 +88,17 @@ export class MarketPickListComponent implements OnInit {
       [ListKeys.msas]: this.listsService.getOptionsData(ListKeys.msas),
     })
       .pipe(
-        takeUntil(this.unsubscribeAll)
+        takeUntil(this.unsubscribeAll),
+        map((marketOptions: MarketOptions): MarketOptions => {
+          return {
+            [ListKeys.dmas]: this.dmaOptionsToOmit.length
+              ? this.listsService.filterOptions(marketOptions[ListKeys.dmas], this.dmaOptionsToOmit)
+              : marketOptions[ListKeys.dmas],
+            [ListKeys.msas]: this.msaOptionsToOmit.length
+              ? this.listsService.filterOptions(marketOptions[ListKeys.msas], this.msaOptionsToOmit)
+              : marketOptions[ListKeys.msas]
+          }
+        })
       )
       .subscribe((marketOptions: MarketOptions) => {
         const sortedOptions = this.listsService.sortOptions(marketOptions[ListKeys.dmas], this.sort);

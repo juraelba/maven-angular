@@ -20,10 +20,10 @@ import { SearchService } from '@services/search/search.service';
 })
 export class SpotRadioSearchComponent implements OnInit {
   criteries: Criteries = {};
-  key: SearchKey = SearchEnum['spot-radio-search'];
+  key: SearchKey = SearchEnum['spot-radio'];
   unsubscribeAll: Subject<null> = new Subject();
 
-  ownerListUrlKey: ListUrlsKey = ListKeys.owners11;
+  ownerListUrlKey: ListUrlsKey = ListKeys.owners10;
 
   constructor(
     private selectedCriteriService: SelectedCriteriaService,

@@ -4,7 +4,7 @@ export enum SearchEnum {
   media = 'media',
   'spot-tv' = 'spot-tv',
   'network-tv' = 'network-tv',
-  'spot-radio-search' = 'spot-radio-search',
+  'spot-radio' = 'spot-radio',
   'network-cable' = 'network-cable',
   'network-radio' = 'network-radio'
 }
@@ -41,7 +41,11 @@ export enum SearchColumnsEnum {
   commercial = 'Commercial',
   digitalChannel = 'Digital Channel',
   displayChannel = 'Display Channel',
-  parent = 'Parent'
+  parent = 'Parent',
+  msa = 'MSA Market',
+  dma = 'DMA Market',
+  format = 'Format',
+  frequency = 'Frequency'
 }
 
 export enum SearchColumnsIdEnum {
@@ -61,7 +65,11 @@ export enum SearchColumnsIdEnum {
   commercial = 'commercial',
   digitalChannel = 'digitalChannel',
   displayChannel = 'displayChannel',
-  parent = 'parent'
+  parent = 'parent',
+  msa = 'msa',
+  dma = 'dma',
+  format = 'format',
+  frequency = 'frequency',
 }
 
 export enum SearchActionTypesEnum {
@@ -72,7 +80,7 @@ export enum SearchExcelFileNamesEnum {
   media = 'Media-Search.xlsx',
   'spot-tv' = 'Spot-TV-Search.xlsx',
   'network-tv' = 'Broadcast-Networks.xlsx',
-  'spot-radio-search' = 'Spot-Radio-Search.xlsx',
+  'spot-radio' = 'Spot-Radio.xlsx',
   'network-cable' = 'Cable-Networks-Search.xlsx',
   'network-radio' = 'Network-Radio.xlsx'
 }

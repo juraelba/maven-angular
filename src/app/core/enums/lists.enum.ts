@@ -21,6 +21,7 @@ export enum ListLabels {
   owners3 = 'Owners',
   owners4 = 'Owners',
   owners5 = 'Owners',
+  owners10 = 'Owners',
   owners11 = 'Owners',
   radiobands = 'Bands',
   formats = 'Formats'
@@ -49,6 +50,7 @@ export enum ListKeys {
   owners3 = 'owners3',
   owners4 = 'owners4',
   owners5 = 'owners5',
+  owners10 = 'owners10',
   owners11 = 'owners11',
   radiobands = 'radiobands',
   formats = 'formats'
@@ -72,6 +74,7 @@ export enum ListUrls {
   owners3 = '/lists/owners/3',
   owners4 = '/lists/owners/4',
   owners5 = '/lists/owners/5',
+  owners10 = '/lists/owners/10',
   owners11 = '/lists/owners/11',
   radiobands = '/lists/radiobands',
   formats = '/lists/formats'

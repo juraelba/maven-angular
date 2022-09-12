@@ -180,6 +180,7 @@ export class SearchService {
       [SearchFiedlsEnum.nonComms]: this.transformNonComsCriteriaData,
       [SearchFiedlsEnum.tvnetworks]: this.transformCriteriaKey(SearchFiedlsEnum.networks),
       [SearchFiedlsEnum.tvbands]: this.transformCriteriaKey(SearchFiedlsEnum.bands),
+      [SearchFiedlsEnum.radiobands]: this.transformCriteriaKey(SearchFiedlsEnum.bands),
       default: this.transformOptions
     }
 

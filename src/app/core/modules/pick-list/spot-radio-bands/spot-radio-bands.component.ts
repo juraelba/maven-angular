@@ -21,6 +21,8 @@ export class SpotRadioBandsComponent implements OnInit {
   options: SelectOption[] = [];
   unsubscribeAll: Subject<null> = new Subject();
 
+  preselectedOptions: string[] = [ 'AM', 'FM' ];
+
   constructor(
     private listsService: ListsService,
     private selectedCriteriaService: SelectedCriteriaService
@@ -32,7 +34,7 @@ export class SpotRadioBandsComponent implements OnInit {
         takeUntil(this.unsubscribeAll)
       )
       .subscribe((options: SelectOption[]) => {
-        this.options = options;
+        this.options = this.listsService.updateOptionsWithSelected(options, this.preselectedOptions);
         const selected = this.listsService.getSelectedOptions(this.options);
 
         this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.radiobands);
