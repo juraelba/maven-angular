@@ -40,6 +40,10 @@ const routes: Routes = [
         path: 'national-audio',
         loadChildren: () => import('./pages/national-audio/national-audio.module').then(m => m.NationalAudioModule)
       },
+      {
+        path: 'digital',
+        loadChildren: () => import('./pages/digital/digital.module').then(m => m.DigitalModule)
+      },
     ]
   },
   {

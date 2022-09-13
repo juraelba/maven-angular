@@ -149,6 +149,44 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
   ],
   [SearchEnum['network-cable']]: NETWORK_COLUMNS,
   [SearchEnum['network-radio']]: NETWORK_COLUMNS,
+  [SearchEnum.digital]: [
+    {
+      id: SearchColumnsIdEnum.mavenid,
+      label: SearchColumnsEnum.mavenid
+    },
+    {
+      id: SearchColumnsIdEnum.name,
+      label: SearchColumnsEnum.name
+    },
+    {
+      id: SearchColumnsIdEnum.subType,
+      label: SearchColumnsEnum.subType
+    },
+    {
+      id: SearchColumnsIdEnum.owner,
+      label: SearchColumnsEnum.owner
+    },
+    {
+      id: SearchColumnsIdEnum.parent,
+      label: SearchColumnsEnum.parent
+    },
+    {
+      id: SearchColumnsIdEnum.slogan,
+      label: SearchColumnsEnum.slogan
+    },
+    {
+      id: SearchColumnsIdEnum.categories,
+      label: SearchColumnsEnum.categories
+    },
+    {
+      id: SearchColumnsIdEnum.website,
+      label: SearchColumnsEnum.website
+    },
+    {
+      id: SearchColumnsIdEnum.partners,
+      label: SearchColumnsEnum.partners
+    }
+  ]
 };
 
 export const COLUMNS_TO_OMIT = [ 'marketID', 'ownerID', 'parentID', 'partnerID', 'subTypeID', 'typeID' ];

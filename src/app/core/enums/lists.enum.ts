@@ -1,5 +1,6 @@
 export enum ListLabels {
   owners = 'Owners',
+  mediatypes1 = 'Media Types',
   mediatypes2 = 'Media Types',
   mediatypes3 = 'Media Types',
   mediatypes4 = 'Media Types',
@@ -18,6 +19,7 @@ export enum ListLabels {
   subTypes = 'Subtypes',
   networks = 'Networks',
   bands = 'Bands',
+  owners1 = 'Owners',
   owners3 = 'Owners',
   owners4 = 'Owners',
   owners5 = 'Owners',
@@ -29,6 +31,7 @@ export enum ListLabels {
 
 export enum ListKeys {
   owners = 'owners',
+  mediatypes1 = 'mediatypes1',
   mediatypes2 = 'mediatypes2',
   mediatypes3 = 'mediatypes3',
   mediatypes4 = 'mediatypes4',
@@ -47,6 +50,7 @@ export enum ListKeys {
   subTypes = 'subTypes',
   networks = 'networks',
   bands = 'bands',
+  owners1 = 'owners1',
   owners3 = 'owners3',
   owners4 = 'owners4',
   owners5 = 'owners5',
@@ -58,7 +62,8 @@ export enum ListKeys {
 
 export enum ListUrls {
   categories = '/lists/categories/',
-  mediatypes2 = '/lists/mediatypes2/',
+  mediatypes1 = '/lists/mediatypes/1',
+  mediatypes2 = '/lists/mediatypes/2',
   mediatypes3 = '/lists/mediatypes/3',
   mediatypes4 = '/lists/mediatypes/4',
   mediatypes5 = '/lists/mediatypes/5',
@@ -71,6 +76,7 @@ export enum ListUrls {
   tvnetworks = '/lists/tvnetworks/',
   subTypes = '/lists/subTypes',
   owners = '/lists/owners/',
+  owners1 = '/lists/owners/1',
   owners3 = '/lists/owners/3',
   owners4 = '/lists/owners/4',
   owners5 = '/lists/owners/5',

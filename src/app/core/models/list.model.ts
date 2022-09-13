@@ -1,6 +1,5 @@
 
 import { ListKeys, ListUrls } from '../enums/lists.enum';
-import { SelectOption } from './select.model';
 
 interface ListItem {
   id: string;

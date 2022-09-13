@@ -6,7 +6,8 @@ export enum SearchEnum {
   'network-tv' = 'network-tv',
   'spot-radio' = 'spot-radio',
   'network-cable' = 'network-cable',
-  'network-radio' = 'network-radio'
+  'network-radio' = 'network-radio',
+  'digital' = 'digital'
 }
 
 export const SearchFiedlsEnum = {
@@ -82,5 +83,6 @@ export enum SearchExcelFileNamesEnum {
   'network-tv' = 'Broadcast-Networks.xlsx',
   'spot-radio' = 'Spot-Radio.xlsx',
   'network-cable' = 'Cable-Networks-Search.xlsx',
-  'network-radio' = 'Network-Radio.xlsx'
+  'network-radio' = 'Network-Radio.xlsx',
+  'digital' = 'Digital.xlsx'
 }

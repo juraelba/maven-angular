@@ -37,7 +37,7 @@ export class SideNavComponent implements OnInit {
         {
           name: "digital",
           label: 'Digital',
-          route: "/digital-search",
+          route: "/digital",
           disabled: true,
           permissions: [ObjectType.Digital]
         },

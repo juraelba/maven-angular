@@ -1,0 +1,11 @@
+<app-search
+  [title]="'Digital Search'"
+  [criteries]="criteries"
+  [key]="key"
+>
+  <div class="grid-container grid gap-5 mb-[40px]">
+    <app-name-input class="col-start-1 col-end-3" (changeData)="onChange($event)"></app-name-input>
+    <app-sub-types (change)="onChange($event)" [listUrlKey]="mediatypes1ListUrlKey"></app-sub-types>
+    <app-owners-pick-list (change)="onChange($event)" [listUrlKey]="owners1ListUrlKey"></app-owners-pick-list>
+  </div>
+</app-search>
