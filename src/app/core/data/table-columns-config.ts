@@ -69,12 +69,19 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
   [SearchEnum['network-cable']]: NETWORK_COLUMNS,
   [SearchEnum['network-radio']]: NETWORK_COLUMNS,
   [SearchEnum.digital]: DEFAULT_COLUMNS,
-  [SearchEnum['magazine']]: [
+  [SearchEnum.magazine]: [
     ...DEFAULT_COLUMNS,
     { id: SearchColumnsIdEnum.market, label: SearchColumnsEnum.market },
     { id: SearchColumnsIdEnum.fullPage, label: SearchColumnsEnum.fullPage },
     { id: SearchColumnsIdEnum.circulation, label: SearchColumnsEnum.circulation },
   ],
+  [SearchEnum.newspaper]: [
+    ...DEFAULT_COLUMNS,
+    { id: SearchColumnsIdEnum.market, label: SearchColumnsEnum.market },
+    { id: SearchColumnsIdEnum.dailyFullPageRate, label: SearchColumnsEnum.dailyFullPageRate },
+    { id: SearchColumnsIdEnum.dailyCirculation, label: SearchColumnsEnum.dailyCirculation },
+  ],
+  [SearchEnum.outdoor]: DEFAULT_COLUMNS
 };
 
 export const COLUMNS_TO_OMIT = [ 'marketID', 'ownerID', 'parentID', 'partnerID', 'subTypeID', 'typeID' ];

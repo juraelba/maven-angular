@@ -8,7 +8,9 @@ export enum SearchEnum {
   'network-cable' = 'network-cable',
   'network-radio' = 'network-radio',
   'digital' = 'digital',
-  'magazine' = 'magazine'
+  'magazine' = 'magazine',
+  'newspaper' = 'newspaper',
+  'outdoor' = 'outdoor'
 }
 
 export const SearchFiedlsEnum = {
@@ -47,7 +49,9 @@ export enum SearchColumnsEnum {
   msa = 'MSA Market',
   dma = 'DMA Market',
   format = 'Format',
-  frequency = 'Frequency'
+  frequency = 'Frequency',
+  dailyCirculation =  'Daily Circulation',
+  dailyFullPageRate = 'Full Page BW'
 }
 
 export enum SearchColumnsIdEnum {
@@ -72,6 +76,8 @@ export enum SearchColumnsIdEnum {
   dma = 'dma',
   format = 'format',
   frequency = 'frequency',
+  dailyCirculation = 'dailyCirculation',
+  dailyFullPageRate = 'dailyFullPageRate'
 }
 
 export enum SearchActionTypesEnum {
@@ -86,5 +92,7 @@ export enum SearchExcelFileNamesEnum {
   'network-cable' = 'Cable-Networks-Search.xlsx',
   'network-radio' = 'Network-Radio.xlsx',
   'digital' = 'Digital.xlsx',
-  'magazine' = 'Magazine.xlsx'
+  'magazine' = 'Magazine.xlsx',
+  'newspaper' = 'Newspaper.xlsx',
+  'outdoor' = 'Out-of-Home.xlsx'
 }

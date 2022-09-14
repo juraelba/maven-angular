@@ -1,0 +1,12 @@
+<app-search
+  [title]="'Newspapers Search'"
+  [criteries]="criteries"
+  [key]="key"
+>
+  <div class="grid-container grid gap-5 mb-[40px]">
+    <app-name-input (changeData)="onChange($event)"></app-name-input>
+    <app-market-pick-list (change)="onChange($event)"></app-market-pick-list>
+    <app-sub-types (change)="onChange($event)" [listUrlKey]="mediatypes6ListUrlKey"></app-sub-types>
+    <app-owners-pick-list (change)="onChange($event)" [listUrlKey]="owners6ListUrlKey"></app-owners-pick-list>
+  </div>
+</app-search>

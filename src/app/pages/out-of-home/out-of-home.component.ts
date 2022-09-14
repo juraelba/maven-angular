@@ -14,17 +14,17 @@ import { SelectedCriteriaService } from '@services/selected-criteria/selected-cr
 import { SearchService } from '@services/search/search.service';
 
 @Component({
-  selector: 'app-cable-networks',
-  templateUrl: './cable-networks.component.html',
-  styleUrls: ['./cable-networks.component.scss']
+  selector: 'app-out-of-home',
+  templateUrl: './out-of-home.component.html',
+  styleUrls: ['./out-of-home.component.scss']
 })
-export class CableNetworksComponent implements OnInit, OnDestroy{
+export class OutOfHomeComponent implements OnInit {
   criteries: Criteries = {};
-  key: SearchKey = SearchEnum['network-cable'];
+  key: SearchKey = SearchEnum.outdoor;
   unsubscribeAll: Subject<null> = new Subject();
 
-  owners3ListUrlKey: ListUrlsKey = ListKeys.owners3;
-  mediatypes3ListUrlKey: ListUrlsKey = ListKeys.mediatypes3;
+  owners8ListUrlKey: ListUrlsKey = ListKeys.owners8;
+  mediatypes8ListUrlKey: ListUrlsKey = ListKeys.owners8;
 
   constructor(
     private selectedCriteriService: SelectedCriteriaService,
@@ -67,4 +67,5 @@ export class CableNetworksComponent implements OnInit, OnDestroy{
         this.criteries = {}
       });
   }
+
 }

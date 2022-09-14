@@ -1,0 +1,4 @@
+.grid-container {
+  grid-template-columns: repeat(4, calc(25% - 15px));
+  grid-template-rows: repeat(1, 42px);
+}

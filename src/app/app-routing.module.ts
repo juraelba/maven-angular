@@ -48,6 +48,14 @@ const routes: Routes = [
         path: 'magazine-search',
         loadChildren: () => import('./pages/magazine/magazine.module').then(m => m.MagazineModule)
       },
+      {
+        path: 'newspaper-search',
+        loadChildren: () => import('./pages/newspaper/newspaper.module').then(m => m.NewspaperModule)
+      },
+      {
+        path: 'out-of-home-search',
+        loadChildren: () => import('./pages/out-of-home/out-of-home.module').then(m => m.OutOfHomeModule)
+      },
     ]
   },
   {

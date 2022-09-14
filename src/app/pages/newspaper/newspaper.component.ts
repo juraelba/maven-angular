@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil, filter } from 'rxjs/operators';
 
@@ -14,17 +14,17 @@ import { SelectedCriteriaService } from '@services/selected-criteria/selected-cr
 import { SearchService } from '@services/search/search.service';
 
 @Component({
-  selector: 'app-cable-networks',
-  templateUrl: './cable-networks.component.html',
-  styleUrls: ['./cable-networks.component.scss']
+  selector: 'app-newspaper',
+  templateUrl: './newspaper.component.html',
+  styleUrls: ['./newspaper.component.scss']
 })
-export class CableNetworksComponent implements OnInit, OnDestroy{
+export class NewspaperComponent implements OnInit {
   criteries: Criteries = {};
-  key: SearchKey = SearchEnum['network-cable'];
+  key: SearchKey = SearchEnum.newspaper;
   unsubscribeAll: Subject<null> = new Subject();
 
-  owners3ListUrlKey: ListUrlsKey = ListKeys.owners3;
-  mediatypes3ListUrlKey: ListUrlsKey = ListKeys.mediatypes3;
+  owners6ListUrlKey: ListUrlsKey = ListKeys.owners6;
+  mediatypes6ListUrlKey: ListUrlsKey = ListKeys.mediatypes6;
 
   constructor(
     private selectedCriteriService: SelectedCriteriaService,
