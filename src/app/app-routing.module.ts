@@ -56,6 +56,10 @@ const routes: Routes = [
         path: 'out-of-home-search',
         loadChildren: () => import('./pages/out-of-home/out-of-home.module').then(m => m.OutOfHomeModule)
       },
+      {
+        path: 'diverse-media-search',
+        loadChildren: () => import('./pages/diverse/diverse.module').then(m => m.DiverseModule)
+      },
     ]
   },
   {

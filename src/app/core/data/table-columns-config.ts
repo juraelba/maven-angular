@@ -81,7 +81,8 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
     { id: SearchColumnsIdEnum.dailyFullPageRate, label: SearchColumnsEnum.dailyFullPageRate },
     { id: SearchColumnsIdEnum.dailyCirculation, label: SearchColumnsEnum.dailyCirculation },
   ],
-  [SearchEnum.outdoor]: DEFAULT_COLUMNS
+  [SearchEnum.outdoor]: DEFAULT_COLUMNS,
+  [SearchEnum.diverse]: DEFAULT_COLUMNS,
 };
 
 export const COLUMNS_TO_OMIT = [ 'marketID', 'ownerID', 'parentID', 'partnerID', 'subTypeID', 'typeID' ];

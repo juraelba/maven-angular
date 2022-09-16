@@ -1,0 +1,40 @@
+<app-search
+  [title]="'Diverse Media Search'"
+  [criteries]="criteries"
+  [key]="key"
+>
+  <div class="grid-container grid gap-5 mb-[40px]">
+    <app-name-input class="col-start-1 col-end-3" (changeData)="onChange($event)"></app-name-input>
+    <app-media-type-pick-list (change)="onChange($event)"></app-media-type-pick-list>
+    <app-market-pick-list (change)="onChange($event)"></app-market-pick-list>
+
+    <div>Diverse categories</div>
+    <div>Diverse levels</div>
+    <app-datepicker
+      [label]="'Exparation Date'"
+    >
+    </app-datepicker>
+    <app-diverse-target-pick-list (change)="onChange($event)"></app-diverse-target-pick-list>
+
+    <div>Diverse indicators</div>
+    <app-owners-pick-list (change)="onChange($event)"></app-owners-pick-list>
+    <app-language-pick-list (change)="onChange($event)"></app-language-pick-list>
+    <app-category-pick-list (change)="onChange($event)"></app-category-pick-list>
+
+    <app-matched-to></app-matched-to>
+    <div class="flex items-center">
+      <app-checkbox [checked]="criteries['nonComms']" (change)="onCheckboxChange('addDirector', $event)"></app-checkbox>
+      <span class="ml-[10px] font-lato text-pri-black">Include Add Director</span>
+    </div>
+
+    <div class="flex items-center">
+      <app-checkbox [checked]="criteries['nonComms']" (change)="onCheckboxChange('mavenId', $event)"></app-checkbox>
+      <span class="ml-[10px] font-lato text-pri-black">Include MAVEN ID</span>
+    </div>
+
+    <div class="flex items-center">
+      <app-checkbox [checked]="criteries['nonComms']" (change)="onCheckboxChange('metric', $event)"></app-checkbox>
+      <span class="ml-[10px] font-lato text-pri-black">Include Metric</span>
+    </div>
+  </div>
+</app-search>

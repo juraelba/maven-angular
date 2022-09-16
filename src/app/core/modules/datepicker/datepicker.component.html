@@ -1,0 +1,42 @@
+
+<div
+  class="text-pri-black pointer border rounded-md h-full p-[10px] bg-white relative flex items-center"
+  [ngClass]="{
+    'border-regal-blue': opened,
+    'border-gray': !opened
+  }"
+  (click)="openDatepicker()"
+>
+  <div
+    *ngIf="date"
+    class="absolute translate-y-1/2 bottom-full font-lato text-[10px] text-pri-black bg-white border-label"
+    [ngClass]="{
+      'text-pri-black': !opened,
+      'text-regal-blue': opened
+    }"
+  >
+    {{ label }}
+  </div>
+
+  <input
+    class="outline-none placeholder:text-pri-black placeholder:font-lato"
+    matInput
+    [placeholder]="label"
+    [matDatepicker]="picker"
+    (dateChange)="onSelectedChange($event)"
+  >
+
+  <mat-datepicker-toggle class="datepicker-toggle" matSuffix [for]="picker">
+    <app-svg-icon
+      [fill]="opened ? '#3a63cc' : '#b3b3b8'"
+      matDatepickerToggleIcon
+      [name]="'calendar'"
+    ></app-svg-icon>
+  </mat-datepicker-toggle>
+
+  <mat-datepicker
+    [opened]="opened"
+    #picker
+    (closed)="onDatepickerClose()"
+  ></mat-datepicker>
+</div>

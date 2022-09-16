@@ -10,7 +10,8 @@ export enum SearchEnum {
   'digital' = 'digital',
   'magazine' = 'magazine',
   'newspaper' = 'newspaper',
-  'outdoor' = 'outdoor'
+  'outdoor' = 'outdoor',
+  'diverse' = 'diverse'
 }
 
 export const SearchFiedlsEnum = {
@@ -91,8 +92,9 @@ export enum SearchExcelFileNamesEnum {
   'spot-radio' = 'Spot-Radio.xlsx',
   'network-cable' = 'Cable-Networks-Search.xlsx',
   'network-radio' = 'Network-Radio.xlsx',
-  'digital' = 'Digital.xlsx',
-  'magazine' = 'Magazine.xlsx',
-  'newspaper' = 'Newspaper.xlsx',
-  'outdoor' = 'Out-of-Home.xlsx'
+  digital = 'Digital.xlsx',
+  magazine = 'Magazine.xlsx',
+  newspaper = 'Newspaper.xlsx',
+  outdoor = 'Out-of-Home.xlsx',
+  diverse = 'Diverse.xlsx'
 }
