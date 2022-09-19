@@ -1,4 +1,40 @@
-.datepicker-toggle ::ng-deep .mat-button-wrapper {
-  display: flex;
-  justify-content: center;
+:host::ng-deep {
+  .datepicker-toggle .mat-button-wrapper {
+    display: flex;
+    justify-content: center;
+  }
+
+  .mat-calendar-table-header-divider::after {
+      display: none;
+  }
+}
+
+::ng-deep {
+  &.mat-calendar-table-header-divider::after  {
+    display: none;
+  }
+
+  &.mat-calendar-table-header {
+    font-family: Lato;
+    color: #797979;
+
+    span {
+      font-size: 14px;
+    }
+  }
+
+  &.mat-calendar-body-cell-content {
+    font: Lato;
+    font-size: 14px;
+    color: #1f1f1f;
+  }
+
+  &.mat-calendar-controls {
+    .mat-button-wrapper {
+      font-family: Montserrat;
+      font-size: 16px;
+      font-weight: 500;
+      color: #000000;
+    }
+  }
 }

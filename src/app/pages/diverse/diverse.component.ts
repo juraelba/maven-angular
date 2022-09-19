@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil, filter } from 'rxjs/operators';
+import { DateTime } from 'luxon';
 
 import { Criteries } from '@models/criteries.model';
 import { SearchKey, SearchFiledChangeEvent } from '@models/search.model';
 import { ListUrlsKey } from '@models/list.model';
 
 import { SearchEnum } from '@enums/search.enum';
-import { SearchActionTypesEnum } from '@enums/search.enum';
+import { SearchActionTypesEnum, SearchFiedlsEnum } from '@enums/search.enum';
 import { ListKeys  } from '@enums/lists.enum';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
@@ -66,5 +67,9 @@ export class DiverseComponent implements OnInit {
       .subscribe(() => {
         this.criteries = {}
       });
+  }
+
+  onDateChange(date: DateTime | null): void {
+    this.criteries[SearchFiedlsEnum.exparationDate] = date;
   }
 }

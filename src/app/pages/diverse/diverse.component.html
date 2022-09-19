@@ -12,6 +12,7 @@
     <div>Diverse levels</div>
     <app-datepicker
       [label]="'Exparation Date'"
+      (dateChange)="onDateChange($event)"
     >
     </app-datepicker>
     <app-diverse-target-pick-list (change)="onChange($event)"></app-diverse-target-pick-list>

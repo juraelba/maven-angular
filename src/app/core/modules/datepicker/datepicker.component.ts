@@ -10,6 +10,7 @@ export const FORMAT = {
   },
   display: {
     dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
   }
 };
 
@@ -44,8 +45,8 @@ export class DatepickerComponent implements OnInit {
     this.opened = true;
   }
 
-  onSelectedChange(event: MatDatepickerInputEvent<DateTime>): void {
-    this.date = event.value
+  onSelectedChange(event: MatDatepickerInputEvent<Date | null>): void {
+    this.date = event.value ? DateTime.fromISO(event.value.toISOString()) : null;
 
     this.dateChange.emit(this.date);
   }

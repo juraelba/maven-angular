@@ -20,14 +20,21 @@ export const SearchFiedlsEnum = {
   matchedTo: 'matchedTo',
   slogan: 'slogan',
   name: 'name',
-  nonComms: 'nonComms'
+  nonComms: 'nonComms',
+  exparationDate: 'exparationDate',
+  addDirector: 'addDirector',
+  mavenId: 'mavenId'
 };
 
 export const SearchFieldsLabelsEnum = {
   ...ListLabels,
   matchedTo: 'Matched in my database',
-  name: 'Search by name or ID'
-}
+  name: 'Search by name or ID',
+  exparationDate: 'Exparation Date',
+  addDirector: 'Include Add Director',
+  mavenId: 'Include MAVEN ID',
+  metric: 'Include Metric'
+};
 
 export enum SearchColumnsEnum {
   name = 'Station',
@@ -53,7 +60,7 @@ export enum SearchColumnsEnum {
   frequency = 'Frequency',
   dailyCirculation =  'Daily Circulation',
   dailyFullPageRate = 'Full Page BW'
-}
+};
 
 export enum SearchColumnsIdEnum {
   name = 'name',
@@ -79,11 +86,11 @@ export enum SearchColumnsIdEnum {
   frequency = 'frequency',
   dailyCirculation = 'dailyCirculation',
   dailyFullPageRate = 'dailyFullPageRate'
-}
+};
 
 export enum SearchActionTypesEnum {
   NEW_SEARCH = 'NEW_SEARCH'
-}
+};
 
 export enum SearchExcelFileNamesEnum {
   media = 'Media-Search.xlsx',
@@ -97,4 +104,4 @@ export enum SearchExcelFileNamesEnum {
   newspaper = 'Newspaper.xlsx',
   outdoor = 'Out-of-Home.xlsx',
   diverse = 'Diverse.xlsx'
-}
+};
