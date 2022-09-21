@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output, ContentChild, ElementRef, ChangeDetectionStrategy, OnChanges, SimpleChanges } from '@angular/core';
 
+import { StyleTypesEnum } from '@enums/styles.enum';
+
 @Component({
   selector: 'app-input',
   templateUrl: './input.component.html',
@@ -11,9 +13,9 @@ export class InputComponent implements OnInit, OnChanges {
   @Input() name: string;
   @Input() placeholder: string;
   @Input() disabled: boolean = false;
-  @Input() border: boolean = true;
   @Input() value: string = '';
   @Input() label: string = '';
+  @Input() styleType: StyleTypesEnum = StyleTypesEnum.primary;
 
   @Output() inputChange: EventEmitter<string> = new EventEmitter();
 

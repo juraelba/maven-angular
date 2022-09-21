@@ -11,7 +11,8 @@ export enum SearchEnum {
   'magazine' = 'magazine',
   'newspaper' = 'newspaper',
   'outdoor' = 'outdoor',
-  'diverse' = 'diverse'
+  'diverse' = 'diverse',
+  'callHistory' = 'callHistory'
 }
 
 export const SearchFiedlsEnum = {
@@ -59,7 +60,11 @@ export enum SearchColumnsEnum {
   format = 'Format',
   frequency = 'Frequency',
   dailyCirculation =  'Daily Circulation',
-  dailyFullPageRate = 'Full Page BW'
+  dailyFullPageRate = 'Full Page BW',
+  changeOn = 'Change On',
+  changeFrom = 'Change From',
+  changeTo = 'Change To',
+  change = 'Change'
 };
 
 export enum SearchColumnsIdEnum {
@@ -85,7 +90,11 @@ export enum SearchColumnsIdEnum {
   format = 'format',
   frequency = 'frequency',
   dailyCirculation = 'dailyCirculation',
-  dailyFullPageRate = 'dailyFullPageRate'
+  dailyFullPageRate = 'dailyFullPageRate',
+  changeOn = 'changeOn',
+  changeFrom = 'changeFrom',
+  changeTo = 'changeTo',
+  change = 'change'
 };
 
 export enum SearchActionTypesEnum {
@@ -103,5 +112,21 @@ export enum SearchExcelFileNamesEnum {
   magazine = 'Magazine.xlsx',
   newspaper = 'Newspaper.xlsx',
   outdoor = 'Out-of-Home.xlsx',
-  diverse = 'Diverse.xlsx'
+  diverse = 'Diverse.xlsx',
+  callHistory = 'Call-History-Search.xlsx'
+}
+
+export enum SearchEnumTitles {
+  media = 'Media Search',
+  'spot-tv' = 'Spot TV Search',
+  'network-tv' = 'Broadcast Neworks Search',
+  'spot-radio' = 'Spot Radio Search',
+  'network-cable' = 'Cable Networks Search',
+  'network-radio' = 'Network Radio Search',
+  'digital' = 'Digital Search',
+  'magazine' = 'Magazine Search',
+  'newspaper' = 'Newspaper Search',
+  'outdoor' = 'Outdoor Search',
+  'diverse' = 'Diverse Search',
+  'callHistory' = 'Call History Search'
 };

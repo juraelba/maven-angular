@@ -181,6 +181,8 @@ export class SearchService {
       [SearchFiedlsEnum.tvnetworks]: this.transformCriteriaKey(SearchFiedlsEnum.networks),
       [SearchFiedlsEnum.tvbands]: this.transformCriteriaKey(SearchFiedlsEnum.bands),
       [SearchFiedlsEnum.radiobands]: this.transformCriteriaKey(SearchFiedlsEnum.bands),
+      [SearchFiedlsEnum.mavenId]: this.booleanCriteriaToData.bind(this, SearchFiedlsEnum.mavenId),
+      [SearchFiedlsEnum.addDirector]: this.booleanCriteriaToData.bind(this, SearchFiedlsEnum.addDirector),
       default: this.transformOptions
     }
 

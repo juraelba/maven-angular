@@ -44,11 +44,13 @@ export class SelectedCriteriaComponent implements OnInit {
       [SearchFiedlsEnum.languages2]: this.isComplexCriteriaDataEmpty,
       [SearchFiedlsEnum.diversetargets]: this.isComplexCriteriaDataEmpty,
       [SearchFiedlsEnum.markets]: this.isComplexCriteriaDataEmpty,
-      [SearchFiedlsEnum.metric]: always(true),
       [SearchFiedlsEnum.matchedTo]: this.isMatchedToEmpty,
-      [SearchFiedlsEnum.slogan]: always(true),
       [SearchFiedlsEnum.name]: this.isSearchNameEmpty,
+      [SearchFiedlsEnum.slogan]: always(true),
+      [SearchFiedlsEnum.metric]: always(true),
       [SearchFiedlsEnum.nonComms]: always(true),
+      [SearchFiedlsEnum.addDirector]: always(true),
+      [SearchFiedlsEnum.mavenId]: always(true)
     };
 
     return compose<[Criteries], Array<[string, any]>, Criteries>(

@@ -1,17 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject, of } from 'rxjs';
 import { switchMap, takeUntil, filter, catchError } from 'rxjs/operators'; 
 
 import { Criteries } from '@models/criteries.model';
 import { SearchKey, CreateSearchResponse, SearchQuery } from '@models/search.model';
 import { Table, TableConfig, Row, Column } from '@models/table.model';
 
-import { SearchActionTypesEnum, SearchExcelFileNamesEnum } from '@enums/search.enum';
+import { SearchActionTypesEnum, SearchExcelFileNamesEnum, SearchEnum } from '@enums/search.enum';
 
 import { SearchService } from '@services/search/search.service';
 import { ExcelService } from '@services/excel/excel.service';
 
 import { SEARCH_COLUMNS_CONFIG } from '../../data/constants';
+import { TABLE_COLUMNS } from '../../data/table-columns-config';
+import { CALL_HISTORY_MOCK } from '../../data/mock';
 
 @Component({
   selector: 'app-search',
@@ -22,6 +24,9 @@ export class SearchComponent implements OnInit {
   @Input() criteries: Criteries;
   @Input() title: string;
   @Input() key: SearchKey;
+  @Input() selectedCriteriaVisible: boolean = true;
+  @Input() columnFilterVisible: boolean = true;
+  @Input() exportAvailable: boolean = true;
 
   tableData: Table = { rows: [], columns: [] };
   totalRows: number = 0;
@@ -59,10 +64,39 @@ export class SearchComponent implements OnInit {
       });
   }
 
+  setMockData(): void {
+    const mocks: any = {
+      [SearchEnum.callHistory]: CALL_HISTORY_MOCK
+    }
+
+    of(mocks[this.key])
+      .subscribe((values: any) => {
+        console.log(values);
+
+        const columns = TABLE_COLUMNS[this.key].map((column) => ({ ...column, width: 300 }));
+
+        this.isFetching = false;
+        this.isFetched = true;
+
+        const rows = values.map(({ id, ...rest }: any) => ({ id: id, data: rest }))
+
+        this.tableData = { rows, columns }
+  
+        this.tableRowsInView = [ ...this.tableData.rows ];
+        this.tableColumnsInView = [ ...this.tableData.columns ];
+      })
+  }
+
   onSearchButtonClick(event: MouseEvent): void {
     event.stopPropagation();
 
     this.isFetching = true;
+
+    if(this.key === SearchEnum.callHistory) {
+      this.setMockData();
+
+      return 
+    }
 
     const searchQuery: SearchQuery =  this.searchService.transformCriteriasToSearchOptions(this.criteries);
 

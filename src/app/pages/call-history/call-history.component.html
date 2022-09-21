@@ -1,0 +1,44 @@
+<app-search
+  [title]="title"
+  [criteries]="criteries"
+  [key]="key"
+  [selectedCriteriaVisible]="false"
+  [columnFilterVisible]="false"
+  [exportAvailable]="false"
+>
+  <div class="flex border-b border-b-1 border-gray mb-[15px] font-lato text-pri-black">
+    <div
+      *ngFor="let tab of tabs"
+      (click)="setActiveTab($event, tab)"
+      class="cursor-pointer px-[15px] py-[5px]"
+      [ngClass]="{ 'border-b-2 border-regal-blue': tab.selected }"
+    >
+      {{ tab.label }}
+    </div>
+  </div>
+
+  <div class="grid-container grid gap-5 mb-[40px]">
+    <app-call-history-select (optionSelect)="onOptionSelect($event)"></app-call-history-select>
+
+    <app-input
+      *ngIf="selectedOptionValue === 'callLetter'"
+      [placeholder]="'Call Letter'"
+      [styleType]="styleTypes.secondary"
+    >
+    </app-input>
+
+    <app-datepicker
+      *ngIf="selectedOptionValue === 'date'"
+      [label]="'Start Date'"
+      [styleType]="styleTypes.secondary"
+    >
+    </app-datepicker>
+
+    <app-datepicker
+      *ngIf="selectedOptionValue === 'date'"
+      [label]="'End Date'"
+      [styleType]="styleTypes.secondary"
+    >
+    </app-datepicker>
+  </div>
+</app-search>

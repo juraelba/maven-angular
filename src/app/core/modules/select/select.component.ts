@@ -9,11 +9,12 @@ import {
   EventEmitter,
   ViewChild
 } from '@angular/core';
-import { is } from 'ramda';
+import { is } from 'ramda'
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil, tap } from 'rxjs/operators'
 
 import { SelectOption } from '../../models/select.model';
+import { StyleTypesEnum } from '@enums/styles.enum';
 
 interface SelectInpuClickEvent {
   event: MouseEvent;
@@ -62,6 +63,7 @@ export class SelectComponent implements OnInit {
   allSelected: boolean = false;
   dropdownOptions: SelectOption[] = [];
   searchValue: string = '';
+  styleTypes = StyleTypesEnum;
 
   constructor() { }
 

@@ -198,3 +198,20 @@ export const MOCK: any[] = [
     "sort": 2
   },
 ];
+
+export const CALL_HISTORY_MOCK: any = [
+  {
+    id: '1',
+    changeOn: '04/01/2022',
+    changeFrom: 'KFMD-FM',
+    changeTo: 'KXVB-FM',
+    change: 'Chnaged by user',
+  },
+  {
+    id: '2',
+    changeOn: '04/02/2022',
+    changeFrom: 'WVCH-AM',
+    changeTo: 'WJFP-AM',
+    change: 'Chnaged by another user',
+  }
+];

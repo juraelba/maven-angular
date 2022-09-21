@@ -1,9 +1,11 @@
 
 <div
-  class="text-pri-black pointer border rounded-md h-full p-[10px] bg-white relative flex items-center"
+  class="text-pri-black pointer h-full p-[10px] bg-white relative flex items-center"
   [ngClass]="{
     'border-regal-blue': opened,
-    'border-gray': !opened
+    'border-gray': !opened,
+    'border rounded-md': styleType === 'primary',
+    'border-b': styleType === 'secondary'
   }"
   (click)="openDatepicker()"
 >

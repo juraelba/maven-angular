@@ -60,6 +60,10 @@ const routes: Routes = [
         path: 'diverse-media-search',
         loadChildren: () => import('./pages/diverse/diverse.module').then(m => m.DiverseModule)
       },
+      {
+        path: 'call-history',
+        loadChildren: () => import('./pages/call-history/call-history.module').then(m => m.CallHistoryModule)
+      },
     ]
   },
   {

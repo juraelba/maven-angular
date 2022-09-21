@@ -83,6 +83,12 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
   ],
   [SearchEnum.outdoor]: DEFAULT_COLUMNS,
   [SearchEnum.diverse]: DEFAULT_COLUMNS,
+  [SearchEnum.callHistory]: [
+    { id: SearchColumnsIdEnum.changeOn, label: SearchColumnsEnum.changeOn },
+    { id: SearchColumnsIdEnum.changeFrom, label: SearchColumnsEnum.changeFrom },
+    { id: SearchColumnsIdEnum.changeTo, label: SearchColumnsEnum.changeTo },
+    { id: SearchColumnsIdEnum.change, label: SearchColumnsEnum.change },
+  ],
 };
 
 export const COLUMNS_TO_OMIT = [ 'marketID', 'ownerID', 'parentID', 'partnerID', 'subTypeID', 'typeID' ];

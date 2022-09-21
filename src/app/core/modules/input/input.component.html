@@ -3,9 +3,10 @@
   [ngClass]="{
     'bg-light-grey': disabled,
     'bg-white': !disabled,
-    'border rounded-md': border,
     'border-regal-blue': isFocused,
-    'border-gray': !isFocused
+    'border-gray': !isFocused,
+    'border rounded-md': styleType === 'primary',
+    'border-b': styleType === 'secondary'
   }"
 >
   <ng-container *ngIf="prefix">

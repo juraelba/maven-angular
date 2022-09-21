@@ -52,6 +52,7 @@ const MIN_COLUMN_WIDTH = 100;
 export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() config: TableConfig = {};
   @Input() data: Table = { rows: [], columns: [] };
+  @Input() columnFilterVisible: boolean = true;
 
   @Output() rowsChange: EventEmitter<Row[]> = new EventEmitter();
   @Output() columnsChange: EventEmitter<Column[]> = new EventEmitter();
@@ -90,6 +91,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.groupedRowFilterData = this.groupRowData();
     this.tableStyles = this.getTableStyles();
+
+    console.log(this.columnFilterVisible);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

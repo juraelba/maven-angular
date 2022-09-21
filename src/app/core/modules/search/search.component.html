@@ -8,7 +8,7 @@
     <div class="p-5">
       <ng-content></ng-content>
 
-      <app-selected-criteria [criteries]="criteries"></app-selected-criteria>
+      <app-selected-criteria *ngIf="selectedCriteriaVisible" [criteries]="criteries"></app-selected-criteria>
     </div>
   
     <button
@@ -36,7 +36,7 @@
     <div *ngIf="isFetched && this.tableData.rows.length">
       <div class="flex justify-between mb-[20px]">
         <span class="text-pri-gray font-lato">Results: {{ totalRows }}</span>
-        <button class="flex items-center" (click)="exportToExcel($event)">
+        <button *ngIf="exportAvailable" class="flex items-center" (click)="exportToExcel($event)">
           <img src="/assets/images/icons/download-arrow.svg" alt="download-arrow" />
           <span class="ml-[10px] text-regal-blue text-base font-mont font-medium">
             Excel
@@ -48,6 +48,7 @@
         [config]="config"
         (rowsChange)="onRowsChange($event)"
         (columnsChange)="onColumnsChange($event)"
+        [columnFilterVisible]="columnFilterVisible"
       >
       </app-table>
     </div>

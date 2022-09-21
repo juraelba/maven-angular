@@ -24,17 +24,17 @@
 
     <app-matched-to></app-matched-to>
     <div class="flex items-center">
-      <app-checkbox [checked]="criteries['nonComms']" (change)="onCheckboxChange('addDirector', $event)"></app-checkbox>
+      <app-checkbox [checked]="criteries['addDirector']" (change)="onCheckboxChange('addDirector', $event)"></app-checkbox>
       <span class="ml-[10px] font-lato text-pri-black">Include Add Director</span>
     </div>
 
     <div class="flex items-center">
-      <app-checkbox [checked]="criteries['nonComms']" (change)="onCheckboxChange('mavenId', $event)"></app-checkbox>
+      <app-checkbox [checked]="criteries['mavenId']" (change)="onCheckboxChange('mavenId', $event)"></app-checkbox>
       <span class="ml-[10px] font-lato text-pri-black">Include MAVEN ID</span>
     </div>
 
     <div class="flex items-center">
-      <app-checkbox [checked]="criteries['nonComms']" (change)="onCheckboxChange('metric', $event)"></app-checkbox>
+      <app-checkbox [checked]="criteries['metric']" (change)="onCheckboxChange('metric', $event)"></app-checkbox>
       <span class="ml-[10px] font-lato text-pri-black">Include Metric</span>
     </div>
   </div>
