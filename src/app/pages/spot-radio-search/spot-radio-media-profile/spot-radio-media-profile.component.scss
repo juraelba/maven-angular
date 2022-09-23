@@ -1,0 +1,37 @@
+.main-information  {
+  &__fields {
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+  };
+};
+
+.maven-attributes  {
+  &__fields {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+  };
+};
+
+.diversity  {
+  &__fields {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 20px);
+  };
+};
+
+.footer {
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 270px 100px;
+};
+
+.row {
+  &:not(:last-child) {
+    margin-bottom: 20px;
+  }
+}
+
+.cell {
+  &:not(:last-child) {
+    margin-right: 20px;
+  }
+}
