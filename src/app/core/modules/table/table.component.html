@@ -1,5 +1,5 @@
 <div #tableContainer class="border rounded-md border-light-gray" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
-  <cdk-virtual-scroll-viewport itemSize="50" class="table-width overflow-auto" [ngStyle]="tableStyles">
+  <cdk-virtual-scroll-viewport itemSize="50" class="overflow-auto" [ngStyle]="tableStyles">
     <div class="border-0">
       <div class="header">
         <div class="h-[45px] header__row relative flex" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDrop($event)">

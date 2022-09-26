@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { compose, toPairs, reduce, isEmpty, always, mapObjIndexed } from 'ramda';
+import { compose, toPairs, reduce, isEmpty, always } from 'ramda';
 
 import { SelectedCriteriaDialogComponent } from '../selected-criteria-dialog/selected-criteria-dialog.component';
 import { Criteries, CategoriesCriteria, LanguageCriteria, MatchedToCriteria } from '@models/criteries.model';

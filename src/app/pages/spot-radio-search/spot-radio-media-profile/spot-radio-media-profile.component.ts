@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Maven, MavenFile } from '@models/maven.model';
 import { MediaProfileFields, MediaProfileFieldsLabels } from '@enums/media-profile.enum';
+
+import { SpotRadioListComponent } from '../spot-radio-list/spot-radio-list.component';
 
 const mockMaven = {
   mavenId: 'WABC-AM',
@@ -267,7 +270,7 @@ export class SpotRadioMediaProfileComponent implements OnInit {
   diversityAttributes: Field[] = [];
   filesColumns: FileColumn[] = filesColumnsConfig;
 
-  constructor() { }
+  constructor(private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.mainInformation = this.updateFieldsWithValue(mainInformationFields, this.maven);
@@ -285,6 +288,15 @@ export class SpotRadioMediaProfileComponent implements OnInit {
         ...field,
         value
       };
+    });
+  }
+
+  openDialog(event: MouseEvent): void {
+    event.stopPropagation();
+
+    this.dialog.open(SpotRadioListComponent, {
+      width: '900px',
+      panelClass: 'profile'
     });
   }
 }

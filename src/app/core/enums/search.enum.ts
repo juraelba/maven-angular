@@ -130,3 +130,7 @@ export enum SearchEnumTitles {
   'diverse' = 'Diverse Search',
   'callHistory' = 'Call History Search'
 };
+
+export enum SearchMediaProfileEnumTitles {
+  'spot-radio' = 'Spot Radio',
+};

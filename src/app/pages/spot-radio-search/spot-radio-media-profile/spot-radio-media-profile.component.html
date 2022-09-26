@@ -5,7 +5,7 @@
       <app-svg-icon class="rotate-90 mr-[10px]" [name]="'longArrowDown'" [stroke]="'#3a63cc'"></app-svg-icon>
       <span>Back to Search</span>
     </button>
-    <button class="font-mont text-base text-regal-blue font-medium flex items-center">
+    <button class="font-mont text-base text-regal-blue font-medium flex items-center" (click)="openDialog($event)">
       <app-svg-icon class="mr-[10px]" [name]="'bulletedList'" [stroke]="'#3a63cc'"></app-svg-icon>
       <span>Spot Radio List</span>
     </button>

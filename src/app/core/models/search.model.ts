@@ -1,4 +1,4 @@
-import { SearchEnum, SearchColumnsEnum, SearchActionTypesEnum, SearchFiedlsEnum, SearchColumnsIdEnum } from '@enums/search.enum';
+import { SearchEnum, SearchColumnsEnum, SearchActionTypesEnum, SearchFiedlsEnum, SearchColumnsIdEnum, SearchMediaProfileEnumTitles } from '@enums/search.enum';
 import { Criteries } from './criteries.model';
 
 export type SearchKey =  SearchEnum;
@@ -55,3 +55,5 @@ export interface SearchQuery {
     [key: string]: boolean;
   }
 }
+
+export type SearchMediaProfileTitleKey = keyof typeof SearchMediaProfileEnumTitles;

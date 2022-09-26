@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Inject } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 import { Observable, Subject, of } from 'rxjs';
 import { switchMap, takeUntil, filter, catchError } from 'rxjs/operators'; 
 
@@ -36,10 +37,12 @@ export class SearchComponent implements OnInit {
   unsubscribeAll: Subject<null> = new Subject();
   isFetched: boolean = false;
   isFetching: boolean = false;
+  tableStyles: { [key:string]: string } = {};
 
   constructor(
     private searchService: SearchService,
-    private excelService: ExcelService
+    private excelService: ExcelService,
+    @Inject(DOCUMENT) private document: Document
   ) { }
 
   ngOnInit(): void {
@@ -111,6 +114,7 @@ export class SearchComponent implements OnInit {
   
           this.tableRowsInView = [ ...this.tableData.rows ];
           this.tableColumnsInView = [ ...this.tableData.columns ];
+          this.tableStyles = this.getTableStyles();
   
           this.isFetching = false;
           this.isFetched = true;
@@ -142,5 +146,22 @@ export class SearchComponent implements OnInit {
 
   onColumnsChange(columns: Column[]): void {
     this.tableColumnsInView = columns;
+  }
+
+  getTableStyles(): { height: string } {
+    const searchHeader = this.document.querySelector('.search-header') as Element;
+    const criteriesContiner = this.document.querySelector('.criteries-container') as Element;
+
+    const { height: searchHeaderHeight } =  searchHeader.getBoundingClientRect();
+    const { height: criteriesContinerHeight } =  criteriesContiner.getBoundingClientRect();
+
+    const navBarHeight = 68;
+    const marginAndPaddings = 200;
+
+    const tableWidth = window.innerHeight - searchHeaderHeight - criteriesContinerHeight - navBarHeight - marginAndPaddings;
+
+    return {
+      height: tableWidth + 'px'
+    };
   }
 }

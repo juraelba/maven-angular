@@ -4,10 +4,9 @@ import { toPairs } from 'ramda';
 
 import { Criteries } from '@models/criteries.model';
 import { SelectOption } from '@models/select.model';
-import { ListKey } from '@models/list.model';
 
 import { selectedCriteriaConfig } from '../../data/selected-criteria-config';
-import { ListLabels, ListKeys } from '@enums/lists.enum';
+import { ListKeys } from '@enums/lists.enum';
 import { SearchFieldsLabelsEnum, SearchFiedlsEnum } from '@enums/search.enum';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
