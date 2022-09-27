@@ -29,17 +29,24 @@ interface Tab {
   selected: boolean
 };
 
+const defaultCriteries = {
+  [SearchFiedlsEnum.startDate]: null,
+  [SearchFiedlsEnum.endDate]: null,
+  [SearchFiedlsEnum.callLetterHistory]: 'date',
+  [SearchFiedlsEnum.callLetter]: ''
+};
+
 @Component({
   selector: 'app-call-history',
   templateUrl: './call-history.component.html',
   styleUrls: ['./call-history.component.scss']
 })
 export class CallHistoryComponent implements OnInit {
-  criteries: Criteries = {};
+  criteries: Criteries = { ...defaultCriteries };
+
   key: SearchKey = SearchEnum.callHistory;
   title: SearchEnumTitles = SearchEnumTitles.callHistory
   unsubscribeAll: Subject<null> = new Subject();
-  selectedOptionValue: string = 'date';
 
   tabs: Tab[] = [
     {
@@ -50,6 +57,21 @@ export class CallHistoryComponent implements OnInit {
     {
       value: HeaderValues.tv,
       label: HeaderLabels.tv,
+      selected: false
+    },
+  ];
+
+  options: SelectOption[] = [
+    {
+      id: 'date',
+      value: 'date',
+      label: 'Date',
+      selected: true
+    },
+    {
+      id: 'callLetter',
+      value: 'callLetter',
+      label: 'Call Letter',
       selected: false
     },
   ];
@@ -84,17 +106,30 @@ export class CallHistoryComponent implements OnInit {
       });
   }
 
-  onDateChange(date: DateTime | null): void {
-    this.criteries[SearchFiedlsEnum.exparationDate] = date;
+  onDateChange(date: DateTime | null, key: string): void {
+    this.criteries[key] = date;
   }
 
   setActiveTab(event: MouseEvent, selectedTab: Tab): void {
     event.stopPropagation();
 
+    const activeTab = this.tabs.find(({ selected }) => selected);
+
+    if(activeTab && activeTab.value !== selectedTab.value) {
+      this.setDefaultFieldsState();
+    }
+
     this.tabs = this.tabs.map((tab) => ({ ...tab, selected: selectedTab.value === tab.value }));
   }
 
+  setDefaultFieldsState(): void {
+    this.criteries = { ...defaultCriteries };
+    this.options = this.options.map((option) => ({ ...option, selected: option.value === 'date' }));
+  }
+
   onOptionSelect({ value }: SelectOption): void {
-    this.selectedOptionValue = value;
+    this.options = this.options.map((option) => ({ ...option, selected: option.value === value }));
+  
+    this.criteries[SearchFiedlsEnum.callLetterHistory] = value;
   }
 }

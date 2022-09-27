@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
@@ -17,7 +18,9 @@ import { SvgIconModule } from '@modules/svg-icon/svg-icon.module';
     OverlayModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    SvgIconModule
+    SvgIconModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   exports: [
     DatepickerComponent,

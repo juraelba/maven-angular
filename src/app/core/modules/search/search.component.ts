@@ -74,8 +74,6 @@ export class SearchComponent implements OnInit {
 
     of(mocks[this.key])
       .subscribe((values: any) => {
-        console.log(values);
-
         const columns = TABLE_COLUMNS[this.key].map((column) => ({ ...column, width: 300 }));
 
         this.isFetching = false;
@@ -84,6 +82,7 @@ export class SearchComponent implements OnInit {
         const rows = values.map(({ id, ...rest }: any) => ({ id: id, data: rest }))
 
         this.tableData = { rows, columns }
+        this.tableStyles = this.getTableStyles();
   
         this.tableRowsInView = [ ...this.tableData.rows ];
         this.tableColumnsInView = [ ...this.tableData.columns ];

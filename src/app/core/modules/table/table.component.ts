@@ -88,8 +88,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     this.columns = [ ...this.data.columns ];
 
     this.groupedRowFilterData = this.groupRowData();
-
-    console.log(this.columnFilterVisible);
   }
 
   ngOnChanges(changes: SimpleChanges): void {

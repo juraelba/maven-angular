@@ -21,16 +21,18 @@
   </div>
 
   <input
-    class="outline-none placeholder:text-pri-black placeholder:font-lato"
+    class="outline-none placeholder:text-pri-black placeholder:font-lato w-full"
     matInput
     [placeholder]="label"
     [matDatepicker]="picker"
     (dateChange)="onSelectedChange($event)"
+    [formControl]="value"
   >
 
   <mat-datepicker-toggle class="datepicker-toggle" matSuffix [for]="picker">
     <app-svg-icon
       [fill]="opened ? '#3a63cc' : '#b3b3b8'"
+      [stroke]="'none'"
       matDatepickerToggleIcon
       [name]="'calendar'"
     ></app-svg-icon>

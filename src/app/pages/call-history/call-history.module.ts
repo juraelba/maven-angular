@@ -10,6 +10,8 @@ import { DatepickerModule } from '@modules/datepicker/datepicker.module';
 import { SelectModule } from '@modules/select/select.module';
 import { InputModule } from '@modules/input/input.module';
 
+import { DirectivesModule } from '@directives/directives.module';
+
 @NgModule({
   declarations: [
     CallHistoryComponent,
@@ -21,7 +23,8 @@ import { InputModule } from '@modules/input/input.module';
     SearchModule,
     DatepickerModule,
     SelectModule,
-    InputModule
+    InputModule,
+    DirectivesModule
   ],
 })
 export class CallHistoryModule { }

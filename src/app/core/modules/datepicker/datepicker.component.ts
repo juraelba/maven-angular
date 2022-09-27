@@ -1,4 +1,5 @@
-import { Component, Input, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, OnChanges, Output, ViewChild, EventEmitter, SimpleChanges } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { DateTime } from 'luxon'; 
 import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
@@ -29,7 +30,7 @@ export const FORMAT = {
     { provide: MAT_DATE_FORMATS, useValue: FORMAT },
   ]
 })
-export class DatepickerComponent implements OnInit {
+export class DatepickerComponent implements OnInit, OnChanges {
   @Input() opened: boolean = false;
   @Input() date: DateTime | null;
   @Input() label: string = '';
@@ -39,9 +40,20 @@ export class DatepickerComponent implements OnInit {
 
   @ViewChild('picker') picker: MatDatepicker<any>;
 
+  value = new FormControl();
+
   constructor() { }
 
   ngOnInit(): void {
+    if(this.date) {
+      this.value.setValue(this.date.toISO())
+    }
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes.date && changes.date.currentValue !== changes.date.previousValue) {
+      this.value.setValue(changes.date.currentValue?.toISO() || null);
+    }
   }
 
   openDatepicker(): void {

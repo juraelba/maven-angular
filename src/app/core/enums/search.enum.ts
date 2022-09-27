@@ -24,7 +24,11 @@ export const SearchFiedlsEnum = {
   nonComms: 'nonComms',
   exparationDate: 'exparationDate',
   addDirector: 'addDirector',
-  mavenId: 'mavenId'
+  mavenId: 'mavenId',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  callLetterHistory: 'callLetterHistory',
+  callLetter: 'callLetter'
 };
 
 export const SearchFieldsLabelsEnum = {
@@ -34,7 +38,11 @@ export const SearchFieldsLabelsEnum = {
   exparationDate: 'Exparation Date',
   addDirector: 'Include Add Director',
   mavenId: 'Include MAVEN ID',
-  metric: 'Include Metric'
+  metric: 'Include Metric',
+  startDate: 'Start Date',
+  endDate: 'End Date',
+  callLetterHistory: 'Call Letter History',
+  callLetter: 'Call Letter'
 };
 
 export enum SearchColumnsEnum {

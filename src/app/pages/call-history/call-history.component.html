@@ -18,26 +18,33 @@
   </div>
 
   <div class="grid-container grid gap-5 mb-[40px]">
-    <app-call-history-select (optionSelect)="onOptionSelect($event)"></app-call-history-select>
+    <app-call-history-select
+      (optionSelect)="onOptionSelect($event)"
+      [options]="options"
+    ></app-call-history-select>
 
     <app-input
-      *ngIf="selectedOptionValue === 'callLetter'"
+      *ngIf="criteries.callLetterHistory === 'callLetter'"
       [placeholder]="'Call Letter'"
       [styleType]="styleTypes.secondary"
     >
     </app-input>
 
     <app-datepicker
-      *ngIf="selectedOptionValue === 'date'"
+      *ngIf="criteries.callLetterHistory === 'date'"
       [label]="'Start Date'"
       [styleType]="styleTypes.secondary"
+      [date]="criteries.startDate"
+      (dateChange)="onDateChange($event, 'startDate')"
     >
     </app-datepicker>
 
     <app-datepicker
-      *ngIf="selectedOptionValue === 'date'"
+      *ngIf="criteries.callLetterHistory === 'date'"
       [label]="'End Date'"
       [styleType]="styleTypes.secondary"
+      [date]="criteries.endDate"
+      (dateChange)="onDateChange($event, 'endDate')"
     >
     </app-datepicker>
   </div>
