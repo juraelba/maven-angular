@@ -29,7 +29,12 @@ export enum MediaProfileFields {
   target = 'target',
   files = 'files',
   mediaPartners = 'mediaPartners',
-  callHistory = 'callHistory'
+  callHistory = 'callHistory',
+  haat = 'haat',
+  agl = 'agl',
+  amsl = 'amsl',
+  displayChannel = "displayChannel",
+  digitalChannel = "digitalChannel",
 }
 
 export enum MediaProfileFieldsLabels {
@@ -63,7 +68,12 @@ export enum MediaProfileFieldsLabels {
   target = 'Target',
   files = 'Files',
   mediaPartners = 'Media Partners',
-  callHistory = 'Call History'
+  callHistory = 'Call History',
+  haat = 'HAAT',
+  agl = 'AGL',
+  amsl = 'AMSL',
+  displayChannel = "Display Channel",
+  digitalChannel = "Digital Channel",
 }
 
 export enum FilesLabels {

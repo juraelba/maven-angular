@@ -10,10 +10,16 @@ import { SearchModule } from '@modules/search/search.module';
 import { NameInputModule } from '@modules/name-input/name-input.module';
 
 import { SpotTvComponent } from './spot-tv.component';
+import { SpotTvMediaProfileComponent } from './spot-tv-media-profile/spot-tv-media-profile.component';
+import { SvgIconModule } from '@modules/svg-icon/svg-icon.module';
+import { SpotTvListComponent } from './spot-tv-list/spot-tv-list.component';
+import { TableModule } from '@modules/table/table.module';
 
 @NgModule({
   declarations: [
-    SpotTvComponent
+    SpotTvComponent,
+    SpotTvMediaProfileComponent,
+    SpotTvListComponent
   ],
   imports: [
     CommonModule,
@@ -22,8 +28,10 @@ import { SpotTvComponent } from './spot-tv.component';
     CheckboxModule,
     InputModule,
     SelectModule,
+    SvgIconModule,
     SearchModule,
-    NameInputModule
+    NameInputModule,
+    TableModule,
   ]
 })
 export class SpotTvModule { }
