@@ -276,7 +276,6 @@ export class SpotRadioMediaProfileComponent implements OnInit {
     this.mainInformation = this.updateFieldsWithValue(mainInformationFields, this.maven);
     this.mavenAttributes = this.updateFieldsWithValue(mavenAttributesFields, this.maven);
     this.diversityAttributes = this.updateFieldsWithValue(diversityAttributesFields, this.maven);
-    console.log(this.mavenAttributes)
   }
 
   updateFieldsWithValue(fields: Field[], maven: Maven): Field[] {

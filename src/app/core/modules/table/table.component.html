@@ -48,6 +48,9 @@
               <app-resizer (resizeEnd)="onResizeEnd($event, column)" [column]="column" [columns]="columns"></app-resizer>
             </div>
           </div>
+          
+          <!-- COLUMN for filling up empty spaces when headers width less than table width -->
+          <div class="bg-light-grey border-b border-light-gray h-[45px] header__cell w-full"></div>
         </div>
       </div>
       <div>
@@ -59,6 +62,9 @@
           >
             <div [ngStyle]="this.getCellStyles(column.id)" class="overflow-hidden whitespace-nowrap">{{ row.data[column.id] }}</div>
           </div>
+
+          <!-- CELL for filling up empty spaces when cells width less than table width -->
+          <div class="border-b border-light-gray w-full"></div>
         </div>
       </div>
     </div>

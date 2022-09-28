@@ -102,7 +102,8 @@ export class CallHistoryComponent implements OnInit {
         filter(({ action }) => SearchActionTypesEnum.NEW_SEARCH === action)
       )
       .subscribe(() => {
-        this.criteries = {}
+        this.criteries = { ...defaultCriteries };
+        this.options = this.options.map((option) => ({ ...option, selected: option.value === 'date' }));
       });
   }
 
@@ -116,15 +117,10 @@ export class CallHistoryComponent implements OnInit {
     const activeTab = this.tabs.find(({ selected }) => selected);
 
     if(activeTab && activeTab.value !== selectedTab.value) {
-      this.setDefaultFieldsState();
+      this.searchService.newSearch();
     }
 
     this.tabs = this.tabs.map((tab) => ({ ...tab, selected: selectedTab.value === tab.value }));
-  }
-
-  setDefaultFieldsState(): void {
-    this.criteries = { ...defaultCriteries };
-    this.options = this.options.map((option) => ({ ...option, selected: option.value === 'date' }));
   }
 
   onOptionSelect({ value }: SelectOption): void {
