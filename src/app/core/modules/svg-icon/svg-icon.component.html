@@ -59,8 +59,8 @@
   <ng-container *ngSwitchCase="'phone'">
     <ng-container *ngTemplateOutlet="phone"></ng-container>
   </ng-container>
-  <ng-container *ngSwitchCase="'workingPhone'">
-    <ng-container *ngTemplateOutlet="workingPhone"></ng-container>
+  <ng-container *ngSwitchCase="'fax'">
+    <ng-container *ngTemplateOutlet="fax"></ng-container>
   </ng-container>
   <ng-container *ngSwitchCase="'address'">
     <ng-container *ngTemplateOutlet="address"></ng-container>
@@ -205,7 +205,7 @@
   </svg>
 </ng-template>
 
-<ng-template #workingPhone>
+<ng-template #fax>
   <svg [attr.stroke]="stroke" width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path [attr.fill]="fill"  fill-rule="evenodd" clip-rule="evenodd" d="M13.9904 1.59766L13.5099 4L13.1963 5.01292C13.9289 5.11002 14.5 5.74229 14.5 6.5V13.5C14.5 14.3242 13.8242 15 13 15H7.5H5C4.52145 15 4.37413 14.852 4.18235 14.6592C4.17375 14.6506 4.16506 14.6419 4.15625 14.633C4.12533 14.664 4.10044 14.6993 4.07489 14.7356C3.98573 14.8622 3.88865 15 3.5 15H2.5C1.95312 15 1.5 14.5469 1.5 14V6C1.5 5.45312 1.95312 5 2.5 5H3.5C3.75391 5 3.98047 5.10547 4.15625 5.26562C4.34692 5.13339 4.56664 5.04473 4.80397 5.01299L4.49038 4L4.00991 1.59766C3.99548 1.52515 3.99731 1.45035 4.01526 1.37863C4.03321 1.30692 4.06684 1.24008 4.11372 1.18292C4.16061 1.12576 4.21958 1.07971 4.2864 1.04808C4.35322 1.01645 4.42622 1.00003 4.50015 1H13.5001C13.5741 1.00003 13.6471 1.01645 13.7139 1.04808C13.7807 1.07971 13.8397 1.12576 13.8866 1.18292C13.9335 1.24008 13.9671 1.30692 13.985 1.37863C14.003 1.45035 14.0048 1.52515 13.9904 1.59766ZM12.8908 6H5C4.71875 6 4.5 6.21875 4.5 6.5V13.5C4.5 13.7812 4.71875 14 5 14H13C13.2812 14 13.5 13.7812 13.5 13.5V6.5C13.5 6.21875 13.2812 6 13 6H12.8908ZM12.09 5L5.9103 5L5.10952 2L12.8908 2L12.09 5ZM3.5 6H2.5V14H3.5V6ZM6.5 9V7H11.5V9H6.5ZM6.5 11V10H7.5V11H6.5ZM8.5 11V10H9.5V11H8.5ZM10.5 11V10H11.5V11H10.5ZM6.5 13V12H7.5V13H6.5ZM8.5 13V12H9.5V13H8.5ZM10.5 13V12H11.5V13H10.5Z" fill="#797979"/>
   </svg>

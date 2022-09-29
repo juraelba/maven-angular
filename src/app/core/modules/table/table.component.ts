@@ -52,10 +52,11 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() config: TableConfig = {};
   @Input() data: Table = { rows: [], columns: [] };
   @Input() columnFilterVisible: boolean = true;
-  @Input() tableStyles: { [key:string]: string } = {};
+  @Input() tableStyles: { [key: string]: string } = {};
 
   @Output() rowsChange: EventEmitter<Row[]> = new EventEmitter();
   @Output() columnsChange: EventEmitter<Column[]> = new EventEmitter();
+  @Output() onRowClick: EventEmitter<Row> = new EventEmitter();
 
   @ViewChild('table') table: ElementRef;
   @ViewChild('tableContainer') tableContainer: ElementRef;
@@ -64,7 +65,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   columns: Column[] = [];
 
   tableBodyStyles: { [key: string]: string } = {};
-  sortedColumn: [ string, SortMethods ] = [ '', SortMethodsEnum.none ];
+  sortedColumn: [string, SortMethods] = ['', SortMethodsEnum.none];
   columnFilterId: string = '';
   activeColumnAutoFilterId: string = '';
   columnAutoFilterData: ColumnAutoFilterData;
@@ -84,16 +85,16 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   ) { }
 
   ngOnInit(): void {
-    this.rows = [ ...this.data.rows ];
-    this.columns = [ ...this.data.columns ];
+    this.rows = [...this.data.rows];
+    this.columns = [...this.data.columns];
 
     this.groupedRowFilterData = this.groupRowData();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes.data && !changes.data.firstChange) {
-      this.rows = [ ...changes.data.currentValue.rows ];
-      this.columns = [ ...changes.data.currentValue.columns ];
+    if (changes.data && !changes.data.firstChange) {
+      this.rows = [...changes.data.currentValue.rows];
+      this.columns = [...changes.data.currentValue.columns];
 
       this.rowsChange.emit(this.rows);
       this.columnsChange.emit(this.columns);
@@ -102,7 +103,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       this.defineContainerLength()
     }
   }
-  
+
   defineContainerLength(): void {
     const columnsWidths = this.columns.reduce<number>((acc, { width }) => acc + width, 0);
 
@@ -122,7 +123,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   private getSortMethod(columnId: string): SortMethods {
-    const [ id, sortMethod ] = this.sortedColumn || [];
+    const [id, sortMethod] = this.sortedColumn || [];
 
     const sortMethodMapper = {
       [SortMethodsEnum.none]: SortMethodsEnum.ascend,
@@ -130,7 +131,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       [SortMethodsEnum.descend]: SortMethodsEnum.none
     }
 
-    if(id === columnId) {
+    if (id === columnId) {
       return sortMethodMapper[sortMethod];
     }
 
@@ -140,19 +141,19 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   onSortClick(event: MouseEvent, column: Column): void {
     event.stopPropagation();
 
-    const propertyPath = [ 'data', column.id ];
+    const propertyPath = ['data', column.id];
     const sortMethod = this.getSortMethod(column.id);
 
-    this.sortedColumn = [ column.id, sortMethod ];
+    this.sortedColumn = [column.id, sortMethod];
 
-    if(sortMethod === SortMethodsEnum.none) {
+    if (sortMethod === SortMethodsEnum.none) {
       const mapedFilters = this.searchService.mapFilters(this.columnAutoFilterData);
       const selectedGroupedRowFilterData = this.getSelectedGroupedRowFilterData();
       const filteredByGroupRowFilters = this.filterBySelectedGroupRowFilterData(this.data.rows, selectedGroupedRowFilterData);
 
       this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(filteredByGroupRowFilters, mapedFilters);
     } else {
-      this.rows = this.utilsService.sortByAlphabeticalOrder<Row>(this.rows, sortMethod,  propertyPath);
+      this.rows = this.utilsService.sortByAlphabeticalOrder<Row>(this.rows, sortMethod, propertyPath);
     }
 
     this.rowsChange.emit(this.rows);
@@ -170,8 +171,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
       let columnWidth = 0;
 
-      if(column.id === id) {
-        if(widthWithDiff > MIN_COLUMN_WIDTH) {
+      if (column.id === id) {
+        if (widthWithDiff > MIN_COLUMN_WIDTH) {
           columnWidth = widthWithDiff
         } else {
           columnWidth = MIN_COLUMN_WIDTH;
@@ -179,7 +180,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       } else {
         columnWidth = column.width;
       }
-    
+
       acc.push({
         ...column,
         width: columnWidth
@@ -198,7 +199,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   getColumnCellStyles(column: Column): { [key: string]: string } {
-    const width = `${ column.width }px`;
+    const width = `${column.width}px`;
 
     return {
       width,
@@ -208,7 +209,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   getColumnTextStyles(column: Column): { [key: string]: string } {
-    const width = `${ column.width - 40 }px`;
+    const width = `${column.width - 40}px`;
 
     return {
       width,
@@ -230,26 +231,26 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
   groupRowData(): Group {
     return compose<Row[][], Group, [string, string[]][], Group>(
-      reduce<[string, string[]], Group>((acc, [ id, value ]) => {
+      reduce<[string, string[]], Group>((acc, [id, value]) => {
         acc[id] = !isNil(value) ? this.getColumnFilterDataOptions(value) : null;
 
         return acc;
       }, {}),
       toPairs,
       reduce<Row, Group>((acc, { data }) => {
-        Object.entries(data).forEach(([ id, value ]) => {
+        Object.entries(data).forEach(([id, value]) => {
           const isValueNill = isNil(value);
           const groupValue = acc[id];
-        
-          if(groupValue && !isValueNill) {
+
+          if (groupValue && !isValueNill) {
             groupValue.push(value);
-          } else if(!isValueNill) {
-            acc[id] = [ value ];
+          } else if (!isValueNill) {
+            acc[id] = [value];
           } else {
             acc[id] = null;
           }
         });
-  
+
         return acc;
       }, {})
     )(this.data.rows);
@@ -304,7 +305,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
   updateAutoColumnFiltersById(id: string, filters: Filter[]): ColumnAutoFilterData {
     return compose<[ColumnAutoFilterData], [string, ColumnAutoFilterValue][], ColumnAutoFilterData>(
-      reduce<[string, ColumnAutoFilterValue], ColumnAutoFilterData>((acc, [ key, value ]) => {
+      reduce<[string, ColumnAutoFilterValue], ColumnAutoFilterData>((acc, [key, value]) => {
         acc[key] = key === id
           ? { column: value.column, filters }
           : value;
@@ -343,7 +344,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   updateGroupedRowFilterData(id: string, options: SelectOption[]): Group {
-    const selectedOptions = options.reduce<{[key: string]: string}>((acc, { value }) => {
+    const selectedOptions = options.reduce<{ [key: string]: string }>((acc, { value }) => {
       acc[value] = value;
 
       return acc;
@@ -355,7 +356,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       ? rowFilterDataOptions.map((option) => ({
         ...option,
         selected: selectedOptions[option.value] ? true : false
-        }))
+      }))
       : null;
 
     return {
@@ -366,7 +367,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
   getSelectedGroupedRowFilterData(): Group {
     return compose<[Group], [string, SelectOption[] | null][], Group>(
-      reduce<[string, SelectOption[] | null], Group>((acc, [ key, value ]) => {
+      reduce<[string, SelectOption[] | null], Group>((acc, [key, value]) => {
         acc[key] = !isNil(value) ? this.listsService.getSelectedOptions(value) : null;
 
         return acc;
@@ -378,7 +379,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   createHashMapFromSelectedGroup(selectedGroup: Group): SelectedGroupHashMap {
     const selectedPairs = toPairs(selectedGroup);
 
-    return selectedPairs.reduce<SelectedGroupHashMap>((acc, [ key, pairValue ]) => {
+    return selectedPairs.reduce<SelectedGroupHashMap>((acc, [key, pairValue]) => {
       acc[key] = pairValue?.reduce<{ [key: string]: string }>((valueAcc, { label }: SelectOption) => {
         valueAcc[label] = label;
 
@@ -386,39 +387,39 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       }, {})
 
       return acc;
-    },{});
+    }, {});
   }
-  
+
   filterBySelectedGroupRowFilterData(rows: Row[], selected: Group): Row[] {
     const data = [];
 
     const selectedGroupHashMap = this.createHashMapFromSelectedGroup(selected);
 
-    for(let i = 0; i < rows.length; i++) {
-        const rowDataPairs = Object.entries(rows[i].data);
+    for (let i = 0; i < rows.length; i++) {
+      const rowDataPairs = Object.entries(rows[i].data);
 
-        const isRowValid = rowDataPairs.every(([ key, value ]) => {
-          const selectedOptions = selectedGroupHashMap[key];
+      const isRowValid = rowDataPairs.every(([key, value]) => {
+        const selectedOptions = selectedGroupHashMap[key];
 
-          if(isNil(selectedOptions) || isNil(value)){
-            return true;
-          } else {
-            const found = selectedOptions[value];
+        if (isNil(selectedOptions) || isNil(value)) {
+          return true;
+        } else {
+          const found = selectedOptions[value];
 
-            return Boolean(found);
-          }
-        });
-  
-        if(isRowValid) {
-          data.push(rows[i]);
-        };
+          return Boolean(found);
+        }
+      });
+
+      if (isRowValid) {
+        data.push(rows[i]);
+      };
     }
 
     return data;
   }
 
   onColumnFilterChange({ id, options }: ColumnFilterChangeEvent): void {
-    if(isNil(this.groupedRowFilterData[id])) {
+    if (isNil(this.groupedRowFilterData[id])) {
       return;
     }
 
@@ -442,7 +443,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   getSortIconClass({ id }: Column): string {
-    const [ columnId, sortMethod ] = this.sortedColumn;
+    const [columnId, sortMethod] = this.sortedColumn;
 
     const classMapper = {
       [SortMethodsEnum.ascend]: 'rotate-180',
@@ -450,7 +451,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       [SortMethodsEnum.none]: 'hidden'
     }
 
-    if(columnId === id) {
+    if (columnId === id) {
       return classMapper[sortMethod];
     }
 
@@ -464,11 +465,16 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   onDragEnd(event: CdkDragEnd): void {
-    this.renderer.removeClass(this.draggableElement, 'cursor-move'); 
+    this.renderer.removeClass(this.draggableElement, 'cursor-move');
     this.renderer.addClass(this.draggableElement, 'cursor-pointer');
 
     this.draggableElement = null;
 
     this.renderer.removeClass(document.body, 'cursor-move');
+  }
+
+  rowClick(event: MouseEvent, row: Row): void {
+    event.stopPropagation();
+    this.onRowClick.emit(row)
   }
 }

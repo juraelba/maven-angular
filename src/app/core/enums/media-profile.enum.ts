@@ -1,8 +1,8 @@
 export enum MediaProfileFields {
-  mavenId = 'mavenId',
+  name = 'name',
   id = 'id',
   phone = 'phone',
-  workingPhone = 'workingPhone',
+  fax = 'fax',
   address = 'address',
   website = 'website',
   email = 'email',
@@ -38,10 +38,10 @@ export enum MediaProfileFields {
 }
 
 export enum MediaProfileFieldsLabels {
-  mavenId = 'Maven ID',
+  name = 'Maven ID',
   id = 'ID',
   phone = 'Phone',
-  workingPhone = 'Working Phone',
+  fax = 'Fax',
   address = 'Address',
   website = 'Website',
   email = 'Email',

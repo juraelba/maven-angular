@@ -7,10 +7,10 @@ import { MediaProfileFields, MediaProfileFieldsLabels } from '@enums/media-profi
 import { SpotRadioListComponent } from '../spot-radio-list/spot-radio-list.component';
 
 const mockMaven = {
-  mavenId: 'WABC-AM',
+  name: 'WABC-AM',
   id: 'R21362',
   phone: '212-613-3800',
-  workingPhone: '212-613-3800',
+  fax: '212-613-3800',
   address: '2 Penn Plaza; 17th Floor; New York, NY 10121-0101; United States',
   website: 'wabcradio.com',
   email: '@comments@wabcradio.com',
@@ -126,9 +126,9 @@ const mainInformationFields: Field[] = [
     valueClassName: ['text-regal-blue']
   },
   {
-    id: MediaProfileFields.workingPhone,
-    label: MediaProfileFieldsLabels.workingPhone,
-    icon: MediaProfileFields.workingPhone,
+    id: MediaProfileFields.fax,
+    label: MediaProfileFieldsLabels.fax,
+    icon: MediaProfileFields.fax,
     iconFill: '#797979',
     iconStroke: 'none',
     className: ['items-center']
@@ -263,7 +263,7 @@ const filesColumnsConfig: FileColumn[] = [
   styleUrls: ['./spot-radio-media-profile.component.scss']
 })
 export class SpotRadioMediaProfileComponent implements OnInit {
-  @Input() maven: Maven = mockMaven;
+  maven: Maven;
 
   mainInformation: Field[] = [];
   mavenAttributes: Field[] = [];

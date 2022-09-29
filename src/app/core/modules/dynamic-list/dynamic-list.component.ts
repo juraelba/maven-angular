@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { SearchMediaProfileEnumTitles } from '@enums/search.enum';
 import { StyleTypesEnum } from '@enums/styles.enum';
 import { SearchMediaProfileTitleKey } from '@models/search.model';
-import { Table } from '@models/table.model';
+import { Row, Table } from '@models/table.model';
 
 @Component({
   selector: 'app-dynamic-list',
@@ -40,4 +40,9 @@ export class DynamicListComponent implements OnInit {
     this.dialogRef.close();
   }
 
+  onRowClick(row: Row): void {
+    const searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
+    this.router.navigate([searchScreenKey, row.data.mavenid]);
+    this.closeDialog();
+  }
 }

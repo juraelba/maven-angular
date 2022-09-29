@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MediaProfileFields, MediaProfileFieldsLabels } from '@enums/media-profile.enum';
 import { Maven, MavenFile } from '@models/maven.model';
 
@@ -29,41 +28,20 @@ interface FileColumn {
   templateUrl: './dynamic-media-profile.component.html',
   styleUrls: ['./dynamic-media-profile.component.scss']
 })
-export class DynamicMediaProfileComponent implements OnInit {
+export class DynamicMediaProfileComponent {
 
   @Input() maven: Maven;
-  @Input() mainInformationFields: Field[];
-  @Input() mavenAttributesFields: Field[];
-  @Input() diversityAttributesFields: Field[];
+  @Input() mainInformation: Field[];
+  @Input() mavenAttributes: Field[];
+  @Input() diversityAttributes: Field[];
   @Input() filesColumns: FileColumn[];
   @Input() title: string;
   @Input() listButtonTittle: string;
 
   @Output() opeList = new EventEmitter();
 
-  mainInformation: Field[] = [];
-  mavenAttributes: Field[] = [];
-  diversityAttributes: Field[] = [];
 
-  constructor(private dialog: MatDialog) { }
-
-  ngOnInit(): void {
-    this.mainInformation = this.updateFieldsWithValue(this.mainInformationFields, this.maven);
-    this.mavenAttributes = this.updateFieldsWithValue(this.mavenAttributesFields, this.maven);
-    this.diversityAttributes = this.updateFieldsWithValue(this.diversityAttributesFields, this.maven);
-  }
-
-  updateFieldsWithValue(fields: Field[], maven: Maven): Field[] {
-    return fields.map((field: any) => {
-      const key = field.id as keyof Maven;
-      const value = maven[key];
-
-      return {
-        ...field,
-        value
-      };
-    });
-  }
+  constructor() { }
 
   openDialog(event: MouseEvent): void {
     event.stopPropagation();

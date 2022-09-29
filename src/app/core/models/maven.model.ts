@@ -5,12 +5,28 @@ export interface MavenFile {
   [key: string]: string;
 }
 
+interface Country {
+  id: string;
+  name: string;
+}
+
+interface Address {
+  address1: string;
+  address2: string;
+  city: string;
+  completeAddress: string;
+  country: Country
+  id: number;
+  postalCode: string
+  state: string;
+};
+
 export interface Maven {
-  mavenId: string;
+  name: string;
   id: string;
   phone: string;
-  workingPhone: string;
-  address: string;
+  fax: string;
+  address: Address;
   website: string;
   email: string;
   owner: string;
@@ -37,4 +53,9 @@ export interface Maven {
   files: MavenFile[];
   mediaPartners: string[];
   callHistory: string;
+  haat: string;
+  agl: string;
+  amsl: string;
+  displayChannel: string;
+  digitalChannel: string;
 };

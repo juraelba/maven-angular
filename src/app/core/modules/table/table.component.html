@@ -1,8 +1,22 @@
-<div #tableContainer class="border rounded-md border-light-gray" cdkOverlayOrigin #trigger="cdkOverlayOrigin">
-  <cdk-virtual-scroll-viewport itemSize="50" class="overflow-auto" [ngStyle]="tableStyles">
+<div
+  #tableContainer
+  class="border rounded-md border-light-gray"
+  cdkOverlayOrigin
+  #trigger="cdkOverlayOrigin"
+>
+  <cdk-virtual-scroll-viewport
+    itemSize="50"
+    class="overflow-auto"
+    [ngStyle]="tableStyles"
+  >
     <div class="border-0">
       <div class="header">
-        <div class="h-[45px] header__row relative flex" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="onDrop($event)">
+        <div
+          class="h-[45px] header__row relative flex"
+          cdkDropList
+          cdkDropListOrientation="horizontal"
+          (cdkDropListDropped)="onDrop($event)"
+        >
           <div
             *ngFor="let column of columns"
             [id]="column.id"
@@ -20,7 +34,9 @@
                   (click)="onSortClick($event, column)"
                   [ngStyle]="getColumnTextStyles(column)"
                 >
-                  <div class="text-ellipsis overflow-hidden">{{ column.label }}</div>
+                  <div class="text-ellipsis overflow-hidden">
+                    {{ column.label }}
+                  </div>
                 </div>
                 <div class="flex">
                   <img
@@ -45,22 +61,37 @@
                   </app-column-filter>
                 </div>
               </div>
-              <app-resizer (resizeEnd)="onResizeEnd($event, column)" [column]="column" [columns]="columns"></app-resizer>
+              <app-resizer
+                (resizeEnd)="onResizeEnd($event, column)"
+                [column]="column"
+                [columns]="columns"
+              ></app-resizer>
             </div>
           </div>
-          
+
           <!-- COLUMN for filling up empty spaces when headers width less than table width -->
-          <div class="bg-light-grey border-b border-light-gray h-[45px] header__cell w-full"></div>
+          <div
+            class="bg-light-grey border-b border-light-gray h-[45px] header__cell w-full"
+          ></div>
         </div>
       </div>
       <div>
-        <div *cdkVirtualFor="let row of rows; templateCacheSize: 0" class="h-[45px] flex">
+        <div
+          *cdkVirtualFor="let row of rows; templateCacheSize: 0"
+          class="h-[45px] flex hover:bg-light-blue cursor-pointer"
+          (click)="rowClick($event, row)"
+        >
           <div
             *ngFor="let column of columns"
             class="px-[20px] border-b border-light-gray flex items-center"
             [ngStyle]="getColumnCellStyles(column)"
           >
-            <div [ngStyle]="this.getCellStyles(column.id)" class="overflow-hidden whitespace-nowrap">{{ row.data[column.id] }}</div>
+            <div
+              [ngStyle]="this.getCellStyles(column.id)"
+              class="overflow-hidden whitespace-nowrap"
+            >
+              {{ row.data[column.id] }}
+            </div>
           </div>
 
           <!-- CELL for filling up empty spaces when cells width less than table width -->

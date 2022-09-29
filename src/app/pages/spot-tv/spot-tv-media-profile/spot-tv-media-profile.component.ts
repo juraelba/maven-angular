@@ -1,71 +1,18 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { MediaProfileFields, MediaProfileFieldsLabels } from '@enums/media-profile.enum';
 import { SearchColumnsIdEnum, SearchColumnsEnum } from '@enums/search.enum';
 import { Maven, MavenFile } from '@models/maven.model';
 import { Row, Column, Table } from '@models/table.model';
+import { MediaProfileListService } from '@services/media-profile-list/media-profile-list.service';
+import { lensPath, lensProp, view } from 'ramda';
 import { Subject, takeUntil } from 'rxjs';
 import { DynamicListComponent } from '../../../core/modules/dynamic-list/dynamic-list.component';
-
-const mockMaven = {
-  mavenId: 'KPOB-TV',
-  id: 'R21362',
-  phone: '212-613-3800',
-  workingPhone: '212-613-3800',
-  address: '2 Penn Plaza; 17th Floor; New York, NY 10121-0101; United States',
-  website: 'wabcradio.com',
-  email: '@comments@wabcradio.com',
-  owner: 'Red Apple Media, Inc',
-  parent: 'Red Apple Media, Inc',
-  type: 'Station',
-  language: 'English',
-  categories: ['City/Regional/State/Comminity', 'Category City'],
-  geographicAppeal: 'Metropolitan',
-  dma: 'New York, NY (1)',
-  msa: 'New York, NY (1)',
-  slogan: 'WABC-AM 770; Where NEw York Comes To Talks',
-  class: 'Commercial, Licensed Class A AM Station',
-  frequency: '770',
-  fccid: '70658',
-  licenseCity: 'New York, NY',
-  licenseCountry: 'New York, NY',
-  timeZone: 'Eastern',
-  power: '50, 000 Watts',
-  coordinates: '40 52\' 50\'\' N74 4\' 11\'\' W',
-  certified: 'Not Diverse',
-  classfied: 'Not Diverse',
-  fcc: 'Black',
-  target: 'None',
-  files: [
-    {
-      name: 'FCC Ownership Report 2020',
-      type: 'FCC',
-      date: '03/18/2020'
-    },
-    {
-      name: 'FCC Ownership 2021',
-      type: 'FCC',
-      date: '03/18/2021'
-    },
-    {
-      name: 'FCC Ownership 2022',
-      type: 'FCC',
-      date: '03/18/2022'
-    }
-  ],
-  mediaPartners: ['WABC-AM (Digital)'],
-  callHistory: '',
-  haat: '1071 feet(310 meters)',
-  agl: '510 feet(159 meters)',
-  amsl: '603 feet(184 meters)',
-  displayChannel: 15,
-  digitalChannel: 15
-};
-
 interface Field {
-  id: MediaProfileFields,
-  label: MediaProfileFieldsLabels,
+  id: MediaProfileFields;
+  path: MediaProfileFields | string[]
+  label: MediaProfileFieldsLabels;
   icon?: string;
   value?: string;
   className?: string[];
@@ -87,10 +34,12 @@ interface FileColumn {
 const mainInformationFields: Field[] = [
   {
     id: MediaProfileFields.id,
+    path: MediaProfileFields.id,
     label: MediaProfileFieldsLabels.id
   },
   {
     id: MediaProfileFields.address,
+    path: [MediaProfileFields.address, 'completeAddress'],
     label: MediaProfileFieldsLabels.address,
     icon: MediaProfileFields.address,
     className: ['row-span-4', 'align-self'],
@@ -99,6 +48,7 @@ const mainInformationFields: Field[] = [
   },
   {
     id: MediaProfileFields.website,
+    path: MediaProfileFields.website,
     label: MediaProfileFieldsLabels.website,
     icon: MediaProfileFields.website,
     iconFill: '#797979',
@@ -108,11 +58,13 @@ const mainInformationFields: Field[] = [
   },
   {
     id: MediaProfileFields.owner,
+    path: [MediaProfileFields.owner, 'name'],
     label: MediaProfileFieldsLabels.owner,
     valueClassName: ['text-regal-blue']
   },
   {
     id: MediaProfileFields.phone,
+    path: MediaProfileFields.phone,
     label: MediaProfileFieldsLabels.phone,
     icon: MediaProfileFields.phone,
     iconFill: '#797979',
@@ -121,6 +73,7 @@ const mainInformationFields: Field[] = [
   },
   {
     id: MediaProfileFields.email,
+    path: MediaProfileFields.email,
     label: MediaProfileFieldsLabels.email,
     icon: MediaProfileFields.email,
     iconFill: '#797979',
@@ -129,13 +82,15 @@ const mainInformationFields: Field[] = [
   },
   {
     id: MediaProfileFields.parent,
+    path: [MediaProfileFields.parent, 'name'],
     label: MediaProfileFieldsLabels.parent,
     valueClassName: ['text-regal-blue']
   },
   {
-    id: MediaProfileFields.workingPhone,
-    label: MediaProfileFieldsLabels.workingPhone,
-    icon: MediaProfileFields.workingPhone,
+    id: MediaProfileFields.fax,
+    path: MediaProfileFields.fax,
+    label: MediaProfileFieldsLabels.fax,
+    icon: MediaProfileFields.fax,
     iconFill: '#797979',
     iconStroke: 'none',
     className: ['items-center']
@@ -145,79 +100,97 @@ const mainInformationFields: Field[] = [
 const mavenAttributesFields: Field[] = [
   {
     id: MediaProfileFields.type,
+    path: ['mediaType', MediaProfileFields.type],
     label: MediaProfileFieldsLabels.type,
     valueContentClassName: ['bg-[#E4F2FF] text-[#4087F3] rounded-xl py-0.5 px-2 w-fit'],
   },
   {
     id: MediaProfileFields.language,
+    path: MediaProfileFields.language,
     label: MediaProfileFieldsLabels.language,
     valueContentClassName: ['bg-[#FFFBD8] text-[#80761E] rounded-xl py-0.5 px-2 w-fit']
   },
 
   {
     id: MediaProfileFields.categories,
+    path: MediaProfileFields.categories,
     label: MediaProfileFieldsLabels.categories,
     valueContentClassName: ['bg-[#F6E4FF] text-[#931ACC] rounded-xl py-0.5 px-2 w-fit']
   },
   {
     id: MediaProfileFields.fccid,
+    path: MediaProfileFields.fccid,
     label: MediaProfileFieldsLabels.fccid,
   },
   {
     id: MediaProfileFields.geographicAppeal,
+    path: ['geoAppeal'],
     label: MediaProfileFieldsLabels.geographicAppeal
   },
   {
     id: MediaProfileFields.licenseCity,
+    path: MediaProfileFields.licenseCity,
     label: MediaProfileFieldsLabels.licenseCity
   },
   {
     id: MediaProfileFields.dma,
+    path: MediaProfileFields.dma,
     label: MediaProfileFieldsLabels.dma,
     valueClassName: ['text-regal-blue'],
   },
   {
     id: MediaProfileFields.licenseCountry,
+    path: MediaProfileFields.licenseCountry,
     label: MediaProfileFieldsLabels.licenseCountry,
   },
   {
     id: MediaProfileFields.slogan,
+    path: MediaProfileFields.slogan,
     label: MediaProfileFieldsLabels.slogan
   },
   {
     id: MediaProfileFields.class,
+    path: MediaProfileFields.class,
     label: MediaProfileFieldsLabels.class,
   },
   {
     id: MediaProfileFields.power,
+    path: MediaProfileFields.power,
     label: MediaProfileFieldsLabels.power
   },
   {
     id: MediaProfileFields.amsl,
+    path: MediaProfileFields.amsl,
     label: MediaProfileFieldsLabels.amsl
   },
   {
     id: MediaProfileFields.agl,
+    path: MediaProfileFields.agl,
     label: MediaProfileFieldsLabels.agl
   },
   {
     id: MediaProfileFields.haat,
+    path: MediaProfileFields.haat,
     label: MediaProfileFieldsLabels.haat
   },
   {
     id: MediaProfileFields.displayChannel,
+    path: MediaProfileFields.displayChannel,
     label: MediaProfileFieldsLabels.displayChannel
   },
   {
     id: MediaProfileFields.digitalChannel,
+    path: MediaProfileFields.digitalChannel,
     label: MediaProfileFieldsLabels.digitalChannel
   },
   {
     id: MediaProfileFields.timeZone,
+    path: MediaProfileFields.timeZone,
     label: MediaProfileFieldsLabels.timeZone
   },
   {
     id: MediaProfileFields.coordinates,
+    path: MediaProfileFields.coordinates,
     label: MediaProfileFieldsLabels.coordinates,
     className: ['col-start-2 col-end-3']
   },
@@ -226,19 +199,25 @@ const mavenAttributesFields: Field[] = [
 const diversityAttributesFields: Field[] = [
   {
     id: MediaProfileFields.certified,
+    path: [
+      'diversity', MediaProfileFields.certified,
+    ],
     label: MediaProfileFieldsLabels.certified
   },
   {
     id: MediaProfileFields.classfied,
+    path: ['diversity', 'classified'],
     label: MediaProfileFieldsLabels.classfied
   },
   {
     id: MediaProfileFields.fcc,
+    path: ['diversity', MediaProfileFields.fcc],
     label: MediaProfileFieldsLabels.fcc,
     valueContentClassName: ['bg-[#F6E4FF] text-[#931ACC] rounded-xl py-0.5 px-2 w-fit']
   },
   {
     id: MediaProfileFields.target,
+    path: ['diversity', MediaProfileFields.target],
     label: MediaProfileFieldsLabels.target
   },
 ];
@@ -263,7 +242,7 @@ const filesColumnsConfig: FileColumn[] = [
     iconFill: '#797979'
   },
   {
-    id: 'date',
+    id: 'uploadDate',
     label: 'Date',
     className: ['basis-[25%]']
   },
@@ -277,42 +256,6 @@ const filesColumnsConfig: FileColumn[] = [
 ];
 
 
-
-// list
-const MOCK_ROWS: Row[] = [
-  {
-    id: '1',
-    data: {
-      [SearchColumnsIdEnum.mavenid]: 'R40107',
-      [SearchColumnsIdEnum.name]: 'APEX Exchange Local Aggregate',
-      [SearchColumnsIdEnum.market]: 'National (USA)'
-    }
-  },
-  {
-    id: '2',
-    data: {
-      [SearchColumnsIdEnum.mavenid]: 'R30421',
-      [SearchColumnsIdEnum.name]: 'CIMX-FM',
-      [SearchColumnsIdEnum.market]: 'Detroit, MI'
-    }
-  },
-  {
-    id: '3',
-    data: {
-      [SearchColumnsIdEnum.mavenid]: 'R36230',
-      [SearchColumnsIdEnum.name]: 'iHeart Local Aggregate',
-      [SearchColumnsIdEnum.market]: 'National (USA)'
-    }
-  },
-  {
-    id: '4',
-    data: {
-      [SearchColumnsIdEnum.mavenid]: 'R21141',
-      [SearchColumnsIdEnum.name]: 'Joel Mccrea is also acting GSM (alias)',
-      [SearchColumnsIdEnum.market]: 'Des Moines-Ames, IA'
-    }
-  }
-];
 
 const COLUMNS: Column[] = [
   {
@@ -332,13 +275,21 @@ const COLUMNS: Column[] = [
   }
 ];
 
+interface FieldArrayItem {
+  id: string;
+  name: string;
+};
+
+type Formatter = {
+  [key in MediaProfileFields]?: (value: any) => string;
+}
+
 @Component({
   selector: 'app-spot-tv-media-profile',
   templateUrl: './spot-tv-media-profile.component.html',
   styleUrls: ['./spot-tv-media-profile.component.scss']
 })
 export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
-  @Input() maven: Maven = mockMaven;
   title = 'Spot TV';
   listButtonTitle = 'Spot TV List';
 
@@ -346,10 +297,7 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
   mavenAttributes: Field[] = [];
   diversityAttributes: Field[] = [];
   filesColumns: FileColumn[] = filesColumnsConfig;
-
-  mainInformationFields: Field[] = mainInformationFields;
-  mavenAttributesFields: Field[] = mavenAttributesFields;
-  diversityAttributesFields: Field[] = diversityAttributesFields;
+  maven: Maven;
 
   unsubscribeAll: Subject<null> = new Subject();
 
@@ -360,26 +308,27 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private dialog: MatDialog,
-    private router: ActivatedRoute) { }
+    private activatedRoute: ActivatedRoute,
+    private mediaProfileListService: MediaProfileListService
+  ) { }
 
   ngOnInit(): void {
-    this.mainInformation = this.updateFieldsWithValue(mainInformationFields, this.maven);
-    this.mavenAttributes = this.updateFieldsWithValue(mavenAttributesFields, this.maven);
-    this.diversityAttributes = this.updateFieldsWithValue(diversityAttributesFields, this.maven);
+    this.activatedRoute.data.subscribe((data) => {
+      this.maven = data.mediaProfile as Maven;
 
-    this.data = {
-      rows: MOCK_ROWS,
-      columns: COLUMNS
-    };
+      this.mainInformation = this.updateFieldsWithValue(mainInformationFields, this.maven);
+      this.mavenAttributes = this.updateFieldsWithValue(mavenAttributesFields, this.maven);
+      this.diversityAttributes = this.updateFieldsWithValue(diversityAttributesFields, this.maven);
+    })
 
-    this.router.queryParamMap.pipe(
+    this.activatedRoute.queryParamMap.pipe(
       takeUntil(this.unsubscribeAll)
     ).subscribe(paramMap => {
       const showList = paramMap.get('list');
       if (showList === 'true') {
         this.openListDialog();
       }
-    })
+    });
   }
 
   ngOnDestroy(): void {
@@ -388,15 +337,28 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
   }
 
   updateFieldsWithValue(fields: Field[], maven: Maven): Field[] {
-    return fields.map((field: any) => {
-      const key = field.id as keyof Maven;
-      const value = maven[key];
+    const formatters: Formatter = {
+      [MediaProfileFields.categories]: this.formatArray
+    };
+
+    return fields.map((field) => {
+      const propertyLens = Array.isArray(field.path)
+        ? lensPath(field.path)
+        : lensProp<Maven, MediaProfileFields>(field.path);
+
+      const value = view(propertyLens, maven);
+
+      const formattedValue = Boolean(formatters[field.id]) ? formatters[field.id]?.(value) : value;
 
       return {
         ...field,
-        value
+        value: formattedValue
       };
     });
+  }
+
+  formatArray(value: FieldArrayItem[]): string {
+    return value.map(({ name }) => name).join('; ');
   }
 
   openDialog(event: MouseEvent): void {
@@ -405,13 +367,31 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
   }
 
   openListDialog() {
-    this.dialog.open(DynamicListComponent, {
-      width: '900px',
-      panelClass: 'profile',
-      data: {
-        data: this.data,
-        tableStyles: this.tableStyles
-      }
-    });
+    this.mediaProfileListService
+      .fetchMediaProfiles('' + 11).
+      pipe(
+        takeUntil(this.unsubscribeAll)
+      )
+      .subscribe(data => {
+        const rows = data.map(data => {
+          return {
+            id: data.typeID,
+            data: { mavenid: data.mavenid, name: data.name, market: data.market }
+          }
+        });
+        this.data = {
+          rows,
+          columns: COLUMNS
+        };
+        
+        this.dialog.open(DynamicListComponent, {
+          width: '900px',
+          panelClass: 'profile',
+          data: {
+            data: this.data,
+            tableStyles: this.tableStyles
+          }
+        });
+      });
   }
 }

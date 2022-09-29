@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Observable, Subject, of } from 'rxjs';
-import { switchMap, takeUntil, filter, catchError } from 'rxjs/operators'; 
+import { switchMap, takeUntil, filter, catchError } from 'rxjs/operators';
 
 import { Criteries } from '@models/criteries.model';
 import { SearchKey, CreateSearchResponse, SearchQuery } from '@models/search.model';
@@ -15,6 +15,7 @@ import { ExcelService } from '@services/excel/excel.service';
 import { SEARCH_COLUMNS_CONFIG } from '../../data/constants';
 import { TABLE_COLUMNS } from '../../data/table-columns-config';
 import { CALL_HISTORY_MOCK } from '../../data/mock';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -37,12 +38,14 @@ export class SearchComponent implements OnInit {
   unsubscribeAll: Subject<null> = new Subject();
   isFetched: boolean = false;
   isFetching: boolean = false;
-  tableStyles: { [key:string]: string } = {};
+  tableStyles: { [key: string]: string } = {};
 
   constructor(
     private searchService: SearchService,
     private excelService: ExcelService,
-    @Inject(DOCUMENT) private document: Document
+    @Inject(DOCUMENT) private document: Document,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -62,8 +65,8 @@ export class SearchComponent implements OnInit {
         this.isFetched = false;
         this.tableData = { rows: [], columns: [] };
 
-        this.tableRowsInView = [ ...this.tableData.rows ];
-        this.tableColumnsInView = [ ...this.tableData.columns ];
+        this.tableRowsInView = [...this.tableData.rows];
+        this.tableColumnsInView = [...this.tableData.columns];
       });
   }
 
@@ -83,9 +86,9 @@ export class SearchComponent implements OnInit {
 
         this.tableData = { rows, columns }
         this.tableStyles = this.getTableStyles();
-  
-        this.tableRowsInView = [ ...this.tableData.rows ];
-        this.tableColumnsInView = [ ...this.tableData.columns ];
+
+        this.tableRowsInView = [...this.tableData.rows];
+        this.tableColumnsInView = [...this.tableData.columns];
       })
   }
 
@@ -94,13 +97,13 @@ export class SearchComponent implements OnInit {
 
     this.isFetching = true;
 
-    if(this.key === SearchEnum.callHistory) {
+    if (this.key === SearchEnum.callHistory) {
       this.setMockData();
 
-      return 
+      return
     }
 
-    const searchQuery: SearchQuery =  this.searchService.transformCriteriasToSearchOptions(this.criteries);
+    const searchQuery: SearchQuery = this.searchService.transformCriteriasToSearchOptions(this.criteries);
 
     this.searchService.createSearch(searchQuery, this.key)
       .pipe(
@@ -110,21 +113,21 @@ export class SearchComponent implements OnInit {
         next: (data) => {
           this.totalRows = data.length;
           this.tableData = this.searchService.transformSearchResultToTableData(data, searchQuery, this.key);
-  
-          this.tableRowsInView = [ ...this.tableData.rows ];
-          this.tableColumnsInView = [ ...this.tableData.columns ];
+
+          this.tableRowsInView = [...this.tableData.rows];
+          this.tableColumnsInView = [...this.tableData.columns];
           this.tableStyles = this.getTableStyles();
-  
+
           this.isFetching = false;
           this.isFetched = true;
         },
         error: () => {
           this.totalRows = 0;
           this.tableData = { rows: [], columns: [] }
-  
-          this.tableRowsInView = [ ...this.tableData.rows ];
-          this.tableColumnsInView = [ ...this.tableData.columns ];
-  
+
+          this.tableRowsInView = [...this.tableData.rows];
+          this.tableColumnsInView = [...this.tableData.columns];
+
           this.isFetching = false;
           this.isFetched = true;
         }
@@ -151,8 +154,8 @@ export class SearchComponent implements OnInit {
     const searchHeader = this.document.querySelector('.search-header') as Element;
     const criteriesContiner = this.document.querySelector('.criteries-container') as Element;
 
-    const { height: searchHeaderHeight } =  searchHeader.getBoundingClientRect();
-    const { height: criteriesContinerHeight } =  criteriesContiner.getBoundingClientRect();
+    const { height: searchHeaderHeight } = searchHeader.getBoundingClientRect();
+    const { height: criteriesContinerHeight } = criteriesContiner.getBoundingClientRect();
 
     const navBarHeight = 68;
     const marginAndPaddings = 200;
@@ -162,5 +165,11 @@ export class SearchComponent implements OnInit {
     return {
       height: tableWidth + 'px'
     };
+  }
+
+  onRowClick(row: Row): void {
+    console.log(row);
+
+    this.router.navigate([row.id], { relativeTo: this.route });
   }
 }
