@@ -1,8 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute } from '@angular/router';
 import { MediaProfileFields, MediaProfileFieldsLabels } from '@enums/media-profile.enum';
+import { SearchColumnsIdEnum, SearchColumnsEnum } from '@enums/search.enum';
 import { Maven, MavenFile } from '@models/maven.model';
-import { SpotTvListComponent } from '../spot-tv-list/spot-tv-list.component';
+import { Row, Column, Table } from '@models/table.model';
+import { Subject, takeUntil } from 'rxjs';
+import { DynamicListComponent } from '../../../core/modules/dynamic-list/dynamic-list.component';
 
 const mockMaven = {
   mavenId: 'KPOB-TV',
@@ -273,25 +277,114 @@ const filesColumnsConfig: FileColumn[] = [
 ];
 
 
+
+// list
+const MOCK_ROWS: Row[] = [
+  {
+    id: '1',
+    data: {
+      [SearchColumnsIdEnum.mavenid]: 'R40107',
+      [SearchColumnsIdEnum.name]: 'APEX Exchange Local Aggregate',
+      [SearchColumnsIdEnum.market]: 'National (USA)'
+    }
+  },
+  {
+    id: '2',
+    data: {
+      [SearchColumnsIdEnum.mavenid]: 'R30421',
+      [SearchColumnsIdEnum.name]: 'CIMX-FM',
+      [SearchColumnsIdEnum.market]: 'Detroit, MI'
+    }
+  },
+  {
+    id: '3',
+    data: {
+      [SearchColumnsIdEnum.mavenid]: 'R36230',
+      [SearchColumnsIdEnum.name]: 'iHeart Local Aggregate',
+      [SearchColumnsIdEnum.market]: 'National (USA)'
+    }
+  },
+  {
+    id: '4',
+    data: {
+      [SearchColumnsIdEnum.mavenid]: 'R21141',
+      [SearchColumnsIdEnum.name]: 'Joel Mccrea is also acting GSM (alias)',
+      [SearchColumnsIdEnum.market]: 'Des Moines-Ames, IA'
+    }
+  }
+];
+
+const COLUMNS: Column[] = [
+  {
+    id: SearchColumnsIdEnum.mavenid,
+    label: SearchColumnsEnum.mavenid,
+    width: 200
+  },
+  {
+    id: SearchColumnsIdEnum.name,
+    label: SearchColumnsEnum.name,
+    width: 200
+  },
+  {
+    id: SearchColumnsIdEnum.market,
+    label: SearchColumnsEnum.market,
+    width: 200
+  }
+];
+
 @Component({
   selector: 'app-spot-tv-media-profile',
   templateUrl: './spot-tv-media-profile.component.html',
   styleUrls: ['./spot-tv-media-profile.component.scss']
 })
-export class SpotTvMediaProfileComponent implements OnInit {
+export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
   @Input() maven: Maven = mockMaven;
+  title = 'Spot TV';
+  listButtonTitle = 'Spot TV List';
 
   mainInformation: Field[] = [];
   mavenAttributes: Field[] = [];
   diversityAttributes: Field[] = [];
   filesColumns: FileColumn[] = filesColumnsConfig;
 
-  constructor(private dialog: MatDialog) { }
+  mainInformationFields: Field[] = mainInformationFields;
+  mavenAttributesFields: Field[] = mavenAttributesFields;
+  diversityAttributesFields: Field[] = diversityAttributesFields;
+
+  unsubscribeAll: Subject<null> = new Subject();
+
+
+  // list
+  data: Table = { rows: [], columns: [] };
+  tableStyles: { [key: string]: string } = { height: '500px' }
+
+  constructor(
+    private dialog: MatDialog,
+    private router: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.mainInformation = this.updateFieldsWithValue(mainInformationFields, this.maven);
     this.mavenAttributes = this.updateFieldsWithValue(mavenAttributesFields, this.maven);
     this.diversityAttributes = this.updateFieldsWithValue(diversityAttributesFields, this.maven);
+
+    this.data = {
+      rows: MOCK_ROWS,
+      columns: COLUMNS
+    };
+
+    this.router.queryParamMap.pipe(
+      takeUntil(this.unsubscribeAll)
+    ).subscribe(paramMap => {
+      const showList = paramMap.get('list');
+      if (showList === 'true') {
+        this.openListDialog();
+      }
+    })
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next(null);
+    this.unsubscribeAll.complete();
   }
 
   updateFieldsWithValue(fields: Field[], maven: Maven): Field[] {
@@ -308,10 +401,17 @@ export class SpotTvMediaProfileComponent implements OnInit {
 
   openDialog(event: MouseEvent): void {
     event.stopPropagation();
+    this.openListDialog();
+  }
 
-    this.dialog.open(SpotTvListComponent, {
+  openListDialog() {
+    this.dialog.open(DynamicListComponent, {
       width: '900px',
-      panelClass: 'profile'
+      panelClass: 'profile',
+      data: {
+        data: this.data,
+        tableStyles: this.tableStyles
+      }
     });
   }
 }

@@ -1,0 +1,40 @@
+<div class="w-[16px] ml-auto">
+  <app-svg-icon
+    [name]="'cross'"
+    [stroke]="'none'"
+    [fill]="'#797979'"
+    class="cursor-pointer"
+    (click)="closeDialog()"
+  >
+  </app-svg-icon>
+</div>
+
+<div class="font-mont text-xl font-medium text-center mb-[20px]">
+  {{ tittle }}
+</div>
+
+<div class="max-w-[200px] mb-[20px]">
+  <app-input [placeholder]="'Search'" [styleType]="styleTypes.secondary">
+  </app-input>
+</div>
+
+<app-table
+  [data]="tableData"
+  [columnFilterVisible]="false"
+  [tableStyles]="tableStyles"
+>
+</app-table>
+
+<div class="flex items-center mt-[30px] bg-white rounded-b-md">
+  <button
+    class="border-regal-blue text-regal-blue font-medium rounded-md border-2 px-[15px] h-[30px] shadow-button mr-[30px] ml-auto"
+    (click)="closeDialog()"
+  >
+    Cancel
+  </button>
+  <button
+    class="text-light-gray bg-gray font-medium rounded-md border-0 px-[20px] h-[30px] cursor-not-allowed"
+  >
+    Ok
+  </button>
+</div>

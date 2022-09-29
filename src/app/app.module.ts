@@ -13,11 +13,12 @@ import { ToastrModule } from './ui-kit/toastr/toastr.module';
 import { SpinnerModule } from './ui-kit/spinner/spinner.module';
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
 import { SideNavService } from './core/services/side-nav.service';
+import { DynamicListModule } from './core/modules/dynamic-list/dynamic-list.module';
 
 @NgModule({
   declarations: [
-    AppComponent
-  ],
+    AppComponent,
+    ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -26,7 +27,8 @@ import { SideNavService } from './core/services/side-nav.service';
     LayoutModule,
     ToastrModule,
     SpinnerModule,
-    HomeModule
+    HomeModule,
+    DynamicListModule,
   ],
   providers: [
     MultilevelMenuService,
