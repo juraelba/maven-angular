@@ -76,11 +76,7 @@
         </div>
       </div>
       <div>
-        <div
-          *cdkVirtualFor="let row of rows; templateCacheSize: 0"
-          class="h-[45px] flex hover:bg-light-blue cursor-pointer"
-          (click)="rowClick($event, row)"
-        >
+        <div *cdkVirtualFor="let row of rows; templateCacheSize: 0" class="h-[45px] flex hover:bg-light-blue cursor-pointer" (click)="rowClick($event, row)">
           <div
             *ngFor="let column of columns"
             class="px-[20px] border-b border-light-gray flex items-center"

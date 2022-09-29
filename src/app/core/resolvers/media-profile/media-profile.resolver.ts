@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {
+  Router,
   Resolve,
   RouterStateSnapshot,
   ActivatedRouteSnapshot
@@ -19,7 +20,7 @@ export class MediaProfileResolver implements Resolve<Maven> {
   constructor(
     private mediaProfileService: MediaProfileService,
     private location: Location
-  ) { }
+  ) {}
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Maven> {
     const id = route.paramMap.get('id') as string;

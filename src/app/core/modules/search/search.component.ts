@@ -1,7 +1,8 @@
 import { Component, Input, OnInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { Observable, Subject, of } from 'rxjs';
-import { switchMap, takeUntil, filter, catchError } from 'rxjs/operators';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Subject, of } from 'rxjs';
+import { switchMap, takeUntil, filter } from 'rxjs/operators'; 
 
 import { Criteries } from '@models/criteries.model';
 import { SearchKey, CreateSearchResponse, SearchQuery } from '@models/search.model';
@@ -15,7 +16,6 @@ import { ExcelService } from '@services/excel/excel.service';
 import { SEARCH_COLUMNS_CONFIG } from '../../data/constants';
 import { TABLE_COLUMNS } from '../../data/table-columns-config';
 import { CALL_HISTORY_MOCK } from '../../data/mock';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
