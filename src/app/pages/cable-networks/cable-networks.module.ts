@@ -11,11 +11,13 @@ import { NameInputModule } from '@modules/name-input/name-input.module';
 import { CableNetworksRoutingModule } from './cable-networks-routing.module';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
+import { CableNetworkComponent } from './cable-network/cable-network.component';
 
 
 @NgModule({
   declarations: [
-    CableNetworksComponent
+    CableNetworksComponent,
+    CableNetworkComponent
   ],
   providers: [
     SelectedCriteriaService

@@ -21,6 +21,13 @@ interface Address {
   state: string;
 };
 
+interface CallHistory {
+  name: string,
+  startDate: null,
+  endDate: string,
+  dateRange: string
+}
+
 export interface Maven {
   name: string;
   id: string;
@@ -52,7 +59,7 @@ export interface Maven {
   target: string;
   files: MavenFile[];
   mediaPartners: string[];
-  callHistory: string;
+  callHistory: CallHistory[];
   haat: string;
   agl: string;
   amsl: string;

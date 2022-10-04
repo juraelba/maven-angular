@@ -14,6 +14,7 @@ import { SvgIconModule } from '@modules/svg-icon/svg-icon.module';
 import { InputModule } from '@modules/input/input.module';
 import { TableModule } from '@modules/table/table.module';
 import { SpotRadioListComponent } from './spot-radio-list/spot-radio-list.component';
+import { DynamicMediaProfileModule } from '@modules/dynamic-media-profile/dynamic-media-profile.module';
 
 
 @NgModule({
@@ -32,7 +33,8 @@ import { SpotRadioListComponent } from './spot-radio-list/spot-radio-list.compon
     SvgIconModule,
     MatDialogModule,
     InputModule,
-    TableModule
+    TableModule,
+    DynamicMediaProfileModule,
   ]
 })
 export class SpotRadioSearchModule { }

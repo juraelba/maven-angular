@@ -135,7 +135,10 @@
       </div>
     </div>
 
-    <div class="files shadow-simple rounded-md w-full p-[20px]">
+    <div
+      *ngIf="maven.files.length > 0"
+      class="files shadow-simple rounded-md w-full p-[20px]"
+    >
       <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
         Files
       </div>
@@ -187,12 +190,17 @@
       <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
         Call History
       </div>
-      <div class="flex">
-        <div *ngIf="!maven.callHistory" class="text-pri-gray font-lato">
+      <div class="flex flex-row justify-around">
+        <div
+          *ngIf="maven.callHistory.length === 0"
+          class="text-pri-gray font-lato"
+        >
           No call letters changes found.
         </div>
-        <div *ngIf="maven.callHistory">
-          {{ maven.callHistory }}
+        <div *ngFor="let history of maven.callHistory">
+          <div>
+            {{ history.name }}
+          </div>
         </div>
       </div>
     </div>
