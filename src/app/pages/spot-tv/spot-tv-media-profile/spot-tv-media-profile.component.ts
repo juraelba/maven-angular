@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { MediaProfileFields } from '@enums/media-profile.enum';
-import { SearchColumnsIdEnum, SearchColumnsEnum } from '@enums/search.enum';
 import { Maven } from '@models/maven.model';
 import { Column, Table } from '@models/table.model';
 import { MediaProfileListService } from '@services/media-profile-list/media-profile-list.service';
@@ -18,16 +17,12 @@ import { DynamicListComponent } from '../../../core/modules/dynamic-list/dynamic
   styleUrls: ['./spot-tv-media-profile.component.scss']
 })
 export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
-  title = 'Spot TV';
-  listButtonTitle = 'Spot TV List';
   profileConfig = profileConfig;
   mainInformation: Field[] = [];
   mavenAttributes: Field[] = [];
   diversityAttributes: Field[] = [];
   filesColumns: FileColumn[] = profileConfig.filesColumnsConfig;
   maven: Maven;
-
-
 
   // list table data
   data: Table = { rows: [], columns: [] };

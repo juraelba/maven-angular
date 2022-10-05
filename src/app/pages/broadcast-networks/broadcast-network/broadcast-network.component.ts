@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MediaProfileFields } from '@enums/media-profile.enum';
 import { SearchColumnsIdEnum } from '@enums/search.enum';
 import { Maven } from '@models/maven.model';
-import { Table, Column, Row } from '@models/table.model';
+import { Row, Table, Column } from '@models/table.model';
 import { DynamicListComponent } from '@modules/dynamic-list/dynamic-list.component';
 import { lensPath, lensProp, view } from 'ramda';
 import { Subject, takeUntil } from 'rxjs';
@@ -50,8 +50,8 @@ const mockMaven: Maven = {
   coordinates: '40 52\' 50\'\' N74 4\' 11\'\' W',
   certified: 'Not Diverse',
   classfied: 'Not Diverse',
-  fcc: 'Black',
-  target: 'None',
+  target: "Hispanic",
+  fcc: "Hispanic",
   files: [],
   mediaPartners: ['WABC-AM (Digital)'],
   callHistory: [],
@@ -97,11 +97,14 @@ const MOCK_ROWS: Row[] = [
   }
 ];
 @Component({
-  selector: 'app-cable-network',
-  templateUrl: './cable-network.component.html',
-  styleUrls: ['./cable-network.component.scss']
+  selector: 'app-broadcast-network',
+  templateUrl: './broadcast-network.component.html',
+  styleUrls: ['./broadcast-network.component.scss']
 })
-export class CableNetworkComponent implements OnInit {
+export class BroadcastNetworkComponent implements OnInit {
+
+  title = 'Broadcast Networks';
+  listButtonTitle = 'Broadcast Networks List';
   profileConfig = profileConfig;
   mainInformation: Field[] = [];
   mavenAttributes: Field[] = [];

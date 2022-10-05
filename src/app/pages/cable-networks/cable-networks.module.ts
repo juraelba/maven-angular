@@ -12,6 +12,7 @@ import { CableNetworksRoutingModule } from './cable-networks-routing.module';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { CableNetworkComponent } from './cable-network/cable-network.component';
+import { DynamicMediaProfileModule } from '@modules/dynamic-media-profile/dynamic-media-profile.module';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { CableNetworkComponent } from './cable-network/cable-network.component';
     InputModule,
     SelectModule,
     SearchModule,
-    NameInputModule
+    NameInputModule,
+    DynamicMediaProfileModule
   ]
 })
 export class CableNetworksModule { }

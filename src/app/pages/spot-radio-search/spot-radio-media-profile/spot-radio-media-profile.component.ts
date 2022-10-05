@@ -19,8 +19,6 @@ import { Field, FieldArrayItem, FileColumn, Formatter, profileConfig } from 'src
   styleUrls: ['./spot-radio-media-profile.component.scss']
 })
 export class SpotRadioMediaProfileComponent implements OnInit, OnDestroy {
-  title = 'Spot Radio';
-  listButtonTitle = 'Spot Radio List';
   radioProfileConfig = profileConfig;
   mainInformation: Field[] = [];
   mavenAttributes: Field[] = [];

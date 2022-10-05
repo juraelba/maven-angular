@@ -13,10 +13,13 @@ import { NameInputModule } from '@modules/name-input/name-input.module';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 import { BroadcastNetworksComponent } from './broadcast-networks.component';
+import { BroadcastNetworkComponent } from './broadcast-network/broadcast-network.component';
+import { DynamicMediaProfileModule } from '@modules/dynamic-media-profile/dynamic-media-profile.module';
 
 @NgModule({
   declarations: [
     BroadcastNetworksComponent,
+    BroadcastNetworkComponent,
   ],
   providers: [
     SelectedCriteriaService
@@ -30,7 +33,8 @@ import { BroadcastNetworksComponent } from './broadcast-networks.component';
     InputModule,
     SelectModule,
     SearchModule,
-    NameInputModule
+    NameInputModule,
+    DynamicMediaProfileModule
   ]
 })
 export class BroadcastNetworksModule { }

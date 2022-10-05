@@ -34,6 +34,7 @@ export class DynamicListComponent implements OnInit {
     if (this.data.tableStyles) {
       this.tableStyles = this.data.tableStyles;
     }
+
   }
 
   closeDialog(): void {

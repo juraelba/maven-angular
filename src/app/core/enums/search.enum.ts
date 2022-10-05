@@ -142,4 +142,6 @@ export enum SearchEnumTitles {
 export enum SearchMediaProfileEnumTitles {
   'spot-radio' = 'Spot Radio',
   'spot-tv' = 'Spot TV',
+  'broadcast-networks' = 'Broadcast Networks',
+  'cable-networks' = 'Cable Networks',
 };
