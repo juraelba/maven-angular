@@ -1,9 +1,11 @@
+import { Location } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { MediaProfileFields, MediaProfileFieldsLabels } from '@enums/media-profile.enum';
 import { SearchMediaProfileEnumTitles } from '@enums/search.enum';
 import { Maven, MavenFile } from '@models/maven.model';
 import { SearchMediaProfileTitleKey } from '@models/search.model';
+import { Row, Table } from '@models/table.model';
 
 interface Field {
   id: MediaProfileFields,
@@ -38,6 +40,9 @@ export class DynamicMediaProfileComponent implements OnInit {
   @Input() mavenAttributes: Field[];
   @Input() diversityAttributes: Field[];
   @Input() filesColumns: FileColumn[];
+  @Input() personnelTableData?: Table;
+  @Input() callHistoryTableData?: Table;
+  @Input() tableStyles: { [key: string]: string } = { height: '500px' }
 
   @Output() opeList = new EventEmitter();
 
@@ -45,6 +50,7 @@ export class DynamicMediaProfileComponent implements OnInit {
 
   constructor(
     private router: Router,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
@@ -55,5 +61,14 @@ export class DynamicMediaProfileComponent implements OnInit {
   openDialog(event: MouseEvent): void {
     event.stopPropagation();
     this.opeList.next(event);
+  }
+
+  backToSearch() {
+    this.location.back();
+  }
+
+  onRowClick(row: Row): void {
+    const searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
+    this.router.navigate([searchScreenKey, row.data.mavenid]);
   }
 }

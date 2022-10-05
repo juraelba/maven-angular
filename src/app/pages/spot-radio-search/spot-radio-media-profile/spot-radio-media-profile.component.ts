@@ -9,9 +9,11 @@ import { MediaProfileFields } from '@enums/media-profile.enum';
 import { MediaProfileListService } from '@services/media-profile-list/media-profile-list.service';
 import { Subject, takeUntil } from 'rxjs';
 import { DynamicListComponent } from '@modules/dynamic-list/dynamic-list.component';
-import { Column, Table } from '@models/table.model';
-import { COLUMNS } from 'src/app/core/configs/list-tagle.columns.config';
+import { Column, Row, Table } from '@models/table.model';
+import { COLUMNS } from 'src/app/core/configs/list-table.columns.config';
 import { Field, FieldArrayItem, FileColumn, Formatter, profileConfig } from 'src/app/core/configs/profile.config';
+import { PERSONNEL_COLUMNS } from 'src/app/core/configs/personnel.table.config';
+import { CALL_HISTORY_COLUMNS } from 'src/app/core/configs/call-history.table.columns.config';
 
 @Component({
   selector: 'app-spot-radio-media-profile',
@@ -26,10 +28,14 @@ export class SpotRadioMediaProfileComponent implements OnInit, OnDestroy {
   filesColumns: FileColumn[] = this.radioProfileConfig.filesColumnsConfig;
   maven: Maven;
 
+  personnelData: Table;
+  callHistoryData: Table;
+  tableStyles: { [key: string]: string } = { width: '100%', 'min-height': '200px' }
+
   // list table data
   data: Table = { rows: [], columns: [] };
-  tableStyles: { [key: string]: string } = { height: '500px' }
   columns: Column[] = COLUMNS;
+  dialogTableStyles: { [key: string]: string } = { height: '500px' }
 
   private unsubscribeAll: Subject<null> = new Subject();
 
@@ -45,6 +51,22 @@ export class SpotRadioMediaProfileComponent implements OnInit, OnDestroy {
       this.mainInformation = this.updateFieldsWithValue(this.radioProfileConfig.mainInformationFields, this.maven);
       this.mavenAttributes = this.updateFieldsWithValue(this.radioProfileConfig.mavenAttributesFields, this.maven);
       this.diversityAttributes = this.updateFieldsWithValue(this.radioProfileConfig.diversityAttributesFields, this.maven);
+
+      if (this.maven.people) {
+        const persons: Row[] = this.maven.people?.map(person => { return { id: person.mavenid, data: { ...person } } });
+        this.personnelData = {
+          rows: persons,
+          columns: PERSONNEL_COLUMNS
+        }
+      }
+
+      if (this.maven.callHistory) {
+        const callHistory: Row[] = this.maven.callHistory?.map(history => { return { id: history.name, data: { ...history } } });
+        this.callHistoryData = {
+          rows: callHistory,
+          columns: CALL_HISTORY_COLUMNS
+        }
+      }
     })
 
     this.activatedRoute.queryParamMap.pipe(
@@ -115,7 +137,7 @@ export class SpotRadioMediaProfileComponent implements OnInit, OnDestroy {
           panelClass: 'profile',
           data: {
             data: this.data,
-            tableStyles: this.tableStyles
+            tableStyles: this.dialogTableStyles
           }
         });
       });

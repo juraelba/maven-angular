@@ -8,7 +8,7 @@ import { Table, Column, Row } from '@models/table.model';
 import { DynamicListComponent } from '@modules/dynamic-list/dynamic-list.component';
 import { lensPath, lensProp, view } from 'ramda';
 import { Subject, takeUntil } from 'rxjs';
-import { COLUMNS } from 'src/app/core/configs/list-tagle.columns.config';
+import { COLUMNS } from 'src/app/core/configs/list-table.columns.config';
 import { profileConfig, Field, FileColumn, Formatter, FieldArrayItem } from 'src/app/core/configs/profile.config';
 
 const mockMaven: Maven = {

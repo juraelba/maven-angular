@@ -118,7 +118,7 @@ export class SearchService {
     return { searchOptions, columns };
   }
 
-  transformDiverseTargets(criteriaData: ComplexDataStructure): TransformedSearchData { 
+  transformDiverseTargets(criteriaData: ComplexDataStructure): TransformedSearchData {
     const { searchOptions, columns } = this.transformComplexData(criteriaData);
 
     return { searchOptions, columns, criteriaKey: 'diverseTargets' };
@@ -161,7 +161,7 @@ export class SearchService {
   transformCriteriaKey(key: SearchFiledsKey): (criteriaOptions: SelectOption[]) => TransformedSearchData {
     return (criteriaOptions) => {
       const { searchOptions } = this.transformOptions(criteriaOptions);
-    
+
       return { searchOptions, columns: {}, criteriaKey: SearchFiedlsEnum[key] };
     }
   }
@@ -195,7 +195,7 @@ export class SearchService {
         if(searchOptions) {
           acc.criteria[criteriaKey || key] = searchOptions;
         }
-        
+
 
         acc.columns = {
           ...acc.columns,
@@ -278,7 +278,7 @@ export class SearchService {
 
     return stringValue.toLowerCase() === target.toLowerCase();
   }
-  
+
   isValueNotEqual(value: unknown, target: string): boolean {
     const stringValue = `${ value }`;
 
@@ -328,7 +328,7 @@ export class SearchService {
   validateCell(filterOperator: FilterOperatorKey, filters: Filter[], cellValue: unknown): boolean {
     const method = filterOperator === FilterOperatorEnum.AND ? 'every' : 'some';
 
-    return filters.length 
+    return filters.length
       ? filters[method](({ textFilterType, value }) => this.validate(textFilterType, value, cellValue))
       : true;
   }
@@ -349,11 +349,11 @@ export class SearchService {
         if(cellANDFilters.length && !cellORFilters.length) {
           return isANDValid;
         }
-    
+
         if(cellORFilters.length && !cellANDFilters.length) {
           return isORValid;
         }
-    
+
         return isANDValid || isORValid;
       });
 

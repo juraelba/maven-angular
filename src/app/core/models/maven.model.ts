@@ -23,9 +23,24 @@ interface Address {
 
 interface CallHistory {
   name: string,
-  startDate: null,
+  startDate: string,
   endDate: string,
   dateRange: string
+}
+
+interface Person{
+    id: number,
+    officeID: number,
+    mavenid: string,
+    firstName: string,
+    lastName: string,
+    title: string,
+    phone: string,
+    fax: string,
+    mobile: string,
+    email: string,
+    roles: string,
+    name: string
 }
 
 export interface Maven {
@@ -65,4 +80,5 @@ export interface Maven {
   amsl: string;
   displayChannel: string;
   digitalChannel: string;
+  people?:Person[];
 };

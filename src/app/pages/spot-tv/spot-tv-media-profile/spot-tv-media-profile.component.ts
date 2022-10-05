@@ -3,11 +3,13 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { MediaProfileFields } from '@enums/media-profile.enum';
 import { Maven } from '@models/maven.model';
-import { Column, Table } from '@models/table.model';
+import { Column, Row, Table } from '@models/table.model';
 import { MediaProfileListService } from '@services/media-profile-list/media-profile-list.service';
 import { lensPath, lensProp, view } from 'ramda';
 import { Subject, takeUntil } from 'rxjs';
-import { COLUMNS } from 'src/app/core/configs/list-tagle.columns.config';
+import { CALL_HISTORY_COLUMNS } from 'src/app/core/configs/call-history.table.columns.config';
+import { COLUMNS } from 'src/app/core/configs/list-table.columns.config';
+import { PERSONNEL_COLUMNS } from 'src/app/core/configs/personnel.table.config';
 import { Field, FieldArrayItem, FileColumn, Formatter, profileConfig } from 'src/app/core/configs/profile.config';
 import { DynamicListComponent } from '../../../core/modules/dynamic-list/dynamic-list.component';
 
@@ -24,10 +26,15 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
   filesColumns: FileColumn[] = profileConfig.filesColumnsConfig;
   maven: Maven;
 
+  personnelData: Table;
+  callHistoryData: Table;
+  tableStyles: { [key: string]: string } = { width: '100%', 'min-height': '200px' }
+
   // list table data
   data: Table = { rows: [], columns: [] };
-  tableStyles: { [key: string]: string } = { height: '500px' }
   columns: Column[] = COLUMNS;
+  dialogTableStyles: { [key: string]: string } = { height: '500px' }
+
   private unsubscribeAll: Subject<null> = new Subject();
   constructor(
     private dialog: MatDialog,
@@ -42,6 +49,22 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
       this.mainInformation = this.updateFieldsWithValue(this.profileConfig.mainInformationFields, this.maven);
       this.mavenAttributes = this.updateFieldsWithValue(this.profileConfig.mavenAttributesFields, this.maven);
       this.diversityAttributes = this.updateFieldsWithValue(this.profileConfig.diversityAttributesFields, this.maven);
+
+      if (this.maven.people) {
+        const persons: Row[] = this.maven.people?.map(person => { return { id: person.mavenid, data: { ...person } } });
+        this.personnelData = {
+          rows: persons,
+          columns: PERSONNEL_COLUMNS
+        }
+      }
+
+      if (this.maven.callHistory) {
+        const callHistory: Row[] = this.maven.callHistory?.map(history => { return { id: history.name, data: { ...history } } });
+        this.callHistoryData = {
+          rows: callHistory,
+          columns: CALL_HISTORY_COLUMNS
+        }
+      }
     })
 
     this.activatedRoute.queryParamMap.pipe(
@@ -112,7 +135,7 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
           panelClass: 'profile',
           data: {
             data: this.data,
-            tableStyles: this.tableStyles
+            tableStyles: this.dialogTableStyles
           }
         });
       });
