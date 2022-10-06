@@ -11,7 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { DynamicListComponent } from '@modules/dynamic-list/dynamic-list.component';
 import { Column, Row, Table } from '@models/table.model';
 import { COLUMNS } from 'src/app/core/configs/list-table.columns.config';
-import { Field, FieldArrayItem, FileColumn, Formatter, profileConfig } from 'src/app/core/configs/profile.config';
+import { Field, FieldArrayItem, FileColumn, Formatter, spotRadioProfileConfig } from 'src/app/core/configs/profile.config';
 import { PERSONNEL_COLUMNS } from 'src/app/core/configs/personnel.table.config';
 import { CALL_HISTORY_COLUMNS } from 'src/app/core/configs/call-history.table.columns.config';
 
@@ -21,9 +21,9 @@ import { CALL_HISTORY_COLUMNS } from 'src/app/core/configs/call-history.table.co
   styleUrls: ['./spot-radio-media-profile.component.scss']
 })
 export class SpotRadioMediaProfileComponent implements OnInit, OnDestroy {
-  radioProfileConfig = profileConfig;
-  mainInformation: Field[] = [];
-  mavenAttributes: Field[] = [];
+  radioProfileConfig = spotRadioProfileConfig;
+  mainInformation: Field[][] = [];
+  mavenAttributes: Field[][] = [];
   diversityAttributes: Field[] = [];
   filesColumns: FileColumn[] = this.radioProfileConfig.filesColumnsConfig;
   maven: Maven;
@@ -48,8 +48,14 @@ export class SpotRadioMediaProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe((data) => {
       this.maven = data.mediaProfile as Maven;
-      this.mainInformation = this.updateFieldsWithValue(this.radioProfileConfig.mainInformationFields, this.maven);
-      this.mavenAttributes = this.updateFieldsWithValue(this.radioProfileConfig.mavenAttributesFields, this.maven);
+      this.radioProfileConfig.mainInformationFields.forEach((_, index) => {
+        this.mainInformation[index] = this.updateFieldsWithValue(this.radioProfileConfig.mainInformationFields[index], this.maven);
+      });
+
+      this.radioProfileConfig.mavenAttributesFields.forEach((_, index) => {
+        this.mavenAttributes[index] = this.updateFieldsWithValue(this.radioProfileConfig.mavenAttributesFields[index], this.maven);
+      });
+
       this.diversityAttributes = this.updateFieldsWithValue(this.radioProfileConfig.diversityAttributesFields, this.maven);
 
       if (this.maven.people) {
@@ -105,8 +111,8 @@ export class SpotRadioMediaProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  formatArray(value: FieldArrayItem[]): string {
-    return value.map(({ name }) => name).join('; ');
+  formatArray(value: FieldArrayItem[]): string[] {
+    return value.map(({ name }) => name);
   }
 
   openDialog(event: MouseEvent): void {

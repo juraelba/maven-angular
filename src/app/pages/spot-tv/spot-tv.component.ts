@@ -41,7 +41,7 @@ export class SpotTvComponent implements OnInit, OnDestroy {
         };
       });
 
-    
+
     this.listenSearchBarMenuActions();
   }
 
@@ -60,7 +60,7 @@ export class SpotTvComponent implements OnInit, OnDestroy {
         this.criteries = {}
       });
   }
-  
+
   onChange({ key, data }: SearchFiledChangeEvent) {
     this.criteries[key] = data;
   }

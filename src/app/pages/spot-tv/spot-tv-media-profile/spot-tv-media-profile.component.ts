@@ -10,7 +10,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { CALL_HISTORY_COLUMNS } from 'src/app/core/configs/call-history.table.columns.config';
 import { COLUMNS } from 'src/app/core/configs/list-table.columns.config';
 import { PERSONNEL_COLUMNS } from 'src/app/core/configs/personnel.table.config';
-import { Field, FieldArrayItem, FileColumn, Formatter, profileConfig } from 'src/app/core/configs/profile.config';
+import { Field, FieldArrayItem, FileColumn, Formatter, spotTvProfileConfig } from 'src/app/core/configs/profile.config';
 import { DynamicListComponent } from '../../../core/modules/dynamic-list/dynamic-list.component';
 
 @Component({
@@ -19,16 +19,16 @@ import { DynamicListComponent } from '../../../core/modules/dynamic-list/dynamic
   styleUrls: ['./spot-tv-media-profile.component.scss']
 })
 export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
-  profileConfig = profileConfig;
-  mainInformation: Field[] = [];
-  mavenAttributes: Field[] = [];
+  profileConfig = spotTvProfileConfig;
+  mainInformation: Field[][] = [];
+  mavenAttributes: Field[][] = [];
   diversityAttributes: Field[] = [];
-  filesColumns: FileColumn[] = profileConfig.filesColumnsConfig;
+  filesColumns: FileColumn[] = spotTvProfileConfig.filesColumnsConfig;
   maven: Maven;
 
   personnelData: Table;
   callHistoryData: Table;
-  tableStyles: { [key: string]: string } = { width: '100%', 'min-height': '200px' }
+  tableStyles: { [key: string]: string } = { 'min-height': '200px' }
 
   // list table data
   data: Table = { rows: [], columns: [] };
@@ -45,9 +45,14 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe((data) => {
       this.maven = data.mediaProfile as Maven;
+      this.profileConfig.mainInformationFields.forEach((_, index) => {
+        this.mainInformation[index] = this.updateFieldsWithValue(this.profileConfig.mainInformationFields[index], this.maven);
+      });
 
-      this.mainInformation = this.updateFieldsWithValue(this.profileConfig.mainInformationFields, this.maven);
-      this.mavenAttributes = this.updateFieldsWithValue(this.profileConfig.mavenAttributesFields, this.maven);
+      this.profileConfig.mavenAttributesFields.forEach((_, index) => {
+        this.mavenAttributes[index] = this.updateFieldsWithValue(this.profileConfig.mavenAttributesFields[index], this.maven);
+      });
+
       this.diversityAttributes = this.updateFieldsWithValue(this.profileConfig.diversityAttributesFields, this.maven);
 
       if (this.maven.people) {
@@ -103,8 +108,8 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  formatArray(value: FieldArrayItem[]): string {
-    return value.map(({ name }) => name).join('; ');
+  formatArray(value: FieldArrayItem[]): string[] {
+    return value.map(({ name }) => name);
   }
 
   openDialog(event: MouseEvent): void {

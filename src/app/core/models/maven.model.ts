@@ -1,3 +1,5 @@
+import { MediaTypeListItem } from "./list.model";
+
 export interface MavenFile {
   name: string;
   type: string;
@@ -28,21 +30,26 @@ interface CallHistory {
   dateRange: string
 }
 
-interface Person{
-    id: number,
-    officeID: number,
-    mavenid: string,
-    firstName: string,
-    lastName: string,
-    title: string,
-    phone: string,
-    fax: string,
-    mobile: string,
-    email: string,
-    roles: string,
-    name: string
+interface Person {
+  id: number,
+  officeID: number,
+  mavenid: string,
+  firstName: string,
+  lastName: string,
+  title: string,
+  phone: string,
+  fax: string,
+  mobile: string,
+  email: string,
+  roles: string,
+  name: string
 }
 
+interface Partner {
+  id: string;
+  name: string;
+  mediaType: MediaTypeListItem;
+}
 export interface Maven {
   name: string;
   id: string;
@@ -73,12 +80,12 @@ export interface Maven {
   fcc: string;
   target: string;
   files: MavenFile[];
-  mediaPartners: string[];
+  partners: Partner[]
   callHistory: CallHistory[];
   haat: string;
   agl: string;
   amsl: string;
   displayChannel: string;
   digitalChannel: string;
-  people?:Person[];
+  people?: Person[];
 };

@@ -8,17 +8,13 @@ export const CALL_HISTORY_COLUMNS: Column[] = [
   },
   {
     id: 'startDate',
-    label: 'Start Date',
+    label: 'Start date',
     width: 200
   },
   {
     id: 'endDate',
-    label: 'End Date',
+    label: 'End date',
     width: 200
   },
-  {
-    id: 'dateRange',
-    label: 'Date Range',
-    width: 200
-  },
+
 ]

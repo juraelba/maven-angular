@@ -36,42 +36,44 @@
       {{ maven.name }}
     </div>
     <div class="main-information__fields grid gap-[10px]">
-      <ng-container *ngFor="let field of mainInformation">
-        <ng-container *ngIf="field.value">
-          <div class="flex" [ngClass]="field.className || []">
-            <app-svg-icon
-              class=""
-              *ngIf="field.icon"
-              [name]="field.icon"
-              [stroke]="field.iconStroke || ''"
-              [fill]="field.iconFill || ''"
-            ></app-svg-icon>
-            <div *ngIf="!field.icon" class="font-lato text-pri-gray">
-              {{ field.label }} :
+      <div *ngFor="let columns of mainInformation">
+        <ng-container *ngFor="let field of columns">
+          <ng-container *ngIf="field.value">
+            <div class="flex" [ngClass]="field.className || []">
+              <app-svg-icon
+                class=""
+                *ngIf="field.icon"
+                [name]="field.icon"
+                [stroke]="field.iconStroke || ''"
+                [fill]="field.iconFill || ''"
+              ></app-svg-icon>
+              <div *ngIf="!field.icon" class="font-lato text-pri-gray">
+                {{ field.label }} :
+              </div>
+              <div
+                class="ml-[20px] text-pri-black font-lato"
+                [ngClass]="field.valueClassName || []"
+              >
+                {{ field.value }}
+              </div>
             </div>
-            <div
-              class="ml-[20px] text-pri-black font-lato"
-              [ngClass]="field.valueClassName || []"
-            >
-              {{ field.value }}
-            </div>
-          </div>
+          </ng-container>
         </ng-container>
-      </ng-container>
+      </div>
     </div>
   </div>
 
-  <div class="footer">
-    <div
-      class="maven-attributes shadow-simple rounded-md w-full my-[20px] p-[20px]"
-    >
-      <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
-        MAVEN Attributes
-      </div>
-      <div class="maven-attributes__fields grid gap-[10px]">
-        <ng-container *ngFor="let field of mavenAttributes">
+  <div
+    class="maven-attributes shadow-simple rounded-md w-full my-[20px] p-[20px]"
+  >
+    <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
+      MAVEN Attributes
+    </div>
+    <div class="maven-attributes__fields grid gap-[10px]">
+      <div *ngFor="let columns of mavenAttributes">
+        <ng-container *ngFor="let field of columns">
           <ng-container *ngIf="field.value">
-            <div class="flex" [ngClass]="field.className || []">
+            <div class="flex flex-row" [ngClass]="field.className || []">
               <app-svg-icon
                 class=""
                 *ngIf="field.icon"
@@ -87,7 +89,61 @@
                 {{ field.label }} :
               </div>
               <div
-                class="ml-[20px] text-pri-black font-lato basis-[75%]"
+                class="ml-[20px] flex flex-row flex-wrap content-center basis-[75%]"
+                *ngIf="isArray(field.value); else notarray"
+              >
+                <div
+                  *ngFor="let value of field.value; let i = index"
+                  class="text-pri-black font-lato my-1 mr-1"
+                  [ngClass]="field.valueClassName || []"
+                >
+                  <div [ngClass]="field.valueContentClassName || []">
+                    {{ value }}
+                  </div>
+                </div>
+              </div>
+              <ng-template #notarray>
+                <div
+                  class="ml-[20px] text-pri-black font-lato basis-[75%] my-1"
+                  [ngClass]="field.valueClassName || []"
+                >
+                  <div [ngClass]="field.valueContentClassName || []">
+                    {{ field.value }}
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer grid gap-[20px]">
+    <div class="diversity shadow-simple rounded-md w-full p-[20px]">
+      <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
+        Diversity
+      </div>
+      <div class="diversity__fields grid gap-[10px]">
+        <ng-container *ngFor="let field of diversityAttributes">
+          <ng-container *ngIf="field.value">
+            <div class="flex flex-row" [ngClass]="field.className || []">
+              <app-svg-icon
+                class=""
+                *ngIf="field.icon"
+                [name]="field.icon"
+                [stroke]="field.iconStroke || ''"
+                [fill]="field.iconFill || ''"
+              ></app-svg-icon>
+              <div
+                *ngIf="!field.icon"
+                class="font-lato text-pri-gray basis-[15%]"
+                [ngClass]="field.labelClassName || []"
+              >
+                {{ field.label+':' }}
+              </div>
+              <div
+                class="ml-[20px] text-pri-black font-lato basis-[85%]"
                 [ngClass]="field.valueClassName || []"
               >
                 <div [ngClass]="field.valueContentClassName || []">
@@ -100,50 +156,11 @@
       </div>
     </div>
 
-    <div class="grid gap-[20px]">
-      <div class="diversity shadow-simple rounded-md w-full p-[20px]">
-        <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
-          Diversity
-        </div>
-        <div class="diversity__fields grid gap-[10px]">
-          <ng-container *ngFor="let field of diversityAttributes">
-            <ng-container *ngIf="field.value">
-              <div class="flex" [ngClass]="field.className || []">
-                <app-svg-icon
-                  class=""
-                  *ngIf="field.icon"
-                  [name]="field.icon"
-                  [stroke]="field.iconStroke || ''"
-                  [fill]="field.iconFill || ''"
-                ></app-svg-icon>
-                <div
-                  *ngIf="!field.icon"
-                  class="font-lato text-pri-gray basis-[15%]"
-                  [ngClass]="field.labelClassName || []"
-                >
-                  {{ field.label }} :
-                </div>
-                <div
-                  class="ml-[20px] text-pri-black font-lato basis-[85%]"
-                  [ngClass]="field.valueClassName || []"
-                >
-                  <div [ngClass]="field.valueContentClassName || []">
-                    {{ field.value }}
-                  </div>
-                </div>
-              </div>
-            </ng-container>
-          </ng-container>
-        </div>
+    <div class="files shadow-simple rounded-md w-full p-[20px]">
+      <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
+        Files
       </div>
-
-      <div
-        *ngIf="maven.files.length > 0"
-        class="files shadow-simple rounded-md w-full p-[20px]"
-      >
-        <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
-          Files
-        </div>
+      <ng-container *ngIf="maven.files.length; else nofiles">
         <div class="header flex mb-[15px]">
           <div
             *ngFor="let column of filesColumns"
@@ -172,24 +189,28 @@
             </div>
           </div>
         </div>
-      </div>
+      </ng-container>
+      <ng-template #nofiles>
+        <div class="text-pri-gray font-lato">No files found.</div>
+      </ng-template>
+    </div>
 
-      <div class="diversity shadow-simple rounded-md w-full p-[20px]">
-        <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
-          Media Partners
-        </div>
-        <div class="flex">
-          <div
-            *ngFor="let mediaPartner of maven.mediaPartners"
-            class="text-regal-blue font-lato"
-          >
-            {{ mediaPartner }}
-          </div>
-        </div>
+    <div class="shadow-simple rounded-md w-full p-[20px]">
+      <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
+        Media Partners
+      </div>
+      <div class="text-pri-gray font-lato" *ngIf="!maven.partners.length">
+        No partners found
+      </div>
+      <div
+        *ngFor="let mediaPartner of maven.partners"
+        class="text-regal-blue font-lato"
+      >
+        {{ mediaPartner.name }}
       </div>
     </div>
 
-    <div class="diversity shadow-simple rounded-md w-full p-[20px] my-5">
+    <div class="shadow-simple rounded-md w-full p-[20px]">
       <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
         Call History
       </div>
@@ -207,21 +228,22 @@
         </div>
       </ng-template>
     </div>
+  </div>
 
-    <div
-      *ngIf="!!personnelTableData"
-      class="diversity shadow-simple rounded-md w-full p-[20px] my-5"
-    >
-      <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
-        Personnel
-      </div>
-      <app-table
-        [data]="personnelTableData"
-        [columnFilterVisible]="false"
-        [tableStyles]="tableStyles"
-        (onRowClick)="onRowClick($event)"
-      >
-      </app-table>
+  <div class="shadow-simple rounded-md w-full p-[20px] my-5">
+    <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
+      Personnel
     </div>
+    <app-table
+      *ngIf="!!personnelTableData && maven.partners.length; else noPersonnel"
+      [data]="personnelTableData"
+      [columnFilterVisible]="false"
+      [tableStyles]="tableStyles"
+      (onRowClick)="onRowClick($event)"
+    >
+    </app-table>
+    <ng-template #noPersonnel>
+      <div class="text-pri-gray font-lato">No personnel found.</div>
+    </ng-template>
   </div>
 </ng-container>

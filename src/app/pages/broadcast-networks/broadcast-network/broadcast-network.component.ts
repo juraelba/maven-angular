@@ -9,7 +9,7 @@ import { DynamicListComponent } from '@modules/dynamic-list/dynamic-list.compone
 import { lensPath, lensProp, view } from 'ramda';
 import { Subject, takeUntil } from 'rxjs';
 import { COLUMNS } from 'src/app/core/configs/list-table.columns.config';
-import { profileConfig, Field, FileColumn, Formatter, FieldArrayItem } from 'src/app/core/configs/profile.config';
+import { spotTvProfileConfig, Field, FileColumn, Formatter, FieldArrayItem } from 'src/app/core/configs/profile.config';
 
 const mockMaven: Maven = {
   name: 'WABC-AM',
@@ -53,7 +53,7 @@ const mockMaven: Maven = {
   target: "Hispanic",
   fcc: "Hispanic",
   files: [],
-  mediaPartners: ['WABC-AM (Digital)'],
+  partners: [],
   callHistory: [],
   haat: 'sas',
   agl: '',
@@ -105,11 +105,11 @@ export class BroadcastNetworkComponent implements OnInit {
 
   title = 'Broadcast Networks';
   listButtonTitle = 'Broadcast Networks List';
-  profileConfig = profileConfig;
-  mainInformation: Field[] = [];
-  mavenAttributes: Field[] = [];
+  profileConfig = spotTvProfileConfig;
+  mainInformation: Field[][] = [];
+  mavenAttributes: Field[][] = [];
   diversityAttributes: Field[] = [];
-  filesColumns: FileColumn[] = profileConfig.filesColumnsConfig;
+  filesColumns: FileColumn[] = spotTvProfileConfig.filesColumnsConfig;
   maven: Maven = mockMaven;
 
   // list table data
@@ -123,8 +123,14 @@ export class BroadcastNetworkComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.mainInformation = this.updateFieldsWithValue(this.profileConfig.mainInformationFields, this.maven);
-    this.mavenAttributes = this.updateFieldsWithValue(this.profileConfig.mavenAttributesFields, this.maven);
+    this.mainInformation.forEach((_, index) => {
+      this.mainInformation[index] = this.updateFieldsWithValue(this.profileConfig.mainInformationFields[index], this.maven);
+    });
+
+    this.mainInformation.forEach((_, index) => {
+      this.mavenAttributes[index] = this.updateFieldsWithValue(this.profileConfig.mavenAttributesFields[index], this.maven);
+    });
+
     this.diversityAttributes = this.updateFieldsWithValue(this.profileConfig.diversityAttributesFields, this.maven);
 
     this.activatedRoute.queryParamMap.pipe(
@@ -152,7 +158,7 @@ export class BroadcastNetworkComponent implements OnInit {
         ? lensPath(field.path)
         : lensProp<Maven, MediaProfileFields>(field.path);
 
-      const value = view(propertyLens, maven);
+      const value = view(propertyLens, maven);      
 
       const formattedValue = Boolean(formatters[field.id]) ? formatters[field.id]?.(value) : value;
 
@@ -163,8 +169,8 @@ export class BroadcastNetworkComponent implements OnInit {
     });
   }
 
-  formatArray(value: FieldArrayItem[]): string {
-    return value.map(({ name }) => name).join('; ');
+  formatArray(value: FieldArrayItem[]): string[] {    
+    return value.map(({ name }) => name);
   }
 
   openDialog(event: MouseEvent): void {

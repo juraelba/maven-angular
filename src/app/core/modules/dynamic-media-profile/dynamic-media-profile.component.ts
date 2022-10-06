@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { MediaProfileFields, MediaProfileFieldsLabels } from '@enums/media-profile.enum';
 import { SearchMediaProfileEnumTitles } from '@enums/search.enum';
@@ -31,13 +31,14 @@ interface FileColumn {
 @Component({
   selector: 'app-dynamic-media-profile',
   templateUrl: './dynamic-media-profile.component.html',
-  styleUrls: ['./dynamic-media-profile.component.scss']
+  styleUrls: ['./dynamic-media-profile.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class DynamicMediaProfileComponent implements OnInit {
 
   @Input() maven: Maven;
-  @Input() mainInformation: Field[];
-  @Input() mavenAttributes: Field[];
+  @Input() mainInformation: Field[][];
+  @Input() mavenAttributes: Field[][];
   @Input() diversityAttributes: Field[];
   @Input() filesColumns: FileColumn[];
   @Input() personnelTableData?: Table;
@@ -56,6 +57,8 @@ export class DynamicMediaProfileComponent implements OnInit {
   ngOnInit(): void {
     const searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
     this.tittle = SearchMediaProfileEnumTitles[searchScreenKey];
+    console.log(this.mavenAttributes);
+    
   }
 
   openDialog(event: MouseEvent): void {
@@ -70,5 +73,9 @@ export class DynamicMediaProfileComponent implements OnInit {
   onRowClick(row: Row): void {
     const searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
     this.router.navigate([searchScreenKey, row.data.mavenid]);
+  }
+
+  isArray(value:any):boolean{
+    return Array.isArray(value);
   }
 }
