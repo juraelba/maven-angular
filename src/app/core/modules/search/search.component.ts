@@ -2,10 +2,10 @@ import { Component, Input, OnInit, Inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, of } from 'rxjs';
-import { switchMap, takeUntil, filter } from 'rxjs/operators'; 
+import { switchMap, takeUntil, filter } from 'rxjs/operators';
 
 import { Criteries } from '@models/criteries.model';
-import { SearchKey, CreateSearchResponse, SearchQuery } from '@models/search.model';
+import { SearchKey, CreateSearchResponse, SearchQuery, SearchMediaProfileTitleKey } from '@models/search.model';
 import { Table, TableConfig, Row, Column } from '@models/table.model';
 
 import { SearchActionTypesEnum, SearchExcelFileNamesEnum, SearchEnum } from '@enums/search.enum';
@@ -16,6 +16,7 @@ import { ExcelService } from '@services/excel/excel.service';
 import { SEARCH_COLUMNS_CONFIG } from '../../data/constants';
 import { TABLE_COLUMNS } from '../../data/table-columns-config';
 import { CALL_HISTORY_MOCK } from '../../data/mock';
+import { LocalStorageService } from '@services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-search',
@@ -40,16 +41,32 @@ export class SearchComponent implements OnInit {
   isFetching: boolean = false;
   tableStyles: { [key: string]: string } = {};
 
+  searchScreenKey: SearchMediaProfileTitleKey;
   constructor(
     private searchService: SearchService,
     private excelService: ExcelService,
     @Inject(DOCUMENT) private document: Document,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private localStorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
     this.config = SEARCH_COLUMNS_CONFIG;
+
+    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
+
+    const localTableData = this.localStorageService.get(this.searchScreenKey);
+    if (!!localTableData) {
+      this.localStorageService.set(this.searchScreenKey, JSON.stringify(this.tableData))
+      const parsedTableData = JSON.parse(localTableData);
+      this.tableData = parsedTableData;
+      this.isFetched = parsedTableData.rows.length > 0;
+      this.totalRows = parsedTableData.rows.length;
+      this.tableRowsInView = [...this.tableData.rows];
+      this.tableColumnsInView = [...this.tableData.columns];
+      this.tableStyles = this.getTableStyles();
+    }
 
     this.listenSearchBarMenuActions();
   }
@@ -64,7 +81,6 @@ export class SearchComponent implements OnInit {
         this.totalRows = 0;
         this.isFetched = false;
         this.tableData = { rows: [], columns: [] };
-
         this.tableRowsInView = [...this.tableData.rows];
         this.tableColumnsInView = [...this.tableData.columns];
       });
@@ -120,6 +136,12 @@ export class SearchComponent implements OnInit {
 
           this.isFetching = false;
           this.isFetched = true;
+          if (this.tableData.rows.length > 0) {
+            localStorage.setItem(this.searchScreenKey, JSON.stringify({
+              rows:this.tableData.rows,
+              columns:this.tableData.columns
+            }))
+          }
         },
         error: () => {
           this.totalRows = 0;
@@ -168,8 +190,6 @@ export class SearchComponent implements OnInit {
   }
 
   onRowClick(row: Row): void {
-    console.log(row);
-
     this.router.navigate([row.id], { relativeTo: this.route });
   }
 }

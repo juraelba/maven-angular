@@ -11,6 +11,7 @@ import { ListKeys } from '@enums/lists.enum';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { SearchService } from '@services/search/search.service';
+import { LocalStorageService } from '@services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-spot-tv',
@@ -26,7 +27,8 @@ export class SpotTvComponent implements OnInit, OnDestroy {
 
   constructor(
     private selectedCriteriService: SelectedCriteriaService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private localsStorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {

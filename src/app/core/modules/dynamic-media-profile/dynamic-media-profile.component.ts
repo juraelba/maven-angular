@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 import { MediaProfileFields, MediaProfileFieldsLabels } from '@enums/media-profile.enum';
@@ -48,17 +47,14 @@ export class DynamicMediaProfileComponent implements OnInit {
   @Output() opeList = new EventEmitter();
 
   tittle: string;
-
+  searchScreenKey: SearchMediaProfileTitleKey;
   constructor(
     private router: Router,
-    private location: Location
   ) { }
 
   ngOnInit(): void {
-    const searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
-    this.tittle = SearchMediaProfileEnumTitles[searchScreenKey];
-    console.log(this.mavenAttributes);
-    
+    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
+    this.tittle = SearchMediaProfileEnumTitles[this.searchScreenKey];
   }
 
   openDialog(event: MouseEvent): void {
@@ -67,7 +63,7 @@ export class DynamicMediaProfileComponent implements OnInit {
   }
 
   backToSearch() {
-    this.location.back();
+    this.router.navigate([this.searchScreenKey])
   }
 
   onRowClick(row: Row): void {
@@ -75,7 +71,7 @@ export class DynamicMediaProfileComponent implements OnInit {
     this.router.navigate([searchScreenKey, row.data.mavenid]);
   }
 
-  isArray(value:any):boolean{
+  isArray(value: any): boolean {
     return Array.isArray(value);
   }
 }
