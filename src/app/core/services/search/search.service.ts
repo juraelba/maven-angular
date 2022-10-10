@@ -12,7 +12,8 @@ import {
   CreateSearchResponse,
   SearchResponse,
   SearchQuery,
-  SearchOption
+  SearchOption,
+  SearchMediaProfileTitleKey
 } from '@models/search.model';
 import { Table, Row, TextFilterKey, Filter, FilterOperatorKey, ColumnAutoFilterData, ColumnAutoFilterValue, Column } from '@models/table.model';
 import { SelectOption } from '@models/select.model';
@@ -52,7 +53,7 @@ export class SearchService {
   private subject$ = new Subject<SearchAction>();
 
   searchBarEvents$ = this.subject$.asObservable();
-
+  searchResults: { [key: string]: Table } = {}
   constructor(
     private http: HttpClient
   ) { }
@@ -62,7 +63,7 @@ export class SearchService {
   }
 
   createSearch({ columns, criteria }: SearchQuery, key: SearchKey): Observable<CreateSearchResponse> {
-    const url = environment.api + `/search/${ key }`;
+    const url = environment.api + `/search/${key}`;
 
     const body = {
       id: 0,
@@ -74,7 +75,7 @@ export class SearchService {
   }
 
   executeSearch(id: number): Observable<SearchResponse> {
-    const url = `${ environment.api }/savedsearch/${ id }/run`;
+    const url = `${environment.api}/savedsearch/${id}/run`;
 
     return this.http.get<SearchResponse>(url);
   }
@@ -93,8 +94,8 @@ export class SearchService {
   }
 
   transformToColumns(selectedCheckboxes: SelectedCheckboxes): SearchColumns {
-    return compose<[SelectedCheckboxes], [ string, boolean ][], SearchColumns>(
-      reduce<[ string, boolean ], SearchColumns>((acc, [ key, value ]) => {
+    return compose<[SelectedCheckboxes], [string, boolean][], SearchColumns>(
+      reduce<[string, boolean], SearchColumns>((acc, [key, value]) => {
         const columnKey = this.getColumnByKey(key);
 
         acc[columnKey] = value;
@@ -187,12 +188,12 @@ export class SearchService {
     }
 
     return compose<[Criteries], [string, Criteries][], SearchQuery>(
-      reduce<[string, Criteries], SearchQuery>((acc, [ key, value ]) => {
+      reduce<[string, Criteries], SearchQuery>((acc, [key, value]) => {
         const transformer = trasformers[key] || trasformers.default;
 
         const { columns, searchOptions, criteriaKey } = transformer(value);
 
-        if(searchOptions) {
+        if (searchOptions) {
           acc.criteria[criteriaKey || key] = searchOptions;
         }
 
@@ -213,23 +214,23 @@ export class SearchService {
     const columnIds = Object.keys(omitedColumns) as SearchColumnsKey[];
 
     return columnIds.map((columnId) => ({
-        id: columnId,
-        label: SearchColumnsEnum[columnId] || columnId,
-        width: 200
-      }));
+      id: columnId,
+      label: SearchColumnsEnum[columnId] || columnId,
+      width: 200
+    }));
   }
 
   getColumns(searchResult: SearchResponse, searchQuery: SearchQuery, searchKey: SearchKey): Column[] {
     const configColumns = TABLE_COLUMNS[searchKey];
 
-    if(isEmpty(configColumns)) {
+    if (isEmpty(configColumns)) {
       return this.getColumnsFromSearchResult(searchResult);
     }
 
     return configColumns.reduce<Column[]>((acc, { id, label, predicator }) => {
       const columnValidator = predicator || always(true);
 
-      if(columnValidator(searchQuery)) {
+      if (columnValidator(searchQuery)) {
         acc.push({ id, label, width: 200 })
       }
 
@@ -274,13 +275,13 @@ export class SearchService {
   }
 
   isValueEquals(value: unknown, target: string): boolean {
-    const stringValue = `${ value }`;
+    const stringValue = `${value}`;
 
     return stringValue.toLowerCase() === target.toLowerCase();
   }
 
   isValueNotEqual(value: unknown, target: string): boolean {
-    const stringValue = `${ value }`;
+    const stringValue = `${value}`;
 
     return stringValue.toLowerCase() !== target.toLowerCase();
   }
@@ -346,11 +347,11 @@ export class SearchService {
         const isANDValid = this.validateCell(FilterOperatorEnum.AND, cellANDFilters, cellValue);
         const isORValid = this.validateCell(FilterOperatorEnum.OR, cellORFilters, cellValue);
 
-        if(cellANDFilters.length && !cellORFilters.length) {
+        if (cellANDFilters.length && !cellORFilters.length) {
           return isANDValid;
         }
 
-        if(cellORFilters.length && !cellANDFilters.length) {
+        if (cellORFilters.length && !cellANDFilters.length) {
           return isORValid;
         }
 
@@ -363,7 +364,7 @@ export class SearchService {
 
   mapFilters(filters: ColumnAutoFilterData): { [key: string]: Filter[] } {
     return compose<[ColumnAutoFilterData], [string, ColumnAutoFilterValue][], { [key: string]: Filter[] }>(
-      reduce<[string, ColumnAutoFilterValue], { [key: string]: Filter[] }>((acc, [ key, value ]) => {
+      reduce<[string, ColumnAutoFilterValue], { [key: string]: Filter[] }>((acc, [key, value]) => {
         acc[key] = value.filters;
 
         return acc;

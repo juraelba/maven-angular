@@ -37,7 +37,7 @@ export class SelectComponent implements OnInit {
   @Input() panelOpen: boolean;
   @Input() grouping: boolean = true;
   @Input() customGrouping: boolean = false;
-  @Input() valueContainerWidth: string = '100%';
+  @Input() valueContainerWidth: string = '170px';
   @Input() sort: boolean = true;
   @Input() isArrowIconVisible: boolean = true;
 
@@ -87,11 +87,11 @@ export class SelectComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes?.options?.currentValue) {
+    if (changes?.options?.currentValue) {
       this.setOptions(changes?.options?.currentValue || []);
     }
 
-    if(typeof changes.panelOpen !== 'undefined') {
+    if (typeof changes.panelOpen !== 'undefined') {
       this.isOpened = changes.panelOpen.currentValue;
     }
   }
@@ -102,11 +102,11 @@ export class SelectComponent implements OnInit {
   }
 
   setOptions(options: SelectOption[]): void {
-    const transformedOptions = this.customGrouping ? options: this.transformOptions(options);
+    const transformedOptions = this.customGrouping ? options : this.transformOptions(options);
     const sortedOptions = this.sort ? this.sortOptionsByLabel(transformedOptions) : transformedOptions;
 
-    this.options = [ ...sortedOptions ];
-    this.dropdownOptions = [ ...sortedOptions ];
+    this.options = [...sortedOptions];
+    this.dropdownOptions = [...sortedOptions];
     this.selected = sortedOptions.filter(({ selected }) => selected);
     this.allSelected = this.selected.length === this.options.length;
   }
@@ -133,7 +133,7 @@ export class SelectComponent implements OnInit {
   }
 
   sortOptionsByLabel(options: SelectOption[]): SelectOption[] {
-    return [ ...options].sort((a, b) => {
+    return [...options].sort((a, b) => {
       if (a.label > b.label) {
         return 1;
       }
@@ -172,10 +172,10 @@ export class SelectComponent implements OnInit {
     const width = this.selectContainer.nativeElement.getBoundingClientRect().width;
 
     this.isOpened = false;
-    this.valueContainerWidth = `${ width-60 }px`;
-    this.selected = [ ...this.temporarySelected ];
+    this.valueContainerWidth = `${width - 60}px`;
+    this.selected = [...this.temporarySelected];
     const selected = this.dropdownOptions.filter(({ selected }) => selected);
-  
+
     this.applyChanges.emit(selected);
     this.closeMenu.emit();
   }
@@ -186,8 +186,8 @@ export class SelectComponent implements OnInit {
     this.isOpened = !this.isOpened;
 
     this.selectInpuClick.emit({ event, isOpened: this.isOpened });
-  
-    if(this.isOpened) {
+
+    if (this.isOpened) {
       this.dropdownOptions = this.updateOptionsWithSelected(this.options, this.selected);
     }
   }
@@ -195,7 +195,7 @@ export class SelectComponent implements OnInit {
   toggleSelectOption(event: MouseEvent, option: SelectOption): void {
     event.stopPropagation();
 
-    if(this.multiple) {
+    if (this.multiple) {
       this.toggleMultipleSelectOption(option);
     } else {
       this.toggleSingleSelectOption(option);
@@ -206,7 +206,7 @@ export class SelectComponent implements OnInit {
   toggleSingleSelectOption(option: SelectOption): void {
     this.dropdownOptions = this.dropdownOptions.map((dropdownOption) => {
       const selected = dropdownOption.id === option.id ? true : false
-    
+
       return {
         ...dropdownOption,
         selected
@@ -219,7 +219,7 @@ export class SelectComponent implements OnInit {
       const selected = dropdownOption.id === option.id
         ? !option.selected
         : dropdownOption.selected;
-    
+
       return {
         ...dropdownOption,
         selected
@@ -235,14 +235,14 @@ export class SelectComponent implements OnInit {
 
     this.allSelected = !this.allSelected;
 
-    if(this.allSelected) {
+    if (this.allSelected) {
       this.inputChange$.next('');
     }
 
     const selectedOptions = this.options.map((option) => ({ ...option, selected: this.allSelected }));
 
-    this.temporarySelected = this.allSelected ? [ ...selectedOptions ] : [];
-    this.dropdownOptions = [ ...selectedOptions ];
+    this.temporarySelected = this.allSelected ? [...selectedOptions] : [];
+    this.dropdownOptions = [...selectedOptions];
   }
 
   isNewGroupLetter(prevOption: SelectOption | undefined, currentOption: SelectOption): boolean {
@@ -274,7 +274,7 @@ export class SelectComponent implements OnInit {
     this.temporarySelected = [];
     this.isOpened = false;
 
-    this.dropdownOptions = [ ...this.options ];
+    this.dropdownOptions = [...this.options];
     this.allSelected = this.isAllSelected(this.options);
 
     this.closeMenu.emit();

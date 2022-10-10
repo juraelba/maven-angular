@@ -14,6 +14,8 @@ import { SelectedCriteriaService } from '@services/selected-criteria/selected-cr
 import { SearchService } from '@services/search/search.service';
 
 import { SelectComponent } from '@modules/select/select.component';
+import { Router } from '@angular/router';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
 
 @Component({
   selector: 'app-language-pick-list',
@@ -33,19 +35,26 @@ export class LanguagePickListComponent implements OnInit {
   panelOpen: boolean = false;
   unsubscribeAll: Subject<null> = new Subject();
 
+    searchScreenKey: SearchMediaProfileTitleKey;
   constructor(
     private listsService: ListsService,
     private selectedCriteriaService: SelectedCriteriaService,
-    private searchService: SearchService
+    private searchService: SearchService,
+        private router: Router,
   ) { }
 
   ngOnInit(): void {
+        this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
     this.listsService.getOptionsData(ListKeys.languages2)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
       .subscribe((options: SelectOption[]) => {
         this.options = options;
+        const selected = this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.languages2]
+        if (selected) {
+          this.change.emit({ key: ListKeys.languages2, data: selected });
+        }
       });
 
     this.selectedCriteriaService.selectedCriteria$
@@ -86,7 +95,7 @@ export class LanguagePickListComponent implements OnInit {
     event.stopPropagation();
 
     const selected = this.listsService.getSelectedOptions(this.options);
-  
+
     this.isLanguage = !this.isLanguage;
     this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.languages2);
     this.value = this.listsService.getSelectInputValue(selected, ListLabels.languages2);
@@ -104,7 +113,7 @@ export class LanguagePickListComponent implements OnInit {
     const values = this.listsService.getOptionValues(options);
 
     this.value = this.listsService.getSelectInputValue(options, ListLabels.languages2);
-    this.width = `${ width-80 }px`;
+    this.width = `${width - 80}px`;
 
     this.options = this.listsService.updateOptionsWithSelected(this.options, values);
     this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.languages2);
@@ -116,7 +125,7 @@ export class LanguagePickListComponent implements OnInit {
 
     this.change.emit({ key: ListKeys.languages2, data: languageData });
   }
-  
+
   onClear(): void {
     this.options = this.listsService.updateOptionsWithSelected(this.options, []);
     this.isLanguage = false;
@@ -134,7 +143,7 @@ export class LanguagePickListComponent implements OnInit {
   onSelectClick({ event }: any): void {
     const isTargetCheckbox = event.path.some((item: Element) => item?.classList?.contains('checkbox'));
 
-    if(isTargetCheckbox) {
+    if (isTargetCheckbox) {
       return;
     }
 

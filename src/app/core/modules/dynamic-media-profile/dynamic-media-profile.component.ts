@@ -62,8 +62,8 @@ export class DynamicMediaProfileComponent implements OnInit {
     this.opeList.next(event);
   }
 
-  backToSearch() {
-    this.router.navigate([this.searchScreenKey])
+  backToSearch(event: any): void {
+    this.router.navigate([this.searchScreenKey]);
   }
 
   onRowClick(row: Row): void {

@@ -1,15 +1,26 @@
 <app-search [title]="'Spot TV Search'" [criteries]="criteries" [key]="key">
   <div class="grid-container grid gap-5 mb-[40px]">
-    <app-name-input class="col-start-1 col-end-3" (changeData)="onChange($event)"></app-name-input>
+    <app-name-input
+      class="col-start-1 col-end-3"
+      (changeData)="onChange($event)"
+    ></app-name-input>
 
     <div class="flex items-center col-start-3 col-end-5">
-      <app-checkbox [checked]="criteries['nonComms']" (change)="onCheckboxChange('nonComms', $event)"></app-checkbox>
+      <app-checkbox
+        [checked]="criteries['nonComms']"
+        (change)="onCheckboxChange('nonComms', $event)"
+      ></app-checkbox>
       <span class="ml-[10px] font-lato text-pri-black">Include non-comms</span>
     </div>
 
     <app-dma-markets (change)="onChange($event)"></app-dma-markets>
-    <app-networks-pick-list (change)="onChange($event)"></app-networks-pick-list>
+    <app-networks-pick-list
+      (change)="onChange($event)"
+    ></app-networks-pick-list>
     <app-bands-pick-list (change)="onChange($event)"></app-bands-pick-list>
-    <app-owners-pick-list (change)="onChange($event)" [listUrlKey]="ownerListUrlKey"></app-owners-pick-list>
+    <app-owners-pick-list
+      (change)="onChange($event)"
+      [listUrlKey]="ownerListUrlKey"
+    ></app-owners-pick-list>
   </div>
 </app-search>

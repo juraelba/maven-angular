@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { map, takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
@@ -11,29 +11,29 @@ import { ListKeys } from '@enums/lists.enum';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { SearchService } from '@services/search/search.service';
-import { LocalStorageService } from '@services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-spot-tv',
   templateUrl: './spot-tv.component.html',
-  styleUrls: ['./spot-tv.component.scss']
+  styleUrls: ['./spot-tv.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpotTvComponent implements OnInit, OnDestroy {
-  criteries: Criteries = {};
   key: SearchKey = SearchEnum['spot-tv'];
-  unsubscribeAll: Subject<null> = new Subject();
+  criteries: Criteries = this.selectedCriteriaService.criteries?.[this.key] ?? {};
 
   ownerListUrlKey: ListUrlsKey = ListKeys.owners11;
 
+  private unsubscribeAll: Subject<null> = new Subject();
   constructor(
-    private selectedCriteriService: SelectedCriteriaService,
+    private selectedCriteriaService: SelectedCriteriaService,
     private searchService: SearchService,
-    private localsStorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
-    this.selectedCriteriService.selectedCriteria$
+    this.selectedCriteriaService.selectedCriteria$
       .pipe(
+        takeUntil(this.unsubscribeAll),
         map(({ data }) => data)
       )
       .subscribe((data: Criteries) => {
@@ -42,7 +42,6 @@ export class SpotTvComponent implements OnInit, OnDestroy {
           [SearchFiedlsEnum.nonComms]: this.criteries[SearchFiedlsEnum.nonComms],
         };
       });
-
 
     this.listenSearchBarMenuActions();
   }
@@ -65,9 +64,11 @@ export class SpotTvComponent implements OnInit, OnDestroy {
 
   onChange({ key, data }: SearchFiledChangeEvent) {
     this.criteries[key] = data;
+    this.selectedCriteriaService.update(this.criteries, this.key);
   }
 
   onCheckboxChange(key: string, value: boolean): void {
     this.criteries[key] = value;
+    this.selectedCriteriaService.update(this.criteries, this.key);
   }
 }

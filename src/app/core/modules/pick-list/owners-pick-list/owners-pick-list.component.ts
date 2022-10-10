@@ -12,6 +12,8 @@ import { SearchActionTypesEnum } from '@enums/search.enum';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { SearchService } from '@services/search/search.service';
 import { ListsService } from '@services/lists/lists.service';
+import { Router } from '@angular/router';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
 
 @Component({
   selector: 'app-owners-pick-list',
@@ -28,19 +30,26 @@ export class OwnersPickListComponent implements OnInit {
   options: SelectOption[] = [];
   unsubscribeAll: Subject<null> = new Subject();
 
+  searchScreenKey: SearchMediaProfileTitleKey;
   constructor(
     private listsService: ListsService,
     private selectedCriteriaService: SelectedCriteriaService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
     this.listsService.getOptionsData(this.listUrlKey)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
       .subscribe((options: SelectOption[]) => {
         this.options = options;
+        const selected = this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.owners]
+        if (selected) {
+          this.change.emit({ key: ListKeys.owners, data: selected });
+        }
       });
 
     this.selectedCriteriaService.selectedCriteria$
@@ -83,7 +92,7 @@ export class OwnersPickListComponent implements OnInit {
     this.options = updatedOptions;
     this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.owners);
 
-    this.change.emit({ key: ListKeys.owners, data: [ ...options ] });
+    this.change.emit({ key: ListKeys.owners, data: [...options] });
   }
 
   onSelectClick(event: MouseEvent) {

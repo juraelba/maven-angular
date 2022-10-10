@@ -12,6 +12,8 @@ import { SearchActionTypesEnum } from '@enums/search.enum';
 import { ListsService } from '@services/lists/lists.service';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { SearchService } from '@services/search/search.service';
+import { Router } from '@angular/router';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
 
 @Component({
   selector: 'app-networks-pick-list',
@@ -25,19 +27,26 @@ export class NetworksPickListComponent implements OnInit {
   options: SelectOption[] = [];
   unsubscribeAll: Subject<null> = new Subject();
 
+  searchScreenKey: SearchMediaProfileTitleKey;
   constructor(
     private listsService: ListsService,
     private selectedCriteriaService: SelectedCriteriaService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
     this.listsService.getOptionsData(ListKeys.tvnetworks)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
       .subscribe((options: SelectOption[]) => {
         this.options = options;
+        const selected = this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.tvnetworks]
+        if (selected) {
+          this.change.emit({ key: ListKeys.tvnetworks, data: selected });
+        }
       });
 
     this.selectedCriteriaService.selectedCriteria$
@@ -49,12 +58,12 @@ export class NetworksPickListComponent implements OnInit {
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
-            
+
         this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.tvnetworks);
         this.options = updatedOptions;
       });
 
-      this.listenSearchBarMenuActions();
+    this.listenSearchBarMenuActions();
   }
 
   ngOnDestroy(): void {
@@ -80,7 +89,7 @@ export class NetworksPickListComponent implements OnInit {
     this.options = updatedOptions;
     this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.tvnetworks);
 
-    this.change.emit({ key: ListKeys.tvnetworks, data: [ ...options ] });
+    this.change.emit({ key: ListKeys.tvnetworks, data: [...options] });
   }
 
   onSelectClick(event: MouseEvent) {

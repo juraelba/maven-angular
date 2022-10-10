@@ -10,6 +10,8 @@ import { ListKeys } from '@enums/lists.enum';
 import { SearchFieldsLabelsEnum, SearchFiedlsEnum } from '@enums/search.enum';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
+import { Router } from '@angular/router';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
 
 interface CriteriaValueStyles {
   background: string;
@@ -26,13 +28,16 @@ export class SelectedCriteriaDialogComponent implements OnInit {
   labels: any = SearchFieldsLabelsEnum;
   config = selectedCriteriaConfig;
 
+  searchScreenKey: SearchMediaProfileTitleKey;
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: Criteries,
     private dialogRef: MatDialogRef<SelectedCriteriaDialogComponent>,
-    private selectedCriteriaService: SelectedCriteriaService
+    private selectedCriteriaService: SelectedCriteriaService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
     this.criteries = toPairs(this.data);
   }
 
@@ -58,7 +63,7 @@ export class SelectedCriteriaDialogComponent implements OnInit {
 
   onRemoveCriteriaClick(key: string, option: SelectOption) {
     const workingCriteria = this.data[key];
-    const complexCriteriaData = [ ListKeys.categories, ListKeys.markets, ListKeys.diversetargets, ListKeys.languages2 ] as string[];
+    const complexCriteriaData = [ListKeys.categories, ListKeys.markets, ListKeys.diversetargets, ListKeys.languages2] as string[];
 
     let newData = {};
 
@@ -78,13 +83,13 @@ export class SelectedCriteriaDialogComponent implements OnInit {
   finishEditing(): void {
     this.closeDialog();
 
-    this.selectedCriteriaService.update(this.data);
+    this.selectedCriteriaService.update(this.data, this.searchScreenKey);
   }
 
   getStyles(key: string): CriteriaValueStyles {
     return {
       'background': this.config[key]?.bg || this.config.default.bg,
-      'color': this.config[key]?.color  || this.config.default.color
+      'color': this.config[key]?.color || this.config.default.color
     }
   }
 

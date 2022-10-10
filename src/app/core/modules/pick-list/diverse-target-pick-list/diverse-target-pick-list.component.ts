@@ -14,6 +14,8 @@ import { SelectedCriteriaService } from '@services/selected-criteria/selected-cr
 import { SearchService } from '@services/search/search.service';
 
 import { SelectComponent } from '@modules/select/select.component';
+import { Router } from '@angular/router';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
 
 @Component({
   selector: 'app-diverse-target-pick-list',
@@ -33,19 +35,26 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
   panelOpen: boolean = false;
   unsubscribeAll: Subject<null> = new Subject();
 
+  searchScreenKey: SearchMediaProfileTitleKey;
   constructor(
     private listsService: ListsService,
     private selectedCriteriaService: SelectedCriteriaService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
     this.listsService.getOptionsData(ListKeys.diversetargets)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
       .subscribe((options: SelectOption[]) => {
         this.options = options;
+        const selected = this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.diversetargets]
+        if (selected) {
+          this.change.emit({ key: ListKeys.diversetargets, data: selected });
+        }
       });
 
     this.selectedCriteriaService.selectedCriteria$
@@ -86,7 +95,7 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
     event.stopPropagation();
 
     const selected = this.listsService.getSelectedOptions(this.options);
-  
+
     this.isDiverseTarget = !this.isDiverseTarget;
     this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.diversetargets);
     this.value = this.listsService.getSelectInputValue(selected, ListLabels.diversetargets);
@@ -104,7 +113,7 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
     const values = this.listsService.getOptionValues(options);
 
     this.value = this.listsService.getSelectInputValue(options, ListLabels.diversetargets);
-    this.width = `${ width-80 }px`;
+    this.width = `${width - 80}px`;
 
     this.options = this.listsService.updateOptionsWithSelected(this.options, values);
     this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.diversetargets);
@@ -116,7 +125,7 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
 
     this.change.emit({ key: ListKeys.diversetargets, data });
   }
-  
+
   onClear(): void {
     this.options = this.listsService.updateOptionsWithSelected(this.options, []);
     this.isDiverseTarget = false;
@@ -134,7 +143,7 @@ export class DiverseTargetPickListComponent implements OnInit, OnDestroy {
   onSelectClick({ event }: any): void {
     const isTargetCheckbox = event.path.some((item: Element) => item?.classList?.contains('checkbox'));
 
-    if(isTargetCheckbox) {
+    if (isTargetCheckbox) {
       return;
     }
 

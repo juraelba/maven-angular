@@ -19,20 +19,20 @@ import { SearchService } from '@services/search/search.service';
   styleUrls: ['./cable-networks.component.scss']
 })
 export class CableNetworksComponent implements OnInit, OnDestroy{
-  criteries: Criteries = {};
   key: SearchKey = SearchEnum['network-cable'];
+  criteries: Criteries = this.selectedCriteriaService.criteries?.[this.key] ?? {};
   unsubscribeAll: Subject<null> = new Subject();
 
   owners3ListUrlKey: ListUrlsKey = ListKeys.owners3;
   mediatypes3ListUrlKey: ListUrlsKey = ListKeys.mediatypes3;
 
   constructor(
-    private selectedCriteriService: SelectedCriteriaService,
+    private selectedCriteriaService: SelectedCriteriaService,
     private searchService: SearchService
   ) { }
 
   ngOnInit(): void {
-    this.selectedCriteriService.selectedCriteria$
+    this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
         map(({ data }) => data)
@@ -48,13 +48,15 @@ export class CableNetworksComponent implements OnInit, OnDestroy{
       this.unsubscribeAll.next(null);
       this.unsubscribeAll.complete();
   }
-  
+
   onChange({ key, data }: SearchFiledChangeEvent): void {
     this.criteries[key] = data;
+    this.selectedCriteriaService.update(this.criteries, this.key);
   }
 
   onCheckboxChange(id: string, value: boolean): void {
     this.criteries[id] = value;
+    this.selectedCriteriaService.update(this.criteries, this.key);
   }
 
   listenSearchBarMenuActions(): void {

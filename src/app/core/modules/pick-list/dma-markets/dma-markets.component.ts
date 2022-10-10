@@ -14,6 +14,8 @@ import { MarketSortingOption } from '@models/sorting-options.models';
 import { ListKeys } from '@enums/lists.enum';
 import { MarketSortingOptionsEnum } from '@enums/sorting-options.enum';
 import { SearchActionTypesEnum } from '@enums/search.enum';
+import { Router } from '@angular/router';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
 
 @Component({
   selector: 'app-dma-markets',
@@ -28,15 +30,18 @@ export class DmaMarketsComponent implements OnInit {
   unsubscribeAll: Subject<null> = new Subject();
   sortingMenuOpen: boolean = false;
   sort: MarketSortingOption = MarketSortingOptionsEnum.name;
-  optionsToOmit: string[] = [ 'National (USA)', 'International' ]
+  optionsToOmit: string[] = ['National (USA)', 'International']
 
+  searchScreenKey: SearchMediaProfileTitleKey;
   constructor(
     private listsService: ListsService,
     private selectedCriteriaService: SelectedCriteriaService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
     this.listsService.getOptionsData(ListKeys.dmas)
       .pipe(
         takeUntil(this.unsubscribeAll)
@@ -46,6 +51,10 @@ export class DmaMarketsComponent implements OnInit {
         const workedOptions = this.listsService.filterOptions(sortedOptions, this.optionsToOmit);
 
         this.options = this.listsService.addGroupingLetter(workedOptions, this.sort);
+        const selected = this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.dmas]
+        if (selected) {
+          this.change.emit({ key: ListKeys.dmas, data: selected });
+        }
       });
 
     this.selectedCriteriaService.selectedCriteria$
@@ -57,12 +66,12 @@ export class DmaMarketsComponent implements OnInit {
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
-            
+
         this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.dmamarkets);
         this.options = updatedOptions;
       });
 
-      this.listenSearchBarMenuActions();
+    this.listenSearchBarMenuActions();
   }
 
   listenSearchBarMenuActions(): void {

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Inject } from '@angular/core';
+import { Component, Input, OnInit, Inject, SimpleChanges, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, of } from 'rxjs';
@@ -16,14 +16,13 @@ import { ExcelService } from '@services/excel/excel.service';
 import { SEARCH_COLUMNS_CONFIG } from '../../data/constants';
 import { TABLE_COLUMNS } from '../../data/table-columns-config';
 import { CALL_HISTORY_MOCK } from '../../data/mock';
-import { LocalStorageService } from '@services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   @Input() criteries: Criteries;
   @Input() title: string;
   @Input() key: SearchKey;
@@ -36,19 +35,18 @@ export class SearchComponent implements OnInit {
   config: TableConfig = {};
   tableRowsInView: Row[] = [];
   tableColumnsInView: Column[] = [];
-  unsubscribeAll: Subject<null> = new Subject();
   isFetched: boolean = false;
   isFetching: boolean = false;
   tableStyles: { [key: string]: string } = {};
 
   searchScreenKey: SearchMediaProfileTitleKey;
+  private unsubscribeAll: Subject<null> = new Subject();
   constructor(
     private searchService: SearchService,
     private excelService: ExcelService,
     @Inject(DOCUMENT) private document: Document,
     private route: ActivatedRoute,
     private router: Router,
-    private localStorageService: LocalStorageService
   ) { }
 
   ngOnInit(): void {
@@ -56,19 +54,23 @@ export class SearchComponent implements OnInit {
 
     this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
 
-    const localTableData = this.localStorageService.get(this.searchScreenKey);
-    if (!!localTableData) {
-      this.localStorageService.set(this.searchScreenKey, JSON.stringify(this.tableData))
-      const parsedTableData = JSON.parse(localTableData);
-      this.tableData = parsedTableData;
-      this.isFetched = parsedTableData.rows.length > 0;
-      this.totalRows = parsedTableData.rows.length;
+    const previousSearchResult = this.searchService.searchResults?.[this.searchScreenKey];
+    if (!!previousSearchResult) {
+      this.tableData = previousSearchResult;
+      this.isFetched = previousSearchResult.rows.length > 0;
+      this.totalRows = previousSearchResult.rows.length;
       this.tableRowsInView = [...this.tableData.rows];
       this.tableColumnsInView = [...this.tableData.columns];
       this.tableStyles = this.getTableStyles();
     }
 
     this.listenSearchBarMenuActions();
+
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next(null);
+    this.unsubscribeAll.complete();
   }
 
   listenSearchBarMenuActions(): void {
@@ -137,10 +139,11 @@ export class SearchComponent implements OnInit {
           this.isFetching = false;
           this.isFetched = true;
           if (this.tableData.rows.length > 0) {
-            localStorage.setItem(this.searchScreenKey, JSON.stringify({
-              rows:this.tableData.rows,
-              columns:this.tableData.columns
-            }))
+            this.searchService.searchResults[this.searchScreenKey] =
+            {
+              rows: this.tableData.rows,
+              columns: this.tableData.columns
+            }
           }
         },
         error: () => {

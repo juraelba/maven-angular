@@ -1,8 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MediaProfileFields } from '@enums/media-profile.enum';
 import { Maven } from '@models/maven.model';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
 import { Column, Row, Table } from '@models/table.model';
 import { MediaProfileListService } from '@services/media-profile-list/media-profile-list.service';
 import { lensPath, lensProp, view } from 'ramda';
@@ -19,6 +20,7 @@ import { DynamicListComponent } from '../../../core/modules/dynamic-list/dynamic
   styleUrls: ['./spot-tv-media-profile.component.scss']
 })
 export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
+  searchScreenKey: SearchMediaProfileTitleKey;
   profileConfig = spotTvProfileConfig;
   mainInformation: Field[][] = [];
   mavenAttributes: Field[][] = [];
@@ -39,10 +41,13 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private mediaProfileListService: MediaProfileListService
+    private router: Router,
+    private mediaProfileListService: MediaProfileListService,
   ) { }
 
   ngOnInit(): void {
+    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
+
     this.activatedRoute.data.subscribe((data) => {
       this.maven = data.mediaProfile as Maven;
       this.profileConfig.mainInformationFields.forEach((_, index) => {
@@ -110,6 +115,10 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
 
   formatArray(value: FieldArrayItem[]): string[] {
     return value.map(({ name }) => name);
+  }
+
+  backToSearch(event: any): void {
+    this.router.navigate([this.searchScreenKey]);
   }
 
   openDialog(event: MouseEvent): void {

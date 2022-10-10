@@ -19,19 +19,19 @@ import { SearchService } from '@services/search/search.service';
   styleUrls: ['./spot-radio-search.component.scss']
 })
 export class SpotRadioSearchComponent implements OnInit {
-  criteries: Criteries = {};
   key: SearchKey = SearchEnum['spot-radio'];
+  criteries: Criteries = this.selectedCriteriaService.criteries?.[this.key] ?? {};
   unsubscribeAll: Subject<null> = new Subject();
 
   ownerListUrlKey: ListUrlsKey = ListKeys.owners10;
 
   constructor(
-    private selectedCriteriService: SelectedCriteriaService,
+    private selectedCriteriaService: SelectedCriteriaService,
     private searchService: SearchService
   ) { }
 
   ngOnInit(): void {
-    this.selectedCriteriService.selectedCriteria$
+    this.selectedCriteriaService.selectedCriteria$
       .pipe(
         map(({ data }) => data)
       )
@@ -42,7 +42,6 @@ export class SpotRadioSearchComponent implements OnInit {
         };
       });
 
-    
     this.listenSearchBarMenuActions();
   }
 
@@ -61,13 +60,15 @@ export class SpotRadioSearchComponent implements OnInit {
         this.criteries = {}
       });
   }
-  
+
   onChange({ key, data }: SearchFiledChangeEvent) {
     this.criteries[key] = data;
+    this.selectedCriteriaService.update(this.criteries, this.key);
   }
 
   onCheckboxChange(key: string, value: boolean): void {
     this.criteries[key] = value;
+    this.selectedCriteriaService.update(this.criteries, this.key);
   }
 
 }

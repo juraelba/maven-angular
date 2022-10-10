@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
-import { SelectedCriteriaEvent } from '../../models/criteries.model';
+import { Criteries, SelectedCriteriaEvent } from '../../models/criteries.model';
 
 
 @Injectable({
@@ -9,10 +9,13 @@ import { SelectedCriteriaEvent } from '../../models/criteries.model';
 })
 export class SelectedCriteriaService {
   selectedCriteria$: Subject<SelectedCriteriaEvent> = new Subject();
-
+  criteries: { [key: string]: Criteries };
   constructor() { }
 
-  update(data: any) {
+  update(data: any, screen: string) {
     this.selectedCriteria$.next({ action: 'update', data });
+    this.criteries && this.criteries[screen]
+      ? this.criteries[screen] = data
+      : this.criteries = { ...this.criteries, [screen]: data };
   }
 }

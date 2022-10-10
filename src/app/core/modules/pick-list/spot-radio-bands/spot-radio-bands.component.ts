@@ -12,6 +12,8 @@ import { ListChangesEvent } from '@models/list.model';
 
 import { ListKeys } from '@enums/lists.enum';
 import { SearchActionTypesEnum } from '@enums/search.enum';
+import { Router } from '@angular/router';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
 
 @Component({
   selector: 'app-spot-radio-bands',
@@ -25,26 +27,32 @@ export class SpotRadioBandsComponent implements OnInit {
   options: SelectOption[] = [];
   unsubscribeAll: Subject<null> = new Subject();
 
-  preselectedOptions: string[] = [ 'AM', 'FM' ];
+  preselectedOptions: string[] = ['AM', 'FM'];
 
+  searchScreenKey: SearchMediaProfileTitleKey;
   constructor(
     private listsService: ListsService,
     private selectedCriteriaService: SelectedCriteriaService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
     this.listsService.getOptionsData(ListKeys.radiobands)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
       .subscribe((options: SelectOption[]) => {
-        this.options = this.listsService.updateOptionsWithSelected(options, this.preselectedOptions);
-        const selected = this.listsService.getSelectedOptions(this.options);
-
-        this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.radiobands);
-
-        this.change.emit({ key: ListKeys.radiobands, data: selected });
+        this.options = options;
+        if (!this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.radiobands]) {
+          this.options = this.listsService.updateOptionsWithSelected(options, this.preselectedOptions);
+          const selected = this.listsService.getSelectedOptions(this.options);
+          this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.radiobands);
+          this.change.emit({ key: ListKeys.radiobands, data: selected });
+        } else {
+          this.change.emit({ key: ListKeys.radiobands, data: this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.radiobands] });
+        }
       });
 
     this.listenSelectedCriteriaChanges();
@@ -77,7 +85,7 @@ export class SpotRadioBandsComponent implements OnInit {
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
-            
+
         this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.radiobands);
         this.options = updatedOptions;
       });
@@ -90,7 +98,7 @@ export class SpotRadioBandsComponent implements OnInit {
     this.options = updatedOptions;
     this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.radiobands);
 
-    this.change.emit({ key: ListKeys.radiobands, data: [ ...options ] });
+    this.change.emit({ key: ListKeys.radiobands, data: [...options] });
   }
 
   onSelectClick(event: MouseEvent) {

@@ -17,6 +17,8 @@ import { SelectedCriteriaService } from '@services/selected-criteria/selected-cr
 import { SearchService } from '@services/search/search.service';
 
 import { SelectComponent } from '@modules/select/select.component';
+import { Router } from '@angular/router';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
 
 
 type SectionKey = ListKeys.dmas | ListKeys.msas;
@@ -66,20 +68,23 @@ export class MarketPickListComponent implements OnInit {
   sortingMenuOpen: boolean = false;
   borderLabel: string = '';
   value: string = ListLabels.markets;
-  width: string;
+  width: string = '170px';
   unsubscribeAll: Subject<null> = new Subject();
   sort: MarketSortingOption = MarketSortingOptionsEnum.name;
 
+  searchScreenKey: SearchMediaProfileTitleKey;
   constructor(
     private listsService: ListsService,
     private selectedCriteriaService: SelectedCriteriaService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
-      this.fetchMarketListOptions();
-      this.listenSelectedCriteriaService();
-      this.listenSearchBarMenuActions();
+    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
+    this.fetchMarketListOptions();
+    this.listenSelectedCriteriaService();
+    this.listenSearchBarMenuActions();
   }
 
   fetchMarketListOptions(): void {
@@ -105,6 +110,15 @@ export class MarketPickListComponent implements OnInit {
 
         this.marketOptions = marketOptions;
         this.options = this.listsService.addGroupingLetter(sortedOptions, this.sort);
+
+        const selected_dmas = this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.dmas];
+        const selected_msas = this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.msas];
+        if (selected_dmas) {
+          this.change.emit({ key: ListKeys.dmas, data: selected_dmas });
+        }
+        if (selected_msas) {
+          this.change.emit({ key: ListKeys.dmas, data: selected_msas });
+        }
       });
   }
 
@@ -112,7 +126,7 @@ export class MarketPickListComponent implements OnInit {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ data }: SelectedCriteriaEvent) => data[ListKeys.markets] ),
+        filter(({ data }: SelectedCriteriaEvent) => data[ListKeys.markets]),
         map(({ data }: SelectedCriteriaEvent) => data[ListKeys.markets].options)
       )
       .subscribe((options: SelectOption[]) => {
@@ -145,7 +159,7 @@ export class MarketPickListComponent implements OnInit {
     event.stopPropagation();
 
     const sortedOptions = this.listsService.sortOptions(this.marketOptions[value], this.sort);
-  
+
     this.sections = this.sections.map((section) => ({ ...section, selected: section.value === value }));
     this.options = this.listsService.addGroupingLetter(sortedOptions, this.sort);
   }
@@ -160,13 +174,13 @@ export class MarketPickListComponent implements OnInit {
     const sectionKey = this.getActiveSectionKey();
     const borderLabel = this.listsService.getBorderLabel(options, sectionKey);
 
-    return borderLabel ? `${ borderLabel } Markets` : '';
+    return borderLabel ? `${borderLabel} Markets` : '';
   }
 
   onApplyChanges(options: SelectOption[]): void {
     const width = this.selectComponent?.selectContainer.nativeElement.getBoundingClientRect().width;
 
-    this.width = `${ width-80 }px`;
+    this.width = `${width - 80}px`;
     this.value = this.listsService.getSelectInputValue(options, ListLabels.markets);
     this.borderLabel = this.getBorderLabel(options);
 
@@ -180,7 +194,7 @@ export class MarketPickListComponent implements OnInit {
 
   unselectAllMarketOptions(): MarketOptions {
     return R.compose<[MarketOptions], [any, SelectOption[]][], MarketOptions>(
-      R.reduce<[SectionKey, SelectOption[]], any>((acc, [ key, value ]) => {
+      R.reduce<[SectionKey, SelectOption[]], any>((acc, [key, value]) => {
         acc[key] = this.listsService.updateOptionsWithSelected(value, []);
 
         return acc;

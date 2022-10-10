@@ -8,7 +8,7 @@ import { ListUrlsKey } from '@models/list.model';
 
 import { SearchEnum } from '@enums/search.enum';
 import { SearchActionTypesEnum } from '@enums/search.enum';
-import { ListKeys  } from '@enums/lists.enum';
+import { ListKeys } from '@enums/lists.enum';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { SearchService } from '@services/search/search.service';
@@ -19,20 +19,20 @@ import { SearchService } from '@services/search/search.service';
   styleUrls: ['./out-of-home.component.scss']
 })
 export class OutOfHomeComponent implements OnInit {
-  criteries: Criteries = {};
   key: SearchKey = SearchEnum.outdoor;
+  criteries: Criteries = this.selectedCriteriaService.criteries?.[this.key] ?? {};
   unsubscribeAll: Subject<null> = new Subject();
 
   owners8ListUrlKey: ListUrlsKey = ListKeys.owners8;
   mediatypes8ListUrlKey: ListUrlsKey = ListKeys.owners8;
 
   constructor(
-    private selectedCriteriService: SelectedCriteriaService,
+    private selectedCriteriaService: SelectedCriteriaService,
     private searchService: SearchService
   ) { }
 
   ngOnInit(): void {
-    this.selectedCriteriService.selectedCriteria$
+    this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
         map(({ data }) => data)
@@ -45,16 +45,18 @@ export class OutOfHomeComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
-      this.unsubscribeAll.next(null);
-      this.unsubscribeAll.complete();
+    this.unsubscribeAll.next(null);
+    this.unsubscribeAll.complete();
   }
-  
+
   onChange({ key, data }: SearchFiledChangeEvent): void {
     this.criteries[key] = data;
+    this.selectedCriteriaService.update(this.criteries, this.key);
   }
 
   onCheckboxChange(id: string, value: boolean): void {
     this.criteries[id] = value;
+    this.selectedCriteriaService.update(this.criteries, this.key);
   }
 
   listenSearchBarMenuActions(): void {

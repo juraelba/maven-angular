@@ -12,6 +12,8 @@ import { SearchActionTypesEnum } from '@enums/search.enum';
 import { ListsService } from '@services/lists/lists.service';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { SearchService } from '@services/search/search.service';
+import { Router } from '@angular/router';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
 
 @Component({
   selector: 'app-bands-pick-list',
@@ -24,26 +26,32 @@ export class BandsPickListComponent implements OnInit {
   borderLabel: string;
   options: SelectOption[] = [];
   unsubscribeAll: Subject<null> = new Subject();
-  preselectedOptions: string[] = [ 'DT', 'TV', 'CA' ]
+  preselectedOptions: string[] = ['DT', 'TV', 'CA']
 
+  searchScreenKey: SearchMediaProfileTitleKey;
   constructor(
     private listsService: ListsService,
     private selectedCriteriaService: SelectedCriteriaService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
     this.listsService.getOptionsData(ListKeys.tvbands)
       .pipe(
         takeUntil(this.unsubscribeAll)
       )
       .subscribe((options: SelectOption[]) => {
-        this.options = this.listsService.updateOptionsWithSelected(options, this.preselectedOptions);
-        const selected = this.listsService.getSelectedOptions(this.options);
-
-        this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.tvbands);
-
-        this.change.emit({ key: ListKeys.tvbands, data: selected });
+        this.options = options;
+        if (!this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.tvbands]) {
+          this.options = this.listsService.updateOptionsWithSelected(options, this.preselectedOptions);
+          const selected = this.listsService.getSelectedOptions(this.options);
+          this.borderLabel = this.listsService.getBorderLabel(selected, ListKeys.tvbands);
+          this.change.emit({ key: ListKeys.tvbands, data: selected });
+        } else {
+          this.change.emit({ key: ListKeys.tvbands, data: this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.tvbands] });
+        }
       });
 
     this.selectedCriteriaService.selectedCriteria$
@@ -55,12 +63,12 @@ export class BandsPickListComponent implements OnInit {
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
-            
+
         this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.tvbands);
         this.options = updatedOptions;
       });
 
-      this.listenSearchBarMenuActions();
+    this.listenSearchBarMenuActions();
   }
 
   ngOnDestroy(): void {
@@ -86,7 +94,7 @@ export class BandsPickListComponent implements OnInit {
     this.options = updatedOptions;
     this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.tvbands);
 
-    this.change.emit({ key: ListKeys.tvbands, data: [ ...options ] });
+    this.change.emit({ key: ListKeys.tvbands, data: [...options] });
   }
 
   onSelectClick(event: MouseEvent) {

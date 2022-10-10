@@ -14,6 +14,8 @@ import { MarketSortingOption } from '@models/sorting-options.models';
 import { ListKeys, ListLabels } from '@enums/lists.enum';
 import { MarketSortingOptionsEnum } from '@enums/sorting-options.enum';
 import { SearchActionTypesEnum } from '@enums/search.enum';
+import { Router } from '@angular/router';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
 
 @Component({
   selector: 'app-formats-pick-list',
@@ -30,13 +32,16 @@ export class FormatsPickListComponent implements OnInit {
   sort: MarketSortingOption = MarketSortingOptionsEnum.name;
   label = ListLabels.formats;
 
+  searchScreenKey: SearchMediaProfileTitleKey;
   constructor(
     private listsService: ListsService,
     private selectedCriteriaService: SelectedCriteriaService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
+    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
     this.listsService.getOptionsData(ListKeys.formats)
       .pipe(
         takeUntil(this.unsubscribeAll)
@@ -45,6 +50,10 @@ export class FormatsPickListComponent implements OnInit {
         const sortedOptions = this.listsService.sortOptions(options, this.sort);
 
         this.options = this.listsService.addGroupingLetter(sortedOptions, this.sort);
+        const selected = this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.formats]
+        if (selected) {
+          this.change.emit({ key: ListKeys.formats, data: selected });
+        }
       });
 
     this.selectedCriteriaService.selectedCriteria$
@@ -56,12 +65,12 @@ export class FormatsPickListComponent implements OnInit {
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
         const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
-            
+
         this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.formats);
         this.options = updatedOptions;
       });
 
-      this.listenSearchBarMenuActions();
+    this.listenSearchBarMenuActions();
   }
 
   listenSearchBarMenuActions(): void {
