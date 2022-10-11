@@ -84,6 +84,8 @@ export class SelectComponent implements OnInit {
 
         this.dropdownOptions = this.updateOptionsWithSelected(filteredByLabel, this.temporarySelected);
       })
+
+      this.getValueContainerWidth();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -167,7 +169,7 @@ export class SelectComponent implements OnInit {
   }
 
   getValueContainerWidth() {
-    const width = this.selectContainer.nativeElement.getBoundingClientRect().width;
+    const width = this.selectContainer?.nativeElement.getBoundingClientRect().width;
     this.valueContainerWidth = `${width - 60}px`;
   }
 

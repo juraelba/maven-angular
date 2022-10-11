@@ -14,8 +14,11 @@ export class SelectedCriteriaService {
 
   update(data: any, screen: string) {
     this.selectedCriteria$.next({ action: 'update', data });
-    this.criteries && this.criteries[screen]
+    this.criteries?.[screen]
       ? this.criteries[screen] = data
       : this.criteries = { ...this.criteries, [screen]: data };
+
+      console.log(this.criteries[screen]);
+
   }
 }

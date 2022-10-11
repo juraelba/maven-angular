@@ -114,6 +114,11 @@ export class SearchComponent implements OnInit, OnDestroy {
     event.stopPropagation();
 
     this.isFetching = true;
+    this.totalRows = 0;
+    this.tableData = { rows: [], columns: [] }
+
+    this.tableRowsInView = [...this.tableData.rows];
+    this.tableColumnsInView = [...this.tableData.columns];
     this.isFetched = false;
 
     if (this.key === SearchEnum.callHistory) {

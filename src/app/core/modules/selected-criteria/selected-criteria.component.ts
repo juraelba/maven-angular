@@ -56,7 +56,7 @@ export class SelectedCriteriaComponent implements OnInit {
     return compose<[Criteries], Array<[string, any]>, Criteries>(
       reduce<[ string, any ], Criteries>((acc, [ key, value ]) => {
         const validator = criteriaValidators[key] || isEmpty
-  
+
         if(validator(value)) {
           return acc;
         }
