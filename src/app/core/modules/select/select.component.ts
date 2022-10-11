@@ -37,7 +37,7 @@ export class SelectComponent implements OnInit {
   @Input() panelOpen: boolean;
   @Input() grouping: boolean = true;
   @Input() customGrouping: boolean = false;
-  @Input() valueContainerWidth: string = '170px';
+  @Input() valueContainerWidth: string = '100%';
   @Input() sort: boolean = true;
   @Input() isArrowIconVisible: boolean = true;
 
@@ -166,6 +166,11 @@ export class SelectComponent implements OnInit {
     this.clear.emit();
   }
 
+  getValueContainerWidth() {
+    const width = this.selectContainer.nativeElement.getBoundingClientRect().width;
+    this.valueContainerWidth = `${width - 60}px`;
+  }
+
   onOkButtonClick(event: MouseEvent): void {
     event.stopPropagation();
 
@@ -261,6 +266,7 @@ export class SelectComponent implements OnInit {
   }
 
   getSelectedOptionsLabels(): string {
+    this.getValueContainerWidth();
     return this.selected.map(({ label }) => label).join(', ');
   }
 

@@ -136,6 +136,8 @@ export class MarketPickListComponent implements OnInit {
         this.options = updatedOptions;
         this.borderLabel = this.getBorderLabel(options);
         this.value = this.listsService.getSelectInputValue(options, ListLabels.markets);
+        const width = this.selectComponent?.selectContainer.nativeElement.getBoundingClientRect().width;
+        this.width = `${width - 80}px`;
       });
   }
 

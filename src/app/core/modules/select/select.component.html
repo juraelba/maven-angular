@@ -1,4 +1,9 @@
-<div class="relative" #selectContainer cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+<div
+  class="relative"
+  #selectContainer
+  cdkOverlayOrigin
+  #trigger="cdkOverlayOrigin"
+>
   <ng-container *ngIf="selectInputTemplate">
     <ng-content select="[selectInputTemplate]"></ng-content>
   </ng-container>
@@ -15,7 +20,7 @@
     <div
       *ngIf="isOpened"
       appClickOutside
-      class="dropdown-container rounded-md shadow-simple rounded-md w-full bg-white mt-[5px]"
+      class="dropdown-container rounded-md shadow-simple w-full bg-white mt-[5px]"
       (clickOutside)="onClickOutside()"
     >
       <ng-container *ngIf="dropdownTemplate">
@@ -23,7 +28,9 @@
       </ng-container>
 
       <ng-container *ngIf="!dropdownTemplate">
-        <ng-container *ngTemplateOutlet="defaultDropdownTemplate"></ng-container>
+        <ng-container
+          *ngTemplateOutlet="defaultDropdownTemplate"
+        ></ng-container>
       </ng-container>
     </div>
   </ng-template>
@@ -46,28 +53,31 @@
       {{ borderLabel }}
     </div>
 
-    <div class="input w-full h-full flex items-center justify-between" type="text" (click)="toggleMenuOpen($event)">
-      <div *ngIf="!valueContainer" class="value-container font-lato">
+    <div
+      class="input w-full h-full grid grid-cols-2 items-center justify-between"
+      type="text"
+      (click)="toggleMenuOpen($event)"
+    >
+      <div *ngIf="!valueContainer" class="value-container w-full font-lato">
         <span *ngIf="!selected.length">{{ placeholder }}</span>
-        <div *ngIf="selected.length">
+        <div *ngIf="selected.length" class="w-full">
           <div
             *ngIf="this.getSelectedOptionsLabels() as optionLabels"
-            [ngStyle]="{ 'width': valueContainerWidth }"
+            [ngStyle]="{ width: valueContainerWidth }"
             class="truncate"
           >
             {{ optionLabels }}
           </div>
         </div>
       </div>
-      <div *ngIf="valueContainer" class="value-container" >
+      <div *ngIf="valueContainer" class="value-container">
         <ng-content select="[valueContainer]"></ng-content>
       </div>
 
-      <img *ngIf="isArrowIconVisible" class="ml-[10px]" [src]="arrowIcon" />
+      <img *ngIf="isArrowIconVisible" class="ml-auto" [src]="arrowIcon" />
     </div>
   </div>
 </ng-template>
-
 
 <ng-template #defaultDropdownTemplate>
   <div class="p-5">
@@ -94,7 +104,7 @@
 
     <div
       *ngIf="allSelectedVisible"
-      class="select-all block pb-2.5 flex items-center border-b border-b-1 border-gray"
+      class="select-all pb-2.5 flex items-center border-b border-b-1 border-gray"
       (click)="toggleSelectAll($event)"
     >
       <app-checkbox [checked]="allSelected"></app-checkbox>
@@ -104,12 +114,19 @@
     <div class="font-lato overflow-y-auto pt-2.5">
       <cdk-virtual-scroll-viewport itemSize="20" class="h-[170px]">
         <div
-          *cdkVirtualFor="let option of dropdownOptions; index as i; templateCacheSize: 0"
+          *cdkVirtualFor="
+            let option of dropdownOptions;
+            index as i;
+            templateCacheSize: 0
+          "
           [ngClass]="{ 'bg-light-blue': option.selected && !multiple }"
           class="py-[5px]"
           (click)="toggleSelectOption($event, option)"
         >
-          <div *ngIf="grouping && isNewGroupLetter(dropdownOptions[i - 1], option)" class="border-b border-b-1 border-gray mb-2.5">
+          <div
+            *ngIf="grouping && isNewGroupLetter(dropdownOptions[i - 1], option)"
+            class="border-b border-b-1 border-gray mb-2.5"
+          >
             {{ option.groupLetter }}
           </div>
 
@@ -123,7 +140,9 @@
       </cdk-virtual-scroll-viewport>
     </div>
   </div>
-  <div class="shadow-simple flex justify-between items-center px-5 py-4 bg-white rounded-b-md">
+  <div
+    class="shadow-simple flex justify-between items-center px-5 py-4 bg-white rounded-b-md"
+  >
     <button
       class="border-regal-blue text-regal-blue font-medium rounded-md border-2 w-24 h-[30px] shadow-button mr-[30px]"
       (click)="onClearButtonClick($event)"

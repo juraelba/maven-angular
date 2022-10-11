@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Inject, SimpleChanges, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, Inject, OnDestroy } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, of } from 'rxjs';
@@ -114,6 +114,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     event.stopPropagation();
 
     this.isFetching = true;
+    this.isFetched = false;
 
     if (this.key === SearchEnum.callHistory) {
       this.setMockData();
