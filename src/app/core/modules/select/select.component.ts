@@ -7,7 +7,9 @@ import {
   SimpleChanges,
   Output,
   EventEmitter,
-  ViewChild
+  ViewChild,
+  OnChanges,
+  AfterViewInit
 } from '@angular/core';
 import { is } from 'ramda'
 import { Subject } from 'rxjs';
@@ -26,7 +28,7 @@ interface SelectInpuClickEvent {
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
 })
-export class SelectComponent implements OnInit {
+export class SelectComponent implements OnInit, OnChanges {
   @Input() multiple: boolean = false;
   @Input() disabled: boolean = false;
   @Input() search: boolean = false;
@@ -85,7 +87,6 @@ export class SelectComponent implements OnInit {
         this.dropdownOptions = this.updateOptionsWithSelected(filteredByLabel, this.temporarySelected);
       })
 
-      this.getValueContainerWidth();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -96,6 +97,8 @@ export class SelectComponent implements OnInit {
     if (typeof changes.panelOpen !== 'undefined') {
       this.isOpened = changes.panelOpen.currentValue;
     }
+
+    this.getValueContainerWidth();
   }
 
   ngOnDestroy(): void {
@@ -170,7 +173,9 @@ export class SelectComponent implements OnInit {
 
   getValueContainerWidth() {
     const width = this.selectContainer?.nativeElement.getBoundingClientRect().width;
-    this.valueContainerWidth = `${width - 60}px`;
+    if (width) {
+      this.valueContainerWidth = `${width - 60}px`;
+    }
   }
 
   onOkButtonClick(event: MouseEvent): void {
@@ -268,7 +273,6 @@ export class SelectComponent implements OnInit {
   }
 
   getSelectedOptionsLabels(): string {
-    this.getValueContainerWidth();
     return this.selected.map(({ label }) => label).join(', ');
   }
 

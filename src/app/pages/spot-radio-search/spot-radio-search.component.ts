@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { map, takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
@@ -18,7 +18,7 @@ import { SearchService } from '@services/search/search.service';
   templateUrl: './spot-radio-search.component.html',
   styleUrls: ['./spot-radio-search.component.scss']
 })
-export class SpotRadioSearchComponent implements OnInit {
+export class SpotRadioSearchComponent implements OnInit, OnDestroy {
   key: SearchKey = SearchEnum['spot-radio'];
   criteries: Criteries = this.selectedCriteriaService.criteries?.[this.key] ?? {};
   unsubscribeAll: Subject<null> = new Subject();
@@ -33,12 +33,13 @@ export class SpotRadioSearchComponent implements OnInit {
   ngOnInit(): void {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
+        takeUntil(this.unsubscribeAll),
         map(({ data }) => data)
       )
       .subscribe((data: Criteries) => {
         this.criteries = {
-          ...data,
           [SearchFiedlsEnum.nonComms]: this.criteries[SearchFiedlsEnum.nonComms],
+          ...data,
         };
       });
 

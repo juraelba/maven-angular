@@ -17,8 +17,5 @@ export class SelectedCriteriaService {
     this.criteries?.[screen]
       ? this.criteries[screen] = data
       : this.criteries = { ...this.criteries, [screen]: data };
-
-      console.log(this.criteries[screen]);
-
   }
 }

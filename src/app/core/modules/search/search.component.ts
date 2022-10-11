@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Inject, OnDestroy } from '@angular/core';
+import { Component, Input, OnInit, Inject, OnDestroy, AfterViewInit } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, of } from 'rxjs';
@@ -22,7 +22,7 @@ import { CALL_HISTORY_MOCK } from '../../data/mock';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit, OnDestroy {
+export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
   @Input() criteries: Criteries;
   @Input() title: string;
   @Input() key: SearchKey;
@@ -56,16 +56,20 @@ export class SearchComponent implements OnInit, OnDestroy {
 
     const previousSearchResult = this.searchService.searchResults?.[this.searchScreenKey];
     if (!!previousSearchResult) {
-      this.tableData = previousSearchResult;
-      this.isFetched = previousSearchResult.rows.length > 0;
+      this.tableStyles = this.getTableStyles();
       this.totalRows = previousSearchResult.rows.length;
+      this.tableData = previousSearchResult;
+      this.isFetched = true;
       this.tableRowsInView = [...this.tableData.rows];
       this.tableColumnsInView = [...this.tableData.columns];
-      this.tableStyles = this.getTableStyles();
     }
 
     this.listenSearchBarMenuActions();
 
+  }
+
+  ngAfterViewInit(): void {
+    this.tableStyles = this.getTableStyles();
   }
 
   ngOnDestroy(): void {
@@ -114,12 +118,12 @@ export class SearchComponent implements OnInit, OnDestroy {
     event.stopPropagation();
 
     this.isFetching = true;
+    this.isFetched = false;
     this.totalRows = 0;
     this.tableData = { rows: [], columns: [] }
 
     this.tableRowsInView = [...this.tableData.rows];
     this.tableColumnsInView = [...this.tableData.columns];
-    this.isFetched = false;
 
     if (this.key === SearchEnum.callHistory) {
       this.setMockData();
@@ -183,18 +187,18 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   getTableStyles(): { height: string } {
     const searchHeader = this.document.querySelector('.search-header') as Element;
-    const criteriesContiner = this.document.querySelector('.criteries-container') as Element;
+    const criteriesContainer = this.document.querySelector('.criteries-container') as Element;
 
     const { height: searchHeaderHeight } = searchHeader.getBoundingClientRect();
-    const { height: criteriesContinerHeight } = criteriesContiner.getBoundingClientRect();
+    const { height: criteriesContainerHeight } = criteriesContainer.getBoundingClientRect();
 
     const navBarHeight = 68;
     const marginAndPaddings = 200;
 
-    const tableWidth = window.innerHeight - searchHeaderHeight - criteriesContinerHeight - navBarHeight - marginAndPaddings;
+    const tableHeight = window.innerHeight - searchHeaderHeight - criteriesContainerHeight - navBarHeight - marginAndPaddings;
 
     return {
-      height: tableWidth + 'px'
+      height: tableHeight + 'px'
     };
   }
 

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { map, takeUntil, filter } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 
@@ -16,7 +16,6 @@ import { SearchService } from '@services/search/search.service';
   selector: 'app-spot-tv',
   templateUrl: './spot-tv.component.html',
   styleUrls: ['./spot-tv.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SpotTvComponent implements OnInit, OnDestroy {
   key: SearchKey = SearchEnum['spot-tv'];
@@ -24,7 +23,7 @@ export class SpotTvComponent implements OnInit, OnDestroy {
 
   ownerListUrlKey: ListUrlsKey = ListKeys.owners11;
 
-  private unsubscribeAll: Subject<null> = new Subject();
+  unsubscribeAll: Subject<null> = new Subject();
   constructor(
     private selectedCriteriaService: SelectedCriteriaService,
     private searchService: SearchService,
@@ -38,8 +37,8 @@ export class SpotTvComponent implements OnInit, OnDestroy {
       )
       .subscribe((data: Criteries) => {
         this.criteries = {
-          ...data,
           [SearchFiedlsEnum.nonComms]: this.criteries[SearchFiedlsEnum.nonComms],
+          ...data,
         };
       });
 
