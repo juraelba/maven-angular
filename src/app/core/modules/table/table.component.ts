@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, Renderer2 } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, Renderer2, Inject } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, CdkDragStart, CdkDragEnd } from '@angular/cdk/drag-drop';
 import { compose, toPairs, reduce, uniq, isNil } from 'ramda';
 
@@ -12,6 +12,7 @@ import { FilterOperatorEnum } from '@enums/filters.enum';
 import { UtilsService } from '@services/utils/utils.service';
 import { SearchService } from '@services/search/search.service';
 import { ListsService } from '@services/lists/lists.service';
+import { DOCUMENT } from '@angular/common';
 
 interface Group {
   [key: string]: SelectOption[] | null;
@@ -82,6 +83,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     private searchService: SearchService,
     private listsService: ListsService,
     private renderer: Renderer2,
+    @Inject(DOCUMENT) private document: Document
   ) { }
 
   ngOnInit(): void {
@@ -104,6 +106,11 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     }
   }
 
+
+  ngAfterViewInit(): void {
+    this.defineContainerLength();
+  }
+
   defineContainerLength(): void {
     const columnsWidths = this.columns.reduce<number>((acc, { width }) => acc + width, 0);
 
@@ -112,14 +119,29 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     cdkVirtualScrollWrapper.style.width = columnsWidths + 'px';
   }
 
-  ngAfterViewInit(): void {
-    this.defineContainerLength();
-  }
-
-  getCellStyles(columndId: string): Styles {
-    const columnConfig = this.config[columndId];
+  getCellStyles(columnId: string): Styles {
+    const columnConfig = this.config[columnId];
 
     return columnConfig ? columnConfig.cellStyles : {}
+  }
+
+  getCellLink(columnId: string, row: Row): string {
+    const columnConfig = this.config[columnId];
+    const id = columnConfig?.['cellLinkPath'].path;
+    let parentUrl = columnConfig?.cellLinkPath.parentPath;
+    if (row.data.type === 'magazine') {
+      parentUrl = 'magazines'
+    }
+    return parentUrl ? `/${parentUrl}/${row.data[id]}` : row.data[id];
+  }
+
+  isColumnLinkExternal(columnId: string): boolean {
+    const columnConfig = this.config[columnId];
+    return columnConfig?.['cellLinkPath'].external;
+  }
+
+  gotoExternalLink(path: string): void {
+    window.open('https://' + path, '_blank')
   }
 
   private getSortMethod(columnId: string): SortMethods {
@@ -474,6 +496,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   rowClick(event: MouseEvent, row: Row): void {
+    console.log(row);
+
     event.stopPropagation();
     this.onRowClick.emit(row)
   }

@@ -25,3 +25,10 @@
   border-radius: 50px;
   background-color: #D7D7DC;
 }
+
+.line-clamp-2 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}

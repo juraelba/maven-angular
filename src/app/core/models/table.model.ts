@@ -24,11 +24,18 @@ export interface Table {
 }
 
 export interface Styles {
-  [key: string]: string
+  [key: string]: string | number
+}
+
+interface LinkPath {
+  path: string;
+  external: boolean;
+  parentPath?: string;
 }
 
 interface ConfigDescription {
-  cellStyles: Styles
+  cellStyles: Styles;
+  cellLinkPath: LinkPath;
 }
 
 export interface TableConfig {

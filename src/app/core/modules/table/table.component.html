@@ -76,19 +76,52 @@
         </div>
       </div>
       <div>
-        <div *cdkVirtualFor="let row of rows; templateCacheSize: 0" class="h-[45px] flex hover:bg-light-blue cursor-pointer" (click)="rowClick($event, row)">
+        <div
+          *cdkVirtualFor="let row of rows; templateCacheSize: 0"
+          class="h-[45px] flex hover:bg-light-blue"
+        >
           <div
             *ngFor="let column of columns"
             class="px-[20px] border-b border-light-gray flex items-center"
             [ngStyle]="getColumnCellStyles(column)"
           >
-            <div
-              [ngStyle]="this.getCellStyles(column.id)"
-              class="overflow-hidden whitespace-nowrap"
+            <ng-container
+              *ngIf="getCellLink(column.id, row) as link; else notLink"
             >
-              {{ row.data[column.id] }}
-            </div>
+              <ng-container
+                *ngIf="
+                  link && !isColumnLinkExternal(column.id);
+                  else externalLink
+                "
+              >
+                <a
+                  [ngStyle]="getCellStyles(column.id)"
+                  class="line-clamp-2 w-full"
+                  [routerLink]="[link]"
+                >
+                  {{ row.data[column.id] }}
+                </a>
+              </ng-container>
+              <ng-template #externalLink>
+                <a
+                  [ngStyle]="getCellStyles(column.id)"
+                  class="line-clamp-2 w-full"
+                  (click)="gotoExternalLink(link)"
+                >
+                  {{ row.data[column.id] }}
+                </a>
+              </ng-template>
+            </ng-container>
+            <ng-template #notLink>
+              <div
+                [ngStyle]="getCellStyles(column.id)"
+                class="line-clamp-2 w-full"
+              >
+                {{ row.data[column.id] }}
+              </div>
+            </ng-template>
           </div>
+          <!-- (click)="rowClick($event, row)" -->
 
           <!-- CELL for filling up empty spaces when cells width less than table width -->
           <div class="border-b border-light-gray w-full"></div>

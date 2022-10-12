@@ -19,6 +19,7 @@ import { ColumnAutoFilterComponent } from './column-auto-filter/column-auto-filt
 import { ColumnFilterComponent } from './column-filter/column-filter.component';
 import { FilterComponent } from './filter/filter.component';
 import { ResizerComponent } from './resizer/resizer.component';
+import { RouterModule } from '@angular/router';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { ResizerComponent } from './resizer/resizer.component';
   ],
   imports: [
     CommonModule,
+    RouterModule,
     ScrollingModule,
     DragDropModule,
     OverlayModule,
