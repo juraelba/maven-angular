@@ -12,9 +12,7 @@ import {
   CreateSearchResponse,
   SearchResponse,
   SearchQuery,
-  SearchOption,
-  SearchMediaProfileTitleKey
-} from '@models/search.model';
+  SearchOption} from '@models/search.model';
 import { Table, Row, TextFilterKey, Filter, FilterOperatorKey, ColumnAutoFilterData, ColumnAutoFilterValue, Column } from '@models/table.model';
 import { SelectOption } from '@models/select.model';
 import { MarketCriteria, MatchedToCriteria, Criteries } from '@models/criteries.model';
@@ -216,7 +214,8 @@ export class SearchService {
     return columnIds.map((columnId) => ({
       id: columnId,
       label: SearchColumnsEnum[columnId] || columnId,
-      width: 200
+      width: 200,
+      pinned: false
     }));
   }
 
@@ -231,7 +230,7 @@ export class SearchService {
       const columnValidator = predicator || always(true);
 
       if (columnValidator(searchQuery)) {
-        acc.push({ id, label, width: 200 })
+        acc.push({ id, label, width: 200, pinned: false })
       }
 
       return acc;

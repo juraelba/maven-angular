@@ -179,10 +179,20 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.tableRowsInView = rows;
 
     this.totalRows = rows.length;
+    this.searchService.searchResults[this.searchScreenKey] =
+    {
+      rows,
+      columns: this.tableData.columns
+    }
   }
 
   onColumnsChange(columns: Column[]): void {
     this.tableColumnsInView = columns;
+    this.searchService.searchResults[this.searchScreenKey] =
+    {
+      rows: this.tableData.rows,
+      columns
+    }
   }
 
   getTableStyles(): { height: string } {

@@ -18,11 +18,12 @@
           (cdkDropListDropped)="onDrop($event)"
         >
           <div
-            *ngFor="let column of columns"
+            *ngFor="let column of columns; let index = index"
             [id]="column.id"
             class="p-0 bg-light-grey border-b cursor-pointer border-light-gray h-[45px] header__cell"
-            [ngStyle]="getColumnCellStyles(column)"
+            [ngStyle]="getColumnCellStyles(index, column)"
             cdkDrag
+            [cdkDragDisabled]="isColumnPinned(index)"
             (cdkDragStarted)="onDragStart($event)"
             (cdkDragEnded)="onDragEnd($event)"
           >
@@ -57,6 +58,8 @@
                     (textFilterSelect)="onTextFilterSelect($event)"
                     (columnFilterChange)="onColumnFilterChange($event)"
                     (clearColumnFilter)="onFilterClear($event)"
+                    (pinColumn)="onPinColumn($event, index)"
+                    (hideColumn)="onHideColumn($event, index)"
                   >
                   </app-column-filter>
                 </div>
@@ -78,12 +81,13 @@
       <div>
         <div
           *cdkVirtualFor="let row of rows; templateCacheSize: 0"
-          class="h-[45px] flex hover:bg-light-blue"
+          class="h-[45px] flex group hover:bg-light-blue"
         >
           <div
-            *ngFor="let column of columns"
-            class="px-[20px] border-b border-light-gray flex items-center"
-            [ngStyle]="getColumnCellStyles(column)"
+            *ngFor="let column of columns; let i = index"
+            class="px-[20px] border-b border-light-gray flex items-center group-hover:bg-light-blue"
+            [ngClass]="{ 'bg-white': isColumnPinned(i) }"
+            [ngStyle]="getColumnCellStyles(i, column)"
           >
             <ng-container
               *ngIf="getCellLink(column.id, row) as link; else notLink"

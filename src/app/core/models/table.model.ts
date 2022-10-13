@@ -16,6 +16,7 @@ export interface Column {
   id: string;
   label: string;
   width: number;
+  pinned?: boolean
 }
 
 export interface Table {
@@ -36,10 +37,11 @@ interface LinkPath {
 interface ConfigDescription {
   cellStyles: Styles;
   cellLinkPath: LinkPath;
+  pinned?: boolean;
 }
 
 export interface TableConfig {
-  [key: string]: ConfigDescription
+  [key: string]: ConfigDescription,
 }
 
 export type FilterOperatorKey = keyof typeof FilterOperatorEnum;

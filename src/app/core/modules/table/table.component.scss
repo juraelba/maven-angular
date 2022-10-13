@@ -32,3 +32,9 @@
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+
+.header {
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 999 !important;
+}

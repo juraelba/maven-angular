@@ -1,10 +1,14 @@
-<div class="p-[20px] rounded-md shadow-simple rounded-md w-full bg-white max-w-[500px] w-[500px] min-w-[500px]">
+<div
+  class="p-[20px] rounded-md shadow-simple bg-white max-w-[500px] w-[500px] min-w-[500px]"
+>
   <div class="header font-mont font-medium text-base text-black">
     Custom auto-filter on column: {{ column.label }}
   </div>
 
   <div class="body py-[20px] max-h-[200px] overflow-y-auto">
-    <div *ngFor="let filter of _filters; index as index; trackBy: trackByFilterId">
+    <div
+      *ngFor="let filter of _filters; index as index; trackBy: trackByFilterId"
+    >
       <app-filter
         [filter]="filter"
         (removeFilter)="onFilterRemove($event)"
@@ -13,14 +17,16 @@
       ></app-filter>
 
       <div
-        *ngIf="_filters.length !== index + 1" class="flex items-center font-mont text-base font-medium"
+        *ngIf="_filters.length !== index + 1"
+        class="flex items-center font-mont text-base font-medium"
         class="my-[20px]"
       >
         <button
           (click)="changeOperator($event, 'AND', filter.id)"
           class="p-[5px] rounded-l-md border-2"
           [ngClass]="{
-            'text-white bg-regal-blue border-regal-blue shadow-button': filter.operator === 'AND',
+            'text-white bg-regal-blue border-regal-blue shadow-button':
+              filter.operator === 'AND',
             'text-light-gray bg-white border-gray': filter.operator === 'OR'
           }"
         >
@@ -31,7 +37,8 @@
           class="p-[5px] rounded-r-md border-2"
           [ngClass]="{
             'text-light-gray bg-white border-gray': filter.operator === 'AND',
-            'text-white bg-regal-blue border-regal-blue shadow-button': filter.operator === 'OR'
+            'text-white bg-regal-blue border-regal-blue shadow-button':
+              filter.operator === 'OR'
           }"
         >
           Or

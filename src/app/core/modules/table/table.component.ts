@@ -12,7 +12,6 @@ import { FilterOperatorEnum } from '@enums/filters.enum';
 import { UtilsService } from '@services/utils/utils.service';
 import { SearchService } from '@services/search/search.service';
 import { ListsService } from '@services/lists/lists.service';
-import { DOCUMENT } from '@angular/common';
 
 interface Group {
   [key: string]: SelectOption[] | null;
@@ -74,7 +73,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   isColumnAutoFilterVisible: boolean = false;
   columnAutoFilterPosition: ColumnAutoFilterPosition = {
     offsetX: 0,
-    offsetY: 0
+    offsetY: 20,
   }
   draggableElement: EventTarget | null;
 
@@ -83,12 +82,13 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     private searchService: SearchService,
     private listsService: ListsService,
     private renderer: Renderer2,
-    @Inject(DOCUMENT) private document: Document
   ) { }
 
   ngOnInit(): void {
     this.rows = [...this.data.rows];
     this.columns = [...this.data.columns];
+    console.log(this.columns);
+
 
     this.groupedRowFilterData = this.groupRowData();
   }
@@ -123,6 +123,30 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     const columnConfig = this.config[columnId];
 
     return columnConfig ? columnConfig.cellStyles : {}
+  }
+
+  getColumnCellStyles(index: number, column: Column): { [key: string]: string } {
+    const width = `${column.width}px`;
+    const left = this.getPositionLeft(index);
+    const defaultStyle = {
+      width,
+      minWidth: width,
+      maxWidth: width,
+    }
+    return this.isColumnPinned(index) ? {
+      ...defaultStyle,
+      left,
+      position: 'sticky',
+      'z-index': '50'
+    }
+      : defaultStyle;
+  }
+
+  private getPositionLeft(index: number): string {
+    const columns = this.columns.slice(0, index);
+    let totalWidth = 0;
+    columns.forEach(({ width }) => { totalWidth += width });
+    return totalWidth + 'px'
   }
 
   getCellLink(columnId: string, row: Row): string {
@@ -182,9 +206,11 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   onDrop(event: CdkDragDrop<Element, Element, Column>): void {
-    moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
-
-    this.columnsChange.emit(this.columns);
+    const index = event.currentIndex;
+    if (!this.isColumnPinned(index)) {
+      moveItemInArray(this.columns, event.previousIndex, event.currentIndex);
+      this.columnsChange.emit(this.columns);
+    }
   }
 
   updateColumnsWidth({ id }: Column, diff: number): Column[] {
@@ -217,17 +243,9 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
     this.columns = columns;
 
-    this.defineContainerLength()
-  }
+    this.defineContainerLength();
 
-  getColumnCellStyles(column: Column): { [key: string]: string } {
-    const width = `${column.width}px`;
-
-    return {
-      width,
-      minWidth: width,
-      maxWidth: width
-    }
+    this.columnsChange.emit(this.columns);
   }
 
   getColumnTextStyles(column: Column): { [key: string]: string } {
@@ -482,17 +500,32 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
   onDragStart({ event }: CdkDragStart): void {
     this.draggableElement = event.target;
-
     this.renderer.addClass(document.body, 'cursor-move');
   }
 
   onDragEnd(event: CdkDragEnd): void {
     this.renderer.removeClass(this.draggableElement, 'cursor-move');
     this.renderer.addClass(this.draggableElement, 'cursor-pointer');
-
     this.draggableElement = null;
-
     this.renderer.removeClass(document.body, 'cursor-move');
+  }
+
+  onPinColumn(column: Column, index: number): void {
+    const newColumn: Column = { ...column, pinned: !column.pinned };
+    this.columns[index] = newColumn;
+    moveItemInArray(this.columns, index, 0);
+    this.columnsChange.emit(this.columns);
+  }
+
+  onHideColumn(column: Column, index: number): void {
+    this.columns.splice(index, 1);
+    this.columnsChange.emit(this.columns);
+  }
+
+  isColumnPinned(index: number): boolean {
+    const column = this.columns[index];
+    const pinned = this.config[column.id]?.pinned;
+    return !!pinned || !!column?.pinned;
   }
 
   rowClick(event: MouseEvent, row: Row): void {

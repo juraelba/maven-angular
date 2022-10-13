@@ -9,9 +9,15 @@ export const LINK_STYLE: Styles = {
 }
 
 export const SEARCH_COLUMNS_CONFIG: TableConfig = {
+  mavenid: {
+    cellStyles: {},
+    cellLinkPath: { path: 'mavenid', external: false },
+    pinned: true,
+  },
   name: {
     cellStyles: LINK_STYLE,
-    cellLinkPath: { path: 'mavenid', external: false }
+    cellLinkPath: { path: 'mavenid', external: false },
+    pinned: true,
   },
   market: {
     cellStyles: LINK_STYLE,

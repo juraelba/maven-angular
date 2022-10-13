@@ -22,11 +22,13 @@ export class ColumnFilterComponent implements OnInit {
   @Output() textFilterSelect: EventEmitter<{ column: Column, textFilter: TextFilter }> = new EventEmitter();
   @Output() columnFilterChange: EventEmitter<{ id: string, options: SelectOption[] }> = new EventEmitter();
   @Output() clearColumnFilter: EventEmitter<string> = new EventEmitter();
+  @Output() pinColumn: EventEmitter<Column> = new EventEmitter();
+  @Output() hideColumn: EventEmitter<Column> = new EventEmitter();
 
   filterDataOptions: SelectOption[];
   isTextFilterOverlayVisible: boolean = false;
   isColumnAutoFilterVisible: boolean = false;
-  connectedPositions: ConnectedPosition[] =  [
+  connectedPositions: ConnectedPosition[] = [
     {
       overlayX: 'start',
       overlayY: 'top',
@@ -46,7 +48,7 @@ export class ColumnFilterComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    this.filterDataOptions = [ ...this.rowFilterData || [] ];
+    this.filterDataOptions = [...this.rowFilterData || []];
   }
 
   onApplyChanges(options: SelectOption[]) {
@@ -86,6 +88,19 @@ export class ColumnFilterComponent implements OnInit {
   }
 
   onClearColumnFilters(event: MouseEvent): void {
+    event.stopPropagation();
     this.clearColumnFilter.emit(this.column.id);
+  }
+
+  onPinColumn(event: MouseEvent, column: Column): void {
+    event.stopPropagation();
+    this.pinColumn.next(column);
+    this.onMenuClose();
+  }
+
+  onHideColumn(event: MouseEvent, column: Column): void {
+    event.stopPropagation();
+    this.hideColumn.next(column);
+    this.onMenuClose();
   }
 }
