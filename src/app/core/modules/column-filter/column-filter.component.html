@@ -11,7 +11,9 @@
   #selectComponent
 >
   <div dropdownHeaderContainer #dropdownHeaderContainer>
-    <div class="flex justify-between items-center mb-[20px] cursor-pointer text-black text-base font-medium font-mont">
+    <div
+      class="flex justify-between items-center mb-[20px] cursor-pointer text-black text-base font-medium font-mont"
+    >
       <span>{{ column.label }}</span>
       <div class="flex">
         <img
@@ -62,9 +64,7 @@
   [cdkConnectedOverlayOpen]="isTextFilterOverlayVisible"
   [cdkConnectedOverlayOffsetX]="260"
 >
-  <div
-    class="rounded-md shadow-simple rounded-md w-full bg-white"
-  >
+  <div class="rounded-md shadow-simple rounded-md w-full bg-white">
     <div
       *ngFor="let textFilter of textFilters"
       class="text-filter-option flex items-center hover:bg-light-blue text-pri-black text-sm px-[20px] py-[10px] cursor-pointer"

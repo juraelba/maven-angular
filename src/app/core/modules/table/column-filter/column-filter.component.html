@@ -20,6 +20,7 @@
         <img
           (click)="onPinColumn($event, column)"
           class="mr-[10px] cursor-pointer"
+          [ngClass]="{ 'pin-img': column.pinned }"
           src="/assets/images/icons/pin.svg"
           alt="pin"
         />

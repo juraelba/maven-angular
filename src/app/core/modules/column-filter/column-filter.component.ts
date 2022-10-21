@@ -12,7 +12,7 @@ interface TextFilter {
 @Component({
   selector: 'app-column-filter',
   templateUrl: './column-filter.component.html',
-  styleUrls: ['./column-filter.component.scss']
+  styleUrls: ['./column-filter.component.scss'],
 })
 export class ColumnFilterComponent implements OnInit {
   @Input() column: Column;
@@ -29,73 +29,69 @@ export class ColumnFilterComponent implements OnInit {
     {
       label: 'Contains',
       value: 'contain',
-      iconName: 'contain'
+      iconName: 'contain',
     },
     {
       label: 'Does Not Contain',
       value: 'notContain',
-      iconName: 'notContain'
+      iconName: 'notContain',
     },
     {
       label: 'Starts With',
       value: 'startsWith',
-      iconName: 'bigALetter'
+      iconName: 'bigALetter',
     },
     {
       label: 'Ends With',
       value: 'endsWith',
-      iconName: 'smallALetter'
+      iconName: 'smallALetter',
     },
     {
       label: 'Equals',
       value: 'equals',
-      iconName: 'equalSign'
+      iconName: 'equalSign',
     },
     {
       label: 'Does Not Equal',
       value: 'notEqual',
-      iconName: 'notEqualSign'
+      iconName: 'notEqualSign',
     },
     {
       label: 'Empty',
       value: 'empty',
-      iconName: 'emptyPlaceholder'
+      iconName: 'emptyPlaceholder',
     },
     {
       label: 'Not Empty',
       value: 'notEmpty',
-      iconName: 'notEmptyPlaceholder'
+      iconName: 'notEmptyPlaceholder',
     },
     {
       label: 'Null',
       value: 'null',
-      iconName: 'circle'
+      iconName: 'circle',
     },
     {
       label: 'Not Null',
       value: 'null',
-      iconName: 'crossedOutCircle'
+      iconName: 'crossedOutCircle',
     },
-  ]
+  ];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     this.filterDataOptions = this.getFilteredDataOptions(this.filterData);
   }
 
-  onApplyChanges($event: any) {
+  onApplyChanges($event: any) {}
 
-  }
-
-  onClear() {
-
-  }
+  onClear() {}
 
   toggleColumnFilter(event: MouseEvent): void {
     event.stopPropagation();
 
-    this.openFilter.emit(this.column.id)
+    this.openFilter.emit(this.column.id);
   }
 
   getFilteredDataOptions(filterData: any[] = []): SelectOption[] {
@@ -103,7 +99,7 @@ export class ColumnFilterComponent implements OnInit {
       id: data,
       value: data,
       label: data,
-      selected: true
+      selected: true,
     }));
   }
 

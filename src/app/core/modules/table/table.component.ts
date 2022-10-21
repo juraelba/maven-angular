@@ -1,8 +1,36 @@
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, Renderer2, Inject } from '@angular/core';
-import { CdkDragDrop, moveItemInArray, CdkDragStart, CdkDragEnd } from '@angular/cdk/drag-drop';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnInit,
+  Output,
+  SimpleChanges,
+  ViewChild,
+  Renderer2,
+  Inject,
+} from '@angular/core';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  CdkDragStart,
+  CdkDragEnd,
+} from '@angular/cdk/drag-drop';
 import { compose, toPairs, reduce, uniq, isNil } from 'ramda';
 
-import { Table, TableConfig, Styles, Column, Row, TextFilter, Filter, ColumnAutoFilterData, ColumnAutoFilterValue } from '@models/table.model';
+import {
+  Table,
+  TableConfig,
+  Styles,
+  Column,
+  Row,
+  TextFilter,
+  Filter,
+  ColumnAutoFilterData,
+  ColumnAutoFilterValue,
+} from '@models/table.model';
 import { SortMethods } from '@models/sorting-options.models';
 import { SelectOption } from '@models/select.model';
 
@@ -18,8 +46,8 @@ interface Group {
 }
 
 interface TextFilterSelectEvent {
-  column: Column,
-  textFilter: TextFilter
+  column: Column;
+  textFilter: TextFilter;
 }
 
 interface ApplyFilterEvent {
@@ -29,7 +57,7 @@ interface ApplyFilterEvent {
 
 interface ColumnFilterChangeEvent {
   id: string;
-  options: SelectOption[]
+  options: SelectOption[];
 }
 
 interface ColumnAutoFilterPosition {
@@ -38,7 +66,7 @@ interface ColumnAutoFilterPosition {
 }
 
 interface SelectedGroupHashMap {
-  [key: string]: { [key: string]: string; } | undefined;
+  [key: string]: { [key: string]: string } | undefined;
 }
 
 const MIN_COLUMN_WIDTH = 100;
@@ -46,7 +74,7 @@ const MIN_COLUMN_WIDTH = 100;
 @Component({
   selector: 'app-table',
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.scss']
+  styleUrls: ['./table.component.scss'],
 })
 export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() config: TableConfig = {};
@@ -63,7 +91,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
   rows: Row[] = [];
   columns: Column[] = [];
-
+  pinnedCount = 2;
   tableBodyStyles: { [key: string]: string } = {};
   sortedColumn: [string, SortMethods] = ['', SortMethodsEnum.none];
   columnFilterId: string = '';
@@ -74,21 +102,22 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   columnAutoFilterPosition: ColumnAutoFilterPosition = {
     offsetX: 0,
     offsetY: 20,
-  }
+  };
   draggableElement: EventTarget | null;
 
   constructor(
     private utilsService: UtilsService,
     private searchService: SearchService,
     private listsService: ListsService,
-    private renderer: Renderer2,
-  ) { }
+    private renderer: Renderer2
+  ) {}
 
   ngOnInit(): void {
     this.rows = [...this.data.rows];
     this.columns = [...this.data.columns];
+    this.columns[0].pinned = true;
+    this.columns[1].pinned = true;
     console.log(this.columns);
-
 
     this.groupedRowFilterData = this.groupRowData();
   }
@@ -102,19 +131,24 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       this.columnsChange.emit(this.columns);
 
       this.resetAllFilters();
-      this.defineContainerLength()
+      this.defineContainerLength();
     }
   }
-
 
   ngAfterViewInit(): void {
     this.defineContainerLength();
   }
 
   defineContainerLength(): void {
-    const columnsWidths = this.columns.reduce<number>((acc, { width }) => acc + width, 0);
+    const columnsWidths = this.columns.reduce<number>(
+      (acc, { width }) => acc + width,
+      0
+    );
 
-    const cdkVirtualScrollWrapper = this.tableContainer.nativeElement.querySelector('.cdk-virtual-scroll-content-wrapper');
+    const cdkVirtualScrollWrapper =
+      this.tableContainer.nativeElement.querySelector(
+        '.cdk-virtual-scroll-content-wrapper'
+      );
 
     cdkVirtualScrollWrapper.style.width = columnsWidths + 'px';
   }
@@ -122,31 +156,37 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   getCellStyles(columnId: string): Styles {
     const columnConfig = this.config[columnId];
 
-    return columnConfig ? columnConfig.cellStyles : {}
+    return columnConfig ? columnConfig.cellStyles : {};
   }
 
-  getColumnCellStyles(index: number, column: Column): { [key: string]: string } {
+  getColumnCellStyles(
+    index: number,
+    column: Column
+  ): { [key: string]: string } {
     const width = `${column.width}px`;
     const left = this.getPositionLeft(index);
     const defaultStyle = {
       width,
       minWidth: width,
       maxWidth: width,
-    }
-    return this.isColumnPinned(index) ? {
-      ...defaultStyle,
-      left,
-      position: 'sticky',
-      'z-index': '50'
-    }
+    };
+    return this.isColumnPinned(index)
+      ? {
+          ...defaultStyle,
+          left,
+          position: 'sticky',
+          'z-index': '50',
+        }
       : defaultStyle;
   }
 
   private getPositionLeft(index: number): string {
     const columns = this.columns.slice(0, index);
     let totalWidth = 0;
-    columns.forEach(({ width }) => { totalWidth += width });
-    return totalWidth + 'px'
+    columns.forEach(({ width }) => {
+      totalWidth += width;
+    });
+    return totalWidth + 'px';
   }
 
   getCellLink(columnId: string, row: Row): string {
@@ -154,7 +194,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     const id = columnConfig?.['cellLinkPath'].path;
     let parentUrl = columnConfig?.cellLinkPath.parentPath;
     if (row.data.type === 'magazine') {
-      parentUrl = 'magazines'
+      parentUrl = 'magazines';
     }
     return parentUrl ? `/${parentUrl}/${row.data[id]}` : row.data[id];
   }
@@ -165,7 +205,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   gotoExternalLink(path: string): void {
-    window.open('https://' + path, '_blank')
+    window.open('https://' + path, '_blank');
   }
 
   private getSortMethod(columnId: string): SortMethods {
@@ -174,8 +214,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     const sortMethodMapper = {
       [SortMethodsEnum.none]: SortMethodsEnum.ascend,
       [SortMethodsEnum.ascend]: SortMethodsEnum.descend,
-      [SortMethodsEnum.descend]: SortMethodsEnum.none
-    }
+      [SortMethodsEnum.descend]: SortMethodsEnum.none,
+    };
 
     if (id === columnId) {
       return sortMethodMapper[sortMethod];
@@ -193,13 +233,26 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     this.sortedColumn = [column.id, sortMethod];
 
     if (sortMethod === SortMethodsEnum.none) {
-      const mapedFilters = this.searchService.mapFilters(this.columnAutoFilterData);
-      const selectedGroupedRowFilterData = this.getSelectedGroupedRowFilterData();
-      const filteredByGroupRowFilters = this.filterBySelectedGroupRowFilterData(this.data.rows, selectedGroupedRowFilterData);
+      const mapedFilters = this.searchService.mapFilters(
+        this.columnAutoFilterData
+      );
+      const selectedGroupedRowFilterData =
+        this.getSelectedGroupedRowFilterData();
+      const filteredByGroupRowFilters = this.filterBySelectedGroupRowFilterData(
+        this.data.rows,
+        selectedGroupedRowFilterData
+      );
 
-      this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(filteredByGroupRowFilters, mapedFilters);
+      this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(
+        filteredByGroupRowFilters,
+        mapedFilters
+      );
     } else {
-      this.rows = this.utilsService.sortByAlphabeticalOrder<Row>(this.rows, sortMethod, propertyPath);
+      this.rows = this.utilsService.sortByAlphabeticalOrder<Row>(
+        this.rows,
+        sortMethod,
+        propertyPath
+      );
     }
 
     this.rowsChange.emit(this.rows);
@@ -221,7 +274,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
       if (column.id === id) {
         if (widthWithDiff > MIN_COLUMN_WIDTH) {
-          columnWidth = widthWithDiff
+          columnWidth = widthWithDiff;
         } else {
           columnWidth = MIN_COLUMN_WIDTH;
         }
@@ -231,7 +284,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
       acc.push({
         ...column,
-        width: columnWidth
+        width: columnWidth,
       });
 
       return acc;
@@ -254,8 +307,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     return {
       width,
       minWidth: width,
-      maxWidth: width
-    }
+      maxWidth: width,
+    };
   }
 
   getColumnFilterDataOptions(rowFilterData: string[] = []): SelectOption[] {
@@ -265,7 +318,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       id: data,
       value: data,
       label: data,
-      selected: true
+      selected: true,
     }));
   }
 
@@ -305,30 +358,32 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   onTextFilterSelect({ column, textFilter }: TextFilterSelectEvent): void {
-    const { width, height } = this.tableContainer.nativeElement.getBoundingClientRect();
+    const { width, height } =
+      this.tableContainer.nativeElement.getBoundingClientRect();
 
     this.columnAutoFilterPosition = {
       offsetX: width / 2 - 250,
-      offsetY: height / 2 + 100
+      offsetY: height / 2 + 100,
     };
 
-    this.columnAutoFilterData = this.columnAutoFilterData && this.columnAutoFilterData[column.id]
-      ? this.columnAutoFilterData
-      : {
-        ...this.columnAutoFilterData,
-        [column.id]: {
-          column,
-          filters: [
-            {
-              id: new Date().getTime().toString(),
-              textFilterType: textFilter.value,
-              textFilterLabel: textFilter.label,
-              value: '',
-              operator: FilterOperatorEnum.AND
-            }
-          ]
-        }
-      };
+    this.columnAutoFilterData =
+      this.columnAutoFilterData && this.columnAutoFilterData[column.id]
+        ? this.columnAutoFilterData
+        : {
+            ...this.columnAutoFilterData,
+            [column.id]: {
+              column,
+              filters: [
+                {
+                  id: new Date().getTime().toString(),
+                  textFilterType: textFilter.value,
+                  textFilterLabel: textFilter.label,
+                  value: '',
+                  operator: FilterOperatorEnum.AND,
+                },
+              ],
+            },
+          };
 
     this.activeColumnAutoFilterId = column.id;
     this.isColumnAutoFilterVisible = true;
@@ -337,21 +392,29 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   onClickOutside(): void {
     this.columnAutoFilterPosition = {
       offsetX: 0,
-      offsetY: 0
+      offsetY: 0,
     };
 
     this.isColumnAutoFilterVisible = false;
   }
 
-  updateAutoColumnFiltersById(id: string, filters: Filter[]): ColumnAutoFilterData {
-    return compose<[ColumnAutoFilterData], [string, ColumnAutoFilterValue][], ColumnAutoFilterData>(
-      reduce<[string, ColumnAutoFilterValue], ColumnAutoFilterData>((acc, [key, value]) => {
-        acc[key] = key === id
-          ? { column: value.column, filters }
-          : value;
+  updateAutoColumnFiltersById(
+    id: string,
+    filters: Filter[]
+  ): ColumnAutoFilterData {
+    return compose<
+      [ColumnAutoFilterData],
+      [string, ColumnAutoFilterValue][],
+      ColumnAutoFilterData
+    >(
+      reduce<[string, ColumnAutoFilterValue], ColumnAutoFilterData>(
+        (acc, [key, value]) => {
+          acc[key] = key === id ? { column: value.column, filters } : value;
 
-        return acc;
-      }, {}),
+          return acc;
+        },
+        {}
+      ),
       toPairs
     )(this.columnAutoFilterData);
   }
@@ -359,9 +422,14 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   onFilterClear(id: string): void {
     this.columnAutoFilterData = this.updateAutoColumnFiltersById(id, []);
 
-    const mapedFilters = this.searchService.mapFilters(this.columnAutoFilterData);
+    const mapedFilters = this.searchService.mapFilters(
+      this.columnAutoFilterData
+    );
 
-    this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(this.data.rows, mapedFilters);
+    this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(
+      this.data.rows,
+      mapedFilters
+    );
     this.isColumnAutoFilterVisible = false;
 
     this.rowsChange.emit(this.rows);
@@ -370,9 +438,14 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   onFilterApply({ id, filters }: ApplyFilterEvent): void {
     this.columnAutoFilterData = this.updateAutoColumnFiltersById(id, filters);
 
-    const mapedFilters = this.searchService.mapFilters(this.columnAutoFilterData);
+    const mapedFilters = this.searchService.mapFilters(
+      this.columnAutoFilterData
+    );
 
-    this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(this.data.rows, mapedFilters);
+    this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(
+      this.data.rows,
+      mapedFilters
+    );
     this.isColumnAutoFilterVisible = false;
 
     this.rowsChange.emit(this.rows);
@@ -384,31 +457,36 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   updateGroupedRowFilterData(id: string, options: SelectOption[]): Group {
-    const selectedOptions = options.reduce<{ [key: string]: string }>((acc, { value }) => {
-      acc[value] = value;
+    const selectedOptions = options.reduce<{ [key: string]: string }>(
+      (acc, { value }) => {
+        acc[value] = value;
 
-      return acc;
-    }, {});
+        return acc;
+      },
+      {}
+    );
 
     const rowFilterDataOptions = this.groupedRowFilterData[id];
 
     const updatedColumnFilter = !isNil(rowFilterDataOptions)
       ? rowFilterDataOptions.map((option) => ({
-        ...option,
-        selected: selectedOptions[option.value] ? true : false
-      }))
+          ...option,
+          selected: selectedOptions[option.value] ? true : false,
+        }))
       : null;
 
     return {
       ...this.groupedRowFilterData,
-      [id]: updatedColumnFilter
-    }
+      [id]: updatedColumnFilter,
+    };
   }
 
   getSelectedGroupedRowFilterData(): Group {
     return compose<[Group], [string, SelectOption[] | null][], Group>(
       reduce<[string, SelectOption[] | null], Group>((acc, [key, value]) => {
-        acc[key] = !isNil(value) ? this.listsService.getSelectedOptions(value) : null;
+        acc[key] = !isNil(value)
+          ? this.listsService.getSelectedOptions(value)
+          : null;
 
         return acc;
       }, {}),
@@ -419,15 +497,21 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   createHashMapFromSelectedGroup(selectedGroup: Group): SelectedGroupHashMap {
     const selectedPairs = toPairs(selectedGroup);
 
-    return selectedPairs.reduce<SelectedGroupHashMap>((acc, [key, pairValue]) => {
-      acc[key] = pairValue?.reduce<{ [key: string]: string }>((valueAcc, { label }: SelectOption) => {
-        valueAcc[label] = label;
+    return selectedPairs.reduce<SelectedGroupHashMap>(
+      (acc, [key, pairValue]) => {
+        acc[key] = pairValue?.reduce<{ [key: string]: string }>(
+          (valueAcc, { label }: SelectOption) => {
+            valueAcc[label] = label;
 
-        return valueAcc;
-      }, {})
+            return valueAcc;
+          },
+          {}
+        );
 
-      return acc;
-    }, {});
+        return acc;
+      },
+      {}
+    );
   }
 
   filterBySelectedGroupRowFilterData(rows: Row[], selected: Group): Row[] {
@@ -452,7 +536,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
       if (isRowValid) {
         data.push(rows[i]);
-      };
+      }
     }
 
     return data;
@@ -466,11 +550,19 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     this.groupedRowFilterData = this.updateGroupedRowFilterData(id, options);
 
     const selectedGroupedRowFilterData = this.getSelectedGroupedRowFilterData();
-    const mapedFilters = this.searchService.mapFilters(this.columnAutoFilterData);
+    const mapedFilters = this.searchService.mapFilters(
+      this.columnAutoFilterData
+    );
 
-    const filteredByGroupRowFilters = this.filterBySelectedGroupRowFilterData(this.data.rows, selectedGroupedRowFilterData);
+    const filteredByGroupRowFilters = this.filterBySelectedGroupRowFilterData(
+      this.data.rows,
+      selectedGroupedRowFilterData
+    );
 
-    const filteredRows = this.searchService.filterDataBasedOnColumnAutoFilters(filteredByGroupRowFilters, mapedFilters);
+    const filteredRows = this.searchService.filterDataBasedOnColumnAutoFilters(
+      filteredByGroupRowFilters,
+      mapedFilters
+    );
 
     this.rows = filteredRows;
 
@@ -488,8 +580,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     const classMapper = {
       [SortMethodsEnum.ascend]: 'rotate-180',
       [SortMethodsEnum.descend]: 'rotate-0',
-      [SortMethodsEnum.none]: 'hidden'
-    }
+      [SortMethodsEnum.none]: 'hidden',
+    };
 
     if (columnId === id) {
       return classMapper[sortMethod];
@@ -508,12 +600,22 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     this.renderer.addClass(this.draggableElement, 'cursor-pointer');
     this.draggableElement = null;
     this.renderer.removeClass(document.body, 'cursor-move');
+    console.log(event);
   }
 
   onPinColumn(column: Column, index: number): void {
-    const newColumn: Column = { ...column, pinned: !column.pinned };
-    this.columns[index] = newColumn;
-    moveItemInArray(this.columns, index, 0);
+    if (!column.pinned) {
+      const newColumn: Column = { ...column, pinned: !column.pinned };
+      this.columns[index] = newColumn;
+      this.pinnedCount++;
+      moveItemInArray(this.columns, index, this.pinnedCount - 1);
+    } else {
+      const newColumn: Column = { ...column, pinned: !column.pinned };
+      this.columns[index] = newColumn;
+      this.pinnedCount--;
+      moveItemInArray(this.columns, index, this.pinnedCount);
+    }
+
     this.columnsChange.emit(this.columns);
   }
 
@@ -532,6 +634,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     console.log(row);
 
     event.stopPropagation();
-    this.onRowClick.emit(row)
+    this.onRowClick.emit(row);
   }
 }
