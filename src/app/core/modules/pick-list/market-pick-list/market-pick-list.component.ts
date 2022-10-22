@@ -1,4 +1,11 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Output,
+  EventEmitter,
+  Input,
+} from '@angular/core';
 import { takeUntil, filter, map } from 'rxjs/operators';
 import { forkJoin, Subject } from 'rxjs';
 import * as R from 'ramda';
@@ -10,7 +17,7 @@ import { SelectedCriteriaEvent, MarketCriteria } from '@models/criteries.model';
 
 import { ListKeys, ListLabels } from '@enums/lists.enum';
 import { MarketSortingOptionsEnum } from '@enums/sorting-options.enum';
-import { SearchActionTypesEnum } from '@enums/search.enum'
+import { SearchActionTypesEnum } from '@enums/search.enum';
 
 import { ListsService } from '@services/lists/lists.service';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
@@ -20,13 +27,12 @@ import { SelectComponent } from '@modules/select/select.component';
 import { Router } from '@angular/router';
 import { SearchMediaProfileTitleKey } from '@models/search.model';
 
-
 type SectionKey = ListKeys.dmas | ListKeys.msas;
 type SectionLabel = ListLabels.dmas | ListLabels.msas;
 
 type MarketOptions = {
-  [key in SectionKey]: SelectOption[]
-}
+  [key in SectionKey]: SelectOption[];
+};
 
 interface Section {
   value: SectionKey;
@@ -37,7 +43,7 @@ interface Section {
 @Component({
   selector: 'app-market-pick-list',
   templateUrl: './market-pick-list.component.html',
-  styleUrls: ['./market-pick-list.component.scss']
+  styleUrls: ['./market-pick-list.component.scss'],
 })
 export class MarketPickListComponent implements OnInit {
   @Input() dmaOptionsToOmit: string[] = [];
@@ -51,17 +57,17 @@ export class MarketPickListComponent implements OnInit {
   marketOptions: MarketOptions = {
     [ListKeys.dmas]: [],
     [ListKeys.msas]: [],
-  }
+  };
   sections: Section[] = [
     {
       value: ListKeys.dmas,
       label: ListLabels.dmas,
-      selected: true
+      selected: true,
     },
     {
       value: ListKeys.msas,
       label: ListLabels.msas,
-      selected: false
+      selected: false,
     },
   ];
 
@@ -77,11 +83,13 @@ export class MarketPickListComponent implements OnInit {
     private listsService: ListsService,
     private selectedCriteriaService: SelectedCriteriaService,
     private searchService: SearchService,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
+    this.searchScreenKey = this.router.url.split(
+      '/'
+    )[1] as SearchMediaProfileTitleKey;
     this.fetchMarketListOptions();
     this.listenSelectedCriteriaService();
     this.listenSearchBarMenuActions();
@@ -97,22 +105,40 @@ export class MarketPickListComponent implements OnInit {
         map((marketOptions: MarketOptions): MarketOptions => {
           return {
             [ListKeys.dmas]: this.dmaOptionsToOmit.length
-              ? this.listsService.filterOptions(marketOptions[ListKeys.dmas], this.dmaOptionsToOmit)
+              ? this.listsService.filterOptions(
+                  marketOptions[ListKeys.dmas],
+                  this.dmaOptionsToOmit
+                )
               : marketOptions[ListKeys.dmas],
             [ListKeys.msas]: this.msaOptionsToOmit.length
-              ? this.listsService.filterOptions(marketOptions[ListKeys.msas], this.msaOptionsToOmit)
-              : marketOptions[ListKeys.msas]
-          }
+              ? this.listsService.filterOptions(
+                  marketOptions[ListKeys.msas],
+                  this.msaOptionsToOmit
+                )
+              : marketOptions[ListKeys.msas],
+          };
         })
       )
       .subscribe((marketOptions: MarketOptions) => {
-        const sortedOptions = this.listsService.sortOptions(marketOptions[ListKeys.dmas], this.sort);
+        const sortedOptions = this.listsService.sortOptions(
+          marketOptions[ListKeys.dmas],
+          this.sort
+        );
 
         this.marketOptions = marketOptions;
-        this.options = this.listsService.addGroupingLetter(sortedOptions, this.sort);
+        this.options = this.listsService.addGroupingLetter(
+          sortedOptions,
+          this.sort
+        );
 
-        const selected_dmas = this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.dmas];
-        const selected_msas = this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.msas];
+        const selected_dmas =
+          this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[
+            ListKeys.dmas
+          ];
+        const selected_msas =
+          this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[
+            ListKeys.msas
+          ];
         if (selected_dmas) {
           this.change.emit({ key: ListKeys.dmas, data: selected_dmas });
         }
@@ -131,12 +157,20 @@ export class MarketPickListComponent implements OnInit {
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
-        const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
+        const updatedOptions = this.listsService.updateOptionsWithSelected(
+          this.options,
+          optionValues
+        );
 
         this.options = updatedOptions;
         this.borderLabel = this.getBorderLabel(options);
-        this.value = this.listsService.getSelectInputValue(options, ListLabels.markets);
-        const width = this.selectComponent?.selectContainer.nativeElement.getBoundingClientRect().width;
+        this.value = this.listsService.getSelectInputValue(
+          options,
+          ListLabels.markets
+        );
+        const width =
+          this.selectComponent?.selectContainer.nativeElement.getBoundingClientRect()
+            .width;
         this.width = `${width - 80}px`;
       });
   }
@@ -160,10 +194,19 @@ export class MarketPickListComponent implements OnInit {
   setActiveSection(event: MouseEvent, { value }: Section): void {
     event.stopPropagation();
 
-    const sortedOptions = this.listsService.sortOptions(this.marketOptions[value], this.sort);
+    const sortedOptions = this.listsService.sortOptions(
+      this.marketOptions[value],
+      this.sort
+    );
 
-    this.sections = this.sections.map((section) => ({ ...section, selected: section.value === value }));
-    this.options = this.listsService.addGroupingLetter(sortedOptions, this.sort);
+    this.sections = this.sections.map((section) => ({
+      ...section,
+      selected: section.value === value,
+    }));
+    this.options = this.listsService.addGroupingLetter(
+      sortedOptions,
+      this.sort
+    );
   }
 
   getActiveSectionKey(): SectionKey {
@@ -180,16 +223,21 @@ export class MarketPickListComponent implements OnInit {
   }
 
   onApplyChanges(options: SelectOption[]): void {
-    const width = this.selectComponent?.selectContainer.nativeElement.getBoundingClientRect().width;
+    const width =
+      this.selectComponent?.selectContainer.nativeElement.getBoundingClientRect()
+        .width;
 
     this.width = `${width - 80}px`;
-    this.value = this.listsService.getSelectInputValue(options, ListLabels.markets);
+    this.value = this.listsService.getSelectInputValue(
+      options,
+      ListLabels.markets
+    );
     this.borderLabel = this.getBorderLabel(options);
 
     const marketData: MarketCriteria = {
       market: this.getActiveSectionKey(),
       options,
-    }
+    };
 
     this.change.emit({ key: ListKeys.markets, data: marketData });
   }
@@ -209,14 +257,17 @@ export class MarketPickListComponent implements OnInit {
     const activeSectionKey = this.getActiveSectionKey();
 
     this.marketOptions = this.unselectAllMarketOptions();
-    this.options = this.listsService.addGroupingLetter(this.marketOptions[activeSectionKey], this.sort)
+    this.options = this.listsService.addGroupingLetter(
+      this.marketOptions[activeSectionKey],
+      this.sort
+    );
     this.borderLabel = '';
     this.value = ListLabels.markets;
 
     const marketData: MarketCriteria = {
       market: this.getActiveSectionKey(),
       options: [],
-    }
+    };
 
     this.change.emit({ key: ListKeys.markets, data: marketData });
   }
@@ -228,12 +279,18 @@ export class MarketPickListComponent implements OnInit {
   }
 
   onSortingOptionChange(sortingOption: MarketSortingOption): void {
-    const sortedOptions = this.listsService.sortOptions(this.options, sortingOption);
+    const sortedOptions = this.listsService.sortOptions(
+      this.options,
+      sortingOption
+    );
 
     this.sortingMenuOpen = false;
     this.sort = sortingOption;
 
-    this.options = this.listsService.addGroupingLetter(sortedOptions, this.sort);
+    this.options = this.listsService.addGroupingLetter(
+      sortedOptions,
+      this.sort
+    );
   }
 
   onMenuClose(): void {

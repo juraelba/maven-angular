@@ -6,21 +6,25 @@ import { Criteries } from '@models/criteries.model';
 import { SearchKey, SearchFiledChangeEvent } from '@models/search.model';
 import { ListUrlsKey } from '@models/list.model';
 
-import { SearchEnum, SearchActionTypesEnum, SearchFiedlsEnum } from '@enums/search.enum';
+import {
+  SearchEnum,
+  SearchActionTypesEnum,
+  SearchFiedlsEnum,
+} from '@enums/search.enum';
 import { ListKeys } from '@enums/lists.enum';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { SearchService } from '@services/search/search.service';
 
-
 @Component({
   selector: 'app-spot-radio-search',
   templateUrl: './spot-radio-search.component.html',
-  styleUrls: ['./spot-radio-search.component.scss']
+  styleUrls: ['./spot-radio-search.component.scss'],
 })
 export class SpotRadioSearchComponent implements OnInit, OnDestroy {
   key: SearchKey = SearchEnum['spot-radio'];
-  criteries: Criteries = this.selectedCriteriaService.criteries?.[this.key] ?? {};
+  criteries: Criteries =
+    this.selectedCriteriaService.criteries?.[this.key] ?? {};
   unsubscribeAll: Subject<null> = new Subject();
 
   ownerListUrlKey: ListUrlsKey = ListKeys.owners10;
@@ -28,7 +32,7 @@ export class SpotRadioSearchComponent implements OnInit, OnDestroy {
   constructor(
     private selectedCriteriaService: SelectedCriteriaService,
     private searchService: SearchService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.selectedCriteriaService.selectedCriteria$
@@ -38,7 +42,8 @@ export class SpotRadioSearchComponent implements OnInit, OnDestroy {
       )
       .subscribe((data: Criteries) => {
         this.criteries = {
-          [SearchFiedlsEnum.nonComms]: this.criteries[SearchFiedlsEnum.nonComms],
+          [SearchFiedlsEnum.nonComms]:
+            this.criteries[SearchFiedlsEnum.nonComms],
           ...data,
         };
       });
@@ -58,11 +63,11 @@ export class SpotRadioSearchComponent implements OnInit, OnDestroy {
         filter(({ action }) => SearchActionTypesEnum.NEW_SEARCH === action)
       )
       .subscribe(() => {
-        this.criteries = {}
+        this.criteries = {};
       });
   }
 
-  onChange({ key, data }: SearchFiledChangeEvent) {
+  onChange({ key, data, target }: any) {
     this.criteries[key] = data;
     this.selectedCriteriaService.update(this.criteries, this.key);
   }
@@ -71,5 +76,4 @@ export class SpotRadioSearchComponent implements OnInit, OnDestroy {
     this.criteries[key] = value;
     this.selectedCriteriaService.update(this.criteries, this.key);
   }
-
 }

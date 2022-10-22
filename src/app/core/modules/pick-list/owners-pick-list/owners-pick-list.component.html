@@ -1,6 +1,6 @@
 <app-select
   [multiple]="true"
-  [grouping]="false"
+  [grouping]="true"
   [options]="options"
   [search]="true"
   [placeholder]="placeholder"
@@ -10,7 +10,9 @@
   #selectComponent
 >
   <div dropdownHeaderContainer #dropdownHeaderContainer>
-    <div class="flex justify-between items-center mb-5 cursor-pointer text-black text-base font-medium">
+    <div
+      class="flex justify-between items-center mb-5 cursor-pointer text-black text-base font-medium"
+    >
       Owners
     </div>
   </div>

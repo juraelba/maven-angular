@@ -117,7 +117,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     this.columns = [...this.data.columns];
     this.columns[0].pinned = true;
     this.columns[1].pinned = true;
-    console.log(this.columns);
 
     this.groupedRowFilterData = this.groupRowData();
   }
@@ -236,13 +235,16 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       const mapedFilters = this.searchService.mapFilters(
         this.columnAutoFilterData
       );
+      console.log(mapedFilters);
+
       const selectedGroupedRowFilterData =
         this.getSelectedGroupedRowFilterData();
+
       const filteredByGroupRowFilters = this.filterBySelectedGroupRowFilterData(
         this.data.rows,
         selectedGroupedRowFilterData
       );
-
+      console.log(mapedFilters);
       this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(
         filteredByGroupRowFilters,
         mapedFilters
@@ -255,6 +257,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       );
     }
 
+    // console.table(this.rows);
     this.rowsChange.emit(this.rows);
   }
 
@@ -487,7 +490,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
         acc[key] = !isNil(value)
           ? this.listsService.getSelectedOptions(value)
           : null;
-
         return acc;
       }, {}),
       toPairs
@@ -538,7 +540,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
         data.push(rows[i]);
       }
     }
-
     return data;
   }
 
@@ -600,7 +601,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     this.renderer.addClass(this.draggableElement, 'cursor-pointer');
     this.draggableElement = null;
     this.renderer.removeClass(document.body, 'cursor-move');
-    console.log(event);
   }
 
   onPinColumn(column: Column, index: number): void {
