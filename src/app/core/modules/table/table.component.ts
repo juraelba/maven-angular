@@ -96,7 +96,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   sortedColumn: [string, SortMethods] = ['', SortMethodsEnum.none];
   columnFilterId: string = '';
   activeColumnAutoFilterId: string = '';
-  columnAutoFilterData: ColumnAutoFilterData;
+  columnAutoFilterData: ColumnAutoFilterData = {};
   groupedRowFilterData: Group;
   isColumnAutoFilterVisible: boolean = false;
   columnAutoFilterPosition: ColumnAutoFilterPosition = {
@@ -115,9 +115,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit(): void {
     this.rows = [...this.data.rows];
     this.columns = [...this.data.columns];
-    this.columns[0].pinned = true;
-    this.columns[1].pinned = true;
-
     this.groupedRowFilterData = this.groupRowData();
   }
 
@@ -235,7 +232,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       const mapedFilters = this.searchService.mapFilters(
         this.columnAutoFilterData
       );
-      console.log(mapedFilters);
 
       const selectedGroupedRowFilterData =
         this.getSelectedGroupedRowFilterData();
@@ -244,7 +240,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
         this.data.rows,
         selectedGroupedRowFilterData
       );
-      console.log(mapedFilters);
+
       this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(
         filteredByGroupRowFilters,
         mapedFilters

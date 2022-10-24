@@ -140,7 +140,7 @@
                 class="font-lato text-pri-gray basis-[15%]"
                 [ngClass]="field.labelClassName || []"
               >
-                {{ field.label+':' }}
+                {{ field.label + ":" }}
               </div>
               <div
                 class="ml-[20px] text-pri-black font-lato basis-[85%]"
@@ -156,7 +156,10 @@
       </div>
     </div>
 
-    <div class="files shadow-simple rounded-md w-full p-[20px]">
+    <div
+      class="files shadow-simple rounded-md w-full p-[20px]"
+      *ngIf="maven.files.length"
+    >
       <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
         Files
       </div>
@@ -195,7 +198,10 @@
       </ng-template>
     </div>
 
-    <div class="shadow-simple rounded-md w-full p-[20px]">
+    <div
+      class="shadow-simple rounded-md w-full p-[20px]"
+      *ngIf="maven.partners.length"
+    >
       <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
         Media Partners
       </div>
@@ -228,22 +234,25 @@
         </div>
       </ng-template>
     </div>
-  </div>
 
-  <div class="shadow-simple rounded-md w-full p-[20px] my-5">
-    <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
-      Personnel
-    </div>
-    <app-table
-      *ngIf="!!personnelTableData && maven.partners.length; else noPersonnel"
-      [data]="personnelTableData"
-      [columnFilterVisible]="false"
-      [tableStyles]="tableStyles"
-      (onRowClick)="onRowClick($event)"
+    <div
+      class="shadow-simple rounded-md w-full p-[20px] my-5"
+      *ngIf="!!personnelTableData && maven.partners.length"
     >
-    </app-table>
-    <ng-template #noPersonnel>
-      <div class="text-pri-gray font-lato">No personnel found.</div>
-    </ng-template>
+      <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
+        Personnel
+      </div>
+      <app-table
+        *ngIf="!!personnelTableData && maven.partners.length; else noPersonnel"
+        [data]="personnelTableData"
+        [columnFilterVisible]="false"
+        [tableStyles]="tableStyles"
+        (onRowClick)="onRowClick($event)"
+      >
+      </app-table>
+      <ng-template #noPersonnel>
+        <div class="text-pri-gray font-lato">No personnel found.</div>
+      </ng-template>
+    </div>
   </div>
 </ng-container>

@@ -14,66 +14,100 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'media-search',
-        pathMatch: 'full'
+        pathMatch: 'full',
       },
       {
         path: 'media-search',
-        loadChildren: () => import('./pages/media-search/media-search.module').then(m => m.MediaSearchModule)
+        loadChildren: () =>
+          import('./pages/media-search/media-search.module').then(
+            (m) => m.MediaSearchModule
+          ),
       },
       {
         path: 'spot-tv',
-        loadChildren: () => import('./pages/spot-tv/spot-tv.module').then(m => m.SpotTvModule)
+        loadChildren: () =>
+          import('./pages/spot-tv/spot-tv.module').then((m) => m.SpotTvModule),
       },
       {
         path: 'broadcast-networks',
-        loadChildren: () => import('./pages/broadcast-networks/broadcast-networks.module').then(m => m.BroadcastNetworksModule)
+        loadChildren: () =>
+          import('./pages/broadcast-networks/broadcast-networks.module').then(
+            (m) => m.BroadcastNetworksModule
+          ),
       },
       {
         path: 'spot-radio',
-        loadChildren: () => import('./pages/spot-radio-search/spot-radio-search.module').then(m => m.SpotRadioSearchModule)
+        loadChildren: () =>
+          import('./pages/spot-radio-search/spot-radio-search.module').then(
+            (m) => m.SpotRadioSearchModule
+          ),
       },
       {
         path: 'cable-networks',
-        loadChildren: () => import('./pages/cable-networks/cable-networks.module').then(m => m.CableNetworksModule)
+        loadChildren: () =>
+          import('./pages/cable-networks/cable-networks.module').then(
+            (m) => m.CableNetworksModule
+          ),
       },
       {
         path: 'national-audio',
-        loadChildren: () => import('./pages/national-audio/national-audio.module').then(m => m.NationalAudioModule)
+        loadChildren: () =>
+          import('./pages/national-audio/national-audio.module').then(
+            (m) => m.NationalAudioModule
+          ),
       },
       {
         path: 'digital',
-        loadChildren: () => import('./pages/digital/digital.module').then(m => m.DigitalModule)
+        loadChildren: () =>
+          import('./pages/digital/digital.module').then((m) => m.DigitalModule),
       },
       {
         path: 'magazine-search',
-        loadChildren: () => import('./pages/magazine/magazine.module').then(m => m.MagazineModule)
+        loadChildren: () =>
+          import('./pages/magazine/magazine.module').then(
+            (m) => m.MagazineModule
+          ),
       },
       {
         path: 'newspaper-search',
-        loadChildren: () => import('./pages/newspaper/newspaper.module').then(m => m.NewspaperModule)
+        loadChildren: () =>
+          import('./pages/newspaper/newspaper.module').then(
+            (m) => m.NewspaperModule
+          ),
       },
       {
         path: 'out-of-home-search',
-        loadChildren: () => import('./pages/out-of-home/out-of-home.module').then(m => m.OutOfHomeModule)
+        loadChildren: () =>
+          import('./pages/out-of-home/out-of-home.module').then(
+            (m) => m.OutOfHomeModule
+          ),
       },
       {
         path: 'diverse-media-search',
-        loadChildren: () => import('./pages/diverse/diverse.module').then(m => m.DiverseModule)
+        loadChildren: () =>
+          import('./pages/diverse/diverse.module').then((m) => m.DiverseModule),
       },
       {
         path: 'call-history',
-        loadChildren: () => import('./pages/call-history/call-history.module').then(m => m.CallHistoryModule)
+        loadChildren: () =>
+          import('./pages/call-history/call-history.module').then(
+            (m) => m.CallHistoryModule
+          ),
       },
-    ]
+    ],
   },
   {
-    path: '', component: AuthLayoutComponent,
-    loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
-  }
+    path: '',
+    component: AuthLayoutComponent,
+    loadChildren: () =>
+      import('./pages/auth/auth.module').then((m) => m.AuthModule),
+  },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
-  exports: [RouterModule]
+  imports: [
+    RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' }),
+  ],
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

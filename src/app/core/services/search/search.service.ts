@@ -430,7 +430,6 @@ export class SearchService {
     rows: Row[],
     filters: { [key: string]: Filter[] }
   ): Row[] {
-    console.log('filters', filters);
     // if filters is empty return all rows
     if (isEmpty(filters)) {
       return rows;

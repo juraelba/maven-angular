@@ -1,5 +1,9 @@
-
-import { SearchEnum, SearchColumnsIdEnum, SearchColumnsEnum, SearchFiedlsEnum } from '@enums/search.enum';
+import {
+  SearchEnum,
+  SearchColumnsIdEnum,
+  SearchColumnsEnum,
+  SearchFiedlsEnum,
+} from '@enums/search.enum';
 import { SearchQuery } from '@models/search.model';
 import { TableColumnsConfig } from '@models/table.model';
 
@@ -12,7 +16,7 @@ const NETWORK_COLUMNS = [
   { id: SearchColumnsIdEnum.slogan, label: SearchColumnsEnum.slogan },
   { id: SearchColumnsIdEnum.categories, label: SearchColumnsEnum.categories },
   { id: SearchColumnsIdEnum.website, label: SearchColumnsEnum.website },
-  { id: SearchColumnsIdEnum.partners, label: SearchColumnsEnum.partners }
+  { id: SearchColumnsIdEnum.partners, label: SearchColumnsEnum.partners },
 ];
 
 const DEFAULT_COLUMNS = [
@@ -24,7 +28,7 @@ const DEFAULT_COLUMNS = [
   { id: SearchColumnsIdEnum.slogan, label: SearchColumnsEnum.slogan },
   { id: SearchColumnsIdEnum.categories, label: SearchColumnsEnum.categories },
   { id: SearchColumnsIdEnum.website, label: SearchColumnsEnum.website },
-  { id: SearchColumnsIdEnum.partners, label: SearchColumnsEnum.partners }
+  { id: SearchColumnsIdEnum.partners, label: SearchColumnsEnum.partners },
 ];
 
 export const TABLE_COLUMNS: TableColumnsConfig = {
@@ -36,16 +40,23 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
     { id: SearchColumnsIdEnum.owner, label: SearchColumnsEnum.owner },
     { id: SearchColumnsIdEnum.parent, label: SearchColumnsEnum.parent },
     { id: SearchColumnsIdEnum.networks, label: SearchColumnsEnum.networks },
-    { id: SearchColumnsIdEnum.digitalChannel, label: SearchColumnsEnum.digitalChannel },
-    { id: SearchColumnsIdEnum.displayChannel, label: SearchColumnsEnum.displayChannel },
+    {
+      id: SearchColumnsIdEnum.digitalChannel,
+      label: SearchColumnsEnum.digitalChannel,
+    },
+    {
+      id: SearchColumnsIdEnum.displayChannel,
+      label: SearchColumnsEnum.displayChannel,
+    },
     { id: SearchColumnsIdEnum.slogan, label: SearchColumnsEnum.slogan },
     { id: SearchColumnsIdEnum.website, label: SearchColumnsEnum.website },
     { id: SearchColumnsIdEnum.partners, label: SearchColumnsEnum.partners },
     {
       id: SearchColumnsIdEnum.commercial,
       label: SearchColumnsEnum.commercial,
-      predicator: (searchCriteria: SearchQuery) => Boolean(searchCriteria.criteria[SearchFiedlsEnum.nonComms])
-    }
+      predicator: (searchCriteria: SearchQuery) =>
+        Boolean(searchCriteria.criteria[SearchFiedlsEnum.nonComms]),
+    },
   ],
   [SearchEnum['network-tv']]: NETWORK_COLUMNS,
   [SearchEnum['spot-radio']]: [
@@ -63,8 +74,9 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
     {
       id: SearchColumnsIdEnum.commercial,
       label: SearchColumnsEnum.commercial,
-      predicator: (searchCriteria: SearchQuery) => Boolean(searchCriteria.criteria[SearchFiedlsEnum.nonComms])
-    }
+      predicator: (searchCriteria: SearchQuery) =>
+        Boolean(searchCriteria.criteria[SearchFiedlsEnum.nonComms]),
+    },
   ],
   [SearchEnum['network-cable']]: NETWORK_COLUMNS,
   [SearchEnum['network-radio']]: NETWORK_COLUMNS,
@@ -73,13 +85,22 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
     ...DEFAULT_COLUMNS,
     { id: SearchColumnsIdEnum.market, label: SearchColumnsEnum.market },
     { id: SearchColumnsIdEnum.fullPage, label: SearchColumnsEnum.fullPage },
-    { id: SearchColumnsIdEnum.circulation, label: SearchColumnsEnum.circulation },
+    {
+      id: SearchColumnsIdEnum.circulation,
+      label: SearchColumnsEnum.circulation,
+    },
   ],
   [SearchEnum.newspaper]: [
     ...DEFAULT_COLUMNS,
     { id: SearchColumnsIdEnum.market, label: SearchColumnsEnum.market },
-    { id: SearchColumnsIdEnum.dailyFullPageRate, label: SearchColumnsEnum.dailyFullPageRate },
-    { id: SearchColumnsIdEnum.dailyCirculation, label: SearchColumnsEnum.dailyCirculation },
+    {
+      id: SearchColumnsIdEnum.dailyFullPageRate,
+      label: SearchColumnsEnum.dailyFullPageRate,
+    },
+    {
+      id: SearchColumnsIdEnum.dailyCirculation,
+      label: SearchColumnsEnum.dailyCirculation,
+    },
   ],
   [SearchEnum.outdoor]: DEFAULT_COLUMNS,
   [SearchEnum.diverse]: DEFAULT_COLUMNS,
@@ -91,4 +112,11 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
   ],
 };
 
-export const COLUMNS_TO_OMIT = [ 'marketID', 'ownerID', 'parentID', 'partnerID', 'subTypeID', 'typeID' ];
+export const COLUMNS_TO_OMIT = [
+  'marketID',
+  'ownerID',
+  'parentID',
+  'partnerID',
+  'subTypeID',
+  'typeID',
+];

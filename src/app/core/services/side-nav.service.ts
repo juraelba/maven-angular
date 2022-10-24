@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { environment } from '../../../environments/environment';
 import { Menu, AccessibleMenu } from '../models/side-nav.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SideNavService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
 
   fetchMenuData(): Observable<AccessibleMenu[]> {
     const url = environment.api + '/menu';
@@ -17,10 +17,13 @@ export class SideNavService {
     return this.http.get<AccessibleMenu[]>(url);
   }
 
-  isAvailable(permissions: string[] = [], accessibleMenu: AccessibleMenu[]): boolean {
+  isAvailable(
+    permissions: string[] = [],
+    accessibleMenu: AccessibleMenu[]
+  ): boolean {
     return permissions.length
       ? accessibleMenu.some(({ id }) => permissions.includes(id))
-      : true
+      : true;
   }
 
   updateDisabledState(menu: Menu[], accessibleMenu: AccessibleMenu[]): Menu[] {
@@ -30,7 +33,7 @@ export class SideNavService {
       const updatedItem: Menu = {
         ...rest,
         permissions,
-        disabled: isDisabled
+        disabled: isDisabled,
       };
 
       if (items) {

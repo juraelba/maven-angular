@@ -1,11 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { map, takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 import { SideNavService } from '../../../core/services/side-nav.service';
 import { Menu, AccessibleMenu } from '../../../core/models/side-nav.model';
-import { ObjectType, Role, Service } from '../../../core/enums/permissions.enum';
+import {
+  ObjectType,
+  Role,
+  Service,
+} from '../../../core/enums/permissions.enum';
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.component.html',
@@ -14,99 +18,216 @@ import { ObjectType, Role, Service } from '../../../core/enums/permissions.enum'
 export class SideNavComponent implements OnInit {
   navData: Menu[] = [
     {
-      label: "Media",
+      label: 'Media',
       imageIcon: '/assets/images/icons/media.svg',
       disabled: true,
+      expanded: true,
+      isSelected: true,
       items: [
         {
-          name: "media-search",
+          name: 'media-search',
           label: 'Media Search',
-          route: "/media-search",
+          route: '/media-search',
           disabled: true,
-          permissions: [Role.Any]
+          isSelected: true,
+          permissions: [Role.Any],
         },
         {
-          label: "Network",
+          label: 'Network',
           disabled: true,
           items: [
-            { name: "network-tv", label: "Broadcast Networks", route: "/broadcast-networks", disabled: true, permissions: [ObjectType.NetworkTV] },
-            { name: "network-cable", label: "Cable Networks", route: "/cable-networks", disabled: true, permissions: [ObjectType.NetworkCable] },
-            { name: "network-radio", label: "National Audio", route: "/national-audio", disabled: true, permissions: [ObjectType.NetworkRadio] },
-          ]
+            {
+              name: 'network-tv',
+              label: 'Broadcast Networks',
+              route: '/broadcast-networks',
+              disabled: true,
+              permissions: [ObjectType.NetworkTV],
+            },
+            {
+              name: 'network-cable',
+              label: 'Cable Networks',
+              route: '/cable-networks',
+              disabled: true,
+              permissions: [ObjectType.NetworkCable],
+            },
+            {
+              name: 'network-radio',
+              label: 'National Audio',
+              route: '/national-audio',
+              disabled: true,
+              permissions: [ObjectType.NetworkRadio],
+            },
+          ],
         },
         {
-          name: "digital",
+          name: 'digital',
           label: 'Digital',
-          route: "/digital",
+          route: '/digital',
           disabled: true,
-          permissions: [ObjectType.Digital]
+          permissions: [ObjectType.Digital],
         },
         {
-          label: "Spot",
-          disabled: true,
-          items: [
-            { name: "spot-tv", label: "Spot TV", route: "/spot-tv", disabled: true, permissions: [ObjectType.SpotTV] },
-            { name: "spot-radio", label: "Spot Radio", route: "/spot-radio", disabled: true, permissions: [ObjectType.SpotRadio] },
-            { name: "regional-cable", label: "Regional Cable", route: "/regional-cable-search", disabled: true, permissions: [ObjectType.SpotCable] },
-            { name: "call-history", label: "Call History", route: "/call-history", disabled: true, permissions: [ObjectType.SpotRadio, ObjectType.SpotTV] }
-          ]
-        },
-        {
-          label: "Print",
+          label: 'Spot',
           disabled: true,
           items: [
-            { name: "magazine", label: "Magazines", route: "/magazine-search", disabled: true, permissions: [ObjectType.Magazine] },
-            { name: "newspaper", label: "Newspapers", route: "/newspaper-search", disabled: true, permissions: [ObjectType.Newspaper] }
-          ]
+            {
+              name: 'spot-tv',
+              label: 'Spot TV',
+              route: '/spot-tv',
+              disabled: true,
+              permissions: [ObjectType.SpotTV],
+            },
+            {
+              name: 'spot-radio',
+              label: 'Spot Radio',
+              route: '/spot-radio',
+              disabled: true,
+              permissions: [ObjectType.SpotRadio],
+            },
+            {
+              name: 'regional-cable',
+              label: 'Regional Cable',
+              route: '/regional-cable-search',
+              disabled: true,
+              permissions: [ObjectType.SpotCable],
+            },
+            {
+              name: 'call-history',
+              label: 'Call History',
+              route: '/call-history',
+              disabled: true,
+              permissions: [ObjectType.SpotRadio, ObjectType.SpotTV],
+            },
+          ],
         },
         {
-          name: "outdoor",
+          label: 'Print',
+          disabled: true,
+          items: [
+            {
+              name: 'magazine',
+              label: 'Magazines',
+              route: '/magazine-search',
+              disabled: true,
+              permissions: [ObjectType.Magazine],
+            },
+            {
+              name: 'newspaper',
+              label: 'Newspapers',
+              route: '/newspaper-search',
+              disabled: true,
+              permissions: [ObjectType.Newspaper],
+            },
+          ],
+        },
+        {
+          name: 'outdoor',
           label: 'Out-of-Home',
-          route: "/out-of-home-search",
+          route: '/out-of-home-search',
           disabled: true,
-          permissions: [ObjectType.OutofHome]
+          permissions: [ObjectType.OutofHome],
         },
-      ]
+      ],
     },
     {
-      name: "owners",
+      name: 'owners',
       imageIcon: '/assets/images/icons/ownership.svg',
       label: 'Ownership',
-      route: "/owner-search",
+      route: '/owner-search',
       disabled: true,
-      permissions: [ObjectType.Owner]
+      permissions: [ObjectType.Owner],
     },
     {
-      label: "Diversity",
+      label: 'Diversity',
       imageIcon: '/assets/images/icons/diversity.svg',
       disabled: true,
       items: [
-        { name: "diverse-media", label: "Media", route: "/diverse-media-search", disabled: true, permissions: [Service.Diversity] },
-        { name: "diverse-owner", label: "Owners", route: "/diverse-owner-search", disabled: true, permissions: [Service.Diversity] },
-        { name: "diverse-research", label: "Research", route: "/diverse-research", disabled: true, permissions: [Service.Diversity] },
-      ]
+        {
+          name: 'diverse-media',
+          label: 'Media',
+          route: '/diverse-media-search',
+          disabled: true,
+          permissions: [Service.Diversity],
+        },
+        {
+          name: 'diverse-owner',
+          label: 'Owners',
+          route: '/diverse-owner-search',
+          disabled: true,
+          permissions: [Service.Diversity],
+        },
+        {
+          name: 'diverse-research',
+          label: 'Research',
+          route: '/diverse-research',
+          disabled: true,
+          permissions: [Service.Diversity],
+        },
+      ],
     },
     {
-      label: "Markets",
+      label: 'Markets',
       disabled: true,
       imageIcon: '/assets/images/icons/market.svg',
       items: [
-        { name: "market-media", label: "Media in Market", route: "/market-media", disabled: true, permissions: [Role.Any] },
-        { name: "dma-msa", label: "DMA > MSA", route: "/dma-msa", disabled: true, permissions: [Role.Any] },
-        { name: "msa-dma", label: "MSA > DMA", route: "/msa-dma", disabled: true, permissions: [Role.Any] },
-        { name: "dma-state", label: "DMA > State", route: "/dma-state", disabled: true, permissions: [Role.Any] },
-        { name: "msa-state", label: "MSA > State", route: "/msa-state", disabled: true, permissions: [Role.Any] },
-        { name: "state-dma", label: "State > DMA", route: "/state-dma", disabled: true, permissions: [Role.Any] },
-        { name: "state-msa", label: "State > MSA", route: "/state-msa", disabled: true, permissions: [Role.Any] }
-      ]
+        {
+          name: 'market-media',
+          label: 'Media in Market',
+          route: '/market-media',
+          disabled: true,
+          permissions: [Role.Any],
+        },
+        {
+          name: 'dma-msa',
+          label: 'DMA > MSA',
+          route: '/dma-msa',
+          disabled: true,
+          permissions: [Role.Any],
+        },
+        {
+          name: 'msa-dma',
+          label: 'MSA > DMA',
+          route: '/msa-dma',
+          disabled: true,
+          permissions: [Role.Any],
+        },
+        {
+          name: 'dma-state',
+          label: 'DMA > State',
+          route: '/dma-state',
+          disabled: true,
+          permissions: [Role.Any],
+        },
+        {
+          name: 'msa-state',
+          label: 'MSA > State',
+          route: '/msa-state',
+          disabled: true,
+          permissions: [Role.Any],
+        },
+        {
+          name: 'state-dma',
+          label: 'State > DMA',
+          route: '/state-dma',
+          disabled: true,
+          permissions: [Role.Any],
+        },
+        {
+          name: 'state-msa',
+          label: 'State > MSA',
+          route: '/state-msa',
+          disabled: true,
+          permissions: [Role.Any],
+        },
+      ],
     },
     {
-      name: "users",
+      name: 'users',
       imageIcon: '/assets/images/icons/security.svg',
       label: 'Security',
-      route: "/users",
+      route: '/users',
       disabled: true,
-      permissions: [Role.Administrator, Role.AccountServices]
+      permissions: [Role.Administrator, Role.AccountServices],
     },
   ];
 
@@ -125,20 +246,21 @@ export class SideNavComponent implements OnInit {
 
   unsubscribeAll: Subject<null> = new Subject<null>();
 
-  constructor(
-    private sideNavService: SideNavService,
-    private router: Router
-  ) { }
+  constructor(private sideNavService: SideNavService, private router: Router) {}
 
   ngOnInit(): void {
-    this.sideNavService.fetchMenuData()
+    this.sideNavService
+      .fetchMenuData()
       .pipe(
         takeUntil(this.unsubscribeAll),
-        map((accessibleMenu: AccessibleMenu[]) => this.sideNavService.updateDisabledState(this.navData, accessibleMenu))
+        map((accessibleMenu: AccessibleMenu[]) =>
+          this.sideNavService.updateDisabledState(this.navData, accessibleMenu)
+        )
       )
       .subscribe((menu: Menu[]) => {
         this.navData = menu;
-      })
+        console.log(this.navData);
+      });
   }
 
   ngOnDestroy(): void {
@@ -147,6 +269,7 @@ export class SideNavComponent implements OnInit {
   }
 
   selectedItem(menu: Menu) {
-    this.router.navigate([`/${ menu.route }`]);
+    console.log(this.navData);
+    this.router.navigate([`/${menu.route}`]);
   }
 }

@@ -1,12 +1,14 @@
 export interface Menu {
-  name?: string,
-  label: string,
-  route?: string,
-  disabled?: boolean,
-  id?: string,
-  items?: Menu[],
-  permissions?: string[],
-  imageIcon?: string
+  name?: string;
+  label: string;
+  route?: string;
+  disabled?: boolean;
+  id?: string;
+  items?: Menu[];
+  permissions?: string[];
+  imageIcon?: string;
+  expanded?: boolean;
+  isSelected?: boolean;
 }
 
 export interface AccessibleMenu {

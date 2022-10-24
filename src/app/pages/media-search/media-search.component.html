@@ -1,28 +1,39 @@
-<app-search
-  [title]="'Media Search'"
-  [criteries]="criteries"
-  [key]="key"
->
+<app-search [title]="'Media Search'" [criteries]="criteries" [key]="key">
   <div class="grid-container grid gap-5">
-    <app-name-input class="col-start-1 col-end-3" (changeData)="onChange($event)"></app-name-input>
-
-    <app-media-type-pick-list (change)="onChange($event)"></app-media-type-pick-list>
+    <app-name-input
+      class="col-start-1 col-end-3"
+      (changeData)="onChange($event)"
+    ></app-name-input>
+    <app-media-type-pick-list
+      (change)="onChange($event)"
+    ></app-media-type-pick-list>
     <app-market-pick-list (change)="onChange($event)"></app-market-pick-list>
-    
     <app-owners-pick-list (change)="onChange($event)"></app-owners-pick-list>
-    <app-category-pick-list (change)="onChange($event)"></app-category-pick-list>
-    <app-diverse-target-pick-list (change)="onChange($event)"></app-diverse-target-pick-list>
-    <app-language-pick-list (change)="onChange($event)"></app-language-pick-list>
+    <app-category-pick-list
+      (change)="onChange($event)"
+    ></app-category-pick-list>
+    <app-diverse-target-pick-list
+      (change)="onChange($event)"
+    ></app-diverse-target-pick-list>
+    <app-language-pick-list
+      (change)="onChange($event)"
+    ></app-language-pick-list>
 
     <app-matched-to (dataChange)="onChange($event)"></app-matched-to>
 
     <div class="flex items-center">
-      <app-checkbox [checked]="criteries['metric']" (change)="onCheckboxChange('metric', $event)"></app-checkbox>
+      <app-checkbox
+        [checked]="criteries['metric']"
+        (change)="onCheckboxChange('metric', $event)"
+      ></app-checkbox>
       <span class="ml-[10px] font-lato text-pri-black">Metric</span>
     </div>
 
     <div class="flex items-center">
-      <app-checkbox [checked]="criteries['slogan']" (change)="onCheckboxChange('slogan', $event)"></app-checkbox>
+      <app-checkbox
+        [checked]="criteries['slogan']"
+        (change)="onCheckboxChange('slogan', $event)"
+      ></app-checkbox>
       <span class="ml-[10px] font-lato text-pri-black">Slogan</span>
     </div>
   </div>

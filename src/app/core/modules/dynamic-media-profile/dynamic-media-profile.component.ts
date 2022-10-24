@@ -1,14 +1,24 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
 import { Router } from '@angular/router';
-import { MediaProfileFields, MediaProfileFieldsLabels } from '@enums/media-profile.enum';
+import {
+  MediaProfileFields,
+  MediaProfileFieldsLabels,
+} from '@enums/media-profile.enum';
 import { SearchMediaProfileEnumTitles } from '@enums/search.enum';
 import { Maven, MavenFile } from '@models/maven.model';
 import { SearchMediaProfileTitleKey } from '@models/search.model';
 import { Row, Table } from '@models/table.model';
 
 interface Field {
-  id: MediaProfileFields,
-  label: MediaProfileFieldsLabels,
+  id: MediaProfileFields;
+  label: MediaProfileFieldsLabels;
   icon?: string;
   value?: string;
   className?: string[];
@@ -31,10 +41,9 @@ interface FileColumn {
   selector: 'app-dynamic-media-profile',
   templateUrl: './dynamic-media-profile.component.html',
   styleUrls: ['./dynamic-media-profile.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class DynamicMediaProfileComponent implements OnInit {
-
   @Input() maven: Maven;
   @Input() mainInformation: Field[][];
   @Input() mavenAttributes: Field[][];
@@ -42,19 +51,20 @@ export class DynamicMediaProfileComponent implements OnInit {
   @Input() filesColumns: FileColumn[];
   @Input() personnelTableData?: Table;
   @Input() callHistoryTableData?: Table;
-  @Input() tableStyles: { [key: string]: string } = { height: '500px' }
-
+  @Input() tableStyles: { [key: string]: string } = { height: '500px' };
+  @Input() showNoFilesMessage: boolean = true;
   @Output() opeList = new EventEmitter();
 
   tittle: string;
   searchScreenKey: SearchMediaProfileTitleKey;
-  constructor(
-    private router: Router,
-  ) { }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
-    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
+    this.searchScreenKey = this.router.url.split(
+      '/'
+    )[1] as SearchMediaProfileTitleKey;
     this.tittle = SearchMediaProfileEnumTitles[this.searchScreenKey];
+    console.log(this.mavenAttributes);
   }
 
   openDialog(event: MouseEvent): void {
@@ -67,7 +77,9 @@ export class DynamicMediaProfileComponent implements OnInit {
   }
 
   onRowClick(row: Row): void {
-    const searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
+    const searchScreenKey = this.router.url.split(
+      '/'
+    )[1] as SearchMediaProfileTitleKey;
     this.router.navigate([searchScreenKey, row.data.mavenid]);
   }
 
