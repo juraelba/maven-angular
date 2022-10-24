@@ -46,13 +46,13 @@ const MOCK_ROWS: Row[] = [
 
 const COLUMNS: Column[] = [
   {
-    id: SearchColumnsIdEnum.mavenid,
-    label: SearchColumnsEnum.mavenid,
+    id: SearchColumnsIdEnum.name,
+    label: SearchColumnsEnum.name,
     width: 200
   },
   {
-    id: SearchColumnsIdEnum.name,
-    label: SearchColumnsEnum.name,
+    id: SearchColumnsIdEnum.mavenid,
+    label: SearchColumnsEnum.mavenid,
     width: 200
   },
   {

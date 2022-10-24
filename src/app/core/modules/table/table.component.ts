@@ -113,8 +113,17 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
+    console.log(this.data);
     this.rows = [...this.data.rows];
+
     this.columns = [...this.data.columns];
+    
+    this.columns.map((col, i) => {
+      if (this.isColumnPinned(i)) {
+        col.pinned = true;
+      }
+    });
+    console.log(this.columns);
     this.groupedRowFilterData = this.groupRowData();
   }
 

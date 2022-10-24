@@ -20,9 +20,8 @@ export const SEARCH_COLUMNS_CONFIG: TableConfig = {
   mavenid: {
     cellStyles: {},
     cellLinkPath: { path: 'mavenid', external: false },
-    pinned: true,
+    pinned: false,
   },
-
   market: {
     cellStyles: LINK_STYLE,
     cellLinkPath: { path: 'marketID', external: false, parentPath: '/market' },

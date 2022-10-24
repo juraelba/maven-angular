@@ -8,8 +8,8 @@ import { SearchQuery } from '@models/search.model';
 import { TableColumnsConfig } from '@models/table.model';
 
 const NETWORK_COLUMNS = [
-  { id: SearchColumnsIdEnum.mavenid, label: SearchColumnsEnum.mavenid },
   { id: SearchColumnsIdEnum.networks, label: SearchColumnsEnum.networks },
+  { id: SearchColumnsIdEnum.mavenid, label: SearchColumnsEnum.mavenid },
   { id: SearchColumnsIdEnum.subType, label: SearchColumnsEnum.subType },
   { id: SearchColumnsIdEnum.owner, label: SearchColumnsEnum.owner },
   { id: SearchColumnsIdEnum.parent, label: SearchColumnsEnum.parent },
@@ -20,8 +20,8 @@ const NETWORK_COLUMNS = [
 ];
 
 const DEFAULT_COLUMNS = [
-  { id: SearchColumnsIdEnum.mavenid, label: SearchColumnsEnum.mavenid },
   { id: SearchColumnsIdEnum.name, label: SearchColumnsEnum.name },
+  { id: SearchColumnsIdEnum.mavenid, label: SearchColumnsEnum.mavenid },
   { id: SearchColumnsIdEnum.subType, label: SearchColumnsEnum.subType },
   { id: SearchColumnsIdEnum.owner, label: SearchColumnsEnum.owner },
   { id: SearchColumnsIdEnum.parent, label: SearchColumnsEnum.parent },
@@ -34,8 +34,8 @@ const DEFAULT_COLUMNS = [
 export const TABLE_COLUMNS: TableColumnsConfig = {
   [SearchEnum.media]: [],
   [SearchEnum['spot-tv']]: [
-    { id: SearchColumnsIdEnum.mavenid, label: SearchColumnsEnum.mavenid },
     { id: SearchColumnsIdEnum.name, label: SearchColumnsEnum.name },
+    { id: SearchColumnsIdEnum.mavenid, label: SearchColumnsEnum.mavenid },
     { id: SearchColumnsIdEnum.market, label: SearchColumnsEnum.market },
     { id: SearchColumnsIdEnum.owner, label: SearchColumnsEnum.owner },
     { id: SearchColumnsIdEnum.parent, label: SearchColumnsEnum.parent },
@@ -60,8 +60,8 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
   ],
   [SearchEnum['network-tv']]: NETWORK_COLUMNS,
   [SearchEnum['spot-radio']]: [
-    { id: SearchColumnsIdEnum.mavenid, label: SearchColumnsEnum.mavenid },
     { id: SearchColumnsIdEnum.name, label: SearchColumnsEnum.name },
+    { id: SearchColumnsIdEnum.mavenid, label: SearchColumnsEnum.mavenid },
     { id: SearchColumnsIdEnum.dma, label: SearchColumnsEnum.dma },
     { id: SearchColumnsIdEnum.msa, label: SearchColumnsEnum.msa },
     { id: SearchColumnsIdEnum.owner, label: SearchColumnsEnum.owner },

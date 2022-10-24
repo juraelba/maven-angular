@@ -5,7 +5,7 @@ import { map, takeUntil, filter } from 'rxjs/operators';
 import { Criteries } from '@models/criteries.model';
 import { SearchKey, SearchFiledChangeEvent } from '@models/search.model';
 
-import { SearchEnum } from '@enums/search.enum';
+import { SearchColumnsEnum, SearchEnum } from '@enums/search.enum';
 import { SearchActionTypesEnum } from '@enums/search.enum';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
