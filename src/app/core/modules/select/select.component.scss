@@ -1,3 +1,7 @@
 ::ng-deep .cdk-virtual-scroll-content-wrapper {
   width: 100%
 }
+
+::ng-deep .cdk-overlay-container .cdk-overlay-connected-position-bounding-box:not(:last-child) {
+  visibility: hidden;
+}
