@@ -57,6 +57,7 @@ export class DynamicMediaProfileComponent implements OnInit {
 
   tittle: string;
   searchScreenKey: SearchMediaProfileTitleKey;
+  showAllCategoryBubbles = false;
   constructor(private router: Router) {}
 
   ngOnInit(): void {
@@ -64,7 +65,7 @@ export class DynamicMediaProfileComponent implements OnInit {
       '/'
     )[1] as SearchMediaProfileTitleKey;
     this.tittle = SearchMediaProfileEnumTitles[this.searchScreenKey];
-    console.log(this.mavenAttributes);
+    console.log(this.mavenAttributes[0][2]);
   }
 
   openDialog(event: MouseEvent): void {
@@ -91,5 +92,28 @@ export class DynamicMediaProfileComponent implements OnInit {
     const labelsWithNoColon = ['ID', 'Owner', 'Parent'];
 
     return labelsWithNoColon.includes(label);
+  }
+
+  formatAddress({ value }: any) {
+    let { address1, address2, city, state, postalCode, country } = value;
+    let isUSA = country.id === 'USA';
+
+    let addressString = `${address1} ${address2} ${city} ${state} ${postalCode} `;
+
+    !isUSA ? (addressString += country.name) : null;
+
+    return addressString;
+  }
+
+  toggleShowAllCategoryBubbles(): void {
+    this.showAllCategoryBubbles = !this.showAllCategoryBubbles;
+  }
+
+  displayCategories(categories: any) {
+    if (this.showAllCategoryBubbles) {
+      return categories;
+    }
+
+    return categories.slice(0, 3);
   }
 }

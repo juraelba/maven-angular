@@ -56,7 +56,7 @@ const mainInformationFields: Field[][] = [
   [
     {
       id: MediaProfileFields.address,
-      path: [MediaProfileFields.address, 'completeAddress'],
+      path: [MediaProfileFields.address],
       label: MediaProfileFieldsLabels.address,
       icon: MediaProfileFields.address,
       className: ['row-span-4', 'align-self'],
@@ -137,6 +137,7 @@ const spotTVMavenAttributesFields: Field[][] = [
       path: MediaProfileFields.dma,
       label: MediaProfileFieldsLabels.dma,
       valueContentClassName: ['ml-2'],
+      valueClassName: ['text-regal-blue'],
     },
     {
       id: MediaProfileFields.slogan,
@@ -254,6 +255,7 @@ const spotRadioMavenAttributesFields: Field[][] = [
       label: MediaProfileFieldsLabels.geographicAppeal,
       valueContentClassName: ['ml-2'],
     },
+
     {
       id: MediaProfileFields.dma,
       path: MediaProfileFields.dma,
@@ -261,6 +263,7 @@ const spotRadioMavenAttributesFields: Field[][] = [
       valueClassName: ['text-regal-blue'],
       valueContentClassName: ['ml-2'],
     },
+
     {
       id: MediaProfileFields.slogan,
       path: MediaProfileFields.slogan,
@@ -273,6 +276,18 @@ const spotRadioMavenAttributesFields: Field[][] = [
       id: MediaProfileFields.class,
       path: MediaProfileFields.class,
       label: MediaProfileFieldsLabels.class,
+      valueContentClassName: ['ml-2'],
+    },
+    {
+      id: MediaProfileFields.displayChannel,
+      path: MediaProfileFields.displayChannel,
+      label: MediaProfileFieldsLabels.displayChannel,
+      valueContentClassName: ['ml-2'],
+    },
+    {
+      id: MediaProfileFields.digitalChannel,
+      path: MediaProfileFields.digitalChannel,
+      label: MediaProfileFieldsLabels.digitalChannel,
       valueContentClassName: ['ml-2'],
     },
     {
@@ -311,11 +326,84 @@ const spotRadioMavenAttributesFields: Field[][] = [
       label: MediaProfileFieldsLabels.power,
       valueContentClassName: ['ml-2'],
     },
+
+    {
+      id: MediaProfileFields.haat,
+      path: MediaProfileFields.haat,
+      label: MediaProfileFieldsLabels.haat,
+      valueContentClassName: ['ml-2'],
+    },
+
+    {
+      id: MediaProfileFields.amsl,
+      path: MediaProfileFields.amsl,
+      label: MediaProfileFieldsLabels.amsl,
+      valueContentClassName: ['ml-2'],
+    },
+
+    {
+      id: MediaProfileFields.agl,
+      path: MediaProfileFields.agl,
+      label: MediaProfileFieldsLabels.agl,
+      valueContentClassName: ['ml-2'],
+    },
+
     {
       id: MediaProfileFields.coordinates,
       path: MediaProfileFields.coordinates,
       label: MediaProfileFieldsLabels.coordinates,
       className: ['col-start-2 col-end-3'],
+      valueContentClassName: ['ml-2'],
+    },
+  ],
+];
+
+const outOfHomeMavenAttributesFields: Field[][] = [
+  [
+    {
+      id: MediaProfileFields.type,
+      path: ['mediaType', MediaProfileFields.type],
+      label: MediaProfileFieldsLabels.type,
+      valueContentClassName: [
+        'bg-[#E4F2FF] text-[#4087F3] rounded-xl py-0.5 px-2 w-fit',
+      ],
+    },
+    {
+      id: MediaProfileFields.language,
+      path: MediaProfileFields.language,
+      label: MediaProfileFieldsLabels.language,
+      valueContentClassName: [
+        'bg-[#F6E4FF] text-[#931ACC] rounded-xl py-0.5 px-2 w-fit',
+      ],
+    },
+    {
+      id: MediaProfileFields.categories,
+      path: MediaProfileFields.categories,
+      label: MediaProfileFieldsLabels.categories,
+      valueContentClassName: [
+        'bg-[#E4F2FF] text-[#4087F3] rounded-xl py-0.5 px-2 w-fit',
+      ],
+    },
+    {
+      id: MediaProfileFields.geographicAppeal,
+      path: ['geoAppeal'],
+      label: MediaProfileFieldsLabels.geographicAppeal,
+      valueContentClassName: ['ml-2'],
+    },
+
+    {
+      id: MediaProfileFields.dma,
+      path: MediaProfileFields.dma,
+      label: MediaProfileFieldsLabels.dma,
+      valueClassName: ['text-regal-blue'],
+      valueContentClassName: ['ml-2'],
+    },
+
+    {
+      id: MediaProfileFields.slogan,
+      path: MediaProfileFields.slogan,
+      label: MediaProfileFieldsLabels.slogan,
+      valueClassName: ['text-regal-blue'],
       valueContentClassName: ['ml-2'],
     },
   ],
@@ -353,6 +441,7 @@ const filesColumnsConfig: FileColumn[] = [
     label: 'Name',
     className: ['basis-[40%]'],
   },
+
   {
     id: 'type',
     label: 'Type',
@@ -398,6 +487,13 @@ export const spotTvProfileConfig = {
 export const spotRadioProfileConfig = {
   mainInformationFields,
   mavenAttributesFields: spotRadioMavenAttributesFields,
+  diversityAttributesFields,
+  filesColumnsConfig,
+};
+
+export const outOfHomeProfileConfig = {
+  mainInformationFields,
+  mavenAttributesFields: outOfHomeMavenAttributesFields,
   diversityAttributesFields,
   filesColumnsConfig,
 };

@@ -41,7 +41,7 @@
           <ng-container *ngIf="field.value">
             <div class="flex" [ngClass]="field.className || []">
               <app-svg-icon
-                class=""
+                class="my-0.5"
                 *ngIf="field.icon"
                 [name]="field.icon"
                 [stroke]="field.iconStroke || ''"
@@ -55,7 +55,9 @@
                 class="ml-[20px] text-pri-black font-lato"
                 [ngClass]="field.valueClassName || []"
               >
-                {{ field.value }}
+                {{
+                  field.id === "address" ? formatAddress(field) : field.value
+                }}
               </div>
             </div>
           </ng-container>
@@ -93,15 +95,46 @@
                 class="ml-[20px] flex flex-row flex-wrap content-center basis-[75%]"
                 *ngIf="isArray(field.value); else notarray"
               >
-                <div
-                  *ngFor="let value of field.value; let i = index"
-                  class="text-pri-black font-lato my-1 mr-1"
-                  [ngClass]="field.valueClassName || []"
+                <ng-container
+                  *ngIf="field.id !== 'categories'; else categories"
                 >
-                  <div [ngClass]="field.valueContentClassName || []">
-                    {{ value }}
+                  <div
+                    *ngFor="let value of field.value; let i = index"
+                    class="text-pri-black font-lato my-1 mr-1"
+                    [ngClass]="field.valueClassName || []"
+                  >
+                    <div [ngClass]="field.valueContentClassName || []">
+                      {{ value }}
+                    </div>
                   </div>
-                </div>
+                </ng-container>
+
+                <ng-template #categories>
+                  <div
+                    *ngFor="
+                      let value of displayCategories(field.value);
+                      let i = index
+                    "
+                    class="text-pri-black font-lato my-1 mr-1"
+                    [ngClass]="field.valueClassName || []"
+                  >
+                    <div [ngClass]="field.valueContentClassName || []">
+                      {{ value }}
+                    </div>
+                  </div>
+
+                  <div
+                    class="text-dark-blue underline cursor-pointer my-2"
+                    (click)="toggleShowAllCategoryBubbles()"
+                  >
+                    <div *ngIf="!showAllCategoryBubbles">
+                      <a>show {{ field.value.length - 3 }} more</a>
+                    </div>
+                    <div *ngIf="showAllCategoryBubbles">
+                      <a>hide</a>
+                    </div>
+                  </div>
+                </ng-template>
               </div>
               <ng-template #notarray>
                 <div

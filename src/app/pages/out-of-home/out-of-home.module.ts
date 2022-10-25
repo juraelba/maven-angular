@@ -13,12 +13,8 @@ import { OutOfHomeRoutingModule } from './out-of-home-routing.module';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 @NgModule({
-  declarations: [
-    OutOfHomeComponent
-  ],
-  providers: [
-    SelectedCriteriaService
-  ],
+  declarations: [OutOfHomeComponent],
+  providers: [SelectedCriteriaService],
   imports: [
     CommonModule,
     OutOfHomeRoutingModule,
@@ -27,7 +23,7 @@ import { SelectedCriteriaService } from '@services/selected-criteria/selected-cr
     InputModule,
     SelectModule,
     SearchModule,
-    NameInputModule
-  ]
+    NameInputModule,
+  ],
 })
-export class OutOfHomeModule { }
+export class OutOfHomeModule {}
