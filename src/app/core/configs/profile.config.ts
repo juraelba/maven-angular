@@ -32,7 +32,7 @@ const mainInformationFields: Field[][] = [
       id: MediaProfileFields.id,
       path: MediaProfileFields.id,
       label: MediaProfileFieldsLabels.id,
-      valueClassName: ['ml-[15px]'],
+      valueClassName: ['ml-[20px]'],
     },
     {
       id: MediaProfileFields.phone,
@@ -90,13 +90,11 @@ const mainInformationFields: Field[][] = [
       id: MediaProfileFields.owner,
       path: [MediaProfileFields.owner, 'name'],
       label: MediaProfileFieldsLabels.owner,
-      valueClassName: ['text-regal-blue'],
     },
     {
       id: MediaProfileFields.parent,
       path: [MediaProfileFields.parent, 'name'],
       label: MediaProfileFieldsLabels.parent,
-      valueClassName: ['text-regal-blue'],
     },
   ],
 ];
@@ -339,7 +337,7 @@ const diversityAttributesFields: Field[] = [
     path: ['diversity', MediaProfileFields.fcc],
     label: MediaProfileFieldsLabels.fcc,
     valueContentClassName: [
-      'bg-[#FFFBD8] text-[#80761E] rounded-xl py-0.5 px-2 w-fit',
+      'bg-[#FFFBD8] text-[#80761E] rounded-xl py-0.5 px-0 w-fit',
     ],
   },
   {

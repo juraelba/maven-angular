@@ -11,21 +11,19 @@ import { NameInputModule } from '@modules/name-input/name-input.module';
 import { NewspaperRoutingModule } from './newspaper-routing.module';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
+import { DynamicMediaProfileModule } from '@modules/dynamic-media-profile/dynamic-media-profile.module';
 
 @NgModule({
-  declarations: [
-    NewspaperComponent
-  ],
-  providers: [
-    SelectedCriteriaService
-  ],
+  declarations: [NewspaperComponent],
+  providers: [SelectedCriteriaService],
   imports: [
     CommonModule,
     NewspaperRoutingModule,
     PickListModule,
     InputModule,
     SearchModule,
-    NameInputModule
-  ]
+    NameInputModule,
+    DynamicMediaProfileModule,
+  ],
 })
-export class NewspaperModule { }
+export class NewspaperModule {}

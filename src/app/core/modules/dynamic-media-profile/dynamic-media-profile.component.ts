@@ -86,4 +86,10 @@ export class DynamicMediaProfileComponent implements OnInit {
   isArray(value: any): boolean {
     return Array.isArray(value);
   }
+
+  labelwithNoColon(label: string): boolean {
+    const labelsWithNoColon = ['ID', 'Owner', 'Parent'];
+
+    return labelsWithNoColon.includes(label);
+  }
 }
