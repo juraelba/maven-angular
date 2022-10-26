@@ -11,9 +11,11 @@ import { NameInputModule } from '@modules/name-input/name-input.module';
 import { OutOfHomeRoutingModule } from './out-of-home-routing.module';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
+import { OutOfHomeMediaProfileComponent } from './out-of-home-media-profile/out-of-home-media-profile.component';
+import { DynamicMediaProfileModule } from '@modules/dynamic-media-profile/dynamic-media-profile.module';
 
 @NgModule({
-  declarations: [OutOfHomeComponent],
+  declarations: [OutOfHomeComponent, OutOfHomeMediaProfileComponent],
   providers: [SelectedCriteriaService],
   imports: [
     CommonModule,
@@ -24,6 +26,7 @@ import { SelectedCriteriaService } from '@services/selected-criteria/selected-cr
     SelectModule,
     SearchModule,
     NameInputModule,
+    DynamicMediaProfileModule,
   ],
 })
 export class OutOfHomeModule {}

@@ -65,7 +65,7 @@ export class DynamicMediaProfileComponent implements OnInit {
       '/'
     )[1] as SearchMediaProfileTitleKey;
     this.tittle = SearchMediaProfileEnumTitles[this.searchScreenKey];
-    console.log(this.mavenAttributes[0][2]);
+    console.log(this.mavenAttributes);
   }
 
   openDialog(event: MouseEvent): void {
@@ -115,5 +115,13 @@ export class DynamicMediaProfileComponent implements OnInit {
     }
 
     return categories.slice(0, 3);
+  }
+
+  createLink(url: string): string {
+    if (url.includes('http')) {
+      return url;
+    }
+
+    return `http://${url}`;
   }
 }

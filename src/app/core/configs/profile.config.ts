@@ -73,7 +73,7 @@ const mainInformationFields: Field[][] = [
       iconFill: '#797979',
       iconStroke: 'none',
       className: ['items-center'],
-      valueClassName: ['text-regal-blue'],
+      valueClassName: ['text-dark-blue', 'cursor-pointer'],
     },
     {
       id: MediaProfileFields.email,
@@ -404,6 +404,91 @@ const outOfHomeMavenAttributesFields: Field[][] = [
       path: MediaProfileFields.slogan,
       label: MediaProfileFieldsLabels.slogan,
       valueClassName: ['text-regal-blue'],
+      valueContentClassName: ['ml-2'],
+    },
+  ],
+  [
+    {
+      id: MediaProfileFields.class,
+      path: MediaProfileFields.class,
+      label: MediaProfileFieldsLabels.class,
+      valueContentClassName: ['ml-2'],
+    },
+    {
+      id: MediaProfileFields.displayChannel,
+      path: MediaProfileFields.displayChannel,
+      label: MediaProfileFieldsLabels.displayChannel,
+      valueContentClassName: ['ml-2'],
+    },
+    {
+      id: MediaProfileFields.digitalChannel,
+      path: MediaProfileFields.digitalChannel,
+      label: MediaProfileFieldsLabels.digitalChannel,
+      valueContentClassName: ['ml-2'],
+    },
+    {
+      id: MediaProfileFields.frequency,
+      path: MediaProfileFields.frequency,
+      label: MediaProfileFieldsLabels.frequency,
+      valueContentClassName: ['ml-2'],
+    },
+    {
+      id: MediaProfileFields.fccid,
+      path: MediaProfileFields.fccid,
+      label: MediaProfileFieldsLabels.fccid,
+      valueContentClassName: ['ml-2'],
+    },
+    {
+      id: MediaProfileFields.licenseCity,
+      path: MediaProfileFields.licenseCity,
+      label: MediaProfileFieldsLabels.licenseCity,
+      valueContentClassName: ['ml-2'],
+    },
+    {
+      id: MediaProfileFields.licenseCountry,
+      path: MediaProfileFields.licenseCountry,
+      label: MediaProfileFieldsLabels.licenseCountry,
+      valueContentClassName: ['ml-2'],
+    },
+    {
+      id: MediaProfileFields.timeZone,
+      path: MediaProfileFields.timeZone,
+      label: MediaProfileFieldsLabels.timeZone,
+      valueContentClassName: ['ml-2'],
+    },
+    {
+      id: MediaProfileFields.power,
+      path: MediaProfileFields.power,
+      label: MediaProfileFieldsLabels.power,
+      valueContentClassName: ['ml-2'],
+    },
+
+    {
+      id: MediaProfileFields.haat,
+      path: MediaProfileFields.haat,
+      label: MediaProfileFieldsLabels.haat,
+      valueContentClassName: ['ml-2'],
+    },
+
+    {
+      id: MediaProfileFields.amsl,
+      path: MediaProfileFields.amsl,
+      label: MediaProfileFieldsLabels.amsl,
+      valueContentClassName: ['ml-2'],
+    },
+
+    {
+      id: MediaProfileFields.agl,
+      path: MediaProfileFields.agl,
+      label: MediaProfileFieldsLabels.agl,
+      valueContentClassName: ['ml-2'],
+    },
+
+    {
+      id: MediaProfileFields.coordinates,
+      path: MediaProfileFields.coordinates,
+      label: MediaProfileFieldsLabels.coordinates,
+      className: ['col-start-2 col-end-3'],
       valueContentClassName: ['ml-2'],
     },
   ],

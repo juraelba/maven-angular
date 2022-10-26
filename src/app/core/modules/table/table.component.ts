@@ -91,7 +91,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
   rows: Row[] = [];
   columns: Column[] = [];
-  pinnedCount = 2;
+  pinnedCount = 1;
   tableBodyStyles: { [key: string]: string } = {};
   sortedColumn: [string, SortMethods] = ['', SortMethodsEnum.none];
   columnFilterId: string = '';
@@ -113,17 +113,15 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.data);
     this.rows = [...this.data.rows];
 
     this.columns = [...this.data.columns];
-    
+
     this.columns.map((col, i) => {
       if (this.isColumnPinned(i)) {
         col.pinned = true;
       }
     });
-    console.log(this.columns);
     this.groupedRowFilterData = this.groupRowData();
   }
 
@@ -242,18 +240,22 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
         this.columnAutoFilterData
       );
 
-      const selectedGroupedRowFilterData =
-        this.getSelectedGroupedRowFilterData();
+      if (mapedFilters.length) {
+        const selectedGroupedRowFilterData =
+          this.getSelectedGroupedRowFilterData();
+        const filteredByGroupRowFilters =
+          this.filterBySelectedGroupRowFilterData(
+            this.data.rows,
+            selectedGroupedRowFilterData
+          );
 
-      const filteredByGroupRowFilters = this.filterBySelectedGroupRowFilterData(
-        this.data.rows,
-        selectedGroupedRowFilterData
-      );
-
-      this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(
-        filteredByGroupRowFilters,
-        mapedFilters
-      );
+        this.rows = this.searchService.filterDataBasedOnColumnAutoFilters(
+          filteredByGroupRowFilters,
+          mapedFilters
+        );
+      } else {
+        this.rows = [...this.data.rows];
+      }
     } else {
       this.rows = this.utilsService.sortByAlphabeticalOrder<Row>(
         this.rows,

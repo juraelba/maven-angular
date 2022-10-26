@@ -16,11 +16,12 @@ import { SearchService } from '@services/search/search.service';
 @Component({
   selector: 'app-out-of-home',
   templateUrl: './out-of-home.component.html',
-  styleUrls: ['./out-of-home.component.scss']
+  styleUrls: ['./out-of-home.component.scss'],
 })
 export class OutOfHomeComponent implements OnInit {
   key: SearchKey = SearchEnum.outdoor;
-  criteries: Criteries = this.selectedCriteriaService.criteries?.[this.key] ?? {};
+  criteries: Criteries =
+    this.selectedCriteriaService.criteries?.[this.key] ?? {};
   unsubscribeAll: Subject<null> = new Subject();
 
   owners8ListUrlKey: ListUrlsKey = ListKeys.owners8;
@@ -29,7 +30,7 @@ export class OutOfHomeComponent implements OnInit {
   constructor(
     private selectedCriteriaService: SelectedCriteriaService,
     private searchService: SearchService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.selectedCriteriaService.selectedCriteria$
@@ -66,8 +67,7 @@ export class OutOfHomeComponent implements OnInit {
         filter(({ action }) => SearchActionTypesEnum.NEW_SEARCH === action)
       )
       .subscribe(() => {
-        this.criteries = {}
+        this.criteries = {};
       });
   }
-
 }

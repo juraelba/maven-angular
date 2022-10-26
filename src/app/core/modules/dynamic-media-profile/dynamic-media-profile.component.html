@@ -51,7 +51,9 @@
                 {{ field.label }}
                 {{ labelwithNoColon(field.label) ? "" : ":" }}
               </div>
+
               <div
+                *ngIf="field.id !== 'website'"
                 class="ml-[20px] text-pri-black font-lato"
                 [ngClass]="field.valueClassName || []"
               >
@@ -59,6 +61,15 @@
                   field.id === "address" ? formatAddress(field) : field.value
                 }}
               </div>
+
+              <a
+                *ngIf="field.id === 'website'"
+                class="ml-[20px] text-pri-black font-lato"
+                [ngClass]="field.valueClassName || []"
+                [href]="createLink(field.value)"
+                target="_blank"
+                >{{ field.value }}</a
+              >
             </div>
           </ng-container>
         </ng-container>
@@ -111,10 +122,7 @@
 
                 <ng-template #categories>
                   <div
-                    *ngFor="
-                      let value of displayCategories(field.value);
-                      let i = index
-                    "
+                    *ngFor="let value of displayCategories(field.value)"
                     class="text-pri-black font-lato my-1 mr-1"
                     [ngClass]="field.valueClassName || []"
                   >
@@ -127,7 +135,11 @@
                     class="text-dark-blue underline cursor-pointer my-2"
                     (click)="toggleShowAllCategoryBubbles()"
                   >
-                    <div *ngIf="!showAllCategoryBubbles">
+                    <div
+                      *ngIf="
+                        !showAllCategoryBubbles && field.value.length - 3 > 0
+                      "
+                    >
                       <a>show {{ field.value.length - 3 }} more</a>
                     </div>
                     <div *ngIf="showAllCategoryBubbles">

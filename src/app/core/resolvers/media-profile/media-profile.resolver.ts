@@ -3,7 +3,7 @@ import {
   Router,
   Resolve,
   RouterStateSnapshot,
-  ActivatedRouteSnapshot
+  ActivatedRouteSnapshot,
 } from '@angular/router';
 import { Location } from '@angular/common';
 import { Observable, of } from 'rxjs';
@@ -14,7 +14,7 @@ import { SearchEnum } from '@enums/search.enum';
 import { Maven } from '@models/maven.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MediaProfileResolver implements Resolve<Maven> {
   constructor(
@@ -22,9 +22,17 @@ export class MediaProfileResolver implements Resolve<Maven> {
     private location: Location
   ) {}
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Maven> {
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): Observable<Maven> {
     const id = route.paramMap.get('id') as string;
-    const searchScreenKey = this.location.path().split('/')[1] as SearchEnum;
+
+    let isOutdoor = this.location.path().split('/')[1] === 'out-of-home-search';
+
+    let searchScreenKey = this.location.path().split('/')[1] as SearchEnum;
+
+    isOutdoor ? (searchScreenKey = 'outdoor' as SearchEnum) : null;
 
     return this.mediaProfileService.fetchMediaProfile(searchScreenKey, id);
   }

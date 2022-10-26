@@ -10,9 +10,10 @@ export enum SearchEnum {
   'digital' = 'digital',
   'magazine' = 'magazine',
   'newspaper' = 'newspaper',
+
   'outdoor' = 'outdoor',
   'diverse' = 'diverse',
-  'callHistory' = 'callHistory'
+  'callHistory' = 'callHistory',
 }
 
 export const SearchFiedlsEnum = {
@@ -28,7 +29,7 @@ export const SearchFiedlsEnum = {
   startDate: 'startDate',
   endDate: 'endDate',
   callLetterHistory: 'callLetterHistory',
-  callLetter: 'callLetter'
+  callLetter: 'callLetter',
 };
 
 export const SearchFieldsLabelsEnum = {
@@ -42,7 +43,7 @@ export const SearchFieldsLabelsEnum = {
   startDate: 'Start Date',
   endDate: 'End Date',
   callLetterHistory: 'Call Letter History',
-  callLetter: 'Call Letter'
+  callLetter: 'Call Letter',
 };
 
 export enum SearchColumnsEnum {
@@ -67,13 +68,13 @@ export enum SearchColumnsEnum {
   dma = 'DMA Market',
   format = 'Format',
   frequency = 'Frequency',
-  dailyCirculation =  'Daily Circulation',
+  dailyCirculation = 'Daily Circulation',
   dailyFullPageRate = 'Full Page BW',
   changeOn = 'Change On',
   changeFrom = 'Change From',
   changeTo = 'Change To',
-  change = 'Change'
-};
+  change = 'Change',
+}
 
 export enum SearchColumnsIdEnum {
   name = 'name',
@@ -102,12 +103,12 @@ export enum SearchColumnsIdEnum {
   changeOn = 'changeOn',
   changeFrom = 'changeFrom',
   changeTo = 'changeTo',
-  change = 'change'
-};
+  change = 'change',
+}
 
 export enum SearchActionTypesEnum {
-  NEW_SEARCH = 'NEW_SEARCH'
-};
+  NEW_SEARCH = 'NEW_SEARCH',
+}
 
 export enum SearchExcelFileNamesEnum {
   media = 'Media-Search.xlsx',
@@ -121,7 +122,7 @@ export enum SearchExcelFileNamesEnum {
   newspaper = 'Newspaper.xlsx',
   outdoor = 'Out-of-Home.xlsx',
   diverse = 'Diverse.xlsx',
-  callHistory = 'Call-History-Search.xlsx'
+  callHistory = 'Call-History-Search.xlsx',
 }
 
 export enum SearchEnumTitles {
@@ -136,12 +137,12 @@ export enum SearchEnumTitles {
   'newspaper' = 'Newspaper Search',
   'outdoor' = 'Outdoor Search',
   'diverse' = 'Diverse Search',
-  'callHistory' = 'Call History Search'
-};
+  'callHistory' = 'Call History Search',
+}
 
 export enum SearchMediaProfileEnumTitles {
   'spot-radio' = 'Spot Radio',
   'spot-tv' = 'Spot TV',
   'broadcast-networks' = 'Broadcast Networks',
   'cable-networks' = 'Cable Networks',
-};
+}
