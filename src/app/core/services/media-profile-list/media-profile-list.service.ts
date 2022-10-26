@@ -7,16 +7,14 @@ import { MediaItem } from '@models/media.model';
 import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MediaProfileListService {
-
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   fetchMediaProfiles(mediaId: string): Observable<MediaItem[]> {
     const url = environment.api + `/lists/media/${mediaId}`;
-    return this.http.get<MediaItem[]>(url)
+    console.log(url);
+    return this.http.get<MediaItem[]>(url);
   }
 }

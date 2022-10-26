@@ -1,4 +1,4 @@
-import { MediaTypeListItem } from "./list.model";
+import { MediaTypeListItem } from './list.model';
 
 export interface MavenFile {
   name: string;
@@ -17,32 +17,44 @@ interface Address {
   address2: string;
   city: string;
   completeAddress: string;
-  country: Country
+  country: Country;
   id: number;
-  postalCode: string
+  postalCode: string;
   state: string;
-};
+}
 
 interface CallHistory {
-  name: string,
-  startDate: string,
-  endDate: string,
-  dateRange: string
+  name: string;
+  startDate: string;
+  endDate: string;
+  dateRange: string;
 }
 
 interface Person {
-  id: number,
-  officeID: number,
-  mavenid: string,
-  firstName: string,
-  lastName: string,
-  title: string,
-  phone: string,
-  fax: string,
-  mobile: string,
-  email: string,
-  roles: string,
-  name: string
+  id: number;
+  officeID: number;
+  mavenid: string;
+  firstName: string;
+  lastName: string;
+  title: string;
+  phone: string;
+  fax: string;
+  mobile: string;
+  email: string;
+  roles: string;
+  name: string;
+}
+
+interface Description {
+  desc: string;
+  descSource: string;
+  history: string;
+  historySource: string;
+  id: string;
+  positioning: string;
+  positioningSource: string;
+  targetAudience: string;
+  targetAudienceSource: string;
 }
 
 interface Partner {
@@ -55,6 +67,7 @@ export interface Maven {
   id: string;
   phone: string;
   fax: string;
+  description: Description;
   address: Address;
   website: string;
   email: string;
@@ -80,7 +93,7 @@ export interface Maven {
   fcc: string;
   target: string;
   files: MavenFile[];
-  partners: Partner[]
+  partners: Partner[];
   callHistory: CallHistory[];
   haat: string;
   agl: string;
@@ -88,4 +101,4 @@ export interface Maven {
   displayChannel: string;
   digitalChannel: string;
   people?: Person[];
-};
+}

@@ -54,7 +54,7 @@ export class OutOfHomeMediaProfileComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.searchScreenKey = 'out-of-home-search' as SearchMediaProfileTitleKey;
+    this.searchScreenKey = 'outdoor' as SearchMediaProfileTitleKey;
     this.activatedRoute.data.subscribe((data) => {
       this.maven = data.mediaProfile as Maven;
       console.log(this.maven);
@@ -109,11 +109,6 @@ export class OutOfHomeMediaProfileComponent implements OnInit {
       });
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribeAll.next(null);
-    this.unsubscribeAll.complete();
-  }
-
   updateFieldsWithValue(fields: Field[], maven: Maven): Field[] {
     const formatters: Formatter = {
       [MediaProfileFields.categories]: this.formatArray,
@@ -152,7 +147,7 @@ export class OutOfHomeMediaProfileComponent implements OnInit {
 
   openListDialog() {
     this.mediaProfileListService
-      .fetchMediaProfiles('' + 11)
+      .fetchMediaProfiles('' + 8)
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((data) => {
         const rows = data.map((data) => {
@@ -179,5 +174,10 @@ export class OutOfHomeMediaProfileComponent implements OnInit {
           },
         });
       });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next(null);
+    this.unsubscribeAll.complete();
   }
 }

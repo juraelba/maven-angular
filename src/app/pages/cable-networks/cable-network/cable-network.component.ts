@@ -9,25 +9,43 @@ import { DynamicListComponent } from '@modules/dynamic-list/dynamic-list.compone
 import { lensPath, lensProp, view } from 'ramda';
 import { Subject, takeUntil } from 'rxjs';
 import { COLUMNS } from 'src/app/core/configs/list-table.columns.config';
-import { spotTvProfileConfig, Field, FileColumn, Formatter, FieldArrayItem } from 'src/app/core/configs/profile.config';
+import {
+  spotTvProfileConfig,
+  Field,
+  FileColumn,
+  Formatter,
+  FieldArrayItem,
+} from 'src/app/core/configs/profile.config';
 
 const mockMaven: Maven = {
   name: 'WABC-AM',
   id: 'R21362',
   phone: '212-613-3800',
   fax: '212-613-3800',
+  description: {
+    desc: '',
+    descSource: '',
+    historySource: '',
+    id: 'R21362',
+    history: '',
+    positioning: '',
+    positioningSource: '',
+    targetAudience: '',
+    targetAudienceSource: '',
+  },
   address: {
-    completeAddress: '2 Penn Plaza; 17th Floor; New York, NY 10121-0101; United States',
+    completeAddress:
+      '2 Penn Plaza; 17th Floor; New York, NY 10121-0101; United States',
     address1: '17th Floor; New York',
     address2: ' NY 10121-0101; United States',
     city: 'New York',
     country: {
       id: 'string',
-      name: 'USA'
+      name: 'USA',
     },
     id: 1,
     postalCode: ' NY 10121-0101',
-    state: 'United States'
+    state: 'United States',
   },
   website: 'wabcradio.com',
   email: '@comments@wabcradio.com',
@@ -47,7 +65,7 @@ const mockMaven: Maven = {
   licenseCountry: 'New York, NY',
   timeZone: 'Eastern',
   power: '50, 000 Watts',
-  coordinates: '40 52\' 50\'\' N74 4\' 11\'\' W',
+  coordinates: "40 52' 50'' N74 4' 11'' W",
   certified: 'Not Diverse',
   classfied: 'Not Diverse',
   fcc: 'Black',
@@ -59,7 +77,7 @@ const mockMaven: Maven = {
   agl: '',
   amsl: '',
   displayChannel: '',
-  digitalChannel: ''
+  digitalChannel: '',
 };
 
 const MOCK_ROWS: Row[] = [
@@ -68,38 +86,38 @@ const MOCK_ROWS: Row[] = [
     data: {
       [SearchColumnsIdEnum.mavenid]: 'R40107',
       [SearchColumnsIdEnum.name]: 'APEX Exchange Local Aggregate',
-      [SearchColumnsIdEnum.market]: 'National (USA)'
-    }
+      [SearchColumnsIdEnum.market]: 'National (USA)',
+    },
   },
   {
     id: '2',
     data: {
       [SearchColumnsIdEnum.mavenid]: 'R30421',
       [SearchColumnsIdEnum.name]: 'CIMX-FM',
-      [SearchColumnsIdEnum.market]: 'Detroit, MI'
-    }
+      [SearchColumnsIdEnum.market]: 'Detroit, MI',
+    },
   },
   {
     id: '3',
     data: {
       [SearchColumnsIdEnum.mavenid]: 'R36230',
       [SearchColumnsIdEnum.name]: 'iHeart Local Aggregate',
-      [SearchColumnsIdEnum.market]: 'National (USA)'
-    }
+      [SearchColumnsIdEnum.market]: 'National (USA)',
+    },
   },
   {
     id: '4',
     data: {
       [SearchColumnsIdEnum.mavenid]: 'R21141',
       [SearchColumnsIdEnum.name]: 'Joel Mccrea is also acting GSM (alias)',
-      [SearchColumnsIdEnum.market]: 'Des Moines-Ames, IA'
-    }
-  }
+      [SearchColumnsIdEnum.market]: 'Des Moines-Ames, IA',
+    },
+  },
 ];
 @Component({
   selector: 'app-cable-network',
   templateUrl: './cable-network.component.html',
-  styleUrls: ['./cable-network.component.scss']
+  styleUrls: ['./cable-network.component.scss'],
 })
 export class CableNetworkComponent implements OnInit {
   profileConfig = spotTvProfileConfig;
@@ -111,32 +129,41 @@ export class CableNetworkComponent implements OnInit {
 
   // list table data
   data: Table = { rows: [], columns: [] };
-  tableStyles: { [key: string]: string } = { height: '500px' }
+  tableStyles: { [key: string]: string } = { height: '500px' };
   columns: Column[] = COLUMNS;
   private unsubscribeAll: Subject<null> = new Subject();
   constructor(
     private dialog: MatDialog,
-    private activatedRoute: ActivatedRoute,
-  ) { }
+    private activatedRoute: ActivatedRoute
+  ) {}
 
   ngOnInit(): void {
     this.mainInformation.forEach((_, index) => {
-      this.mainInformation[index] = this.updateFieldsWithValue(this.profileConfig.mainInformationFields[index], this.maven);
+      this.mainInformation[index] = this.updateFieldsWithValue(
+        this.profileConfig.mainInformationFields[index],
+        this.maven
+      );
     });
 
     this.mainInformation.forEach((_, index) => {
-      this.mavenAttributes[index] = this.updateFieldsWithValue(this.profileConfig.mavenAttributesFields[index], this.maven);
+      this.mavenAttributes[index] = this.updateFieldsWithValue(
+        this.profileConfig.mavenAttributesFields[index],
+        this.maven
+      );
     });
-    this.diversityAttributes = this.updateFieldsWithValue(this.profileConfig.diversityAttributesFields, this.maven);
+    this.diversityAttributes = this.updateFieldsWithValue(
+      this.profileConfig.diversityAttributesFields,
+      this.maven
+    );
 
-    this.activatedRoute.queryParamMap.pipe(
-      takeUntil(this.unsubscribeAll)
-    ).subscribe(paramMap => {
-      const showList = paramMap.get('list');
-      if (showList === 'true') {
-        this.openListDialog();
-      }
-    });
+    this.activatedRoute.queryParamMap
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((paramMap) => {
+        const showList = paramMap.get('list');
+        if (showList === 'true') {
+          this.openListDialog();
+        }
+      });
   }
 
   ngOnDestroy(): void {
@@ -146,7 +173,7 @@ export class CableNetworkComponent implements OnInit {
 
   updateFieldsWithValue(fields: Field[], maven: Maven): Field[] {
     const formatters: Formatter = {
-      [MediaProfileFields.categories]: this.formatArray
+      [MediaProfileFields.categories]: this.formatArray,
     };
 
     return fields.map((field) => {
@@ -156,11 +183,13 @@ export class CableNetworkComponent implements OnInit {
 
       const value = view(propertyLens, maven);
 
-      const formattedValue = Boolean(formatters[field.id]) ? formatters[field.id]?.(value) : value;
+      const formattedValue = Boolean(formatters[field.id])
+        ? formatters[field.id]?.(value)
+        : value;
 
       return {
         ...field,
-        value: formattedValue
+        value: formattedValue,
       };
     });
   }
@@ -181,10 +210,9 @@ export class CableNetworkComponent implements OnInit {
       data: {
         data: {
           rows: MOCK_ROWS,
-          columns: this.columns
-        }
-      }
+          columns: this.columns,
+        },
+      },
     });
   }
 }
-

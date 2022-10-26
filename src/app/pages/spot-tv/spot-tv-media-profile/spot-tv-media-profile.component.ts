@@ -36,7 +36,10 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
 
   personnelData: Table;
   callHistoryData: Table;
-  tableStyles: { [key: string]: string } = { 'min-height': '200px' };
+  tableStyles: { [key: string]: string } = {
+    'min-height': '200px',
+    overflow: 'auto',
+  };
 
   // list table data
   data: Table = { rows: [], columns: [] };

@@ -10,6 +10,10 @@ export const LINK_STYLE: Styles = {
   color: '#3A63CC',
   cursor: 'pointer',
 };
+export const LINK_DEFAULT_STYLE: Styles = {
+  color: '#3A63CC',
+  cursor: 'default',
+};
 
 export const SEARCH_COLUMNS_CONFIG: TableConfig = {
   name: {
@@ -23,7 +27,7 @@ export const SEARCH_COLUMNS_CONFIG: TableConfig = {
     pinned: false,
   },
   market: {
-    cellStyles: LINK_STYLE,
+    cellStyles: LINK_DEFAULT_STYLE,
     cellLinkPath: { path: 'marketID', external: false, parentPath: '/market' },
   },
   owner: {
@@ -31,7 +35,7 @@ export const SEARCH_COLUMNS_CONFIG: TableConfig = {
     cellLinkPath: { path: 'ownerID', external: false, parentPath: '/owner' },
   },
   parent: {
-    cellStyles: LINK_STYLE,
+    cellStyles: LINK_DEFAULT_STYLE,
     cellLinkPath: { path: 'parentID', external: false, parentPath: '/parent' },
   },
   website: {
@@ -39,7 +43,7 @@ export const SEARCH_COLUMNS_CONFIG: TableConfig = {
     cellLinkPath: { path: 'website', external: true },
   },
   partners: {
-    cellStyles: LINK_STYLE,
+    cellStyles: LINK_DEFAULT_STYLE,
     cellLinkPath: {
       path: 'partnerID',
       external: false,

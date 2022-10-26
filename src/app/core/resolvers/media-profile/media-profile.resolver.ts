@@ -28,11 +28,7 @@ export class MediaProfileResolver implements Resolve<Maven> {
   ): Observable<Maven> {
     const id = route.paramMap.get('id') as string;
 
-    let isOutdoor = this.location.path().split('/')[1] === 'out-of-home-search';
-
     let searchScreenKey = this.location.path().split('/')[1] as SearchEnum;
-
-    isOutdoor ? (searchScreenKey = 'outdoor' as SearchEnum) : null;
 
     return this.mediaProfileService.fetchMediaProfile(searchScreenKey, id);
   }

@@ -305,4 +305,22 @@
       </ng-template>
     </div>
   </div>
+
+  <div
+    class="description shadow-simple rounded-md w-full my-[20px] p-[20px]"
+    *ngIf="maven.description.desc.length"
+  >
+    <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
+      Description
+    </div>
+    <div class="text-pri-gray font-semibold">
+      {{ maven.description.desc }}
+    </div>
+    <div class="source">
+      <div class="font-lato text-pri-gray py-2">
+        Source:
+        <span>{{ maven.description.descSource }}</span>
+      </div>
+    </div>
+  </div>
 </ng-container>

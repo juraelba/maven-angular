@@ -123,7 +123,7 @@ export class SideNavComponent implements OnInit {
         {
           name: 'outdoor',
           label: 'Out-of-Home',
-          route: '/out-of-home-search',
+          route: '/outdoor',
           disabled: true,
           permissions: [ObjectType.OutofHome],
         },

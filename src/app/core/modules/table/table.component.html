@@ -109,7 +109,7 @@
               <ng-template #externalLink>
                 <a
                   [ngStyle]="getCellStyles(column.id)"
-                  class="line-clamp-2 w-full cursor-default"
+                  class="line-clamp-2 w-full cursor-pointer"
                   (click)="gotoExternalLink(link)"
                 >
                   {{ row.data[column.id] }}

@@ -76,7 +76,7 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'out-of-home-search',
+        path: 'outdoor',
         loadChildren: () =>
           import('./pages/out-of-home/out-of-home.module').then(
             (m) => m.OutOfHomeModule
