@@ -61,7 +61,6 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
 
     this.activatedRoute.data.subscribe((data) => {
       this.maven = data.mediaProfile as Maven;
-      console.log(this.maven);
       this.profileConfig.mainInformationFields.forEach((_, index) => {
         this.mainInformation[index] = this.updateFieldsWithValue(
           this.profileConfig.mainInformationFields[index],

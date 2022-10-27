@@ -10,7 +10,7 @@ export enum SearchEnum {
   'digital' = 'digital',
   'magazine' = 'magazine',
   'newspaper' = 'newspaper',
-
+  'broadcast-networks' = 'network-tv',
   'outdoor' = 'outdoor',
   'diverse' = 'diverse',
   'callHistory' = 'callHistory',
@@ -146,4 +146,5 @@ export enum SearchMediaProfileEnumTitles {
   'broadcast-networks' = 'Broadcast Networks',
   'cable-networks' = 'Cable Networks',
   'outdoor' = 'Out of Home',
+  'network-tv' = 'Broadcast Networks',
 }

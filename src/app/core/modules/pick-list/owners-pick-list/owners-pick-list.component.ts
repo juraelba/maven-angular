@@ -18,7 +18,7 @@ import { SearchMediaProfileTitleKey } from '@models/search.model';
 @Component({
   selector: 'app-owners-pick-list',
   templateUrl: './owners-pick-list.component.html',
-  styleUrls: ['./owners-pick-list.component.scss']
+  styleUrls: ['./owners-pick-list.component.scss'],
 })
 export class OwnersPickListComponent implements OnInit {
   @Input() listUrlKey: ListUrlsKey = ListKeys.owners;
@@ -35,18 +35,22 @@ export class OwnersPickListComponent implements OnInit {
     private listsService: ListsService,
     private selectedCriteriaService: SelectedCriteriaService,
     private searchService: SearchService,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
-    this.listsService.getOptionsData(this.listUrlKey)
-      .pipe(
-        takeUntil(this.unsubscribeAll)
-      )
+    this.searchScreenKey = this.router.url.split(
+      '/'
+    )[1] as SearchMediaProfileTitleKey;
+    this.listsService
+      .getOptionsData(this.listUrlKey)
+      .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((options: SelectOption[]) => {
         this.options = options;
-        const selected = this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[ListKeys.owners]
+        const selected =
+          this.selectedCriteriaService.criteries?.[this.searchScreenKey]?.[
+            ListKeys.owners
+          ];
         if (selected) {
           this.change.emit({ key: ListKeys.owners, data: selected });
         }
@@ -55,14 +59,23 @@ export class OwnersPickListComponent implements OnInit {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ action, data }: SelectedCriteriaEvent) => action === 'update' && data[ListKeys.owners]),
+        filter(
+          ({ action, data }: SelectedCriteriaEvent) =>
+            action === 'update' && data[ListKeys.owners]
+        ),
         map(({ data }: SelectedCriteriaEvent) => data[ListKeys.owners])
       )
       .subscribe((options: SelectOption[]) => {
         const optionValues = this.listsService.getOptionValues(options);
-        const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
+        const updatedOptions = this.listsService.updateOptionsWithSelected(
+          this.options,
+          optionValues
+        );
 
-        this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.owners);
+        this.borderLabel = this.listsService.getBorderLabel(
+          options,
+          ListKeys.owners
+        );
         this.options = updatedOptions;
       });
 
@@ -87,10 +100,16 @@ export class OwnersPickListComponent implements OnInit {
 
   onApplyChanges(options: SelectOption[]): void {
     const optionValues = this.listsService.getOptionValues(options);
-    const updatedOptions = this.listsService.updateOptionsWithSelected(this.options, optionValues);
+    const updatedOptions = this.listsService.updateOptionsWithSelected(
+      this.options,
+      optionValues
+    );
 
     this.options = updatedOptions;
-    this.borderLabel = this.listsService.getBorderLabel(options, ListKeys.owners);
+    this.borderLabel = this.listsService.getBorderLabel(
+      options,
+      ListKeys.owners
+    );
 
     this.change.emit({ key: ListKeys.owners, data: [...options] });
   }
@@ -100,7 +119,10 @@ export class OwnersPickListComponent implements OnInit {
   }
 
   onClear(): void {
-    this.options = this.listsService.updateOptionsWithSelected(this.options, []);
+    this.options = this.listsService.updateOptionsWithSelected(
+      this.options,
+      []
+    );
     this.borderLabel = '';
 
     this.change.emit({ key: ListKeys.owners, data: [] });

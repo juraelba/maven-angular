@@ -57,7 +57,6 @@ export class OutOfHomeMediaProfileComponent implements OnInit {
     this.searchScreenKey = 'outdoor' as SearchMediaProfileTitleKey;
     this.activatedRoute.data.subscribe((data) => {
       this.maven = data.mediaProfile as Maven;
-      console.log(this.maven);
       this.profileConfig.mainInformationFields.forEach((_, index) => {
         this.mainInformation[index] = this.updateFieldsWithValue(
           this.profileConfig.mainInformationFields[index],
@@ -96,7 +95,6 @@ export class OutOfHomeMediaProfileComponent implements OnInit {
           columns: CALL_HISTORY_COLUMNS,
         };
       }
-      console.log(this.maven);
     });
 
     this.activatedRoute.queryParamMap

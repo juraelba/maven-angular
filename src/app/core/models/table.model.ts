@@ -1,5 +1,8 @@
-
-import { TextFiltersValuesEnum, TextFiltersLabelsEnum, FilterOperatorEnum } from '../enums/filters.enum';
+import {
+  TextFiltersValuesEnum,
+  TextFiltersLabelsEnum,
+  FilterOperatorEnum,
+} from '../enums/filters.enum';
 import { SearchKey, SearchQuery } from './search.model';
 import { SearchColumnsEnum, SearchColumnsIdEnum } from '@enums/search.enum';
 
@@ -16,7 +19,8 @@ export interface Column {
   id: string;
   label: string;
   width: number;
-  pinned?: boolean
+  pinned?: boolean;
+  color?: string;
 }
 
 export interface Table {
@@ -25,7 +29,7 @@ export interface Table {
 }
 
 export interface Styles {
-  [key: string]: string | number
+  [key: string]: string | number;
 }
 
 interface LinkPath {
@@ -41,7 +45,7 @@ interface ConfigDescription {
 }
 
 export interface TableConfig {
-  [key: string]: ConfigDescription,
+  [key: string]: ConfigDescription;
 }
 
 export type FilterOperatorKey = keyof typeof FilterOperatorEnum;
@@ -74,8 +78,8 @@ export interface ColumnAutoFilterData {
 
 export type TableColumnsConfig = {
   [key in SearchKey]: {
-    id: SearchColumnsIdEnum,
-    label: SearchColumnsEnum,
-    predicator?: (searchQery: SearchQuery) => boolean
-  }[]
-}
+    id: SearchColumnsIdEnum;
+    label: SearchColumnsEnum;
+    predicator?: (searchQery: SearchQuery) => boolean;
+  }[];
+};

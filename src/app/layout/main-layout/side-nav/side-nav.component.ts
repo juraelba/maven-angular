@@ -39,7 +39,7 @@ export class SideNavComponent implements OnInit {
             {
               name: 'network-tv',
               label: 'Broadcast Networks',
-              route: '/broadcast-networks',
+              route: '/network-tv',
               disabled: true,
               permissions: [ObjectType.NetworkTV],
             },
@@ -259,7 +259,6 @@ export class SideNavComponent implements OnInit {
       )
       .subscribe((menu: Menu[]) => {
         this.navData = menu;
-        console.log(this.navData);
       });
   }
 
@@ -269,7 +268,6 @@ export class SideNavComponent implements OnInit {
   }
 
   selectedItem(menu: Menu) {
-    console.log(this.navData);
     this.router.navigate([`/${menu.route}`]);
   }
 }

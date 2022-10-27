@@ -7,83 +7,103 @@ import * as R from 'ramda';
 
 import { environment } from '../../../../environments/environment';
 
-import { List, ListInfo, ListKey, ListUrlsKey, Ranges, MediaTypeListItem, ListData } from '@models/list.model';
+import {
+  List,
+  ListInfo,
+  ListKey,
+  ListUrlsKey,
+  Ranges,
+  MediaTypeListItem,
+  ListData,
+} from '@models/list.model';
 import { SelectOption } from '@models/select.model';
-import { MarketSortingOption, SortMethods } from '@models/sorting-options.models';
+import {
+  MarketSortingOption,
+  SortMethods,
+} from '@models/sorting-options.models';
 
 import { ListUrls, ListLabels, ListKeys } from '@enums/lists.enum';
-import { MarketSortingOptionsEnum, SortMethodsEnum } from '@enums/sorting-options.enum';
+import {
+  MarketSortingOptionsEnum,
+  SortMethodsEnum,
+} from '@enums/sorting-options.enum';
 
 import { LocalStorageService } from '../local-storage/local-storage.service';
 import { UtilsService } from '../utils/utils.service';
 
 interface ListOptionsFork {
-  [key: string]: Observable<List>
+  [key: string]: Observable<List>;
 }
 
 interface ListOptionsTransformer {
   // [ListKeys.mediatypes2]: (list: List<MediaTypeListItem[]>) => SelectOption[],
-  default: (list: List) => SelectOption[],
+  default: (list: List) => SelectOption[];
 }
 
-type TransformListToOptionsExecutor = (list: List | List<MediaTypeListItem[]>) => SelectOption[];
+type TransformListToOptionsExecutor = (
+  list: List | List<MediaTypeListItem[]>
+) => SelectOption[];
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ListsService {
   constructor(
     private http: HttpClient,
     private localStorage: LocalStorageService,
     private utilsService: UtilsService
-  ) { }
+  ) {}
 
   fetchListData(key: ListUrlsKey): Observable<List> {
     const url = environment.api + ListUrls[key];
 
-    return this.http.get<List>(url)
+    return this.http.get<List>(url);
   }
 
   getListData(key: ListUrlsKey): Observable<List> {
-    return this.localStorage.getListData()
-      .pipe(
-        map((list: ListData) => list[key] || [])
-      );
+    return this.localStorage
+      .getListData()
+      .pipe(map((list: ListData) => list[key] || []));
   }
 
   getOptionsData(key: ListUrlsKey): Observable<SelectOption[]> {
-    return this.getListData(key)
-      .pipe(
-        switchMap((list: List) => {
-          const list$ = R.isEmpty(list)
-            ? this.fetchListData(key)
-            : of(list)
+    return this.getListData(key).pipe(
+      switchMap((list: List) => {
+        const list$ = R.isEmpty(list) ? this.fetchListData(key) : of(list);
 
-          return list$.pipe(
-            map((list: List) => this.transformListToOptions(key, list))
-          )
-        })
-      )
+        return list$.pipe(
+          map((list: List) => this.transformListToOptions(key, list))
+        );
+      })
+    );
   }
 
-  transformMediaTypesListToOptions(list: List<MediaTypeListItem[]>): SelectOption[] {
+  transformMediaTypesListToOptions(
+    list: List<MediaTypeListItem[]>
+  ): SelectOption[] {
     return list.map(({ subType }) => ({
       id: subType,
       value: subType,
-      label: subType
+      label: subType,
     }));
   }
 
   defaultListToOptionsTransformer(list: List): SelectOption[] {
-    return list.map(({ id, name, ...rest }) => ({ id, label: name, value: name, ...rest }))
+    return list.map(({ id, name, ...rest }) => ({
+      id,
+      label: name,
+      value: name,
+      ...rest,
+    }));
   }
 
   transformListToOptions(key: ListKey, list: List): SelectOption[] {
     const transformers: ListOptionsTransformer = {
-      default: this.defaultListToOptionsTransformer
+      default: this.defaultListToOptionsTransformer,
     };
 
-    const executor =  transformers[key as keyof ListOptionsTransformer] || transformers.default;
+    const executor =
+      transformers[key as keyof ListOptionsTransformer] || transformers.default;
 
     return (executor as TransformListToOptionsExecutor)(list);
   }
@@ -94,10 +114,13 @@ export class ListsService {
     return this.http.get<ListInfo[]>(url);
   }
 
-  updateOptionsWithSelected(options: SelectOption[], selectedValues: string[]): SelectOption[] {
+  updateOptionsWithSelected(
+    options: SelectOption[],
+    selectedValues: string[]
+  ): SelectOption[] {
     return options.map((option) => ({
       ...option,
-      selected: selectedValues.includes(option.value)
+      selected: selectedValues.includes(option.value),
     }));
   }
 
@@ -114,34 +137,45 @@ export class ListsService {
   }
 
   fetchListOptions(lists: ListInfo[]): Observable<{ [key: string]: List }> {
-    const data = lists.reduce((acc: ListOptionsFork, { key, route }: ListInfo) => {
-      const url = `${ environment.api }/${ route }`;
+    const data = lists.reduce(
+      (acc: ListOptionsFork, { key, route }: ListInfo) => {
+        const url = `${environment.api}/${route}`;
 
-      acc[key] = this.http.get<List>(url);
+        acc[key] = this.http.get<List>(url);
 
-      return acc;
-    }, {});
+        return acc;
+      },
+      {}
+    );
 
     return forkJoin(data);
   }
 
-  getListOptionsInfomationToFetch(lists: ListInfo[], prevLists: ListInfo[]): ListInfo[] {
-    const prevListsMap = prevLists.reduce<{[key: string]: ListInfo}>((listsInfo, listInfo) => {
-      listsInfo[listInfo.key] = listInfo;
-  
-      return listsInfo;
-    }, {});
-  
+  getListOptionsInfomationToFetch(
+    lists: ListInfo[],
+    prevLists: ListInfo[]
+  ): ListInfo[] {
+    const prevListsMap = prevLists.reduce<{ [key: string]: ListInfo }>(
+      (listsInfo, listInfo) => {
+        listsInfo[listInfo.key] = listInfo;
+
+        return listsInfo;
+      },
+      {}
+    );
+
     return lists.reduce<ListInfo[]>((acc, { key, modifiedDate, route }) => {
       const matchedListInfo = prevListsMap[key] || { modifiedDate: '' };
-      const isCurrentModifiedDateBigger = DateTime.fromISO(matchedListInfo.modifiedDate) < DateTime.fromISO(modifiedDate);
-  
-      if(isCurrentModifiedDateBigger) {
+      const isCurrentModifiedDateBigger =
+        DateTime.fromISO(matchedListInfo.modifiedDate) <
+        DateTime.fromISO(modifiedDate);
+
+      if (isCurrentModifiedDateBigger) {
         acc.push({ key, route, modifiedDate });
       }
 
       return acc;
-    }, [])
+    }, []);
   }
 
   getBorderLabel(options: SelectOption[], key: ListKey): string {
@@ -152,24 +186,24 @@ export class ListsService {
     const optionsLabels = this.getOptionLabels(options);
     const label = !optionsLabels.length && inputLabel;
 
-    return [ label, ...optionsLabels ]
-      .filter((label) => label)
-      .join(', ');
+    return [label, ...optionsLabels].filter((label) => label).join(', ');
   }
 
   private getGroupRangeLetter(value: number, ranges: Ranges[]): string {
-    return ranges.reduce<string>((acc, [ key, min, max ]) => {
+    return ranges.reduce<string>((acc, [key, min, max]) => {
       return value >= min && value <= max ? key : acc;
     }, '');
   }
 
-  private addHouseholdSortingGroupletter(options: SelectOption[]): SelectOption[] {
+  private addHouseholdSortingGroupletter(
+    options: SelectOption[]
+  ): SelectOption[] {
     const ranges: Ranges[] = [
-      [ '2.5M+', 2_500_000, Infinity ],
-      [ '1M - 2.5M', 1_000_000, 2_500_000 ],
-      [ '500K - 1M ', 500_000, 1_000_000 ],
-      [ '100K - 500K', 100_000, 500_000 ],
-      [ '<100K', -Infinity, 100_000 ]
+      ['2.5M+', 2_500_000, Infinity],
+      ['1M - 2.5M', 1_000_000, 2_500_000],
+      ['500K - 1M ', 500_000, 1_000_000],
+      ['100K - 500K', 100_000, 500_000],
+      ['<100K', -Infinity, 100_000],
     ];
 
     return options.map((option) => {
@@ -177,9 +211,9 @@ export class ListsService {
 
       return {
         ...option,
-        groupLetter
-      }
-    })
+        groupLetter,
+      };
+    });
   }
 
   private addNameSortingGroupLetter(options: SelectOption[]) {
@@ -188,8 +222,8 @@ export class ListsService {
 
       return {
         ...option,
-        groupLetter
-      }
+        groupLetter,
+      };
     });
   }
 
@@ -201,12 +235,12 @@ export class ListsService {
 
     const allRanks: number[] = options.map(({ rank }) => rank);
     const maxRank = Math.max(...allRanks);
-    
+
     let minRank = 0;
     const step = 50;
 
     const calculateRanksRanges = (): void => {
-      if(minRank >= maxRank) {
+      if (minRank >= maxRank) {
         return;
       }
 
@@ -214,12 +248,12 @@ export class ListsService {
       const minRange = 1 + minRank;
       const maxRange = minRank + step;
 
-      const key = `${ minRange }-${ maxRange }`;
+      const key = `${minRange}-${maxRange}`;
 
       rankRanges.push([key, minRange, maxRange]);
 
       calculateRanksRanges();
-    }
+    };
 
     calculateRanksRanges();
 
@@ -228,36 +262,53 @@ export class ListsService {
 
   private addRankSortingGroupLetter(options: SelectOption[]): SelectOption[] {
     const rankRanges = this.defineRankRanges(options);
-  
+
     return options.map((option) => {
       const groupLetter = this.getGroupRangeLetter(option.rank, rankRanges);
 
       return {
         ...option,
-        groupLetter
-      }
+        groupLetter,
+      };
     });
   }
 
-  addGroupingLetter(options: SelectOption[], sort: MarketSortingOption): SelectOption[] {
+  addGroupingLetter(
+    options: SelectOption[],
+    sort: MarketSortingOption
+  ): SelectOption[] {
     const strategy = {
-      [MarketSortingOptionsEnum.name]: this.addNameSortingGroupLetter.bind(this),
-      [MarketSortingOptionsEnum.rank]: this.addRankSortingGroupLetter.bind(this),
-      [MarketSortingOptionsEnum.household]: this.addHouseholdSortingGroupletter.bind(this),
-    }
+      [MarketSortingOptionsEnum.name]:
+        this.addNameSortingGroupLetter.bind(this),
+      [MarketSortingOptionsEnum.rank]:
+        this.addRankSortingGroupLetter.bind(this),
+      [MarketSortingOptionsEnum.household]:
+        this.addHouseholdSortingGroupletter.bind(this),
+    };
 
     return strategy[sort](options);
   }
 
-  private sortByNumericalOrder(options: SelectOption[], prop: string, order: SortMethods = SortMethodsEnum.ascend): SelectOption[] {
+  private sortByNumericalOrder(
+    options: SelectOption[],
+    prop: string,
+    order: SortMethods = SortMethodsEnum.ascend
+  ): SelectOption[] {
     return R.sort(
-      (a, b) => order === SortMethodsEnum.ascend ? a[prop] - b[prop] : b[prop] - a[prop],
+      (a, b) =>
+        order === SortMethodsEnum.ascend
+          ? a[prop] - b[prop]
+          : b[prop] - a[prop],
       options
     );
   }
 
   private sortByName(options: SelectOption[]): SelectOption[] {
-    return this.utilsService.sortByAlphabeticalOrder<SelectOption>(options, SortMethodsEnum.ascend, ['label']);
+    return this.utilsService.sortByAlphabeticalOrder<SelectOption>(
+      options,
+      SortMethodsEnum.ascend,
+      ['label']
+    );
   }
 
   private sortByRank(options: SelectOption[]): SelectOption[] {
@@ -265,10 +316,17 @@ export class ListsService {
   }
 
   private sortByHousehold(options: SelectOption[]): SelectOption[] {
-    return this.sortByNumericalOrder(options, 'households', SortMethodsEnum.descend);
+    return this.sortByNumericalOrder(
+      options,
+      'households',
+      SortMethodsEnum.descend
+    );
   }
 
-  sortOptions(options: SelectOption[], sort: MarketSortingOption): SelectOption[] {
+  sortOptions(
+    options: SelectOption[],
+    sort: MarketSortingOption
+  ): SelectOption[] {
     const sortingStrategies = {
       [MarketSortingOptionsEnum.name]: this.sortByName.bind(this),
       [MarketSortingOptionsEnum.rank]: this.sortByRank.bind(this),
@@ -282,7 +340,10 @@ export class ListsService {
     return options.map((option) => ({ ...option, selected: true }));
   }
 
-  filterOptions(options: SelectOption[], optionsToOmit: string[]): SelectOption[] {
+  filterOptions(
+    options: SelectOption[],
+    optionsToOmit: string[]
+  ): SelectOption[] {
     return options.filter(({ value }) => !optionsToOmit.includes(value));
   }
 }

@@ -1,4 +1,5 @@
 import { MediaTypeListItem } from './list.model';
+import { Table } from './table.model';
 
 export interface MavenFile {
   name: string;
@@ -101,4 +102,5 @@ export interface Maven {
   displayChannel: string;
   digitalChannel: string;
   people?: Person[];
+  stations?: any[];
 }

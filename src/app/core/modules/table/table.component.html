@@ -120,6 +120,7 @@
               <div
                 [ngStyle]="getCellStyles(column.id)"
                 class="line-clamp-2 w-full"
+                [ngClass]="column.color || ''"
               >
                 {{ row.data[column.id] }}
               </div>

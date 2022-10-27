@@ -29,7 +29,7 @@ const routes: Routes = [
           import('./pages/spot-tv/spot-tv.module').then((m) => m.SpotTvModule),
       },
       {
-        path: 'broadcast-networks',
+        path: 'network-tv',
         loadChildren: () =>
           import('./pages/broadcast-networks/broadcast-networks.module').then(
             (m) => m.BroadcastNetworksModule

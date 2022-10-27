@@ -14,7 +14,6 @@ export class MediaProfileListService {
 
   fetchMediaProfiles(mediaId: string): Observable<MediaItem[]> {
     const url = environment.api + `/lists/media/${mediaId}`;
-    console.log(url);
     return this.http.get<MediaItem[]>(url);
   }
 }

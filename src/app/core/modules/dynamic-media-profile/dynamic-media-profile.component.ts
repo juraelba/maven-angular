@@ -50,9 +50,9 @@ export class DynamicMediaProfileComponent implements OnInit {
   @Input() diversityAttributes: Field[];
   @Input() filesColumns: FileColumn[];
   @Input() personnelTableData?: Table;
+  @Input() stationTableData?: Table;
   @Input() callHistoryTableData?: Table;
   @Input() tableStyles: { [key: string]: string } = { height: '500px' };
-  @Input() showNoFilesMessage: boolean = true;
   @Output() opeList = new EventEmitter();
 
   tittle: string;
@@ -65,7 +65,6 @@ export class DynamicMediaProfileComponent implements OnInit {
       '/'
     )[1] as SearchMediaProfileTitleKey;
     this.tittle = SearchMediaProfileEnumTitles[this.searchScreenKey];
-    console.log(this.mavenAttributes);
   }
 
   openDialog(event: MouseEvent): void {

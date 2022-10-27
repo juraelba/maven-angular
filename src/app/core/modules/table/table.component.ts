@@ -638,8 +638,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   rowClick(event: MouseEvent, row: Row): void {
-    console.log(row);
-
     event.stopPropagation();
     this.onRowClick.emit(row);
   }

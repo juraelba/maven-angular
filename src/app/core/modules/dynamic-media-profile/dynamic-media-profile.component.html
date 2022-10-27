@@ -323,4 +323,24 @@
       </div>
     </div>
   </div>
+
+  <div
+    class="description shadow-simple rounded-md w-full my-[20px] p-[20px]"
+    *ngIf="maven.stations"
+  >
+    <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
+      Stations
+    </div>
+
+    <div>
+      <app-table
+        *ngIf="!!stationTableData && maven.stations.length"
+        [data]="stationTableData"
+        [columnFilterVisible]="false"
+        [tableStyles]="tableStyles"
+        (onRowClick)="onRowClick($event)"
+      >
+      </app-table>
+    </div>
+  </div>
 </ng-container>
