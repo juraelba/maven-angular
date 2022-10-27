@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
-import { map, takeUntil } from 'rxjs/operators';
+import { delay, map, takeUntil } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 import { SideNavService } from '../../../core/services/side-nav.service';
@@ -10,26 +10,32 @@ import {
   Role,
   Service,
 } from '../../../core/enums/permissions.enum';
+import {
+  ExpandCollapseStatusEnum,
+  MultilevelMenuService,
+} from 'ng-material-multilevel-menu';
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.component.html',
   styleUrls: ['./side-nav.component.scss'],
 })
-export class SideNavComponent implements OnInit {
+export class SideNavComponent implements OnInit, AfterViewInit {
   navData: Menu[] = [
     {
+      id: 'media',
       label: 'Media',
       imageIcon: '/assets/images/icons/media.svg',
-      disabled: true,
-      expanded: true,
-      isSelected: true,
+      disabled: false,
+      expanded: false,
+      isSelected: false,
       items: [
         {
+          id: 'ms',
           name: 'media-search',
           label: 'Media Search',
           route: '/media-search',
-          disabled: true,
-          isSelected: true,
+          disabled: false,
+          isSelected: false,
           permissions: [Role.Any],
         },
         {
@@ -231,6 +237,8 @@ export class SideNavComponent implements OnInit {
     },
   ];
 
+  restoreNav: Subject<boolean> = new Subject<boolean>();
+
   config = {
     paddingAtStart: true,
     interfaceWithRoute: true,
@@ -246,7 +254,11 @@ export class SideNavComponent implements OnInit {
 
   unsubscribeAll: Subject<null> = new Subject<null>();
 
-  constructor(private sideNavService: SideNavService, private router: Router) {}
+  constructor(
+    private sideNavService: SideNavService,
+    private router: Router,
+    private mmls: MultilevelMenuService
+  ) {}
 
   ngOnInit(): void {
     this.sideNavService
@@ -259,6 +271,7 @@ export class SideNavComponent implements OnInit {
       )
       .subscribe((menu: Menu[]) => {
         this.navData = menu;
+        this.restoreNav.next(true);
       });
   }
 
@@ -268,6 +281,38 @@ export class SideNavComponent implements OnInit {
   }
 
   selectedItem(menu: Menu) {
-    this.router.navigate([`/${menu.route}`]);
+    let isSubRoute = location.pathname.split('/').length > 2;
+    let isSubRouteOfMenu = location.pathname.includes(menu.route || '');
+
+    if (!(isSubRoute && isSubRouteOfMenu)) {
+      this.router.navigate([menu.route]);
+    }
+  }
+
+  ngAfterViewInit(): void {
+    this.restoreNav.pipe(delay(1200)).subscribe((data) => {
+      console.log(data);
+      let routMap: any = [];
+
+      this.navData.forEach((item) => {
+        if (item.items) {
+          item.items.forEach((subItem) => {
+            routMap.push({ route: subItem.route, id: subItem.id });
+            if (subItem.items) {
+              subItem.items.forEach((subSubItem) => {
+                routMap.push({ route: subSubItem.route, id: subSubItem.id });
+              });
+            }
+          });
+        } else {
+          routMap.push({ route: item.route, id: item.id });
+        }
+      });
+
+      let selectedID = routMap.find(
+        (item: any) => location.pathname.indexOf(item.route) > -1
+      ).id;
+      this.mmls.selectMenuByID(selectedID);
+    });
   }
 }

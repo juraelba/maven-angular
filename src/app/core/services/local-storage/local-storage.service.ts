@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import * as localforage from "localforage";
+import { Menu } from '@models/side-nav.model';
+import * as localforage from 'localforage';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ListData, ListInfo } from '../../models/list.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LocalStorageService {
-
-  constructor() { }
+  constructor() {}
 
   set(key: string, data: string) {
     localStorage.setItem(key, data);
@@ -39,24 +39,22 @@ export class LocalStorageService {
   }
 
   setListData(listData: ListData): Observable<ListData> {
-    return from(localforage.setItem('listData', listData))
+    return from(localforage.setItem('listData', listData));
   }
 
   getListData(): Observable<ListData> {
-    return from(localforage.getItem<ListData>('listData'))
-      .pipe(
-        map((listData) => listData || {})
-      );
+    return from(localforage.getItem<ListData>('listData')).pipe(
+      map((listData) => listData || {})
+    );
   }
 
   getIndexDBEmail(): Observable<string> {
-    return from(localforage.getItem<string>('email'))
-      .pipe(
-        map((value) => value || '')
-      )
+    return from(localforage.getItem<string>('email')).pipe(
+      map((value) => value || '')
+    );
   }
 
   setIndexDBEmail(email: string): Observable<string> {
-    return from(localforage.setItem<string>('email', email))
+    return from(localforage.setItem<string>('email', email));
   }
 }

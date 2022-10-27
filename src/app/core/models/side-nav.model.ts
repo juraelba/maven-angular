@@ -9,6 +9,7 @@ export interface Menu {
   imageIcon?: string;
   expanded?: boolean;
   isSelected?: boolean;
+  classNames?: string;
 }
 
 export interface AccessibleMenu {
