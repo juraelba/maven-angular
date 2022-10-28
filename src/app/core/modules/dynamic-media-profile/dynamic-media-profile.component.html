@@ -56,10 +56,9 @@
                 *ngIf="field.id !== 'website'"
                 class="ml-[20px] text-pri-black font-lato"
                 [ngClass]="field.valueClassName || []"
+                [innerHTML]="filterLineBreaks(field.value)"
               >
-                {{
-                  field.id === "address" ? formatAddress(field) : field.value
-                }}
+                {{ field.value }}
               </div>
 
               <a
@@ -97,7 +96,7 @@
               ></app-svg-icon>
               <div
                 *ngIf="!field.icon"
-                class="font-lato text-pri-gray basis-[25%] mt-1"
+                class="font-lato text-pri-gray basis-[25%] my-1"
                 [ngClass]="field.labelClassName || []"
               >
                 {{ field.label }} :
@@ -132,19 +131,22 @@
                   </div>
 
                   <div
-                    class="text-dark-blue underline cursor-pointer my-2"
+                    class="text-dark-blue cursor-pointer my-2"
                     (click)="toggleShowAllCategoryBubbles()"
                   >
                     <div
                       *ngIf="
-                        !showAllCategoryBubbles && field.value.length - 3 > 0
+                        !showAllCategoryBubbles &&
+                        field.value.length - numberOfCaegoriesToShow > 0
                       "
                     >
-                      <a>show {{ field.value.length - 3 }} more</a>
+                      <a
+                        >Show
+                        {{ field.value.length - numberOfCaegoriesToShow }}
+                        more</a
+                      >
                     </div>
-                    <div *ngIf="showAllCategoryBubbles">
-                      <a>hide</a>
-                    </div>
+                    <div *ngIf="showAllCategoryBubbles">Hide</div>
                   </div>
                 </ng-template>
               </div>
@@ -341,6 +343,80 @@
         (onRowClick)="onRowClick($event)"
       >
       </app-table>
+    </div>
+  </div>
+
+  <div class="flex justify-between">
+    <div
+      class="shadow-simple rounded-md w-full my-[20px] p-[20px]"
+      *ngIf="maven.circulation"
+    >
+      <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
+        <div class="flex justify-between">
+          <div
+            class="font-mont font-semibold text-pri-black text-base mb-15px] px-2"
+          >
+            Circulation
+          </div>
+          <div class="text-pri-gray font-lato">Effective Date:</div>
+        </div>
+
+        <div>
+          <div class="header flex justify-between mb-[15px]">
+            <div
+              *ngFor="
+                let column of ['Days Published', 'Daily Average', 'Source']
+              "
+              class="font-lato text-pri-gray cell p-5"
+            >
+              {{ column }}
+            </div>
+          </div>
+          <div class="flex justify-between">
+            <p class="px-5" *ngFor="let value of circulationConfig">
+              {{ maven.circulation[value.id] }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="shadow-simple rounded-md w-full my-[20px] p-[20px]"
+      *ngIf="maven.rates"
+    >
+      <div class="flex justify-between">
+        <div
+          class="font-mont font-semibold text-pri-black text-base mb-15px] px-2"
+        >
+          Rates
+        </div>
+        <div class="text-pri-gray font-lato">Effective Date:</div>
+      </div>
+      <ng-container *ngIf="maven.rates">
+        <div class="flex mb-[15px]">
+          <ng-container *ngFor="let column of ratesColumns">
+            <div
+              *ngIf="maven.rates[column.id]"
+              class="font-lato text-pri-gray cell p-5"
+            >
+              {{ column.label }}
+            </div>
+          </ng-container>
+        </div>
+        <div>
+          <div class="header flex mb-[15px]">
+            <ng-container *ngFor="let column of ratesColumns">
+              <div
+                *ngIf="maven.rates[column.id]"
+                class="font-lato text-pri-black cell px-5"
+              >
+                {{ maven.rates[column.id] }}
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
     </div>
   </div>
 </ng-container>

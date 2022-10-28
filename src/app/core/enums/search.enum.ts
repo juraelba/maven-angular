@@ -132,6 +132,7 @@ export enum SearchEnumTitles {
   'spot-radio' = 'Spot Radio Search',
   'network-cable' = 'Cable Networks Search',
   'network-radio' = 'Network Radio Search',
+  'newspapers' = 'Newspaper Search',
   'digital' = 'Digital Search',
   'magazine' = 'Magazine Search',
   'newspaper' = 'Newspaper Search',
@@ -146,5 +147,6 @@ export enum SearchMediaProfileEnumTitles {
   'broadcast-networks' = 'Broadcast Networks',
   'cable-networks' = 'Cable Networks',
   'outdoor' = 'Out of Home',
+  'newspapers' = 'Newspaper',
   'network-tv' = 'Broadcast Networks',
 }

@@ -56,7 +56,7 @@ const mainInformationFields: Field[][] = [
   [
     {
       id: MediaProfileFields.address,
-      path: [MediaProfileFields.address],
+      path: [MediaProfileFields.address, 'completeAddress'],
       label: MediaProfileFieldsLabels.address,
       icon: MediaProfileFields.address,
       className: ['row-span-4', 'align-self'],
@@ -68,12 +68,13 @@ const mainInformationFields: Field[][] = [
     {
       id: MediaProfileFields.website,
       path: MediaProfileFields.website,
+
       label: MediaProfileFieldsLabels.website,
       icon: MediaProfileFields.website,
       iconFill: '#797979',
       iconStroke: 'none',
       className: ['items-center'],
-      valueClassName: ['text-dark-blue', 'cursor-pointer'],
+      valueClassName: ['text-second-blue', 'cursor-pointer'],
     },
     {
       id: MediaProfileFields.email,
@@ -90,11 +91,13 @@ const mainInformationFields: Field[][] = [
       id: MediaProfileFields.owner,
       path: [MediaProfileFields.owner, 'name'],
       label: MediaProfileFieldsLabels.owner,
+      valueClassName: ['text-second-blue'],
     },
     {
       id: MediaProfileFields.parent,
       path: [MediaProfileFields.parent, 'name'],
       label: MediaProfileFieldsLabels.parent,
+      valueClassName: ['text-second-blue'],
     },
   ],
 ];
@@ -137,7 +140,7 @@ const spotTVMavenAttributesFields: Field[][] = [
       path: MediaProfileFields.dma,
       label: MediaProfileFieldsLabels.dma,
       valueContentClassName: ['ml-2'],
-      valueClassName: ['text-regal-blue'],
+      valueClassName: ['text-second-blue'],
     },
     {
       id: MediaProfileFields.slogan,

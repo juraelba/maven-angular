@@ -120,7 +120,7 @@ export class SideNavComponent implements OnInit, AfterViewInit {
             {
               name: 'newspaper',
               label: 'Newspapers',
-              route: '/newspaper-search',
+              route: '/newspapers',
               disabled: true,
               permissions: [ObjectType.Newspaper],
             },

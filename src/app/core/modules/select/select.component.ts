@@ -148,10 +148,10 @@ export class SelectComponent implements OnInit, OnChanges {
 
   sortOptionsByLabel(options: SelectOption[]): SelectOption[] {
     return [...options].sort((a, b) => {
-      if (a.label > b.label) {
+      if (a.label.toUpperCase() > b.label.toUpperCase()) {
         return 1;
       }
-      if (a.label < b.label) {
+      if (a.label.toLocaleLowerCase() < b.label.toUpperCase()) {
         return -1;
       }
 

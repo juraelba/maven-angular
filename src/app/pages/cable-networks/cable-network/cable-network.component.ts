@@ -33,6 +33,7 @@ const mockMaven: Maven = {
     targetAudience: '',
     targetAudienceSource: '',
   },
+
   address: {
     completeAddress:
       '2 Penn Plaza; 17th Floor; New York, NY 10121-0101; United States',

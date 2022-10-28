@@ -103,4 +103,15 @@ export interface Maven {
   digitalChannel: string;
   people?: Person[];
   stations?: any[];
+  rates?: any;
+  circulation?: Circulation;
+}
+
+interface Circulation {
+  circulationDate: string;
+  sundayCirculation: string;
+  circulationSource: string;
+  dailyCirculation: string;
+  daysPublished: string;
+  [key: string]: string;
 }

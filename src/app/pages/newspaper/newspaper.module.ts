@@ -12,9 +12,10 @@ import { NewspaperRoutingModule } from './newspaper-routing.module';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 import { DynamicMediaProfileModule } from '@modules/dynamic-media-profile/dynamic-media-profile.module';
+import { NewspaperMediaProfileComponent } from './newspaper-media-profile/newspaper-media-profile.component';
 
 @NgModule({
-  declarations: [NewspaperComponent],
+  declarations: [NewspaperComponent, NewspaperMediaProfileComponent],
   providers: [SelectedCriteriaService],
   imports: [
     CommonModule,

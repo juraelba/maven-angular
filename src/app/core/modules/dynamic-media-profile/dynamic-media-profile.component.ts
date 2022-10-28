@@ -14,7 +14,8 @@ import {
 import { SearchMediaProfileEnumTitles } from '@enums/search.enum';
 import { Maven, MavenFile } from '@models/maven.model';
 import { SearchMediaProfileTitleKey } from '@models/search.model';
-import { Row, Table } from '@models/table.model';
+import { Column, Row, Table } from '@models/table.model';
+import { CIRCULATION_CONFIG } from '../../configs/circulation.config';
 
 interface Field {
   id: MediaProfileFields;
@@ -52,19 +53,26 @@ export class DynamicMediaProfileComponent implements OnInit {
   @Input() personnelTableData?: Table;
   @Input() stationTableData?: Table;
   @Input() callHistoryTableData?: Table;
+  @Input() ratesColumns: Column[];
+  @Input() ratesData: any;
   @Input() tableStyles: { [key: string]: string } = { height: '500px' };
   @Output() opeList = new EventEmitter();
 
   tittle: string;
   searchScreenKey: SearchMediaProfileTitleKey;
+  circulationConfig = CIRCULATION_CONFIG;
   showAllCategoryBubbles = false;
+  numberOfCaegoriesToShow = 2;
   constructor(private router: Router) {}
 
   ngOnInit(): void {
+    console.log(this.maven);
+
     this.searchScreenKey = this.router.url.split(
       '/'
     )[1] as SearchMediaProfileTitleKey;
     this.tittle = SearchMediaProfileEnumTitles[this.searchScreenKey];
+    console.log(this.maven.rates);
   }
 
   openDialog(event: MouseEvent): void {
@@ -113,7 +121,7 @@ export class DynamicMediaProfileComponent implements OnInit {
       return categories;
     }
 
-    return categories.slice(0, 3);
+    return categories.slice(0, this.numberOfCaegoriesToShow);
   }
 
   createLink(url: string): string {
@@ -122,5 +130,17 @@ export class DynamicMediaProfileComponent implements OnInit {
     }
 
     return `http://${url}`;
+  }
+  mapKeys(obj: object) {
+    return Object.keys(obj);
+  }
+
+  filterLineBreaks(text: string) {
+    if (!text || !text.length) {
+      return text;
+    }
+
+    // regex return br for new line breaks
+    return text.replace(/(?:\r)/g, '<br>');
   }
 }

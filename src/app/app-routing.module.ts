@@ -69,7 +69,7 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'newspaper-search',
+        path: 'newspapers',
         loadChildren: () =>
           import('./pages/newspaper/newspaper.module').then(
             (m) => m.NewspaperModule
