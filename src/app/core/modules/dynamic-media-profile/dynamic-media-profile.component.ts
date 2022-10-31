@@ -67,12 +67,11 @@ export class DynamicMediaProfileComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.maven);
-
+    console.log(this.callHistoryTableData);
     this.searchScreenKey = this.router.url.split(
       '/'
     )[1] as SearchMediaProfileTitleKey;
     this.tittle = SearchMediaProfileEnumTitles[this.searchScreenKey];
-    console.log(this.maven.rates);
   }
 
   openDialog(event: MouseEvent): void {
@@ -96,7 +95,7 @@ export class DynamicMediaProfileComponent implements OnInit {
   }
 
   labelwithNoColon(label: string): boolean {
-    const labelsWithNoColon = ['ID', 'Owner', 'Parent'];
+    const labelsWithNoColon = ['ID'];
 
     return labelsWithNoColon.includes(label);
   }
@@ -140,7 +139,22 @@ export class DynamicMediaProfileComponent implements OnInit {
       return text;
     }
 
-    // regex return br for new line breaks
     return text.replace(/(?:\r)/g, '<br>');
+  }
+
+  isStat(key: string) {
+    return ['power', 'amsl', 'haat', 'agl'].includes(key);
+  }
+
+  formatStats(key: string, value: string) {
+    if (key === 'power') {
+      return `${parseInt(value) * 1000} Watts`;
+    }
+
+    return `${value} Feet (${this.toMeters(value)} meters)`;
+  }
+
+  toMeters(feet: string) {
+    return Math.round(Number(feet) * 0.3048);
   }
 }

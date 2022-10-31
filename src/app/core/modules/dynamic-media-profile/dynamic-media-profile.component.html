@@ -141,7 +141,7 @@
                       "
                     >
                       <a
-                        >Show
+                        >See
                         {{ field.value.length - numberOfCaegoriesToShow }}
                         more</a
                       >
@@ -156,7 +156,11 @@
                   [ngClass]="field.valueClassName || []"
                 >
                   <div [ngClass]="field.valueContentClassName || []">
-                    {{ field.value }}
+                    {{
+                      isStat(field.id)
+                        ? formatStats(field.id, field.value)
+                        : field.value
+                    }}
                   </div>
                 </div>
               </ng-template>
@@ -205,7 +209,7 @@
     </div>
 
     <div
-      class="files shadow-simple rounded-md w-full p-[20px]"
+      class="files shadow-simple rounded-md w-full p-[20px] max-h-60 overflow-y-auto"
       *ngIf="maven.files.length"
     >
       <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
@@ -266,7 +270,7 @@
 
     <div
       class="shadow-simple rounded-md w-full p-[20px]"
-      *ngIf="!!personnelTableData && maven.partners.length"
+      *ngIf="callHistoryTableData && callHistoryTableData.rows.length"
     >
       <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
         Call History
@@ -285,37 +289,36 @@
         </div>
       </ng-template>
     </div>
-    <div
-      class="shadow-simple rounded-md min-w-fit p-[20px]"
-      *ngIf="!!personnelTableData && maven.partners.length"
-    >
-      <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
-        Personnel
-      </div>
+  </div>
 
-      <app-table
-        *ngIf="!!personnelTableData && maven.partners.length; else noPersonnel"
-        [data]="personnelTableData"
-        [columnFilterVisible]="false"
-        [tableStyles]="tableStyles"
-        (onRowClick)="onRowClick($event)"
-      >
-      </app-table>
-
-      <ng-template #noPersonnel>
-        <div class="text-pri-gray font-lato">No personnel found.</div>
-      </ng-template>
+  <div
+    class="shadow-simple rounded-md min-w-fit p-[20px]"
+    *ngIf="personnelTableData"
+  >
+    <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
+      Personnel
     </div>
+
+    <app-table
+      *ngIf="!!personnelTableData && maven.partners; else noPersonnel"
+      [data]="personnelTableData"
+      [columnFilterVisible]="false"
+      [tableStyles]="tableStyles"
+      (onRowClick)="onRowClick($event)"
+    >
+    </app-table>
+
+    <ng-template #noPersonnel>
+      <div class="text-pri-gray font-lato">No personnel found.</div>
+    </ng-template>
   </div>
 
   <div
     class="description shadow-simple rounded-md w-full my-[20px] p-[20px]"
     *ngIf="maven.description.desc.length"
   >
-    <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
-      Description
-    </div>
-    <div class="text-pri-gray font-semibold">
+    <div class="font-mont text-pri-black text-base mb-[20px]">Description</div>
+    <div class="font-semibold font-lato">
       {{ maven.description.desc }}
     </div>
     <div class="source">
@@ -327,7 +330,7 @@
   </div>
 
   <div
-    class="description shadow-simple rounded-md w-full my-[20px] p-[20px]"
+    class="shadow-simple rounded-md w-full my-[20px] p-[20px]"
     *ngIf="maven.stations"
   >
     <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
@@ -362,61 +365,65 @@
         </div>
 
         <div>
-          <div class="header flex justify-between mb-[15px]">
+          <div class="header grid grid-cols-3 mb-[15px]">
             <div
               *ngFor="
                 let column of ['Days Published', 'Daily Average', 'Source']
               "
               class="font-lato text-pri-gray cell p-5"
             >
-              {{ column }}
+              {{ column }}:
             </div>
           </div>
-          <div class="flex justify-between">
-            <p class="px-5" *ngFor="let value of circulationConfig">
+          <div class="grid grid-cols-3">
+            <p
+              class="px-6"
+              [ngClass]="value.valueClassName || []"
+              *ngFor="let value of circulationConfig"
+            >
               {{ maven.circulation[value.id] }}
             </p>
           </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <div
-      class="shadow-simple rounded-md w-full my-[20px] p-[20px]"
-      *ngIf="maven.rates"
-    >
-      <div class="flex justify-between">
-        <div
-          class="font-mont font-semibold text-pri-black text-base mb-15px] px-2"
-        >
-          Rates
-        </div>
-        <div class="text-pri-gray font-lato">Effective Date:</div>
+  <div
+    class="shadow-simple rounded-md w-full my-[10px] pb-[20px]"
+    *ngIf="maven.rates && maven.rates.rateCardYear"
+  >
+    <div class="flex justify-between">
+      <div
+        class="font-mont font-semibold text-pri-black text-base mb-15px] p-5"
+      >
+        Rates
       </div>
-      <ng-container *ngIf="maven.rates">
-        <div class="flex mb-[15px]">
+      <div class="text-pri-gray font-lato p-5">Effective Date:</div>
+    </div>
+    <ng-container *ngIf="maven.rates">
+      <div class="grid grid-cols-7 mb-[15px]">
+        <ng-container *ngFor="let column of ratesColumns">
+          <div
+            *ngIf="maven.rates[column.id]"
+            class="font-lato text-pri-gray cell p-5"
+          >
+            {{ column.label }}:
+          </div>
+        </ng-container>
+      </div>
+      <div>
+        <div class="header grid grid-cols-7 mb-[15px]">
           <ng-container *ngFor="let column of ratesColumns">
             <div
               *ngIf="maven.rates[column.id]"
-              class="font-lato text-pri-gray cell p-5"
+              class="font-lato text-pri-black cell px-8"
             >
-              {{ column.label }}
+              {{ maven.rates[column.id] }}
             </div>
           </ng-container>
         </div>
-        <div>
-          <div class="header flex mb-[15px]">
-            <ng-container *ngFor="let column of ratesColumns">
-              <div
-                *ngIf="maven.rates[column.id]"
-                class="font-lato text-pri-black cell px-5"
-              >
-                {{ maven.rates[column.id] }}
-              </div>
-            </ng-container>
-          </div>
-        </div>
-      </ng-container>
-    </div>
+      </div>
+    </ng-container>
   </div>
 </ng-container>

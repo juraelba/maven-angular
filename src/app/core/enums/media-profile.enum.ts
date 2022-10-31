@@ -18,7 +18,7 @@ export enum MediaProfileFields {
   class = 'class',
   frequency = 'frequency',
   fccid = 'fccid',
-  licenseCity = 'licenseCity',
+  licenseCityState = 'licenseCityState',
   licenseCountry = 'licenseCountry',
   timeZone = 'timeZone',
   power = 'power',
@@ -32,9 +32,9 @@ export enum MediaProfileFields {
   haat = 'haat',
   agl = 'agl',
   amsl = 'amsl',
-  displayChannel = "displayChannel",
-  digitalChannel = "digitalChannel",
-  partners = 'partners'
+  displayChannel = 'displayChannel',
+  digitalChannel = 'digitalChannel',
+  partners = 'partners',
 }
 
 export enum MediaProfileFieldsLabels {
@@ -71,11 +71,9 @@ export enum MediaProfileFieldsLabels {
   haat = 'HAAT',
   agl = 'AGL',
   amsl = 'AMSL',
-  displayChannel = "Display Channel",
-  digitalChannel = "Digital Channel",
-  partners = 'Partners'
+  displayChannel = 'Display Channel',
+  digitalChannel = 'Digital Channel',
+  partners = 'Partners',
 }
 
-export enum FilesLabels {
-
-}
+export enum FilesLabels {}

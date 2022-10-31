@@ -74,7 +74,7 @@ const mainInformationFields: Field[][] = [
       iconFill: '#797979',
       iconStroke: 'none',
       className: ['items-center'],
-      valueClassName: ['text-second-blue', 'cursor-pointer'],
+      valueClassName: ['text-blue', 'cursor-pointer'],
     },
     {
       id: MediaProfileFields.email,
@@ -175,8 +175,8 @@ const spotTVMavenAttributesFields: Field[][] = [
       valueContentClassName: ['ml-2'],
     },
     {
-      id: MediaProfileFields.licenseCity,
-      path: MediaProfileFields.licenseCity,
+      id: MediaProfileFields.licenseCityState,
+      path: MediaProfileFields.licenseCityState,
       label: MediaProfileFieldsLabels.licenseCity,
       valueContentClassName: ['ml-2'],
     },
@@ -306,8 +306,8 @@ const spotRadioMavenAttributesFields: Field[][] = [
       valueContentClassName: ['ml-2'],
     },
     {
-      id: MediaProfileFields.licenseCity,
-      path: MediaProfileFields.licenseCity,
+      id: MediaProfileFields.licenseCityState,
+      path: MediaProfileFields.licenseCityState,
       label: MediaProfileFieldsLabels.licenseCity,
       valueContentClassName: ['ml-2'],
     },
@@ -442,8 +442,8 @@ const outOfHomeMavenAttributesFields: Field[][] = [
       valueContentClassName: ['ml-2'],
     },
     {
-      id: MediaProfileFields.licenseCity,
-      path: MediaProfileFields.licenseCity,
+      id: MediaProfileFields.licenseCityState,
+      path: MediaProfileFields.licenseCityState,
       label: MediaProfileFieldsLabels.licenseCity,
       valueContentClassName: ['ml-2'],
     },

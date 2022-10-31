@@ -116,6 +116,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     this.rows = [...this.data.rows];
 
     this.columns = [...this.data.columns];
+    console.log(this.columns);
 
     this.columns.map((col, i) => {
       if (this.isColumnPinned(i)) {

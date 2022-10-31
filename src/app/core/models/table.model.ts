@@ -21,6 +21,7 @@ export interface Column {
   width: number;
   pinned?: boolean;
   color?: string;
+  valueClassName?: string[];
 }
 
 export interface Table {

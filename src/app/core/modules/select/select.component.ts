@@ -147,11 +147,19 @@ export class SelectComponent implements OnInit, OnChanges {
   }
 
   sortOptionsByLabel(options: SelectOption[]): SelectOption[] {
+    // check if option is a letter and not a character
+
     return [...options].sort((a, b) => {
+      // check if not a character
+      if (
+        !(String(a.label).match(/[a-z]/i) && String(b.label).match(/[a-z]/i))
+      ) {
+        return 0;
+      }
       if (a.label.toUpperCase() > b.label.toUpperCase()) {
         return 1;
       }
-      if (a.label.toLocaleLowerCase() < b.label.toUpperCase()) {
+      if (a.label.toUpperCase() < b.label.toUpperCase()) {
         return -1;
       }
 

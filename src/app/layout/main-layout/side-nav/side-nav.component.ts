@@ -291,7 +291,6 @@ export class SideNavComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.restoreNav.pipe(delay(1200)).subscribe((data) => {
-      console.log(data);
       let routMap: any = [];
 
       this.navData.forEach((item) => {

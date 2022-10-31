@@ -2,9 +2,16 @@ import { Column } from '@models/table.model';
 
 export const CIRCULATION_CONFIG: Column[] = [
   {
-    id: ' circulationDate',
-    label: 'Circulation Date',
+    id: 'daysPublished',
+    label: 'Days Published',
     width: 200,
+  },
+
+  {
+    id: 'dailyCirculation',
+    label: 'Daily Average',
+    width: 200,
+    valueClassName: ['px-11'],
   },
 
   {
@@ -13,21 +20,15 @@ export const CIRCULATION_CONFIG: Column[] = [
     width: 200,
   },
 
-  {
-    id: 'dailyCirculation',
-    label: 'Daily Circulation',
-    width: 200,
-  },
+  // {
+  //   id: ' circulationDate',
+  //   label: 'Circulation Date',
+  //   width: 200,
+  // },
 
-  {
-    id: 'daysPublished',
-    label: 'Days Published',
-    width: 200,
-  },
-
-  {
-    id: 'sundayCirculation',
-    label: 'Sunday Circulation',
-    width: 200,
-  },
+  // {
+  //   id: 'sundayCirculation',
+  //   label: 'Sunday Circulation',
+  //   width: 200,
+  // },
 ];

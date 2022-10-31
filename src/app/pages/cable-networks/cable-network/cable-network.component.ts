@@ -62,7 +62,7 @@ const mockMaven: Maven = {
   class: 'Commercial, Licensed Class A AM Station',
   frequency: '770',
   fccid: '70658',
-  licenseCity: 'New York, NY',
+  licenseCityState: 'New York, NY',
   licenseCountry: 'New York, NY',
   timeZone: 'Eastern',
   power: '50, 000 Watts',
