@@ -12,7 +12,7 @@ export enum MediaProfileFields {
   language = 'language',
   categories = 'categories',
   geographicAppeal = 'geographicAppeal',
-  dma = 'dma',
+  dmaMarket = 'dmaMarket',
   msa = 'msa',
   slogan = 'slogan',
   class = 'class',

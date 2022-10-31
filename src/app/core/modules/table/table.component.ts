@@ -116,7 +116,10 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     this.rows = [...this.data.rows];
 
     this.columns = [...this.data.columns];
-    console.log(this.columns);
+
+    this.searchService.sortedColumn.subscribe((s) => {
+      this.sortedColumn = s as [string, SortMethods];
+    });
 
     this.columns.map((col, i) => {
       if (this.isColumnPinned(i)) {
@@ -234,7 +237,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     const propertyPath = ['data', column.id];
     const sortMethod = this.getSortMethod(column.id);
 
-    this.sortedColumn = [column.id, sortMethod];
+    // this.sortedColumn = [column.id, sortMethod];
+    this.searchService.sortedColumn.next([column.id, sortMethod]);
 
     if (sortMethod === SortMethodsEnum.none) {
       const mapedFilters = this.searchService.mapFilters(
@@ -255,7 +259,11 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
           mapedFilters
         );
       } else {
-        this.rows = [...this.data.rows];
+        this.rows = this.utilsService.sortByAlphabeticalOrder<Row>(
+          this.rows,
+          'ascend',
+          propertyPath
+        );
       }
     } else {
       this.rows = this.utilsService.sortByAlphabeticalOrder<Row>(

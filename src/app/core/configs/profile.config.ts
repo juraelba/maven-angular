@@ -91,13 +91,15 @@ const mainInformationFields: Field[][] = [
       id: MediaProfileFields.owner,
       path: [MediaProfileFields.owner, 'name'],
       label: MediaProfileFieldsLabels.owner,
-      valueClassName: ['text-second-blue'],
+      valueClassName: ['text-regal-blue'],
+      valueContentClassName: ['text-regal-blue'],
     },
     {
       id: MediaProfileFields.parent,
       path: [MediaProfileFields.parent, 'name'],
       label: MediaProfileFieldsLabels.parent,
-      valueClassName: ['text-second-blue'],
+      valueClassName: ['text-regal-blue'],
+      valueContentClassName: ['text-regal-blue'],
     },
   ],
 ];
@@ -136,11 +138,11 @@ const spotTVMavenAttributesFields: Field[][] = [
       valueContentClassName: ['ml-2'],
     },
     {
-      id: MediaProfileFields.dma,
-      path: MediaProfileFields.dma,
+      id: MediaProfileFields.dmaMarket,
+      path: MediaProfileFields.dmaMarket,
       label: MediaProfileFieldsLabels.dma,
-      valueContentClassName: ['ml-2'],
-      valueClassName: ['text-second-blue'],
+      valueContentClassName: ['ml-2', 'text-regal-blue'],
+      valueClassName: ['text-blue'],
     },
     {
       id: MediaProfileFields.slogan,
@@ -260,11 +262,11 @@ const spotRadioMavenAttributesFields: Field[][] = [
     },
 
     {
-      id: MediaProfileFields.dma,
-      path: MediaProfileFields.dma,
+      id: MediaProfileFields.dmaMarket,
+      path: MediaProfileFields.dmaMarket,
       label: MediaProfileFieldsLabels.dma,
       valueClassName: ['text-regal-blue'],
-      valueContentClassName: ['ml-2'],
+      valueContentClassName: ['ml-2', 'text-regal-blue'],
     },
 
     {
@@ -391,15 +393,15 @@ const outOfHomeMavenAttributesFields: Field[][] = [
       id: MediaProfileFields.geographicAppeal,
       path: ['geoAppeal'],
       label: MediaProfileFieldsLabels.geographicAppeal,
-      valueContentClassName: ['ml-2'],
+      valueContentClassName: ['ml-2', 'text-regal-blue'],
     },
 
     {
-      id: MediaProfileFields.dma,
-      path: MediaProfileFields.dma,
+      id: MediaProfileFields.dmaMarket,
+      path: MediaProfileFields.dmaMarket,
       label: MediaProfileFieldsLabels.dma,
       valueClassName: ['text-regal-blue'],
-      valueContentClassName: ['ml-2'],
+      valueContentClassName: ['ml-2', 'text-regal-blue'],
     },
 
     {

@@ -66,8 +66,6 @@ export class DynamicMediaProfileComponent implements OnInit {
   constructor(private router: Router) {}
 
   ngOnInit(): void {
-    console.log(this.maven);
-    console.log(this.callHistoryTableData);
     this.searchScreenKey = this.router.url.split(
       '/'
     )[1] as SearchMediaProfileTitleKey;

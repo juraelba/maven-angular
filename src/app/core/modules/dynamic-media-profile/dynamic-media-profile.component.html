@@ -293,7 +293,7 @@
 
   <div
     class="shadow-simple rounded-md min-w-fit p-[20px]"
-    *ngIf="personnelTableData"
+    *ngIf="personnelTableData && maven.people?.length"
   >
     <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
       Personnel
@@ -317,8 +317,8 @@
     class="description shadow-simple rounded-md w-full my-[20px] p-[20px]"
     *ngIf="maven.description.desc.length"
   >
-    <div class="font-mont text-pri-black text-base mb-[20px]">Description</div>
-    <div class="font-semibold font-lato">
+    <div class="mb-[20px] font-semibold">Description</div>
+    <div class="f">
       {{ maven.description.desc }}
     </div>
     <div class="source">
@@ -352,7 +352,7 @@
   <div class="flex justify-between">
     <div
       class="shadow-simple rounded-md w-full my-[20px] p-[20px]"
-      *ngIf="maven.circulation"
+      *ngIf="maven.circulation && maven.circulation.dailyCirculation"
     >
       <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
         <div class="flex justify-between">

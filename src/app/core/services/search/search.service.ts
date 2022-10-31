@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { compose, toPairs, reduce, always, isEmpty, omit, is } from 'ramda';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 import { environment } from '@environments/environment';
 
@@ -44,6 +44,8 @@ import {
   TABLE_COLUMNS,
   COLUMNS_TO_OMIT,
 } from '../../data/table-columns-config';
+import { SortMethods } from '@models/sorting-options.models';
+import { SortMethodsEnum } from '@enums/sorting-options.enum';
 
 interface SelectedCheckboxes {
   [key: string]: boolean;
@@ -75,7 +77,10 @@ export class SearchService {
   selectedDropdown: Subject<string> = new Subject();
   searchBarEvents$ = this.subject$.asObservable();
   searchResults: { [key: string]: Table } = {};
-
+  sortedColumn: BehaviorSubject<any[]> = new BehaviorSubject([
+    '',
+    SortMethodsEnum.none,
+  ]);
   constructor(private http: HttpClient) {}
 
   newSearch(): void {

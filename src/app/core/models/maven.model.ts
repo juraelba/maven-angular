@@ -78,7 +78,7 @@ export interface Maven {
   language: string;
   categories: string[];
   geographicAppeal: string;
-  dma: string;
+  dmaMarket: string;
   msa: string;
   slogan: string;
   class: string;

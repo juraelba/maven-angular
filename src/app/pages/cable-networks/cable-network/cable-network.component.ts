@@ -56,7 +56,7 @@ const mockMaven: Maven = {
   language: 'English',
   categories: ['City/Regional/State/Comminity', 'Category City'],
   geographicAppeal: 'Metropolitan',
-  dma: 'New York, NY (1)',
+  dmaMarket: 'New York, NY (1)',
   msa: 'New York, NY (1)',
   slogan: 'WABC-AM 770; Where NEw York Comes To Talks',
   class: 'Commercial, Licensed Class A AM Station',
