@@ -133,6 +133,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     if (changes.data && !changes.data.firstChange) {
       this.rows = [...changes.data.currentValue.rows];
       this.columns = [...changes.data.currentValue.columns];
+      console.log('emmited change', this.rows);
 
       this.rowsChange.emit(this.rows);
       this.columnsChange.emit(this.columns);
@@ -259,11 +260,7 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
           mapedFilters
         );
       } else {
-        this.rows = this.utilsService.sortByAlphabeticalOrder<Row>(
-          this.rows,
-          'ascend',
-          propertyPath
-        );
+        this.rows = [...this.data.rows];
       }
     } else {
       this.rows = this.utilsService.sortByAlphabeticalOrder<Row>(

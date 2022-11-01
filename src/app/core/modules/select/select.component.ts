@@ -136,7 +136,7 @@ export class SelectComponent implements OnInit, OnChanges {
   transformOptions(options: SelectOption[]): SelectOption[] {
     return options.map((option) => {
       const { label } = option;
-      const groupLetter = is(String, label) ? label[0].toUpperCase() : '';
+      const groupLetter = is(String, label) ? label[0]?.toUpperCase() : '';
 
       return {
         ...option,
@@ -156,11 +156,14 @@ export class SelectComponent implements OnInit, OnChanges {
       ) {
         return 0;
       }
-      if (a.label.toUpperCase() > b.label.toUpperCase()) {
-        return 1;
-      }
-      if (a.label.toUpperCase() < b.label.toUpperCase()) {
-        return -1;
+
+      if (a.label.length && b.label.length) {
+        if (a.label.toUpperCase() > b.label.toUpperCase()) {
+          return 1;
+        }
+        if (a.label.toUpperCase() < b.label.toUpperCase()) {
+          return -1;
+        }
       }
 
       return 0;

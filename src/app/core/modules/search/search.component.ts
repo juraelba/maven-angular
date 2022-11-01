@@ -10,7 +10,6 @@ import { DOCUMENT } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, of } from 'rxjs';
 import { switchMap, takeUntil, filter } from 'rxjs/operators';
-
 import { Criteries } from '@models/criteries.model';
 import {
   SearchKey,

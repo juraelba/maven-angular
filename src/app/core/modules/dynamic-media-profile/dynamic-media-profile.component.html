@@ -85,7 +85,7 @@
     <div class="maven-attributes__fields grid gap-[10px]">
       <div *ngFor="let columns of mavenAttributes">
         <ng-container *ngFor="let field of columns">
-          <ng-container *ngIf="field.value">
+          <ng-container *ngIf="field.value && field.value.length">
             <div class="flex flex-row" [ngClass]="field.className || []">
               <app-svg-icon
                 class=""
@@ -103,7 +103,10 @@
               </div>
               <div
                 class="ml-[20px] flex flex-row flex-wrap content-center basis-[75%]"
-                *ngIf="isArray(field.value); else notarray"
+                *ngIf="
+                  isArray(field.value) && field.value.length;
+                  else notarray
+                "
               >
                 <ng-container
                   *ngIf="field.id !== 'categories'; else categories"
@@ -172,7 +175,7 @@
   </div>
 
   <div class="footer grid gap-[20px]">
-    <div class="diversity shadow-simple rounded-md w-full p-[20px]">
+    <div class="diversity shadow-simple rounded-md w-full mb-[20px] p-[20px]">
       <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
         Diversity
       </div>
@@ -331,7 +334,7 @@
 
   <div
     class="shadow-simple rounded-md w-full my-[20px] p-[20px]"
-    *ngIf="maven.stations"
+    *ngIf="maven.stations && maven.stations.length"
   >
     <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
       Stations

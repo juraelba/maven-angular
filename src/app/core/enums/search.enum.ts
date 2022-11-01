@@ -148,5 +148,6 @@ export enum SearchMediaProfileEnumTitles {
   'cable-networks' = 'Cable Networks',
   'outdoor' = 'Out of Home',
   'newspapers' = 'Newspaper',
+  'digital' = 'Digital',
   'network-tv' = 'Broadcast Networks',
 }

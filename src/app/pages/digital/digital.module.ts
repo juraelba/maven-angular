@@ -11,14 +11,12 @@ import { NameInputModule } from '@modules/name-input/name-input.module';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 import { DigitalRoutingModule } from './digital-routing.module';
+import { DigitalMediaProfileComponent } from './digital-media-profile/digital-media-profile.component';
+import { DynamicMediaProfileModule } from '@modules/dynamic-media-profile/dynamic-media-profile.module';
 
 @NgModule({
-  declarations: [
-    DigitalComponent
-  ],
-  providers: [
-    SelectedCriteriaService
-  ],
+  declarations: [DigitalComponent, DigitalMediaProfileComponent],
+  providers: [SelectedCriteriaService],
   imports: [
     CommonModule,
     DigitalRoutingModule,
@@ -26,7 +24,8 @@ import { DigitalRoutingModule } from './digital-routing.module';
     InputModule,
     SelectModule,
     SearchModule,
-    NameInputModule
-  ]
+    NameInputModule,
+    DynamicMediaProfileModule,
+  ],
 })
-export class DigitalModule { }
+export class DigitalModule {}
