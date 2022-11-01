@@ -174,7 +174,7 @@
     </div>
   </div>
 
-  <div class="footer grid gap-[20px]">
+  <div class="infogrid">
     <div class="diversity shadow-simple rounded-md w-full mb-[20px] p-[20px]">
       <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
         Diversity
@@ -212,7 +212,7 @@
     </div>
 
     <div
-      class="files shadow-simple rounded-md w-full p-[20px] max-h-60 overflow-y-auto"
+      class="files shadow-simple rounded-md w-full mb-[20px] p-[20px] max-h-60 overflow-y-auto"
       *ngIf="maven.files.length"
     >
       <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
@@ -254,7 +254,7 @@
     </div>
 
     <div
-      class="shadow-simple rounded-md w-full p-[20px]"
+      class="shadow-simple rounded-md w-full p-[20px] mb-[20px]"
       *ngIf="maven.partners.length"
     >
       <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
@@ -272,7 +272,7 @@
     </div>
 
     <div
-      class="shadow-simple rounded-md w-full p-[20px]"
+      class="shadow-simple rounded-md w-full p-[20px] mb-[20px]"
       *ngIf="callHistoryTableData && callHistoryTableData.rows.length"
     >
       <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
@@ -291,6 +291,46 @@
           No call letters changes found.
         </div>
       </ng-template>
+    </div>
+
+    <div
+      class="flex justify-between"
+      *ngIf="maven.circulation && maven.circulation.dailyCirculation"
+    >
+      <div class="shadow-simple rounded-md w-full my-[20px] p-[20px]">
+        <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
+          <div class="flex justify-between">
+            <div
+              class="font-mont font-semibold text-pri-black text-base mb-15px] px-2"
+            >
+              Circulation
+            </div>
+            <div class="text-pri-gray font-lato">Effective Date:</div>
+          </div>
+
+          <div>
+            <div class="header grid grid-cols-3 mb-[15px]">
+              <div
+                *ngFor="
+                  let column of ['Days Published', 'Daily Average', 'Source']
+                "
+                class="font-lato text-pri-gray cell p-5"
+              >
+                {{ column }}:
+              </div>
+            </div>
+            <div class="grid grid-cols-3">
+              <p
+                class="px-6"
+                [ngClass]="value.valueClassName || []"
+                *ngFor="let value of circulationConfig"
+              >
+                {{ maven.circulation[value.id] }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -317,11 +357,11 @@
   </div>
 
   <div
-    class="description shadow-simple rounded-md w-full my-[20px] p-[20px]"
+    class="shadow-simple rounded-md w-full my-[20px] p-[20px]"
     *ngIf="maven.description.desc.length"
   >
-    <div class="mb-[20px] font-semibold">Description</div>
-    <div class="f">
+    <div class="mb-[20px] font-semibold desc">Description</div>
+    <div class="description">
       {{ maven.description.desc }}
     </div>
     <div class="source">
@@ -349,46 +389,6 @@
         (onRowClick)="onRowClick($event)"
       >
       </app-table>
-    </div>
-  </div>
-
-  <div class="flex justify-between">
-    <div
-      class="shadow-simple rounded-md w-full my-[20px] p-[20px]"
-      *ngIf="maven.circulation && maven.circulation.dailyCirculation"
-    >
-      <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
-        <div class="flex justify-between">
-          <div
-            class="font-mont font-semibold text-pri-black text-base mb-15px] px-2"
-          >
-            Circulation
-          </div>
-          <div class="text-pri-gray font-lato">Effective Date:</div>
-        </div>
-
-        <div>
-          <div class="header grid grid-cols-3 mb-[15px]">
-            <div
-              *ngFor="
-                let column of ['Days Published', 'Daily Average', 'Source']
-              "
-              class="font-lato text-pri-gray cell p-5"
-            >
-              {{ column }}:
-            </div>
-          </div>
-          <div class="grid grid-cols-3">
-            <p
-              class="px-6"
-              [ngClass]="value.valueClassName || []"
-              *ngFor="let value of circulationConfig"
-            >
-              {{ maven.circulation[value.id] }}
-            </p>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 

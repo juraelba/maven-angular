@@ -10,12 +10,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MediaProfileListService {
-  constructor(private http: HttpClient) {
-    const url = environment.api + `/lists`;
-    this.http.get(url).subscribe((res) => {
-      console.log(res);
-    });
-  }
+  constructor(private http: HttpClient) {}
 
   fetchMediaProfiles(mediaId: string): Observable<MediaItem[]> {
     const url = environment.api + `/lists/media/${mediaId}`;

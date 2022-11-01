@@ -133,7 +133,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     if (changes.data && !changes.data.firstChange) {
       this.rows = [...changes.data.currentValue.rows];
       this.columns = [...changes.data.currentValue.columns];
-      console.log('emmited change', this.rows);
 
       this.rowsChange.emit(this.rows);
       this.columnsChange.emit(this.columns);
