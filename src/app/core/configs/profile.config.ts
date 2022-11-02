@@ -183,9 +183,9 @@ const spotTVMavenAttributesFields: Field[][] = [
       valueContentClassName: ['ml-2'],
     },
     {
-      id: MediaProfileFields.licenseCountry,
-      path: MediaProfileFields.licenseCountry,
-      label: MediaProfileFieldsLabels.licenseCountry,
+      id: MediaProfileFields.licenseCounty,
+      path: MediaProfileFields.licenseCounty,
+      label: MediaProfileFieldsLabels.licenseCounty,
       valueContentClassName: ['ml-2'],
     },
     {
@@ -314,9 +314,9 @@ const spotRadioMavenAttributesFields: Field[][] = [
       valueContentClassName: ['ml-2'],
     },
     {
-      id: MediaProfileFields.licenseCountry,
-      path: MediaProfileFields.licenseCountry,
-      label: MediaProfileFieldsLabels.licenseCountry,
+      id: MediaProfileFields.licenseCounty,
+      path: MediaProfileFields.licenseCounty,
+      label: MediaProfileFieldsLabels.licenseCounty,
       valueContentClassName: ['ml-2'],
     },
     {
@@ -450,9 +450,9 @@ const outOfHomeMavenAttributesFields: Field[][] = [
       valueContentClassName: ['ml-2'],
     },
     {
-      id: MediaProfileFields.licenseCountry,
-      path: MediaProfileFields.licenseCountry,
-      label: MediaProfileFieldsLabels.licenseCountry,
+      id: MediaProfileFields.licenseCounty,
+      path: MediaProfileFields.licenseCounty,
+      label: MediaProfileFieldsLabels.licenseCounty,
       valueContentClassName: ['ml-2'],
     },
     {

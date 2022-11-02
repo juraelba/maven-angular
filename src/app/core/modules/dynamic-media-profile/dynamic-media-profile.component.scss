@@ -64,9 +64,18 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  column-gap: 20px;
 }
 
 .infogrid > * {
   flex-grow: 1;
-  flex-basis: 50%;
+  flex-basis: 45%;
+}
+
+.circulation-content {
+  font-family: "Lato";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
 }

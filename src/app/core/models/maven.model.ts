@@ -85,7 +85,7 @@ export interface Maven {
   frequency: string;
   fccid: string;
   licenseCityState: string;
-  licenseCountry: string;
+  licenseCounty: string;
   timeZone: string;
   power: string;
   coordinates: string;

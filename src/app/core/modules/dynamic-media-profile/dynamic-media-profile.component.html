@@ -48,8 +48,7 @@
                 [fill]="field.iconFill || ''"
               ></app-svg-icon>
               <div *ngIf="!field.icon" class="font-lato text-pri-gray">
-                {{ field.label }}
-                {{ labelwithNoColon(field.label) ? "" : ":" }}
+                {{ field.label + (labelwithNoColon(field.label) ? "" : ":") }}
               </div>
 
               <div
@@ -85,7 +84,7 @@
     <div class="maven-attributes__fields grid gap-[10px]">
       <div *ngFor="let columns of mavenAttributes">
         <ng-container *ngFor="let field of columns">
-          <ng-container *ngIf="field.value && field.value.length">
+          <ng-container *ngIf="field.value">
             <div class="flex flex-row" [ngClass]="field.className || []">
               <app-svg-icon
                 class=""
@@ -297,32 +296,31 @@
       class="flex justify-between"
       *ngIf="maven.circulation && maven.circulation.dailyCirculation"
     >
-      <div class="shadow-simple rounded-md w-full my-[20px] p-[20px]">
+      <div class="shadow-simple rounded-md w-full mb-[20px] p-[20px]">
         <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
           <div class="flex justify-between">
-            <div
-              class="font-mont font-semibold text-pri-black text-base mb-15px] px-2"
-            >
+            <div class="font-mont font-semibold text-pri-black text-base px-2">
               Circulation
             </div>
-            <div class="text-pri-gray font-lato">Effective Date:</div>
+            <div class="text-pri-gray font-lato font-normal text-sm">
+              Effective Date:
+            </div>
           </div>
 
-          <div>
+          <div class="p-2">
             <div class="header grid grid-cols-3 mb-[15px]">
               <div
                 *ngFor="
                   let column of ['Days Published', 'Daily Average', 'Source']
                 "
-                class="font-lato text-pri-gray cell p-5"
+                class="font-lato text-pri-gray cell font-normal text-sm"
               >
                 {{ column }}:
               </div>
             </div>
             <div class="grid grid-cols-3">
               <p
-                class="px-6"
-                [ngClass]="value.valueClassName || []"
+                class="circulation-content"
                 *ngFor="let value of circulationConfig"
               >
                 {{ maven.circulation[value.id] }}
@@ -335,7 +333,7 @@
   </div>
 
   <div
-    class="shadow-simple rounded-md min-w-fit p-[20px]"
+    class="shadow-simple rounded-md min-w-fit mb-[20px] p-[20px]"
     *ngIf="personnelTableData && maven.people?.length"
   >
     <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
@@ -393,38 +391,39 @@
   </div>
 
   <div
-    class="shadow-simple rounded-md w-full my-[10px] pb-[20px]"
+    class="shadow-simple rounded-md w-full"
     *ngIf="maven.rates && maven.rates.rateCardYear"
   >
     <div class="flex justify-between">
-      <div
-        class="font-mont font-semibold text-pri-black text-base mb-15px] p-5"
-      >
+      <div class="font-mont font-semibold text-pri-black text-base pt-5 pl-5">
         Rates
       </div>
-      <div class="text-pri-gray font-lato p-5">Effective Date:</div>
+      <div class="text-pri-gray font-lato pt-5">Effective Date:</div>
     </div>
     <ng-container *ngIf="maven.rates">
-      <div class="grid grid-cols-7 mb-[15px]">
-        <ng-container *ngFor="let column of ratesColumns">
-          <div
-            *ngIf="maven.rates[column.id]"
-            class="font-lato text-pri-gray cell p-5"
-          >
-            {{ column.label }}:
-          </div>
-        </ng-container>
-      </div>
-      <div>
-        <div class="header grid grid-cols-7 mb-[15px]">
+      <div class="p-5">
+        <div class="grid grid-cols-7 mb-[15px]">
           <ng-container *ngFor="let column of ratesColumns">
             <div
               *ngIf="maven.rates[column.id]"
-              class="font-lato text-pri-black cell px-8"
+              class="font-lato text-pri-gray cell"
             >
-              {{ maven.rates[column.id] }}
+              {{ column.label }}:
             </div>
           </ng-container>
+        </div>
+        <div>
+          <div class="header grid grid-cols-7 mb-[15px]">
+            <ng-container *ngFor="let column of ratesColumns">
+              <div
+                *ngIf="maven.rates[column.id]"
+                class="font-lato text-pri-black font-normal text-sm cell"
+              >
+                {{ appendUnit(column.id) }}
+                {{ maven.rates[column.id] }}
+              </div>
+            </ng-container>
+          </div>
         </div>
       </div>
     </ng-container>

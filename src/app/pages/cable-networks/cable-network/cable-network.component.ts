@@ -63,7 +63,7 @@ const mockMaven: Maven = {
   frequency: '770',
   fccid: '70658',
   licenseCityState: 'New York, NY',
-  licenseCountry: 'New York, NY',
+  licenseCounty: 'New York, NY',
   timeZone: 'Eastern',
   power: '50, 000 Watts',
   coordinates: "40 52' 50'' N74 4' 11'' W",

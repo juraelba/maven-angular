@@ -155,4 +155,12 @@ export class DynamicMediaProfileComponent implements OnInit {
   toMeters(feet: string) {
     return Math.round(Number(feet) * 0.3048);
   }
+
+  appendUnit(key: string) {
+    let cashStat = ['dailyColorPremium'];
+    if (cashStat.includes(key)) {
+      return '$';
+    }
+    return '';
+  }
 }
