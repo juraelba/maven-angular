@@ -183,6 +183,11 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
               rows: this.tableData.rows,
               columns: this.tableData.columns,
             };
+
+            this.searchService.resultsBeforeSorting[this.searchScreenKey] = {
+              rows: this.tableData.rows,
+              columns: this.tableData.columns,
+            };
           }
         },
         error: () => {

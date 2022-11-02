@@ -77,6 +77,7 @@ export class SearchService {
   selectedDropdown: Subject<string> = new Subject();
   searchBarEvents$ = this.subject$.asObservable();
   searchResults: { [key: string]: Table } = {};
+  resultsBeforeSorting: { [key: string]: Table } = {};
   sortedColumn: BehaviorSubject<any[]> = new BehaviorSubject([
     '',
     SortMethodsEnum.none,

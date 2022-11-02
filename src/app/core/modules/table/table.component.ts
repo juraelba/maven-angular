@@ -40,6 +40,9 @@ import { FilterOperatorEnum } from '@enums/filters.enum';
 import { UtilsService } from '@services/utils/utils.service';
 import { SearchService } from '@services/search/search.service';
 import { ListsService } from '@services/lists/lists.service';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
+import { Router } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 interface Group {
   [key: string]: SelectOption[] | null;
@@ -104,22 +107,30 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     offsetY: 20,
   };
   draggableElement: EventTarget | null;
+  searchScreenKey: SearchMediaProfileTitleKey;
+  unsubscribeAll: Subject<null> = new Subject();
 
   constructor(
     private utilsService: UtilsService,
     private searchService: SearchService,
     private listsService: ListsService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.searchScreenKey = this.router.url.split(
+      '/'
+    )[1] as SearchMediaProfileTitleKey;
     this.rows = [...this.data.rows];
 
     this.columns = [...this.data.columns];
 
-    this.searchService.sortedColumn.subscribe((s) => {
-      this.sortedColumn = s as [string, SortMethods];
-    });
+    this.searchService.sortedColumn
+      .pipe(takeUntil(this.unsubscribeAll))
+      .subscribe((s) => {
+        this.sortedColumn = s as [string, SortMethods];
+      });
 
     this.columns.map((col, i) => {
       if (this.isColumnPinned(i)) {
@@ -259,7 +270,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
           mapedFilters
         );
       } else {
-        this.rows = [...this.data.rows];
+        this.rows =
+          this.searchService.resultsBeforeSorting[this.searchScreenKey].rows;
       }
     } else {
       this.rows = this.utilsService.sortByAlphabeticalOrder<Row>(
@@ -645,5 +657,10 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   rowClick(event: MouseEvent, row: Row): void {
     event.stopPropagation();
     this.onRowClick.emit(row);
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeAll.next(null);
+    this.unsubscribeAll.complete();
   }
 }

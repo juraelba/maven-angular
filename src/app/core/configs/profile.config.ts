@@ -128,7 +128,7 @@ const spotTVMavenAttributesFields: Field[][] = [
       path: MediaProfileFields.categories,
       label: MediaProfileFieldsLabels.categories,
       valueContentClassName: [
-        'bg-[#E4F2FF] text-[#4087F3] rounded-xl py-0.5 px-2 w-fit',
+        'bg-[#E4F2FF] h-[24px]  text-[#4087F3] rounded-xl py-0.5 px-2 w-fit',
       ],
     },
     {
