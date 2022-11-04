@@ -3,7 +3,11 @@ import { Subject } from 'rxjs';
 import { map, takeUntil, filter } from 'rxjs/operators';
 
 import { Criteries } from '@models/criteries.model';
-import { SearchKey, SearchFiledChangeEvent, SearchMediaProfileTitleKey } from '@models/search.model';
+import {
+  SearchKey,
+  SearchFiledChangeEvent,
+  SearchMediaProfileTitleKey,
+} from '@models/search.model';
 import { ListUrlsKey } from '@models/list.model';
 
 import { SearchEnum } from '@enums/search.enum';
@@ -17,7 +21,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-broadcast-networks',
   templateUrl: './broadcast-networks.component.html',
-  styleUrls: ['./broadcast-networks.component.scss']
+  styleUrls: ['./broadcast-networks.component.scss'],
 })
 export class BroadcastNetworksComponent implements OnInit {
   criteries: Criteries = this.selectedCriteriaService.criteries ?? {};
@@ -31,11 +35,14 @@ export class BroadcastNetworksComponent implements OnInit {
   constructor(
     private selectedCriteriaService: SelectedCriteriaService,
     private searchService: SearchService,
-    private router: Router,
-  ) { }
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
-    this.searchScreenKey = this.router.url.split('/')[1] as SearchMediaProfileTitleKey;
+    this.searchScreenKey = this.router.url.split(
+      '/'
+    )[1] as SearchMediaProfileTitleKey;
+
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
@@ -70,7 +77,7 @@ export class BroadcastNetworksComponent implements OnInit {
         filter(({ action }) => SearchActionTypesEnum.NEW_SEARCH === action)
       )
       .subscribe(() => {
-        this.criteries = {}
+        this.criteries = {};
       });
   }
 }

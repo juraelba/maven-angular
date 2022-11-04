@@ -6,7 +6,11 @@ import { Criteries } from '@models/criteries.model';
 import { SearchKey, SearchFiledChangeEvent } from '@models/search.model';
 import { ListUrlsKey } from '@models/list.model';
 
-import { SearchEnum, SearchActionTypesEnum, SearchFiedlsEnum } from '@enums/search.enum';
+import {
+  SearchEnum,
+  SearchActionTypesEnum,
+  SearchFiedlsEnum,
+} from '@enums/search.enum';
 import { ListKeys } from '@enums/lists.enum';
 
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
@@ -19,15 +23,16 @@ import { SearchService } from '@services/search/search.service';
 })
 export class SpotTvComponent implements OnInit, OnDestroy {
   key: SearchKey = SearchEnum['spot-tv'];
-  criteries: Criteries = this.selectedCriteriaService.criteries?.[this.key] ?? {};
+  criteries: Criteries =
+    this.selectedCriteriaService.criteries?.[this.key] ?? {};
 
   ownerListUrlKey: ListUrlsKey = ListKeys.owners11;
 
   unsubscribeAll: Subject<null> = new Subject();
   constructor(
     private selectedCriteriaService: SelectedCriteriaService,
-    private searchService: SearchService,
-  ) { }
+    private searchService: SearchService
+  ) {}
 
   ngOnInit(): void {
     this.selectedCriteriaService.selectedCriteria$
@@ -37,7 +42,8 @@ export class SpotTvComponent implements OnInit, OnDestroy {
       )
       .subscribe((data: Criteries) => {
         this.criteries = {
-          [SearchFiedlsEnum.nonComms]: this.criteries[SearchFiedlsEnum.nonComms],
+          [SearchFiedlsEnum.nonComms]:
+            this.criteries[SearchFiedlsEnum.nonComms],
           ...data,
         };
       });
@@ -57,7 +63,7 @@ export class SpotTvComponent implements OnInit, OnDestroy {
         filter(({ action }) => SearchActionTypesEnum.NEW_SEARCH === action)
       )
       .subscribe(() => {
-        this.criteries = {}
+        this.criteries = {};
       });
   }
 

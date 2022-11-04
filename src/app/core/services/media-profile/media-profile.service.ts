@@ -8,17 +8,14 @@ import { Maven } from '@models/maven.model';
 import { SearchEnum } from '@enums/search.enum';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MediaProfileService {
-
-  constructor(
-    private http: HttpClient
-  ) { }
+  constructor(private http: HttpClient) {}
 
   fetchMediaProfile(key: SearchEnum, id: string): Observable<Maven> {
-    const url = environment.api + `/${ key }/${ id }`;
+    const url = environment.api + `/${key}/${id}`;
 
-    return this.http.get<Maven>(url)
+    return this.http.get<Maven>(url);
   }
 }

@@ -99,9 +99,18 @@
                 "
               >
                 <a
+                  *ngIf="searchScreenKey !== 'media-search'"
                   [ngStyle]="getCellStyles(column.id)"
                   class="line-clamp-2 w-full cursor-default"
                   [routerLink]="[link]"
+                >
+                  {{ row.data[column.id] }}
+                </a>
+                <a
+                  *ngIf="searchScreenKey === 'media-search'"
+                  [ngStyle]="getCellStyles(column.id)"
+                  class="line-clamp-2 w-full cursor-default"
+                  (click)="toProfile(row)"
                 >
                   {{ row.data[column.id] }}
                 </a>

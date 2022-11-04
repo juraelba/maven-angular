@@ -60,10 +60,6 @@ export class BroadcastNetworkComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.searchScreenKey = this.router.url.split(
-      '/'
-    )[1] as SearchMediaProfileTitleKey;
-
     this.activatedRoute.data.subscribe((data) => {
       this.maven = data.mediaProfile as Maven;
       this.profileConfig.mainInformationFields.forEach((_, index) => {

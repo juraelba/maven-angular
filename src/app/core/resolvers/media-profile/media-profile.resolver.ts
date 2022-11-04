@@ -12,6 +12,7 @@ import { MediaProfileService } from '@services/media-profile/media-profile.servi
 
 import { SearchEnum } from '@enums/search.enum';
 import { Maven } from '@models/maven.model';
+import { SearchService } from '@services/search/search.service';
 
 @Injectable({
   providedIn: 'root',
@@ -19,7 +20,8 @@ import { Maven } from '@models/maven.model';
 export class MediaProfileResolver implements Resolve<Maven> {
   constructor(
     private mediaProfileService: MediaProfileService,
-    private location: Location
+    private location: Location,
+    private searchService: SearchService
   ) {}
 
   resolve(
@@ -29,6 +31,14 @@ export class MediaProfileResolver implements Resolve<Maven> {
     const id = route.paramMap.get('id') as string;
 
     let searchScreenKey = this.location.path().split('/')[1] as SearchEnum;
+    const isMediaPage = this.location.path().split('/')[1] === 'media-search';
+    const isTextSearch = this.searchService.isTextSearch.value;
+
+    if (isMediaPage) {
+      searchScreenKey = this.searchService.getKeyByValue(
+        this.searchService.currentMediaType.value
+      ) as SearchEnum;
+    }
 
     return this.mediaProfileService.fetchMediaProfile(searchScreenKey, id);
   }

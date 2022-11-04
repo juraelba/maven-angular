@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import {
   Component,
   EventEmitter,
@@ -63,7 +64,7 @@ export class DynamicMediaProfileComponent implements OnInit {
   circulationConfig = CIRCULATION_CONFIG;
   showAllCategoryBubbles = false;
   numberOfCaegoriesToShow = 2;
-  constructor(private router: Router) {}
+  constructor(private router: Router, private _location: Location) {}
 
   ngOnInit(): void {
     this.searchScreenKey = this.router.url.split(
@@ -78,7 +79,8 @@ export class DynamicMediaProfileComponent implements OnInit {
   }
 
   backToSearch(event: any): void {
-    this.router.navigate([this.searchScreenKey]);
+    // this.router.navigate([this.searchScreenKey]);
+    this._location.back();
   }
 
   onRowClick(row: Row): void {

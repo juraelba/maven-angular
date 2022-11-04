@@ -307,6 +307,9 @@
             </div>
             <div class="text-pri-gray font-lato font-normal text-sm">
               Effective Date:
+              <span class="text-pri-black">{{
+                maven.circulation.circulationDate | date
+              }}</span>
             </div>
           </div>
 
@@ -401,7 +404,10 @@
       <div class="font-mont font-semibold text-pri-black text-base pt-5 pl-5">
         Rates
       </div>
-      <div class="text-pri-gray font-lato pt-5">Effective Date:</div>
+      <div class="text-pri-gray font-lato pt-5 mr-3">
+        Effective Date:
+        <span class="text-pri-black">{{ maven.rates.rateCardYear }}</span>
+      </div>
     </div>
     <ng-container *ngIf="maven.rates">
       <div class="p-5">

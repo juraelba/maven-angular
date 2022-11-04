@@ -5,6 +5,7 @@ import {
   Inject,
   OnDestroy,
   AfterViewInit,
+  HostListener,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -23,6 +24,7 @@ import {
   SearchActionTypesEnum,
   SearchExcelFileNamesEnum,
   SearchEnum,
+  SearchMediaProfileEnumTitles,
 } from '@enums/search.enum';
 
 import { SearchService } from '@services/search/search.service';
@@ -31,6 +33,7 @@ import { ExcelService } from '@services/excel/excel.service';
 import { SEARCH_COLUMNS_CONFIG } from '../../data/constants';
 import { TABLE_COLUMNS } from '../../data/table-columns-config';
 import { CALL_HISTORY_MOCK } from '../../data/mock';
+import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
 
 @Component({
   selector: 'app-search',
@@ -61,7 +64,8 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
     private excelService: ExcelService,
     @Inject(DOCUMENT) private document: Document,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private criteriesService: SelectedCriteriaService
   ) {}
 
   ngOnInit(): void {
@@ -136,9 +140,8 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  onSearchButtonClick(event: MouseEvent): void {
+  onSearchButtonClick(event: MouseEvent | KeyboardEvent): void {
     event.stopPropagation();
-
     this.isFetching = true;
     this.isFetched = false;
     this.totalRows = 0;
@@ -176,18 +179,31 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
           this.tableColumnsInView = [...this.tableData.columns];
           this.tableStyles = this.getTableStyles();
 
-          this.isFetching = false;
-          this.isFetched = true;
-          if (this.tableData.rows.length > 0) {
-            this.searchService.searchResults[this.searchScreenKey] = {
-              rows: this.tableData.rows,
-              columns: this.tableData.columns,
-            };
+          if (this.tableData.rows.length > 1) {
+            this.isFetching = false;
+            this.isFetched = true;
+            this.setSearchResults();
+          }
 
-            this.searchService.resultsBeforeSorting[this.searchScreenKey] = {
-              rows: this.tableData.rows,
-              columns: this.tableData.columns,
-            };
+          if (this.tableData.rows.length === 0) {
+            this.isFetching = false;
+            this.isFetched = true;
+          }
+
+          if (this.tableData.rows.length === 1) {
+            this.setSearchResults();
+            const res = this.tableData.rows[0];
+            const mediaPath = this.searchService.getKeyByValue(res.data.type);
+            this.searchService.isTextSearch.next(true);
+            this.searchService.currentMediaType.next(res.data.type);
+            this.router.navigate([
+              `${mediaPath || this.searchScreenKey}/${res.id}`,
+            ]);
+
+            this.isFetching = false;
+            this.isFetched = true;
+
+            this.criteriesService.clearCriteries();
           }
         },
         error: () => {
@@ -259,6 +275,38 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onRowClick(row: Row): void {
-    this.router.navigate([row.id], { relativeTo: this.route });
+    let path = location.pathname.split('/')[1];
+
+    if (path === 'media-search') {
+      this.router.navigate([
+        `${
+          this.searchService.getKeyByValue(row.data.type) ||
+          this.searchScreenKey
+        }/${row.id}`,
+      ]);
+    } else {
+      this.router.navigate([row.id], { relativeTo: this.route });
+    }
+  }
+
+  setSearchResults(): void {
+    this.searchService.searchResults[this.searchScreenKey] = {
+      rows: this.tableData.rows,
+      columns: this.tableData.columns,
+    };
+
+    this.searchService.resultsBeforeSorting[this.searchScreenKey] = {
+      rows: this.tableData.rows,
+      columns: this.tableData.columns,
+    };
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (event.key === 'Enter') {
+      if (this.criteries.name?.trim().length > 0) {
+        this.onSearchButtonClick(event);
+      }
+    }
   }
 }

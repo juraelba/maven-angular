@@ -10,7 +10,6 @@ export enum SearchEnum {
   'digital' = 'digital',
   'magazine' = 'magazine',
   'newspaper' = 'newspaper',
-  'broadcast-networks' = 'network-tv',
   'outdoor' = 'outdoor',
   'diverse' = 'diverse',
   'callHistory' = 'callHistory',
@@ -142,12 +141,23 @@ export enum SearchEnumTitles {
 }
 
 export enum SearchMediaProfileEnumTitles {
+  'media-search' = 'Media Search',
   'spot-radio' = 'Spot Radio',
   'spot-tv' = 'Spot TV',
-  'broadcast-networks' = 'Broadcast Networks',
   'cable-networks' = 'Cable Networks',
-  'outdoor' = 'Out of Home',
+  'outdoor' = 'Out Of Home',
   'newspapers' = 'Newspaper',
   'digital' = 'Digital',
   'network-tv' = 'Broadcast Networks',
+}
+
+export enum MediaMapEnum {
+  'media-search' = 'Media Search',
+  'spot-radio' = 'Spot Radio',
+  'spot-tv' = 'Spot TV',
+  'cable-networks' = 'Cable Networks',
+  'outdoor' = 'Out-of-Home',
+  'newspapers' = 'Newspaper',
+  'digital' = 'Digital',
+  'network-tv' = 'Network TV',
 }

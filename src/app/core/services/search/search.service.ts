@@ -38,6 +38,8 @@ import {
   SearchFiedlsEnum,
   SearchColumnsEnum,
   SearchActionTypesEnum,
+  SearchMediaProfileEnumTitles,
+  MediaMapEnum,
 } from '@enums/search.enum';
 
 import {
@@ -82,6 +84,8 @@ export class SearchService {
     '',
     SortMethodsEnum.none,
   ]);
+  currentMediaType: BehaviorSubject<string> = new BehaviorSubject('');
+  isTextSearch: BehaviorSubject<any> = new BehaviorSubject(false);
   constructor(private http: HttpClient) {}
 
   newSearch(): void {
@@ -498,5 +502,15 @@ export class SearchService {
       ),
       toPairs
     )(filters);
+  }
+
+  getKeyByValue(value: string) {
+    const indexOfS = Object.values(MediaMapEnum).indexOf(
+      value as unknown as MediaMapEnum
+    );
+
+    const key = Object.keys(MediaMapEnum)[indexOfS];
+
+    return key;
   }
 }

@@ -36,7 +36,7 @@
     >
     </app-spinner>
 
-    <div *ngIf="isFetched && this.tableData.rows.length">
+    <div *ngIf="isFetched && this.tableData.rows.length > 1">
       <div class="flex justify-between mb-[20px]">
         <span class="text-pri-gray font-lato">Results: {{ totalRows }}</span>
         <button

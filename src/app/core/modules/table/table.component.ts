@@ -214,7 +214,12 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     if (row.data.type === 'magazine') {
       parentUrl = 'magazines';
     }
-    return parentUrl ? `/${parentUrl}/${row.data[id]}` : row.data[id];
+
+    if (location.pathname.split('/')[1] === 'media-search') {
+      return `/${this.searchService.getKeyByValue(row.data.type)}/${row.id}`;
+    } else {
+      return parentUrl ? `/${parentUrl}/${row.data[id]}` : row.data[id];
+    }
   }
 
   isColumnLinkExternal(columnId: string): boolean {
@@ -662,5 +667,13 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnDestroy(): void {
     this.unsubscribeAll.next(null);
     this.unsubscribeAll.complete();
+  }
+
+  toProfile(row: Row): void {
+    this.searchService.currentMediaType.next(row.data.type);
+
+    this.router.navigate([
+      `/${this.searchService.getKeyByValue(row.data.type)}/${row.id}`,
+    ]);
   }
 }

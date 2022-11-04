@@ -1,10 +1,19 @@
-import { Component, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  OnDestroy,
+} from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil, filter, map } from 'rxjs/operators';
 
 import { SearchFiedlsEnum, SearchActionTypesEnum } from '@enums/search.enum';
 
-import { CriteriesChangesEvent, SelectedCriteriaEvent } from '@models/criteries.model';
+import {
+  CriteriesChangesEvent,
+  SelectedCriteriaEvent,
+} from '@models/criteries.model';
 
 import { SearchService } from '@services/search/search.service';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
@@ -12,10 +21,11 @@ import { SelectedCriteriaService } from '@services/selected-criteria/selected-cr
 @Component({
   selector: 'app-name-input',
   templateUrl: './name-input.component.html',
-  styleUrls: ['./name-input.component.scss']
+  styleUrls: ['./name-input.component.scss'],
 })
 export class NameInputComponent implements OnInit, OnDestroy {
-  @Output() changeData: EventEmitter<CriteriesChangesEvent> = new EventEmitter();
+  @Output() changeData: EventEmitter<CriteriesChangesEvent> =
+    new EventEmitter();
 
   unsubscribeAll: Subject<null> = new Subject();
   value: string = '';
@@ -23,7 +33,7 @@ export class NameInputComponent implements OnInit, OnDestroy {
   constructor(
     private searchService: SearchService,
     private selectedCriteriaService: SelectedCriteriaService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.searchService.searchBarEvents$
@@ -37,14 +47,16 @@ export class NameInputComponent implements OnInit, OnDestroy {
         this.changeData.emit({ key: SearchFiedlsEnum.name, data: '' });
       });
 
-      this.listenSelectedCriteriaDialogEvent();
+    this.listenSelectedCriteriaDialogEvent();
   }
 
   listenSelectedCriteriaDialogEvent(): void {
     this.selectedCriteriaService.selectedCriteria$
       .pipe(
         takeUntil(this.unsubscribeAll),
-        filter(({ data }: SelectedCriteriaEvent) => SearchFiedlsEnum.name in data),
+        filter(
+          ({ data }: SelectedCriteriaEvent) => SearchFiedlsEnum.name in data
+        ),
         map(({ data }: SelectedCriteriaEvent) => data[SearchFiedlsEnum.name])
       )
       .subscribe((value: string) => {
