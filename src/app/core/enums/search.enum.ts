@@ -149,6 +149,7 @@ export enum SearchMediaProfileEnumTitles {
   'newspapers' = 'Newspaper',
   'digital' = 'Digital',
   'network-tv' = 'Broadcast Networks',
+  'magazines' = 'Magazine',
 }
 
 export enum MediaMapEnum {
@@ -160,4 +161,5 @@ export enum MediaMapEnum {
   'newspapers' = 'Newspaper',
   'digital' = 'Digital',
   'network-tv' = 'Network TV',
+  'magazines' = 'Magazine',
 }

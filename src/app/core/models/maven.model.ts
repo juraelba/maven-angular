@@ -105,6 +105,15 @@ export interface Maven {
   stations?: any[];
   rates?: any;
   circulation?: Circulation;
+  circulationDate?: string;
+  circulationSource?: string;
+  paidCirculation?: number;
+  totalCirculation?: number;
+  geoRuns?: boolean;
+  splitRuns?: boolean;
+  issueCount?: number;
+  trimSize?: string;
+  nonPaidCirculation?: number;
 }
 
 interface Circulation {

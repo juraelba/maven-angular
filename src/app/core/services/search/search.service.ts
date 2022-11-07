@@ -90,6 +90,7 @@ export class SearchService {
 
   newSearch(): void {
     this.subject$.next({ action: SearchActionTypesEnum.NEW_SEARCH });
+    this.sortedColumn.next(['', SortMethodsEnum.none]);
   }
 
   createSearch(

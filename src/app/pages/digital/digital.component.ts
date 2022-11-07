@@ -16,11 +16,12 @@ import { SearchService } from '@services/search/search.service';
 @Component({
   selector: 'app-digital',
   templateUrl: './digital.component.html',
-  styleUrls: ['./digital.component.scss']
+  styleUrls: ['./digital.component.scss'],
 })
 export class DigitalComponent implements OnInit {
   key: SearchKey = SearchEnum['digital'];
-  criteries: Criteries = this.selectedCriteriaService.criteries?.[this.key] ?? {};
+  criteries: Criteries =
+    this.selectedCriteriaService.criteries?.[this.key] ?? {};
   unsubscribeAll: Subject<null> = new Subject();
 
   owners1ListUrlKey: ListUrlsKey = ListKeys.owners1;
@@ -29,7 +30,7 @@ export class DigitalComponent implements OnInit {
   constructor(
     private selectedCriteriaService: SelectedCriteriaService,
     private searchService: SearchService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.selectedCriteriaService.selectedCriteria$
@@ -66,7 +67,7 @@ export class DigitalComponent implements OnInit {
         filter(({ action }) => SearchActionTypesEnum.NEW_SEARCH === action)
       )
       .subscribe(() => {
-        this.criteries = {}
+        this.criteries = {};
       });
   }
 }

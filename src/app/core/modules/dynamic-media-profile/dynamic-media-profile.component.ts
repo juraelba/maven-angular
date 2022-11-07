@@ -16,7 +16,6 @@ import { SearchMediaProfileEnumTitles } from '@enums/search.enum';
 import { Maven, MavenFile } from '@models/maven.model';
 import { SearchMediaProfileTitleKey } from '@models/search.model';
 import { Column, Row, Table } from '@models/table.model';
-import { CIRCULATION_CONFIG } from '../../configs/circulation.config';
 
 interface Field {
   id: MediaProfileFields;
@@ -55,13 +54,14 @@ export class DynamicMediaProfileComponent implements OnInit {
   @Input() stationTableData?: Table;
   @Input() callHistoryTableData?: Table;
   @Input() ratesColumns: Column[];
+  @Input() circulationConfig: any;
+  @Input() magazineCirculation: any;
   @Input() ratesData: any;
   @Input() tableStyles: { [key: string]: string } = { height: '500px' };
   @Output() opeList = new EventEmitter();
 
   tittle: string;
   searchScreenKey: SearchMediaProfileTitleKey;
-  circulationConfig = CIRCULATION_CONFIG;
   showAllCategoryBubbles = false;
   numberOfCaegoriesToShow = 2;
   constructor(private router: Router, private _location: Location) {}
@@ -160,7 +160,7 @@ export class DynamicMediaProfileComponent implements OnInit {
   }
 
   appendUnit(key: string) {
-    let cashStat = ['dailyColorPremium'];
+    let cashStat = ['dailyColorPremium', 'fullPage4CCost', 'fullPageBWCost'];
     if (cashStat.includes(key)) {
       return '$';
     }

@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 
 import { SideNavService } from '../../../core/services/side-nav.service';
 import { Menu, AccessibleMenu } from '../../../core/models/side-nav.model';
+import { SearchService } from '@services/search/search.service';
 import {
   ObjectType,
   Role,
@@ -14,6 +15,7 @@ import {
   ExpandCollapseStatusEnum,
   MultilevelMenuService,
 } from 'ng-material-multilevel-menu';
+import { SortMethodsEnum } from '@enums/sorting-options.enum';
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.component.html',
@@ -113,7 +115,7 @@ export class SideNavComponent implements OnInit, AfterViewInit {
             {
               name: 'magazine',
               label: 'Magazines',
-              route: '/magazine-search',
+              route: '/magazines',
               disabled: true,
               permissions: [ObjectType.Magazine],
             },
@@ -257,7 +259,8 @@ export class SideNavComponent implements OnInit, AfterViewInit {
   constructor(
     private sideNavService: SideNavService,
     private router: Router,
-    private mmls: MultilevelMenuService
+    private mmls: MultilevelMenuService,
+    private searchService: SearchService
   ) {}
 
   ngOnInit(): void {
@@ -283,8 +286,11 @@ export class SideNavComponent implements OnInit, AfterViewInit {
   selectedItem(menu: Menu) {
     let isSubRoute = location.pathname.split('/').length > 2;
     let isSubRouteOfMenu = location.pathname.includes(menu.route || '');
-
+    const path = location.pathname.split('/')[1];
     if (!(isSubRoute && isSubRouteOfMenu)) {
+      this.searchService.searchResults[path] =
+        this.searchService.resultsBeforeSorting[path];
+      this.searchService.sortedColumn.next(['', SortMethodsEnum.none]);
       this.router.navigate([menu.route]);
     }
   }

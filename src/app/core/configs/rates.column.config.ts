@@ -49,3 +49,23 @@ export const RATE_COLUMNS: Column[] = [
     width: 200,
   },
 ];
+
+export const MAGAZINE_RATES_COLUMNS: Column[] = [
+  {
+    id: 'rateCardYear',
+    label: 'Rate Year',
+    width: 200,
+  },
+
+  {
+    id: 'fullPage4CCost',
+    label: 'Full Page 4C',
+    width: 200,
+  },
+
+  {
+    id: 'fullPageBWCost',
+    label: 'Full Page BW',
+    width: 200,
+  },
+];

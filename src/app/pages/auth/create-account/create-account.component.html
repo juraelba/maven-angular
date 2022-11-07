@@ -1,60 +1,132 @@
 <!-- Create Account Form section -->
 <div *ngIf="!sentFormData">
-  <p class="text-xl font-medium leading-6 !mb-[30px] font-mont text-center text-pri-black">Create Account</p>
-  <p *ngIf="invalidMessage" class="text-sm font-lato text-warn-red !mb-[30px] text-center">{{invalidMessage}}</p>
+  <p
+    class="text-xl font-medium leading-6 !mb-[30px] font-mont text-center text-pri-black"
+  >
+    Create Account
+  </p>
+  <p
+    *ngIf="invalidMessage"
+    class="text-sm font-lato text-warn-red !mb-[30px] text-center"
+  >
+    {{ invalidMessage }}
+  </p>
   <form [formGroup]="dataForm" (ngSubmit)="signupFormSubmit()" novalidate>
     <div>
       <mat-form-field class="w-full" hideRequiredMarker>
-        <input matInput class="!font-lato" placeholder="Email" formControlName="email" type="email">
+        <input
+          matInput
+          class="!font-lato"
+          placeholder="Email"
+          formControlName="email"
+          type="email"
+        />
         <mat-error *ngIf="dataForm.controls['email'].hasError('required')">
           Email is required
         </mat-error>
         <mat-error
-          *ngIf="dataForm.controls['email'].hasError('email') && !dataForm.controls['email'].hasError('required')">
+          *ngIf="
+            dataForm.controls['email'].hasError('email') &&
+            !dataForm.controls['email'].hasError('required')
+          "
+        >
           Email is not valid
         </mat-error>
         <mat-error
-          *ngIf="dataForm.controls['email'].hasError('existingEmail') && !dataForm.controls['email'].hasError('required')">
+          *ngIf="
+            dataForm.controls['email'].hasError('existingEmail') &&
+            !dataForm.controls['email'].hasError('required')
+          "
+        >
           Email already exists
         </mat-error>
         <mat-error
-          *ngIf="dataForm.controls['email'].hasError('invalidDomain') && !dataForm.controls['email'].hasError('required')">
+          *ngIf="
+            dataForm.controls['email'].hasError('invalidDomain') &&
+            !dataForm.controls['email'].hasError('required')
+          "
+        >
           Email is not the invalid domain
         </mat-error>
       </mat-form-field>
     </div>
     <div>
       <mat-form-field class="w-full" hideRequiredMarker>
-        <input matInput placeholder="Password" formControlName="password" type="password" autocomplete="new-password">
+        <input
+          matInput
+          placeholder="Password"
+          formControlName="password"
+          type="password"
+          autocomplete="new-password"
+        />
         <mat-error *ngIf="dataForm.controls['password'].hasError('required')">
           Password is required
         </mat-error>
         <mat-error
-          *ngIf="!dataForm.controls['password'].hasError('required') && (dataForm.controls['password'].hasError('minlength') || dataForm.controls['password'].hasError('passwordNoNumber') || dataForm.controls['password'].hasError('passwordNoUpper'))">
+          *ngIf="
+            !dataForm.controls['password'].hasError('required') &&
+            (dataForm.controls['password'].hasError('minlength') ||
+              dataForm.controls['password'].hasError('passwordNoNumber') ||
+              dataForm.controls['password'].hasError('passwordNoUpper'))
+          "
+        >
           <div class="flex items-center">
-            <img class="mr-[5px] mb-1"
-              [src]="dataForm.controls['password'].hasError('minlength') ? '/assets/images/icons/validation/warnning.svg' : '/assets/images/icons/validation/checked.svg'"
-              alt="Not found :(">
+            <img
+              class="mr-[5px] mb-1"
+              [src]="
+                dataForm.controls['password'].hasError('minlength')
+                  ? '/assets/images/icons/validation/warnning.svg'
+                  : '/assets/images/icons/validation/checked.svg'
+              "
+              alt="Not found :("
+            />
             <span
-              [ngClass]="dataForm.controls['password'].hasError('minlength') ? 'text-warn-red' : 'text-check-green'">
+              [ngClass]="
+                dataForm.controls['password'].hasError('minlength')
+                  ? 'text-warn-red'
+                  : 'text-check-green'
+              "
+            >
               At least 8 characters
             </span>
           </div>
           <div class="flex items-center">
-            <img class="mr-[5px] mb-1"
-              [src]="dataForm.controls['password'].hasError('passwordNoNumber') ? '/assets/images/icons/validation/warnning.svg' : '/assets/images/icons/validation/checked.svg'"
-              alt="Not found :(">
+            <img
+              class="mr-[5px] mb-1"
+              [src]="
+                dataForm.controls['password'].hasError('passwordNoNumber')
+                  ? '/assets/images/icons/validation/warnning.svg'
+                  : '/assets/images/icons/validation/checked.svg'
+              "
+              alt="Not found :("
+            />
             <span
-              [ngClass]="dataForm.controls['password'].hasError('passwordNoNumber') ? 'text-warn-red' : 'text-check-green'">
+              [ngClass]="
+                dataForm.controls['password'].hasError('passwordNoNumber')
+                  ? 'text-warn-red'
+                  : 'text-check-green'
+              "
+            >
               At least 1 number
             </span>
           </div>
           <div class="flex items-center">
-            <img class="mr-[5px] mb-1"
-              [src]="dataForm.controls['password'].hasError('passwordNoUpper') ? '/assets/images/icons/validation/warnning.svg' : '/assets/images/icons/validation/checked.svg'"
-              alt="Not found :(">
+            <img
+              class="mr-[5px] mb-1"
+              [src]="
+                dataForm.controls['password'].hasError('passwordNoUpper')
+                  ? '/assets/images/icons/validation/warnning.svg'
+                  : '/assets/images/icons/validation/checked.svg'
+              "
+              alt="Not found :("
+            />
             <span
-              [ngClass]="dataForm.controls['password'].hasError('passwordNoUpper') ? 'text-warn-red' : 'text-check-green'">
+              [ngClass]="
+                dataForm.controls['password'].hasError('passwordNoUpper')
+                  ? 'text-warn-red'
+                  : 'text-check-green'
+              "
+            >
               At least 1 uppercase
             </span>
           </div>
@@ -63,7 +135,12 @@
     </div>
     <div>
       <mat-form-field class="w-full" hideRequiredMarker>
-        <input matInput placeholder="Name" formControlName="name" class="!font-lato">
+        <input
+          matInput
+          placeholder="Name"
+          formControlName="name"
+          class="!font-lato"
+        />
         <mat-error *ngIf="dataForm.controls['name'].hasError('required')">
           Name is required
         </mat-error>
@@ -71,7 +148,12 @@
     </div>
     <div>
       <mat-form-field class="w-full" hideRequiredMarker>
-        <input matInput placeholder="Title" formControlName="title" class="!font-lato">
+        <input
+          matInput
+          placeholder="Title"
+          formControlName="title"
+          class="!font-lato"
+        />
         <mat-error *ngIf="dataForm.controls['title'].hasError('required')">
           Title is required
         </mat-error>
@@ -79,7 +161,12 @@
     </div>
     <div>
       <mat-form-field class="w-full" hideRequiredMarker>
-        <input matInput placeholder="Office City" formControlName="office" class="!font-lato">
+        <input
+          matInput
+          placeholder="Office City"
+          formControlName="office"
+          class="!font-lato"
+        />
         <mat-error *ngIf="dataForm.controls['office'].hasError('required')">
           Office city is required
         </mat-error>
@@ -87,31 +174,42 @@
     </div>
     <div>
       <mat-form-field class="w-full" hideRequiredMarker>
-        <input matInput placeholder="Phone" formControlName="phone" class="!font-lato">
+        <input
+          matInput
+          placeholder="Phone"
+          formControlName="phone"
+          class="!font-lato"
+        />
         <mat-error *ngIf="dataForm.controls['phone'].hasError('required')">
           Phone is required
         </mat-error>
       </mat-form-field>
     </div>
     <div class="flex items-center mb-5">
-      <mat-checkbox formControlName="terms" color="primary">
-      </mat-checkbox>
+      <mat-checkbox formControlName="terms" color="primary"> </mat-checkbox>
       <div class="ml-2 font-lato">
-        <span class=" text-pri-black">I accept the &nbsp;</span>
-        <span class="text-regal-blue cursor-pointer" (click)="showTerms()">Terms of Use</span>
+        <span class="text-pri-black">I accept the &nbsp;</span>
+        <span class="text-regal-blue cursor-pointer" (click)="showTerms()"
+          >Terms of Use</span
+        >
       </div>
     </div>
     <div class="mb-10 w-full">
       <re-captcha (resolved)="recaptchaResolved($event)"></re-captcha>
     </div>
     <div class="text-center">
-      <button mat-raised-button type="submit" color="primary"
+      <button
+        mat-raised-button
+        type="submit"
+        color="primary"
         [disabled]="dataForm.pristine || dataForm.invalid || !checkReCaptcha"
-        class="text-base !mb-5 font-mont w-[106px]">
+        class="text-base !mb-5 font-mont w-[106px]"
+      >
         Submit
       </button>
-      <p class="text-light-gray font-lato">Already have an account?&nbsp;
-        <a routerLink="/login" class="text-regal-blue  cursor-pointer">Log In</a>
+      <p class="text-light-gray font-lato">
+        Already have an account?&nbsp;
+        <a routerLink="/login" class="text-regal-blue cursor-pointer">Log In</a>
       </p>
     </div>
   </form>
@@ -119,39 +217,77 @@
 
 <!-- Send Validation Code section -->
 <div *ngIf="sentFormData && !accountValidated">
-  <p class="text-xl font-medium leading-6 !mb-5 font-mont text-center text-pri-black">Create Account</p>
-  <p class="text-sm font-lato text-pri-black text-center !mb-[30px]">A message containing a verification code has been
-    sent to your email address. Please enter the verification code below.</p>
-  <p *ngIf="invalidMessage" class="text-lg font-lato text-warn-red !mb-[30px] text-center">{{invalidMessage}}</p>
+  <p
+    class="text-xl font-medium leading-6 !mb-5 font-mont text-center text-pri-black"
+  >
+    Create Account
+  </p>
+  <p class="text-sm font-lato text-pri-black text-center !mb-[30px]">
+    A message containing a verification code has been sent to your email
+    address. Please enter the verification code below.
+  </p>
+  <p
+    *ngIf="invalidMessage"
+    class="text-lg font-lato text-warn-red !mb-[30px] text-center"
+  >
+    {{ invalidMessage }}
+  </p>
   <form [formGroup]="codeForm" (ngSubmit)="verificationCodeSubmit()" novalidate>
     <div>
       <mat-form-field class="w-full" hideRequiredMarker>
-        <input matInput placeholder="Code" formControlName="code" class="!font-lato">
+        <input
+          matInput
+          placeholder="Code"
+          formControlName="code"
+          class="!font-lato"
+        />
         <mat-error *ngIf="codeForm.controls['code'].hasError('required')">
           Code is required
         </mat-error>
       </mat-form-field>
     </div>
     <div class="text-center">
-      <button mat-raised-button type="submit" color="primary"
-        [disabled]="codeForm.pristine || codeForm.invalid || attempts >= MAX_TRIES"
-        class="text-base !mb-5 font-mont w-[106px]">
+      <button
+        mat-raised-button
+        type="submit"
+        color="primary"
+        [disabled]="
+          codeForm.pristine || codeForm.invalid || attempts >= MAX_TRIES
+        "
+        class="text-base !mb-5 font-mont w-[106px]"
+      >
         Submit
       </button>
       <p class="text-light-gray font-lato">
-        <a class="text-regal-blue cursor-pointer" (click)="verificationCodeSendAgain()">Resend Code</a>
+        <a
+          class="text-regal-blue cursor-pointer"
+          (click)="verificationCodeSendAgain()"
+          >Resend Code</a
+        >
       </p>
     </div>
   </form>
 </div>
 
 <!-- Validation Successful section -->
-<div *ngIf="sentFormData && accountValidated" class="flex flex-col items-center">
-  <p class="text-xl font-medium leading-6 !mb-5 font-mont text-pri-black">Congratulations!</p>
-  <p class="text-sm font-lato text-pri-black !mb-[30px]">Your account has been validated.</p>
+<div
+  *ngIf="sentFormData && accountValidated"
+  class="flex flex-col items-center"
+>
+  <p class="text-xl font-medium leading-6 !mb-5 font-mont text-pri-black">
+    Congratulations!
+  </p>
+  <p class="text-sm font-lato text-pri-black !mb-[30px]">
+    Your account has been validated.
+  </p>
   <img src="/assets/images/account-validated.svg" class="w-16 h-16 mb-10" />
-  <button mat-raised-button type="buttom" color="primary" class="text-base !mb-10 font-mont w-[153px]"
-    (click)="startSearching()">
+  <button
+    mat-raised-button
+    type="buttom"
+    color="primary"
+    class="text-base !mb-10 font-mont w-[153px]"
+    (click)="startSearching()"
+  >
     Start Searching
   </button>
 </div>

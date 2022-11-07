@@ -62,7 +62,7 @@ const routes: Routes = [
           import('./pages/digital/digital.module').then((m) => m.DigitalModule),
       },
       {
-        path: 'magazine-search',
+        path: 'magazines',
         loadChildren: () =>
           import('./pages/magazine/magazine.module').then(
             (m) => m.MagazineModule

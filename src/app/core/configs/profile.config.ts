@@ -74,7 +74,7 @@ const mainInformationFields: Field[][] = [
       iconFill: '#797979',
       iconStroke: 'none',
       className: ['items-center'],
-      valueClassName: ['text-blue', 'cursor-pointer'],
+      valueClassName: ['text-[#3A63CC]', 'cursor-pointer', 'underline'],
     },
     {
       id: MediaProfileFields.email,
@@ -91,15 +91,13 @@ const mainInformationFields: Field[][] = [
       id: MediaProfileFields.owner,
       path: [MediaProfileFields.owner, 'name'],
       label: MediaProfileFieldsLabels.owner,
-      valueClassName: ['text-regal-blue'],
-      valueContentClassName: ['text-regal-blue'],
+      valueClassName: ['text-[#3A63CC]'],
     },
     {
       id: MediaProfileFields.parent,
       path: [MediaProfileFields.parent, 'name'],
       label: MediaProfileFieldsLabels.parent,
-      valueClassName: ['text-regal-blue'],
-      valueContentClassName: ['text-regal-blue'],
+      valueClassName: ['text-[#3A63CC]'],
     },
   ],
 ];

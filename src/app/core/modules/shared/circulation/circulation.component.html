@@ -1,0 +1,40 @@
+<div
+  class="flex justify-between"
+  *ngIf="
+    (circulation && circulation.dailyCirculation) || circulation.paidCirculation
+  "
+>
+  <div class="shadow-simple rounded-md w-full mb-[20px] p-[20px]">
+    <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
+      <div class="flex justify-between">
+        <div class="font-mont font-semibold text-pri-black text-base px-2">
+          Circulation
+        </div>
+        <div class="text-pri-gray font-lato font-normal text-sm">
+          Effective Date:
+          <span class="text-pri-black">{{
+            circulation.circulationDate | localeDate
+          }}</span>
+        </div>
+      </div>
+
+      <div class="p-2" *ngFor="let subArr of config; let i = index">
+        <div class="header grid grid-cols-4 mb-[15px]">
+          <div
+            *ngFor="let column of config[i]"
+            class="font-lato text-pri-gray cell font-normal text-sm"
+          >
+            {{ column.label }}:
+          </div>
+        </div>
+        <div class="grid grid-cols-4">
+          <p class="circulation-content" *ngFor="let value of config[i]">
+            {{ formatValue(value.id, circulation[value.id]) }}
+          </p>
+        </div>
+
+        <hr className="bg-red-300" *ngIf="config.length === 2 && i === 0" />
+      </div>
+    </div>
+  </div>
+</div>

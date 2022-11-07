@@ -295,47 +295,14 @@
       </ng-template>
     </div>
 
-    <div
-      class="flex justify-between"
-      *ngIf="maven.circulation && maven.circulation.dailyCirculation"
+    <ng-container
+      *ngIf="(maven.circulation && maven.circulation) || magazineCirculation"
     >
-      <div class="shadow-simple rounded-md w-full mb-[20px] p-[20px]">
-        <div class="font-mont font-semibold text-pri-black text-base mb-[20px]">
-          <div class="flex justify-between">
-            <div class="font-mont font-semibold text-pri-black text-base px-2">
-              Circulation
-            </div>
-            <div class="text-pri-gray font-lato font-normal text-sm">
-              Effective Date:
-              <span class="text-pri-black">{{
-                maven.circulation.circulationDate | localeDate
-              }}</span>
-            </div>
-          </div>
-
-          <div class="p-2">
-            <div class="header grid grid-cols-3 mb-[15px]">
-              <div
-                *ngFor="
-                  let column of ['Days Published', 'Daily Average', 'Source']
-                "
-                class="font-lato text-pri-gray cell font-normal text-sm"
-              >
-                {{ column }}:
-              </div>
-            </div>
-            <div class="grid grid-cols-3">
-              <p
-                class="circulation-content"
-                *ngFor="let value of circulationConfig"
-              >
-                {{ maven.circulation[value.id] }}
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+      <app-circulation
+        [config]="circulationConfig"
+        [circulation]="maven.circulation || magazineCirculation"
+      ></app-circulation>
+    </ng-container>
   </div>
 
   <div
@@ -407,7 +374,9 @@
       <div class="text-pri-gray font-lato pt-5 mr-3">
         Effective Date:
         <span class="text-pri-black">{{
-          maven.rates.rateCardYear | localeDate
+          maven.rates.rateEffectiveDate
+            ? (maven.rates.rateEffectiveDate | localeDate)
+            : (maven.rates.rateCardYear | localeDate)
         }}</span>
       </div>
     </div>
@@ -427,7 +396,7 @@
           <div class="header grid grid-cols-7 mb-[15px]">
             <ng-container *ngFor="let column of ratesColumns">
               <div
-                *ngIf="maven.rates[column.id]"
+                *ngIf="maven.rates[column.id] || ratesData[column.id]"
                 class="font-lato text-pri-black font-normal text-sm cell"
               >
                 {{ appendUnit(column.id) }}

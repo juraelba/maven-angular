@@ -6,21 +6,24 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialogModule } from '@angular/material/dialog';
-import { MultilevelMenuService, NgMaterialMultilevelMenuModule } from 'ng-material-multilevel-menu';
+import {
+  MultilevelMenuService,
+  NgMaterialMultilevelMenuModule,
+} from 'ng-material-multilevel-menu';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
   declarations: [],
-  imports: [
-    CommonModule,
-  ],
+  imports: [CommonModule],
   exports: [
     MatFormFieldModule,
     MatInputModule,
+    MatCheckboxModule,
     MatButtonModule,
     MatProgressSpinnerModule,
     MatDialogModule,
-    NgMaterialMultilevelMenuModule
+    NgMaterialMultilevelMenuModule,
   ],
-  providers: [MultilevelMenuService]
+  providers: [MultilevelMenuService],
 })
-export class MatModule { }
+export class MatModule {}

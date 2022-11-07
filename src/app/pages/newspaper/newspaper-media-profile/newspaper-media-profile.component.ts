@@ -10,6 +10,7 @@ import { MediaProfileListService } from '@services/media-profile-list/media-prof
 import { lensPath, lensProp, view } from 'ramda';
 import { Subject, takeUntil } from 'rxjs';
 import { CALL_HISTORY_COLUMNS } from 'src/app/core/configs/call-history.table.columns.config';
+import { NEWSPAPER_CIRCULATION_CONFIG } from 'src/app/core/configs/circulation.config';
 import { COLUMNS } from 'src/app/core/configs/list-table.columns.config';
 import { PERSONNEL_COLUMNS } from 'src/app/core/configs/personnel.table.config';
 import {
@@ -34,6 +35,7 @@ export class NewspaperMediaProfileComponent implements OnInit {
   diversityAttributes: Field[] = [];
   filesColumns: FileColumn[] = spotTvProfileConfig.filesColumnsConfig;
   ratesColumns = RATE_COLUMNS;
+  circulationConfig = NEWSPAPER_CIRCULATION_CONFIG;
   maven: Maven;
 
   personnelData: Table;

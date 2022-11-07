@@ -2,50 +2,56 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MediaProfileFields } from '@enums/media-profile.enum';
-import { SearchColumnsIdEnum } from '@enums/search.enum';
-import { SearchMediaProfileTitleKey } from '@models/search.model';
-
 import { Maven } from '@models/maven.model';
-import { Table, Column, Row } from '@models/table.model';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
+import { Column, Row, Table } from '@models/table.model';
 import { DynamicListComponent } from '@modules/dynamic-list/dynamic-list.component';
+import { MediaProfileListService } from '@services/media-profile-list/media-profile-list.service';
 import { lensPath, lensProp, view } from 'ramda';
 import { Subject, takeUntil } from 'rxjs';
+import { CALL_HISTORY_COLUMNS } from 'src/app/core/configs/call-history.table.columns.config';
+import { MAGAZINE_CIRCULATION_CONFIG } from 'src/app/core/configs/circulation.config';
 import { COLUMNS } from 'src/app/core/configs/list-table.columns.config';
+import { PERSONNEL_COLUMNS } from 'src/app/core/configs/personnel.table.config';
 import {
-  spotTvProfileConfig,
   Field,
+  FieldArrayItem,
   FileColumn,
   Formatter,
-  FieldArrayItem,
+  spotTvProfileConfig,
 } from 'src/app/core/configs/profile.config';
-import { PERSONNEL_COLUMNS } from 'src/app/core/configs/personnel.table.config';
-import { CALL_HISTORY_COLUMNS } from 'src/app/core/configs/call-history.table.columns.config';
-import { MediaProfileListService } from '@services/media-profile-list/media-profile-list.service';
+import {
+  MAGAZINE_RATES_COLUMNS,
+  RATE_COLUMNS,
+} from 'src/app/core/configs/rates.column.config';
 
 @Component({
-  selector: 'app-cable-network',
-  templateUrl: './cable-network.component.html',
-  styleUrls: ['./cable-network.component.scss'],
+  selector: 'app-magazine-profile',
+  templateUrl: './magazine-profile.component.html',
+  styleUrls: ['./magazine-profile.component.scss'],
 })
-export class CableNetworkComponent implements OnInit {
+export class MagazineProfileComponent implements OnInit {
   searchScreenKey: SearchMediaProfileTitleKey;
-
   profileConfig = spotTvProfileConfig;
   mainInformation: Field[][] = [];
   mavenAttributes: Field[][] = [];
   diversityAttributes: Field[] = [];
   filesColumns: FileColumn[] = spotTvProfileConfig.filesColumnsConfig;
+  ratesColumns = MAGAZINE_RATES_COLUMNS;
   maven: Maven;
+  magazineCirculationConfig: Column[][] = MAGAZINE_CIRCULATION_CONFIG;
   personnelData: Table;
-
   callHistoryData: Table;
-
-  // list table data
-  data: Table = { rows: [], columns: [] };
+  circulationData: Table;
+  ratesData: any;
+  magazineCirculation: any;
   tableStyles: { [key: string]: string } = {
     'min-height': '200px',
     overflow: 'auto',
   };
+
+  // list table data
+  data: Table = { rows: [], columns: [] };
   columns: Column[] = COLUMNS;
   dialogTableStyles: { [key: string]: string } = { height: '500px' };
 
@@ -64,6 +70,15 @@ export class CableNetworkComponent implements OnInit {
 
     this.activatedRoute.data.subscribe((data) => {
       this.maven = data.mediaProfile as Maven;
+      this.ratesData = {
+        rateCardYear: data.mediaProfile?.rateCardYear,
+        rateEffectiveDate: data.mediaProfile?.rateEffectiveDate,
+        fullPage4CCost: data.mediaProfile?.fullPage4CCost,
+        fullPageBWCost: data.mediaProfile?.fullPageBWCost,
+      };
+
+      this.maven.rates = this.ratesData;
+
       this.profileConfig.mainInformationFields.forEach((_, index) => {
         this.mainInformation[index] = this.updateFieldsWithValue(
           this.profileConfig.mainInformationFields[index],
@@ -103,6 +118,30 @@ export class CableNetworkComponent implements OnInit {
         };
       }
     });
+
+    if (this.maven.rates) {
+      const rates = this.maven.rates;
+      this.ratesData = {
+        rateCardYear: rates.rateCardYear,
+        colorPremium: rates.dailyColorPremium,
+        pageSize: rates.fullPageSize,
+        colomns: rates.columnCount,
+      };
+    }
+
+    if (this.maven.circulationDate && this.maven.paidCirculation) {
+      this.magazineCirculation = {
+        circulationDate: this.maven.circulationDate,
+        paidCirculation: this.maven.paidCirculation,
+        totalCirculation: this.maven.totalCirculation,
+        circulationSource: this.maven.circulationSource,
+        nonPaidCirculation: this.maven.nonPaidCirculation,
+        geoRuns: this.maven.geoRuns,
+        splitRuns: this.maven.splitRuns,
+        issueCount: this.maven.issueCount,
+        trimSize: this.maven.trimSize,
+      };
+    }
 
     this.activatedRoute.queryParamMap
       .pipe(takeUntil(this.unsubscribeAll))
@@ -157,7 +196,7 @@ export class CableNetworkComponent implements OnInit {
 
   openListDialog() {
     this.mediaProfileListService
-      .fetchMediaProfiles('' + 3)
+      .fetchMediaProfiles('' + 2)
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((data) => {
         const rows = data.map((data) => {
