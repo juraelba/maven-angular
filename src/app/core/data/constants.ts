@@ -30,6 +30,11 @@ export const SEARCH_COLUMNS_CONFIG: TableConfig = {
     cellStyles: LINK_DEFAULT_STYLE,
     cellLinkPath: { path: 'marketID', external: false, parentPath: '/market' },
   },
+  networks: {
+    cellStyles: LINK_DEFAULT_STYLE,
+    cellLinkPath: { path: 'network', external: false, parentPath: '/network' },
+  },
+
   owner: {
     cellStyles: LINK_STYLE,
     cellLinkPath: { path: 'ownerID', external: false, parentPath: '/owner' },

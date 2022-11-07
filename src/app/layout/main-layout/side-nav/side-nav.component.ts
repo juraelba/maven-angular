@@ -52,7 +52,7 @@ export class SideNavComponent implements OnInit, AfterViewInit {
             {
               name: 'network-cable',
               label: 'Cable Networks',
-              route: '/cable-networks',
+              route: '/network-cable',
               disabled: true,
               permissions: [ObjectType.NetworkCable],
             },

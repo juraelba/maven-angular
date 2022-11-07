@@ -43,7 +43,7 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'cable-networks',
+        path: 'network-cable',
         loadChildren: () =>
           import('./pages/cable-networks/cable-networks.module').then(
             (m) => m.CableNetworksModule

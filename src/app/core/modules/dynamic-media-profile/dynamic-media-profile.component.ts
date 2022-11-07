@@ -80,6 +80,7 @@ export class DynamicMediaProfileComponent implements OnInit {
 
   backToSearch(event: any): void {
     // this.router.navigate([this.searchScreenKey]);
+
     this._location.back();
   }
 

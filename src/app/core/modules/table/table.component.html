@@ -130,6 +130,7 @@
                 [ngStyle]="getCellStyles(column.id)"
                 class="line-clamp-2 w-full"
                 [ngClass]="column.color || ''"
+                (click)="rowClick($event, row)"
               >
                 {{ row.data[column.id] }}
               </div>

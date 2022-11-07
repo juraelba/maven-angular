@@ -155,7 +155,7 @@ export class DigitalMediaProfileComponent implements OnInit {
 
   openListDialog() {
     this.mediaProfileListService
-      .fetchMediaProfiles('' + 6)
+      .fetchMediaProfiles('' + 1)
       .pipe(takeUntil(this.unsubscribeAll))
       .subscribe((data) => {
         const rows = data.map((data) => {

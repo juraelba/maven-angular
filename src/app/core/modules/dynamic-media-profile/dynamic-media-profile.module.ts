@@ -5,19 +5,21 @@ import { InputModule } from '@modules/input/input.module';
 import { SearchModule } from '@modules/search/search.module';
 import { SvgIconModule } from '@modules/svg-icon/svg-icon.module';
 import { TableModule } from '@modules/table/table.module';
+import { PipeModule } from 'src/app/ui-kit/pipe/pipe.module';
 import { DynamicMediaProfileComponent } from './dynamic-media-profile.component';
 
 @NgModule({
-  declarations: [ DynamicMediaProfileComponent ],
-  imports: [ 
+  declarations: [DynamicMediaProfileComponent],
+  imports: [
     CommonModule,
     SearchModule,
     SvgIconModule,
     MatDialogModule,
     InputModule,
-    TableModule
+    TableModule,
+    PipeModule,
   ],
   providers: [],
-  exports: [ DynamicMediaProfileComponent ]
+  exports: [DynamicMediaProfileComponent],
 })
 export class DynamicMediaProfileModule {}
