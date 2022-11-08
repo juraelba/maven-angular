@@ -3,11 +3,14 @@ import * as R from 'ramda';
 
 import { SortMethodsEnum } from '@enums/sorting-options.enum';
 import { SortMethods } from '@models/sorting-options.models';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UtilsService {
+  routeNestCount$: BehaviorSubject<number> = new BehaviorSubject(1);
+
   constructor() {}
 
   sortByAlphabeticalOrder<Option>(

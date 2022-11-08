@@ -16,6 +16,7 @@ import { SearchMediaProfileEnumTitles } from '@enums/search.enum';
 import { Maven, MavenFile } from '@models/maven.model';
 import { SearchMediaProfileTitleKey } from '@models/search.model';
 import { Column, Row, Table } from '@models/table.model';
+import { UtilsService } from '@services/utils/utils.service';
 
 interface Field {
   id: MediaProfileFields;
@@ -64,7 +65,11 @@ export class DynamicMediaProfileComponent implements OnInit {
   searchScreenKey: SearchMediaProfileTitleKey;
   showAllCategoryBubbles = false;
   numberOfCaegoriesToShow = 2;
-  constructor(private router: Router, private _location: Location) {}
+  constructor(
+    private router: Router,
+    private _location: Location,
+    private utilsService: UtilsService
+  ) {}
 
   ngOnInit(): void {
     this.searchScreenKey = this.router.url.split(
@@ -81,7 +86,8 @@ export class DynamicMediaProfileComponent implements OnInit {
   backToSearch(event: any): void {
     // this.router.navigate([this.searchScreenKey]);
 
-    this._location.back();
+    this._location.historyGo(-this.utilsService.routeNestCount$.value);
+    this.utilsService.routeNestCount$.next(1);
   }
 
   onRowClick(row: Row): void {

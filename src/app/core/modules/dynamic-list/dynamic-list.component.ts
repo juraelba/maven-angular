@@ -52,6 +52,9 @@ export class DynamicListComponent implements OnInit {
       '/'
     )[1] as SearchMediaProfileTitleKey;
     this.router.navigate([searchScreenKey, row.data.mavenid]);
+    this.utilsService.routeNestCount$.next(
+      this.utilsService.routeNestCount$.value + 1
+    );
     this.closeDialog();
   }
 }

@@ -275,6 +275,7 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onRowClick(row: Row): void {
+    console.log('row has been clicked');
     let path = location.pathname.split('/')[1];
 
     if (path === 'media-search') {
@@ -285,6 +286,7 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
         }/${row.id}`,
       ]);
     } else {
+      console.log('row has been clidked ');
       this.router.navigate([row.id], { relativeTo: this.route });
     }
   }
