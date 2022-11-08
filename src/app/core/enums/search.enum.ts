@@ -162,4 +162,5 @@ export enum MediaMapEnum {
   'digital' = 'Digital',
   'network-tv' = 'Network TV',
   'magazines' = 'Magazine',
+  'national-audio' = 'National Audio',
 }

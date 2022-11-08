@@ -14,10 +14,12 @@ import { SpinnerModule } from './ui-kit/spinner/spinner.module';
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
 import { SideNavService } from './core/services/side-nav.service';
 import { DynamicListModule } from './core/modules/dynamic-list/dynamic-list.module';
+import { NationalAudioProfileComponent } from './pages/national-audio-profile/national-audio-profile.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    NationalAudioProfileComponent,
     ],
   imports: [
     BrowserModule,
