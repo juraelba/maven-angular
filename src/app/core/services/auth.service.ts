@@ -11,24 +11,24 @@ import { User, ChangePassword } from '../models/auth.model';
 import { ListsService } from './lists/lists.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   // user: UserWithProfile | null = null;
   // user$: BehaviorSubject<UserWithProfile | null> = new BehaviorSubject<UserWithProfile | null>(this.user);
-  isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject(this.isAuthenticated);
+  isAuthenticated$: BehaviorSubject<boolean> = new BehaviorSubject(
+    this.isAuthenticated
+  );
 
   headerOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   };
 
   constructor(
     private http: HttpClient,
     private router: Router,
     private listsService: ListsService
-  ) {
-  }
+  ) {}
 
   get accessToken(): string | null {
     return localStorage.getItem('accessToken');
@@ -46,15 +46,17 @@ export class AuthService {
 
   login(email: string, password: string): Observable<TokenResponse> {
     const url = environment.api + '/auth/login';
-    const encoded: string = btoa(email + "|" + password);
+    const encoded: string = btoa(email + '|' + password);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-        'Authorization': encoded
-      })
+        Authorization: encoded,
+      }),
     };
     return this.http.get<TokenResponse>(url, httpOptions).pipe(
-      tap(res => { if (res.status === "valid") this.authenticateUser(res.token) })
+      tap((res) => {
+        if (res.status === 'valid') this.authenticateUser(res.token);
+      })
     );
   }
 
@@ -80,7 +82,11 @@ export class AuthService {
 
   checkCreateAccountValidate(token: string): Observable<boolean> {
     const url = environment.api + '/auth/validate-account';
-    return this.http.put<boolean>(url, JSON.stringify(token), this.headerOptions);
+    return this.http.put<boolean>(
+      url,
+      JSON.stringify(token),
+      this.headerOptions
+    );
   }
 
   sendCreateAccountCode(email: string): Observable<string> {
@@ -105,14 +111,22 @@ export class AuthService {
   updatePassword(params: ChangePassword): Observable<string> {
     const url = environment.api + '/auth/change-password';
     // update password. return email to be used for login
-    return this.http.put<string>(url, JSON.stringify(params), this.headerOptions);
+    return this.http.put<string>(
+      url,
+      JSON.stringify(params),
+      this.headerOptions
+    );
   }
 
   // ReCAPTCHA Service
 
   recaptchaValidate(token: string): Observable<{}> {
     const url = environment.api + '/validate_captcha';
-    return this.http.post<string>(url, JSON.stringify(token), this.headerOptions);
+    return this.http.post<string>(
+      url,
+      JSON.stringify(token),
+      this.headerOptions
+    );
   }
 
   // Checking authentication service

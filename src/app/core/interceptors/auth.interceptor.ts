@@ -17,12 +17,10 @@ export class AuthInterceptor implements HttpInterceptor {
     request: HttpRequest<unknown>,
     next: HttpHandler
   ): Observable<HttpEvent<unknown>> {
-    console.log(request);
     return next.handle(request).pipe(
       catchError((err) => {
         if (err.status === 401 || err.status === 403) {
           const router = this.injector.get(Router);
-          console.log(err.status);
           router.navigate(['/login']);
         }
         return throwError(() => err);

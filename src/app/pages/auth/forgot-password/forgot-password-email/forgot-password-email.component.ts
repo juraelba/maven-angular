@@ -52,7 +52,6 @@ export class ForgotPasswordEmailComponent implements OnInit, OnDestroy {
   }
 
   async onEmailSubmit() {
-    console.log(this.emailFormControl.value);
     try {
       this.spinnerService.show();
       if (this.emailFormControl.value) {
