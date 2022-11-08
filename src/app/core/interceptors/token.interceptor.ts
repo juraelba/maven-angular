@@ -46,7 +46,10 @@ export class TokenInterceptor implements HttpInterceptor {
         request.url.includes('token-check') ||
         request.url.includes('validate-account') ||
         request.url.includes('new-account-code') ||
-        request.url.includes('change-password')
+        request.url.includes('change-password') ||
+        request.url.includes('users/is-dupe') ||
+        request.url.includes('domains/isvalid') ||
+        request.url.includes('users')
       )
     ) {
       this.authService.logout();
