@@ -21,6 +21,7 @@ import {
 import { PERSONNEL_COLUMNS } from 'src/app/core/configs/personnel.table.config';
 import { CALL_HISTORY_COLUMNS } from 'src/app/core/configs/call-history.table.columns.config';
 import { MediaProfileListService } from '@services/media-profile-list/media-profile-list.service';
+import { SearchService } from '@services/search/search.service';
 
 @Component({
   selector: 'app-cable-network',
@@ -54,7 +55,8 @@ export class CableNetworkComponent implements OnInit {
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
     private router: Router,
-    private mediaProfileListService: MediaProfileListService
+    private mediaProfileListService: MediaProfileListService,
+    private searchService: SearchService
   ) {}
 
   ngOnInit(): void {
@@ -156,33 +158,51 @@ export class CableNetworkComponent implements OnInit {
   }
 
   openListDialog() {
-    this.mediaProfileListService
-      .fetchMediaProfiles('' + 3)
-      .pipe(takeUntil(this.unsubscribeAll))
-      .subscribe((data) => {
-        const rows = data.map((data) => {
-          return {
-            id: data.typeID,
-            data: {
-              mavenid: data.mavenid,
-              name: data.name,
-              market: data.market,
-            },
-          };
-        });
-        this.data = {
-          rows,
-          columns: this.columns,
-        };
+    if (this.searchService.checkCache(this.searchScreenKey) === true) {
+      let list: Table = this.searchService.searchResults[this.searchScreenKey];
 
-        this.dialog.open(DynamicListComponent, {
-          width: '900px',
-          panelClass: 'profile',
-          data: {
-            data: this.data,
-            tableStyles: this.dialogTableStyles,
-          },
-        });
+      list = {
+        columns: list.columns.slice(0, 3),
+        rows: list.rows,
+      };
+
+      this.dialog.open(DynamicListComponent, {
+        width: '900px',
+        panelClass: 'profile',
+        data: {
+          data: list,
+          tableStyles: this.dialogTableStyles,
+        },
       });
+    } else {
+      this.mediaProfileListService
+        .fetchMediaProfiles('' + 9)
+        .pipe(takeUntil(this.unsubscribeAll))
+        .subscribe((data) => {
+          const rows = data.map((data) => {
+            return {
+              id: data.typeID,
+              data: {
+                mavenid: data.mavenid,
+                name: data.name,
+                market: data.market,
+              },
+            };
+          });
+          this.data = {
+            rows,
+            columns: this.columns,
+          };
+
+          this.dialog.open(DynamicListComponent, {
+            width: '900px',
+            panelClass: 'profile',
+            data: {
+              data: this.data,
+              tableStyles: this.dialogTableStyles,
+            },
+          });
+        });
+    }
   }
 }

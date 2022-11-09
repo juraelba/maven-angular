@@ -516,4 +516,8 @@ export class SearchService {
 
     return key;
   }
+
+  checkCache(searchQuery: string) {
+    return this.searchResults[searchQuery] !== undefined;
+  }
 }

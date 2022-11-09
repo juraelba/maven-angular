@@ -10,6 +10,7 @@ import { SearchMediaProfileTitleKey } from '@models/search.model';
 import { Row, Table, Column } from '@models/table.model';
 import { DynamicListComponent } from '@modules/dynamic-list/dynamic-list.component';
 import { MediaProfileListService } from '@services/media-profile-list/media-profile-list.service';
+import { SearchService } from '@services/search/search.service';
 import { lensPath, lensProp, view } from 'ramda';
 import { Subject, takeUntil } from 'rxjs';
 import { CALL_HISTORY_COLUMNS } from 'src/app/core/configs/call-history.table.columns.config';
@@ -56,7 +57,8 @@ export class BroadcastNetworkComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private mediaProfileListService: MediaProfileListService,
-    private http: HttpClient
+    private http: HttpClient,
+    private searchService: SearchService
   ) {}
 
   ngOnInit(): void {
@@ -144,33 +146,51 @@ export class BroadcastNetworkComponent implements OnInit {
   }
 
   openListDialog() {
-    this.mediaProfileListService
-      .fetchMediaProfiles('' + 11)
-      .pipe(takeUntil(this.unsubscribeAll))
-      .subscribe((data) => {
-        const rows = data.map((data) => {
-          return {
-            id: data.typeID,
-            data: {
-              mavenid: data.mavenid,
-              name: data.name,
-              market: data.market,
-            },
-          };
-        });
-        this.data = {
-          rows,
-          columns: this.columns,
-        };
+    if (this.searchService.checkCache(this.searchScreenKey) === true) {
+      let list: Table = this.searchService.searchResults[this.searchScreenKey];
 
-        this.dialog.open(DynamicListComponent, {
-          width: '900px',
-          panelClass: 'profile',
-          data: {
-            data: this.data,
-            tableStyles: this.dialogTableStyles,
-          },
-        });
+      list = {
+        columns: list.columns.slice(0, 11),
+        rows: list.rows,
+      };
+
+      this.dialog.open(DynamicListComponent, {
+        width: '900px',
+        panelClass: 'profile',
+        data: {
+          data: list,
+          tableStyles: this.dialogTableStyles,
+        },
       });
+    } else {
+      this.mediaProfileListService
+        .fetchMediaProfiles('' + 5)
+        .pipe(takeUntil(this.unsubscribeAll))
+        .subscribe((data) => {
+          const rows = data.map((data) => {
+            return {
+              id: data.typeID,
+              data: {
+                mavenid: data.mavenid,
+                name: data.name,
+                market: data.market,
+              },
+            };
+          });
+          this.data = {
+            rows,
+            columns: this.columns,
+          };
+
+          this.dialog.open(DynamicListComponent, {
+            width: '900px',
+            panelClass: 'profile',
+            data: {
+              data: this.data,
+              tableStyles: this.dialogTableStyles,
+            },
+          });
+        });
+    }
   }
 }

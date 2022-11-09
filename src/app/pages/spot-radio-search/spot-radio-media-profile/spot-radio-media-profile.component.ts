@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { lensPath, lensProp, view } from 'ramda';
 
 import { Maven } from '@models/maven.model';
@@ -20,6 +20,8 @@ import {
 } from 'src/app/core/configs/profile.config';
 import { PERSONNEL_COLUMNS } from 'src/app/core/configs/personnel.table.config';
 import { CALL_HISTORY_COLUMNS } from 'src/app/core/configs/call-history.table.columns.config';
+import { SearchService } from '@services/search/search.service';
+import { SearchMediaProfileTitleKey } from '@models/search.model';
 
 @Component({
   selector: 'app-spot-radio-media-profile',
@@ -45,16 +47,23 @@ export class SpotRadioMediaProfileComponent implements OnInit, OnDestroy {
   data: Table = { rows: [], columns: [] };
   columns: Column[] = COLUMNS;
   dialogTableStyles: { [key: string]: string } = { height: '500px' };
+  searchScreenKey: SearchMediaProfileTitleKey;
 
   private unsubscribeAll: Subject<null> = new Subject();
 
   constructor(
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private mediaProfileListService: MediaProfileListService
+    private mediaProfileListService: MediaProfileListService,
+    private searchService: SearchService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
+    this.searchScreenKey = this.router.url.split(
+      '/'
+    )[1] as SearchMediaProfileTitleKey;
+
     this.activatedRoute.data.subscribe((data) => {
       this.maven = data.mediaProfile as Maven;
       this.radioProfileConfig.mainInformationFields.forEach((_, index) => {
@@ -145,33 +154,51 @@ export class SpotRadioMediaProfileComponent implements OnInit, OnDestroy {
   }
 
   openListDialog() {
-    this.mediaProfileListService
-      .fetchMediaProfiles('' + 10)
-      .pipe(takeUntil(this.unsubscribeAll))
-      .subscribe((data) => {
-        const rows = data.map((data) => {
-          return {
-            id: data.typeID,
-            data: {
-              mavenid: data.mavenid,
-              name: data.name,
-              market: data.market,
-            },
-          };
-        });
-        this.data = {
-          rows,
-          columns: this.columns,
-        };
+    if (this.searchService.checkCache(this.searchScreenKey) === true) {
+      let list: Table = this.searchService.searchResults[this.searchScreenKey];
 
-        this.dialog.open(DynamicListComponent, {
-          width: '900px',
-          panelClass: 'profile',
-          data: {
-            data: this.data,
-            tableStyles: this.dialogTableStyles,
-          },
-        });
+      list = {
+        columns: list.columns.slice(0, 3),
+        rows: list.rows,
+      };
+
+      this.dialog.open(DynamicListComponent, {
+        width: '900px',
+        panelClass: 'profile',
+        data: {
+          data: list,
+          tableStyles: this.dialogTableStyles,
+        },
       });
+    } else {
+      this.mediaProfileListService
+        .fetchMediaProfiles('' + 10)
+        .pipe(takeUntil(this.unsubscribeAll))
+        .subscribe((data) => {
+          const rows = data.map((data) => {
+            return {
+              id: data.typeID,
+              data: {
+                mavenid: data.mavenid,
+                name: data.name,
+                market: data.market,
+              },
+            };
+          });
+          this.data = {
+            rows,
+            columns: this.columns,
+          };
+
+          this.dialog.open(DynamicListComponent, {
+            width: '900px',
+            panelClass: 'profile',
+            data: {
+              data: this.data,
+              tableStyles: this.dialogTableStyles,
+            },
+          });
+        });
+    }
   }
 }
