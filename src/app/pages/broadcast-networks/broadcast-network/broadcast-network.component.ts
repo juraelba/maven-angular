@@ -62,6 +62,9 @@ export class BroadcastNetworkComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.searchScreenKey = this.router.url.split(
+      '/'
+    )[1] as SearchMediaProfileTitleKey;
     this.activatedRoute.data.subscribe((data) => {
       this.maven = data.mediaProfile as Maven;
       this.profileConfig.mainInformationFields.forEach((_, index) => {
@@ -150,7 +153,7 @@ export class BroadcastNetworkComponent implements OnInit {
       let list: Table = this.searchService.searchResults[this.searchScreenKey];
 
       list = {
-        columns: list.columns.slice(0, 11),
+        columns: list.columns.slice(0, 3),
         rows: list.rows,
       };
 
@@ -163,6 +166,7 @@ export class BroadcastNetworkComponent implements OnInit {
         },
       });
     } else {
+      console.log('no cache for broadcast network', this.searchScreenKey);
       this.mediaProfileListService
         .fetchMediaProfiles('' + 5)
         .pipe(takeUntil(this.unsubscribeAll))
