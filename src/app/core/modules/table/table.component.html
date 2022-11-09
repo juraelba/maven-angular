@@ -6,7 +6,8 @@
 >
   <cdk-virtual-scroll-viewport
     itemSize="50"
-    class="overflow-auto"
+    class="overflow-auto hidescroll"
+    [ngClass]="{ hidden_scrollbar: data.rows.length < 4 }"
     [ngStyle]="tableStyles"
   >
     <div class="border-0">
