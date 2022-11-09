@@ -17,10 +17,7 @@ import { DynamicListModule } from './core/modules/dynamic-list/dynamic-list.modu
 import { NationalAudioProfileComponent } from './pages/national-audio-profile/national-audio-profile.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    NationalAudioProfileComponent,
-    ],
+  declarations: [AppComponent, NationalAudioProfileComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -35,8 +32,8 @@ import { NationalAudioProfileComponent } from './pages/national-audio-profile/na
   providers: [
     MultilevelMenuService,
     SideNavService,
-    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

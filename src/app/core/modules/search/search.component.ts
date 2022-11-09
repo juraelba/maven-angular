@@ -8,7 +8,12 @@ import {
   HostListener,
 } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
+import {
+  Router,
+  ActivatedRoute,
+  NavigationEnd,
+  NavigationStart,
+} from '@angular/router';
 import { Subject, of } from 'rxjs';
 import { switchMap, takeUntil, filter } from 'rxjs/operators';
 import { Criteries } from '@models/criteries.model';
@@ -56,6 +61,8 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
   isFetched: boolean = false;
   isFetching: boolean = false;
   tableStyles: { [key: string]: string } = {};
+  previousUrl: string;
+  currentUrl = this.router.url.split('/')[0];
 
   searchScreenKey: SearchMediaProfileTitleKey;
   private unsubscribeAll: Subject<null> = new Subject();
@@ -66,7 +73,14 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
     private route: ActivatedRoute,
     private router: Router,
     private criteriesService: SelectedCriteriaService
-  ) {}
+  ) {
+    router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+
+      .subscribe((e: any) => {
+        this.previousUrl = e.url;
+      });
+  }
 
   ngOnInit(): void {
     this.config = SEARCH_COLUMNS_CONFIG;
@@ -275,7 +289,6 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onRowClick(row: Row): void {
-    console.log('row has been clicked');
     let path = location.pathname.split('/')[1];
 
     if (path === 'media-search') {
@@ -286,7 +299,6 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
         }/${row.id}`,
       ]);
     } else {
-      console.log('row has been clidked ');
       this.router.navigate([row.id], { relativeTo: this.route });
     }
   }

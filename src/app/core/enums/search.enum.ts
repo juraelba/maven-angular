@@ -46,7 +46,7 @@ export const SearchFieldsLabelsEnum = {
 };
 
 export enum SearchColumnsEnum {
-  name = 'Station',
+  name = 'Name',
   mavenid = 'MAVENID',
   subType = 'Sub-Type',
   market = 'Market',
@@ -67,6 +67,8 @@ export enum SearchColumnsEnum {
   dma = 'DMA Market',
   format = 'Format',
   frequency = 'Frequency',
+  type = 'Type',
+  sort = 'Sort',
   dailyCirculation = 'Daily Circulation',
   dailyFullPageRate = 'Full Page BW',
   changeOn = 'Change On',
@@ -103,6 +105,8 @@ export enum SearchColumnsIdEnum {
   changeFrom = 'changeFrom',
   changeTo = 'changeTo',
   change = 'change',
+  type = 'type',
+  sort = 'sort',
 }
 
 export enum SearchActionTypesEnum {

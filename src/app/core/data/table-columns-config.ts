@@ -32,7 +32,26 @@ const DEFAULT_COLUMNS = [
 ];
 
 export const TABLE_COLUMNS: TableColumnsConfig = {
-  [SearchEnum.media]: [],
+  [SearchEnum.media]: [
+    { id: SearchColumnsIdEnum.name, label: SearchColumnsEnum.name },
+    { id: SearchColumnsIdEnum.mavenid, label: SearchColumnsEnum.mavenid },
+    { id: SearchColumnsIdEnum.type, label: SearchColumnsEnum.type },
+    { id: SearchColumnsIdEnum.subType, label: SearchColumnsEnum.subType },
+    { id: SearchColumnsIdEnum.market, label: SearchColumnsEnum.market },
+
+    { id: SearchColumnsIdEnum.owner, label: SearchColumnsEnum.owner },
+    { id: SearchColumnsIdEnum.parent, label: SearchColumnsEnum.parent },
+    { id: SearchColumnsIdEnum.website, label: SearchColumnsEnum.website },
+    { id: SearchColumnsIdEnum.partners, label: SearchColumnsEnum.partners },
+    { id: SearchColumnsIdEnum.sort, label: SearchColumnsEnum.sort },
+
+    {
+      id: SearchColumnsIdEnum.commercial,
+      label: SearchColumnsEnum.commercial,
+      predicator: (searchCriteria: SearchQuery) =>
+        Boolean(searchCriteria.criteria[SearchFiedlsEnum.nonComms]),
+    },
+  ],
   [SearchEnum['spot-tv']]: [
     { id: SearchColumnsIdEnum.name, label: SearchColumnsEnum.name },
     { id: SearchColumnsIdEnum.mavenid, label: SearchColumnsEnum.mavenid },

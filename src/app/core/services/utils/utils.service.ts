@@ -9,8 +9,6 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class UtilsService {
-  routeNestCount$: BehaviorSubject<number> = new BehaviorSubject(1);
-
   constructor() {}
 
   sortByAlphabeticalOrder<Option>(

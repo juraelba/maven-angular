@@ -288,7 +288,9 @@ export class SearchService {
 
     return columnIds.map((columnId) => ({
       id: columnId,
-      label: SearchColumnsEnum[columnId] || columnId,
+      label:
+        SearchColumnsEnum[columnId] ||
+        columnId.charAt(0).toUpperCase() + columnId.slice(1),
       width: 200,
       pinned: false,
     }));

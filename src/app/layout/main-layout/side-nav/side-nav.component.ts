@@ -16,6 +16,7 @@ import {
   MultilevelMenuService,
 } from 'ng-material-multilevel-menu';
 import { SortMethodsEnum } from '@enums/sorting-options.enum';
+import { UtilsService } from '@services/utils/utils.service';
 @Component({
   selector: 'app-side-nav',
   templateUrl: './side-nav.component.html',
@@ -260,7 +261,8 @@ export class SideNavComponent implements OnInit, AfterViewInit {
     private sideNavService: SideNavService,
     private router: Router,
     private mmls: MultilevelMenuService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private utilsService: UtilsService
   ) {}
 
   ngOnInit(): void {
