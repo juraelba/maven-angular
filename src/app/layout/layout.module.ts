@@ -6,6 +6,7 @@ import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { SideNavComponent } from './main-layout/side-nav/side-nav.component';
 import { TopNavComponent } from './main-layout/top-nav/top-nav.component';
 import { MatModule } from '../mat/mat.module';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,7 @@ import { MatModule } from '../mat/mat.module';
     SideNavComponent,
     TopNavComponent,
   ],
-  imports: [CommonModule, RouterModule, MatModule],
+  imports: [CommonModule, RouterModule, MatModule, MatProgressBarModule],
   exports: [AuthLayoutComponent, MainLayoutComponent],
 })
 export class LayoutModule {}

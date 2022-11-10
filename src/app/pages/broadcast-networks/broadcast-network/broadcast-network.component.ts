@@ -166,7 +166,6 @@ export class BroadcastNetworkComponent implements OnInit {
         },
       });
     } else {
-      console.log('no cache for broadcast network', this.searchScreenKey);
       this.mediaProfileListService
         .fetchMediaProfiles('' + 5)
         .pipe(takeUntil(this.unsubscribeAll))

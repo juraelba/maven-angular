@@ -286,7 +286,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       );
     }
 
-    // console.table(this.rows);
     this.rowsChange.emit(this.rows);
   }
 

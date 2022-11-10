@@ -1,17 +1,28 @@
 <div class="flex items-center py-4 px-10 bg-regal-blue shadow-simple">
-  <img class="mr-10" src="/assets/images/header-logo.svg" alt="Not found :(">
+  <img class="mr-10" src="/assets/images/header-logo.svg" alt="Not found :(" />
   <form class="w-1/4">
     <div class="relative flex items-center">
       <div class="absolute left-0 items-center pointer-events-none px-3">
-        <img src="/assets/images/icons/search.svg">
+        <img src="/assets/images/icons/search.svg" />
       </div>
-      <input type="search"
+      <input
+        type="search"
         class="block pl-9 pr-3 py-2 rounded-full text-sm focus:outline-none text-sm text-pri-black w-full"
-        placeholder="Search by publication, owner or media name">
+        placeholder="Search by publication, owner or media name"
+      />
     </div>
   </form>
   <div class="flex items-center ml-auto cursor-pointer" (click)="logout()">
-    <img src="/assets/images/icons/user.svg" class="w-4 h-4" alt="Not found :(">
+    <img
+      src="/assets/images/icons/user.svg"
+      class="w-4 h-4"
+      alt="Not found :("
+    />
     <p class="text-sm font-lato text-white !mb-0 !ml-[10px]">Log out</p>
   </div>
+</div>
+
+<div class="min-h-[4px] w-full">
+  <mat-progress-bar *ngIf="loading" color="primary" mode="indeterminate">
+  </mat-progress-bar>
 </div>
