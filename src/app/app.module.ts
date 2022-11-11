@@ -17,6 +17,7 @@ import { DynamicListModule } from './core/modules/dynamic-list/dynamic-list.modu
 import { NationalAudioProfileComponent } from './pages/national-audio-profile/national-audio-profile.component';
 import { CustomHttpInterceptor } from './core/interceptors/custom.interceptor';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { UrlService } from '@services/url.service';
 @NgModule({
   declarations: [AppComponent, NationalAudioProfileComponent],
   imports: [
@@ -35,11 +36,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
     MultilevelMenuService,
     SideNavService,
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: CustomHttpInterceptor,
-      multi: true,
-    },
+    UrlService,
   ],
   bootstrap: [AppComponent],
 })

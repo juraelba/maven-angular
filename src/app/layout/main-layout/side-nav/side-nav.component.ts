@@ -286,6 +286,7 @@ export class SideNavComponent implements OnInit, AfterViewInit {
   }
 
   selectedItem(menu: Menu) {
+    this.searchService.currentSearchPage.next(menu.route?.split('/')[1]);
     let isSubRoute = location.pathname.split('/').length > 2;
     let isSubRouteOfMenu = location.pathname.includes(menu.route || '');
     const path = location.pathname.split('/')[1];

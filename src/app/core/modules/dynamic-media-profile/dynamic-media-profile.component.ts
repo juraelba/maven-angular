@@ -7,7 +7,12 @@ import {
   Output,
   ViewEncapsulation,
 } from '@angular/core';
-import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  NavigationStart,
+  Router,
+} from '@angular/router';
 import {
   MediaProfileFields,
   MediaProfileFieldsLabels,
@@ -16,6 +21,7 @@ import { SearchMediaProfileEnumTitles } from '@enums/search.enum';
 import { Maven, MavenFile } from '@models/maven.model';
 import { SearchMediaProfileTitleKey } from '@models/search.model';
 import { Column, Row, Table } from '@models/table.model';
+import { SearchService } from '@services/search/search.service';
 interface Field {
   id: MediaProfileFields;
   label: MediaProfileFieldsLabels;
@@ -63,7 +69,7 @@ export class DynamicMediaProfileComponent implements OnInit {
   searchScreenKey: SearchMediaProfileTitleKey;
   showAllCategoryBubbles = false;
   numberOfCaegoriesToShow = 2;
-  constructor(private router: Router) {}
+  constructor(private router: Router, private searchService: SearchService) {}
 
   ngOnInit(): void {
     this.searchScreenKey = this.router.url.split(
@@ -78,7 +84,7 @@ export class DynamicMediaProfileComponent implements OnInit {
   }
 
   backToSearch(event: any): void {
-    this.router.navigate([this.searchScreenKey]);
+    this.searchService.backToSearch();
   }
 
   onRowClick(row: Row): void {

@@ -48,6 +48,7 @@ import {
 } from '../../data/table-columns-config';
 import { SortMethods } from '@models/sorting-options.models';
 import { SortMethodsEnum } from '@enums/sorting-options.enum';
+import { Router } from '@angular/router';
 
 interface SelectedCheckboxes {
   [key: string]: boolean;
@@ -86,7 +87,8 @@ export class SearchService {
   ]);
   currentMediaType: BehaviorSubject<string> = new BehaviorSubject('');
   isTextSearch: BehaviorSubject<any> = new BehaviorSubject(false);
-  constructor(private http: HttpClient) {}
+  currentSearchPage: BehaviorSubject<any> = new BehaviorSubject('media-search');
+  constructor(private http: HttpClient, private router: Router) {}
 
   newSearch(): void {
     this.subject$.next({ action: SearchActionTypesEnum.NEW_SEARCH });
@@ -519,5 +521,9 @@ export class SearchService {
 
   checkCache(searchQuery: string) {
     return this.searchResults[searchQuery] !== undefined;
+  }
+
+  backToSearch() {
+    this.router.navigate([this.currentSearchPage.value]);
   }
 }
