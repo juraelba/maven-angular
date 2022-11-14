@@ -5,8 +5,13 @@
   [search]="false"
   [borderLabel]="label"
   #selectComponent
+  [panelOpen]="panelOpen"
 >
-  <div #dropdownTemplate dropdownTemplate class="rounded-md shadow-simple rounded-md w-full bg-white pb-[10px]">
+  <div
+    #dropdownTemplate
+    dropdownTemplate
+    class="shadow-simple rounded-md w-full bg-white pb-[10px]"
+  >
     <div class="font-mont text-base p-[20px]">
       {{ label }}
     </div>
@@ -22,7 +27,7 @@
         <div
           class="mr-[10px] text-base text-regal-blue lex justify-center items-center rotate-45 scale-x-[-1]"
           [ngClass]="{
-            'invisible': !option.selected
+            invisible: !option.selected
           }"
         >
           L

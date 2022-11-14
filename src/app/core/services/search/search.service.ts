@@ -40,6 +40,7 @@ import {
   SearchActionTypesEnum,
   SearchMediaProfileEnumTitles,
   MediaMapEnum,
+  SearchFieldsLabelsEnum,
 } from '@enums/search.enum';
 
 import {
@@ -257,6 +258,7 @@ export class SearchService {
         this,
         SearchFiedlsEnum.addDirector
       ),
+
       default: this.transformOptions,
     };
 

@@ -39,6 +39,7 @@ import { SEARCH_COLUMNS_CONFIG } from '../../data/constants';
 import { TABLE_COLUMNS } from '../../data/table-columns-config';
 import { CALL_HISTORY_MOCK } from '../../data/mock';
 import { SelectedCriteriaService } from '@services/selected-criteria/selected-criteria.service';
+import { CallHistoryService } from '@services/call-history.service';
 
 @Component({
   selector: 'app-search',
@@ -72,7 +73,8 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
     @Inject(DOCUMENT) private document: Document,
     private route: ActivatedRoute,
     private router: Router,
-    private criteriesService: SelectedCriteriaService
+    private criteriesService: SelectedCriteriaService,
+    private callHistoryService: CallHistoryService
   ) {
     router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -165,72 +167,110 @@ export class SearchComponent implements OnInit, OnDestroy, AfterViewInit {
     this.tableColumnsInView = [...this.tableData.columns];
 
     if (this.key === SearchEnum.callHistory) {
-      this.setMockData();
+      // this.setMockData();
+
+      this.callHistoryService
+        .getCallHistory(this.searchScreenKey, this.criteries)
+        .subscribe({
+          next: (data: any) => {
+            this.totalRows = data?.length;
+            this.tableData =
+              this.searchService.transformSearchResultToTableData(
+                data,
+                'callHistory' as unknown as SearchQuery,
+                this.key
+              );
+
+            this.tableRowsInView = [...this.tableData.rows];
+            this.tableColumnsInView = [...this.tableData.columns];
+            this.tableStyles = this.getTableStyles();
+            this.isFetching = false;
+            this.isFetched = true;
+            this.searchService.resultsBeforeSorting[this.searchScreenKey] =
+              data;
+
+            this.searchService.searchResults[this.searchScreenKey] =
+              this.tableData;
+            this.searchService.resultsBeforeSorting[this.searchScreenKey] =
+              this.tableData;
+          },
+          error: (err) => {
+            this.totalRows = 0;
+            this.tableData = { rows: [], columns: [] };
+
+            this.tableRowsInView = [...this.tableData.rows];
+            this.tableColumnsInView = [...this.tableData.columns];
+
+            this.isFetching = false;
+            this.isFetched = true;
+          },
+        });
 
       return;
-    }
+    } else {
+      const searchQuery: SearchQuery =
+        this.searchService.transformCriteriasToSearchOptions(this.criteries);
 
-    const searchQuery: SearchQuery =
-      this.searchService.transformCriteriasToSearchOptions(this.criteries);
-
-    this.searchService
-      .createSearch(searchQuery, this.key)
-      .pipe(
-        switchMap(({ id }: CreateSearchResponse) =>
-          this.searchService.executeSearch(id)
+      this.searchService
+        .createSearch(searchQuery, this.key)
+        .pipe(
+          switchMap(({ id }: CreateSearchResponse) =>
+            this.searchService.executeSearch(id)
+          )
         )
-      )
-      .subscribe({
-        next: (data) => {
-          this.totalRows = data.length;
-          this.tableData = this.searchService.transformSearchResultToTableData(
-            data,
-            searchQuery,
-            this.key
-          );
+        .subscribe({
+          next: (data) => {
+            this.totalRows = data.length;
+            this.tableData =
+              this.searchService.transformSearchResultToTableData(
+                data,
+                searchQuery,
+                this.key
+              );
 
-          this.tableRowsInView = [...this.tableData.rows];
-          this.tableColumnsInView = [...this.tableData.columns];
-          this.tableStyles = this.getTableStyles();
+            this.tableRowsInView = [...this.tableData.rows];
+            this.tableColumnsInView = [...this.tableData.columns];
+            this.tableStyles = this.getTableStyles();
 
-          if (this.tableData.rows.length > 1) {
+            if (this.tableData.rows.length > 1) {
+              this.isFetching = false;
+              this.isFetched = true;
+              this.setSearchResults();
+            }
+
+            if (this.tableData.rows.length === 0) {
+              this.isFetching = false;
+              this.isFetched = true;
+            }
+
+            if (this.tableData.rows.length === 1) {
+              this.setSearchResults();
+              const res = this.tableData.rows[0];
+              const mediaPath = this.searchService.getKeyByValue(res.data.type);
+              this.searchService.isTextSearch.next(true);
+              this.searchService.currentMediaType.next(res.data.type);
+              this.router.navigate([
+                `${mediaPath || this.searchScreenKey}/${res.id}`,
+              ]);
+
+              this.isFetching = false;
+              this.isFetched = true;
+
+              this.criteriesService.clearCriteries();
+            }
+          },
+          error: (err) => {
+            this.totalRows = 0;
+            this.tableData = { rows: [], columns: [] };
+
+            this.tableRowsInView = [...this.tableData.rows];
+            this.tableColumnsInView = [...this.tableData.columns];
+
             this.isFetching = false;
             this.isFetched = true;
-            this.setSearchResults();
-          }
-
-          if (this.tableData.rows.length === 0) {
-            this.isFetching = false;
-            this.isFetched = true;
-          }
-
-          if (this.tableData.rows.length === 1) {
-            this.setSearchResults();
-            const res = this.tableData.rows[0];
-            const mediaPath = this.searchService.getKeyByValue(res.data.type);
-            this.searchService.isTextSearch.next(true);
-            this.searchService.currentMediaType.next(res.data.type);
-            this.router.navigate([
-              `${mediaPath || this.searchScreenKey}/${res.id}`,
-            ]);
-
-            this.isFetching = false;
-            this.isFetched = true;
-
-            this.criteriesService.clearCriteries();
-          }
-        },
-        error: () => {
-          this.totalRows = 0;
-          this.tableData = { rows: [], columns: [] };
-
-          this.tableRowsInView = [...this.tableData.rows];
-          this.tableColumnsInView = [...this.tableData.columns];
-
-          this.isFetching = false;
-          this.isFetched = true;
-        },
-      });
+          },
+        });
+    }
   }
 
   exportToExcel(event: MouseEvent): void {

@@ -20,7 +20,7 @@ import { ColumnFilterComponent } from './column-filter/column-filter.component';
 import { FilterComponent } from './filter/filter.component';
 import { ResizerComponent } from './resizer/resizer.component';
 import { RouterModule } from '@angular/router';
-
+import { PipeModule } from 'src/app/ui-kit/pipe/pipe.module';
 
 @NgModule({
   declarations: [
@@ -28,7 +28,7 @@ import { RouterModule } from '@angular/router';
     ColumnAutoFilterComponent,
     ColumnFilterComponent,
     FilterComponent,
-    ResizerComponent
+    ResizerComponent,
   ],
   imports: [
     CommonModule,
@@ -41,13 +41,10 @@ import { RouterModule } from '@angular/router';
     SelectModule,
     InputModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PipeModule,
   ],
-  providers: [
-    UtilsService
-  ],
-  exports: [
-    TableComponent
-  ]
+  providers: [UtilsService],
+  exports: [TableComponent],
 })
-export class TableModule { }
+export class TableModule {}

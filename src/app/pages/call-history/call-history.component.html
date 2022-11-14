@@ -6,7 +6,9 @@
   [columnFilterVisible]="false"
   [exportAvailable]="false"
 >
-  <div class="flex border-b border-b-1 border-gray mb-[15px] font-lato text-pri-black">
+  <div
+    class="flex border-b border-b-1 border-gray mb-[15px] font-lato text-pri-black"
+  >
     <div
       *ngFor="let tab of tabs"
       (click)="setActiveTab($event, tab)"
@@ -14,6 +16,11 @@
       [ngClass]="{ 'border-b-2 border-regal-blue': tab.selected }"
     >
       {{ tab.label }}
+    </div>
+    <div class="flex w-full justify-center">
+      <p class="px-[15px] py-[5px] text-xl">
+        Finding call history by {{ mapLabel(selectedFilter) }}
+      </p>
     </div>
   </div>
 
@@ -27,6 +34,8 @@
       *ngIf="criteries.callLetterHistory === 'callLetter'"
       [placeholder]="'Call Letter'"
       [styleType]="styleTypes.secondary"
+      [value]="callLetter"
+      (inputChange)="onInputChange($event)"
     >
     </app-input>
 

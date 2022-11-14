@@ -8,56 +8,62 @@ import { SearchKey, SearchFiledChangeEvent } from '@models/search.model';
 import { SelectOption } from '@models/select.model';
 
 import { SearchEnum } from '@enums/search.enum';
-import { SearchActionTypesEnum, SearchFiedlsEnum, SearchEnumTitles } from '@enums/search.enum';
+import {
+  SearchActionTypesEnum,
+  SearchFiedlsEnum,
+  SearchEnumTitles,
+} from '@enums/search.enum';
 import { StyleTypesEnum } from '@enums/styles.enum';
 
 import { SearchService } from '@services/search/search.service';
+import { CallHistoryService } from '@services/call-history.service';
 
 enum HeaderLabels {
   radio = 'Radio',
-  tv = 'TV'
-};
+  tv = 'TV',
+}
 
 enum HeaderValues {
   radio = 'radio',
-  tv = 'tv'
-};
+  tv = 'tv',
+}
 
 interface Tab {
-  value: HeaderValues,
-  label: HeaderLabels,
-  selected: boolean
-};
+  value: HeaderValues;
+  label: HeaderLabels;
+  selected: boolean;
+}
 
 const defaultCriteries = {
   [SearchFiedlsEnum.startDate]: null,
   [SearchFiedlsEnum.endDate]: null,
   [SearchFiedlsEnum.callLetterHistory]: 'date',
-  [SearchFiedlsEnum.callLetter]: ''
+  [SearchFiedlsEnum.callLetter]: '',
 };
 
 @Component({
   selector: 'app-call-history',
   templateUrl: './call-history.component.html',
-  styleUrls: ['./call-history.component.scss']
+  styleUrls: ['./call-history.component.scss'],
 })
 export class CallHistoryComponent implements OnInit {
   criteries: Criteries = { ...defaultCriteries };
-
+  selectedFilter = 'Date';
+  callLetter: string = '';
   key: SearchKey = SearchEnum.callHistory;
-  title: SearchEnumTitles = SearchEnumTitles.callHistory
+  title: SearchEnumTitles = SearchEnumTitles.callHistory;
   unsubscribeAll: Subject<null> = new Subject();
 
   tabs: Tab[] = [
     {
       value: HeaderValues.radio,
       label: HeaderLabels.radio,
-      selected: true
+      selected: true,
     },
     {
       value: HeaderValues.tv,
       label: HeaderLabels.tv,
-      selected: false
+      selected: false,
     },
   ];
 
@@ -66,31 +72,32 @@ export class CallHistoryComponent implements OnInit {
       id: 'date',
       value: 'date',
       label: 'Date',
-      selected: true
+      selected: true,
     },
     {
       id: 'callLetter',
       value: 'callLetter',
       label: 'Call Letter',
-      selected: false
+      selected: false,
     },
   ];
 
   styleTypes = StyleTypesEnum;
 
   constructor(
-    private searchService: SearchService
-  ) { }
+    private searchService: SearchService,
+    private callHistoryService: CallHistoryService
+  ) {}
 
   ngOnInit(): void {
     this.listenSearchBarMenuActions();
   }
 
   ngOnDestroy(): void {
-      this.unsubscribeAll.next(null);
-      this.unsubscribeAll.complete();
+    this.unsubscribeAll.next(null);
+    this.unsubscribeAll.complete();
   }
-  
+
   onChange({ key, data }: SearchFiledChangeEvent): void {
     this.criteries[key] = data;
   }
@@ -103,7 +110,10 @@ export class CallHistoryComponent implements OnInit {
       )
       .subscribe(() => {
         this.criteries = { ...defaultCriteries };
-        this.options = this.options.map((option) => ({ ...option, selected: option.value === 'date' }));
+        this.options = this.options.map((option) => ({
+          ...option,
+          selected: option.value === 'date',
+        }));
       });
   }
 
@@ -116,16 +126,44 @@ export class CallHistoryComponent implements OnInit {
 
     const activeTab = this.tabs.find(({ selected }) => selected);
 
-    if(activeTab && activeTab.value !== selectedTab.value) {
+    if (activeTab && activeTab.value !== selectedTab.value) {
       this.searchService.newSearch();
     }
 
-    this.tabs = this.tabs.map((tab) => ({ ...tab, selected: selectedTab.value === tab.value }));
+    this.tabs = this.tabs.map((tab) => ({
+      ...tab,
+      selected: selectedTab.value === tab.value,
+    }));
+
+    if (selectedTab.value === HeaderValues.radio) {
+      this.callHistoryService.activeMeidaType.next(10);
+    }
+
+    if (selectedTab.value === HeaderValues.tv) {
+      this.callHistoryService.activeMeidaType.next(11);
+    }
   }
 
   onOptionSelect({ value }: SelectOption): void {
-    this.options = this.options.map((option) => ({ ...option, selected: option.value === value }));
-  
+    this.selectedFilter = value;
+    this.options = this.options.map((option) => ({
+      ...option,
+      selected: option.value === value,
+    }));
+
     this.criteries[SearchFiedlsEnum.callLetterHistory] = value;
+  }
+
+  onInputChange(value: string): void {
+    this.callLetter = value;
+    this.criteries[SearchFiedlsEnum.callLetter] = value;
+  }
+
+  mapLabel(label: string): string {
+    if (label === 'callLetter') {
+      return 'Call Letter';
+    }
+
+    return 'Date';
   }
 }

@@ -133,7 +133,11 @@
                 [ngClass]="column.color || ''"
                 (click)="rowClick($event, row)"
               >
-                {{ row.data[column.id] }}
+                {{
+                  isDateColumn(column)
+                    ? (row.data[column.id] | localeDate)
+                    : row.data[column.id]
+                }}
               </div>
             </ng-template>
           </div>

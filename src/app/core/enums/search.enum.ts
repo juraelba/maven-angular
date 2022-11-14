@@ -101,9 +101,9 @@ export enum SearchColumnsIdEnum {
   frequency = 'frequency',
   dailyCirculation = 'dailyCirculation',
   dailyFullPageRate = 'dailyFullPageRate',
-  changeOn = 'changeOn',
-  changeFrom = 'changeFrom',
-  changeTo = 'changeTo',
+  changeOn = 'on',
+  changeFrom = 'from',
+  changeTo = 'to',
   change = 'change',
   type = 'type',
   sort = 'sort',
@@ -154,6 +154,7 @@ export enum SearchMediaProfileEnumTitles {
   'digital' = 'Digital',
   'network-tv' = 'Broadcast Networks',
   'magazines' = 'Magazine',
+  'call-history' = 'call-history',
 }
 
 export enum MediaMapEnum {
@@ -167,4 +168,5 @@ export enum MediaMapEnum {
   'network-tv' = 'Network TV',
   'magazines' = 'Magazine',
   'national-audio' = 'National Audio',
+  'call-history' = 'call-history',
 }

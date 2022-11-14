@@ -11,12 +11,10 @@ import { SelectModule } from '@modules/select/select.module';
 import { InputModule } from '@modules/input/input.module';
 
 import { DirectivesModule } from '@directives/directives.module';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    CallHistoryComponent,
-    CallHistorySelectComponent
-  ],
+  declarations: [CallHistoryComponent, CallHistorySelectComponent],
   imports: [
     CommonModule,
     CallHistoryRoutingModule,
@@ -24,7 +22,8 @@ import { DirectivesModule } from '@directives/directives.module';
     DatepickerModule,
     SelectModule,
     InputModule,
-    DirectivesModule
+    DirectivesModule,
+    FormsModule,
   ],
 })
-export class CallHistoryModule { }
+export class CallHistoryModule {}

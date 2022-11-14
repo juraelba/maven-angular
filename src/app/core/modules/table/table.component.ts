@@ -675,4 +675,10 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
       `/${this.searchService.getKeyByValue(row.data.type)}/${row.id}`,
     ]);
   }
+
+  isDateColumn(column: Column): boolean {
+    const dates = ['on'];
+
+    return dates.includes(column.id);
+  }
 }

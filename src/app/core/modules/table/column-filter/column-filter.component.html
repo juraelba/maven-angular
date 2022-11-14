@@ -7,7 +7,6 @@
   [panelOpen]="panelOpen"
   (applyChanges)="onApplyChanges($event)"
   (clear)="onClear()"
-  (closeMenu)="onMenuClose()"
   #selectComponent
   class="mt-[20px]"
 >
@@ -75,8 +74,8 @@
     <div
       class="flex justify-between items-center my-[20px] cursor-pointer text-black text-base font-medium font-mont sticky"
     >
-      <span>{{ column.label }}</span>
-      <div class="flex">
+      <span class="px-4 py-2">{{ column.label }} </span>
+      <div class="flex m-3">
         <img
           (click)="onPinColumn($event, column)"
           class="mr-[10px] cursor-pointer"

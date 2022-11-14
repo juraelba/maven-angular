@@ -36,7 +36,12 @@
     >
     </app-spinner>
 
-    <div *ngIf="isFetched && this.tableData.rows.length > 1">
+    <div
+      *ngIf="
+        (isFetched && this.tableData.rows.length > 1) ||
+        (searchScreenKey === 'call-history' && tableData.rows.length)
+      "
+    >
       <div class="flex justify-between mb-[20px]">
         <span class="text-pri-gray font-lato">Results: {{ totalRows }}</span>
         <button

@@ -9,7 +9,7 @@ import { TEXT_FILTERS } from '../../../data/constants';
 @Component({
   selector: 'app-column-filter',
   templateUrl: './column-filter.component.html',
-  styleUrls: ['./column-filter.component.scss']
+  styleUrls: ['./column-filter.component.scss'],
 })
 export class ColumnFilterComponent implements OnInit {
   @Input() column: Column;
@@ -19,8 +19,14 @@ export class ColumnFilterComponent implements OnInit {
 
   @Output() openFilter: EventEmitter<string> = new EventEmitter();
   @Output() closeFilter: EventEmitter<undefined> = new EventEmitter();
-  @Output() textFilterSelect: EventEmitter<{ column: Column, textFilter: TextFilter }> = new EventEmitter();
-  @Output() columnFilterChange: EventEmitter<{ id: string, options: SelectOption[] }> = new EventEmitter();
+  @Output() textFilterSelect: EventEmitter<{
+    column: Column;
+    textFilter: TextFilter;
+  }> = new EventEmitter();
+  @Output() columnFilterChange: EventEmitter<{
+    id: string;
+    options: SelectOption[];
+  }> = new EventEmitter();
   @Output() clearColumnFilter: EventEmitter<string> = new EventEmitter();
   @Output() pinColumn: EventEmitter<Column> = new EventEmitter();
   @Output() hideColumn: EventEmitter<Column> = new EventEmitter();
@@ -40,15 +46,15 @@ export class ColumnFilterComponent implements OnInit {
       overlayY: 'top',
       originX: 'start',
       originY: 'bottom',
-    }
+    },
   ];
 
   textFilters: TextFilter[] = TEXT_FILTERS;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
-    this.filterDataOptions = [...this.rowFilterData || []];
+    this.filterDataOptions = [...(this.rowFilterData || [])];
   }
 
   onApplyChanges(options: SelectOption[]) {
@@ -62,7 +68,7 @@ export class ColumnFilterComponent implements OnInit {
   toggleColumnFilter(event: MouseEvent): void {
     event.stopPropagation();
 
-    this.openFilter.emit(this.column.id)
+    this.openFilter.emit(this.column.id);
   }
 
   toggleTextFilterOverlay(): void {
@@ -71,7 +77,7 @@ export class ColumnFilterComponent implements OnInit {
 
   onMenuClose(): void {
     this.closeFilter.emit();
-    this.isTextFilterOverlayVisible = false;
+    // this.isTextFilterOverlayVisible = false;
   }
 
   showColumnAutoFilter(event: MouseEvent, textFilter: TextFilter): void {
@@ -84,7 +90,9 @@ export class ColumnFilterComponent implements OnInit {
   getSvgPathFillColor(): string {
     const columnAutofilter = this.columnAutoFilterData?.[this.column.id] || {};
 
-    return columnAutofilter.filters && columnAutofilter.filters.length ? '#3a63cc' : '#B3B3B8';
+    return columnAutofilter.filters && columnAutofilter.filters.length
+      ? '#3a63cc'
+      : '#B3B3B8';
   }
 
   onClearColumnFilters(event: MouseEvent): void {
