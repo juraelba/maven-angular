@@ -22,6 +22,8 @@ import { PERSONNEL_COLUMNS } from 'src/app/core/configs/personnel.table.config';
 import { CALL_HISTORY_COLUMNS } from 'src/app/core/configs/call-history.table.columns.config';
 import { SearchService } from '@services/search/search.service';
 import { SearchMediaProfileTitleKey } from '@models/search.model';
+import { MediaProfileService } from '@services/media-profile/media-profile.service';
+import { SearchEnum } from '@enums/search.enum';
 
 @Component({
   selector: 'app-spot-radio-media-profile',
@@ -56,7 +58,8 @@ export class SpotRadioMediaProfileComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private mediaProfileListService: MediaProfileListService,
     private searchService: SearchService,
-    private router: Router
+    private router: Router,
+    private mediaProfileService: MediaProfileService
   ) {}
 
   ngOnInit(): void {
@@ -65,45 +68,22 @@ export class SpotRadioMediaProfileComponent implements OnInit, OnDestroy {
     )[1] as SearchMediaProfileTitleKey;
 
     this.activatedRoute.data.subscribe((data) => {
-      this.maven = data.mediaProfile as Maven;
-      this.radioProfileConfig.mainInformationFields.forEach((_, index) => {
-        this.mainInformation[index] = this.updateFieldsWithValue(
-          this.radioProfileConfig.mainInformationFields[index],
-          this.maven
-        );
+      this.activatedRoute.data.subscribe((data) => {
+        if (this.searchService.currentSearchPage.value === 'call-history') {
+          this.mediaProfileService
+            .fetchMediaProfile(
+              'spot-radio' as SearchEnum,
+              this.router.url.split('/')[2]
+            )
+            .subscribe((maven: any) => {
+              this.maven = maven as Maven;
+              this.setAllProps();
+            });
+        } else {
+          this.maven = data.mediaProfile as Maven;
+          this.setAllProps();
+        }
       });
-
-      this.radioProfileConfig.mavenAttributesFields.forEach((_, index) => {
-        this.mavenAttributes[index] = this.updateFieldsWithValue(
-          this.radioProfileConfig.mavenAttributesFields[index],
-          this.maven
-        );
-      });
-
-      this.diversityAttributes = this.updateFieldsWithValue(
-        this.radioProfileConfig.diversityAttributesFields,
-        this.maven
-      );
-
-      if (this.maven.people) {
-        const persons: Row[] = this.maven.people?.map((person) => {
-          return { id: person.mavenid, data: { ...person } };
-        });
-        this.personnelData = {
-          rows: persons,
-          columns: PERSONNEL_COLUMNS,
-        };
-      }
-
-      if (this.maven.callHistory) {
-        const callHistory: Row[] = this.maven.callHistory?.map((history) => {
-          return { id: history.name, data: { ...history } };
-        });
-        this.callHistoryData = {
-          rows: callHistory,
-          columns: CALL_HISTORY_COLUMNS,
-        };
-      }
     });
 
     this.activatedRoute.queryParamMap
@@ -199,6 +179,47 @@ export class SpotRadioMediaProfileComponent implements OnInit, OnDestroy {
             },
           });
         });
+    }
+  }
+
+  setAllProps(): void {
+    this.radioProfileConfig.mainInformationFields.forEach((_, index) => {
+      this.mainInformation[index] = this.updateFieldsWithValue(
+        this.radioProfileConfig.mainInformationFields[index],
+        this.maven
+      );
+    });
+
+    this.radioProfileConfig.mavenAttributesFields.forEach((_, index) => {
+      this.mavenAttributes[index] = this.updateFieldsWithValue(
+        this.radioProfileConfig.mavenAttributesFields[index],
+        this.maven
+      );
+    });
+
+    this.diversityAttributes = this.updateFieldsWithValue(
+      this.radioProfileConfig.diversityAttributesFields,
+      this.maven
+    );
+
+    if (this.maven.people) {
+      const persons: Row[] = this.maven.people?.map((person) => {
+        return { id: person.mavenid, data: { ...person } };
+      });
+      this.personnelData = {
+        rows: persons,
+        columns: PERSONNEL_COLUMNS,
+      };
+    }
+
+    if (this.maven.callHistory) {
+      const callHistory: Row[] = this.maven.callHistory?.map((history) => {
+        return { id: history.name, data: { ...history } };
+      });
+      this.callHistoryData = {
+        rows: callHistory,
+        columns: CALL_HISTORY_COLUMNS,
+      };
     }
   }
 }

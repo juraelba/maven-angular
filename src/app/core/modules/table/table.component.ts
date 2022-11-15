@@ -43,6 +43,7 @@ import { ListsService } from '@services/lists/lists.service';
 import { SearchMediaProfileTitleKey } from '@models/search.model';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
+import { CallHistoryService } from '@services/call-history.service';
 
 interface Group {
   [key: string]: SelectOption[] | null;
@@ -115,7 +116,8 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     private searchService: SearchService,
     private listsService: ListsService,
     private renderer: Renderer2,
-    private router: Router
+    private router: Router,
+    private callHistoryService: CallHistoryService
   ) {}
 
   ngOnInit(): void {
@@ -183,6 +185,12 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
   ): { [key: string]: string } {
     const width = `${column.width}px`;
     const left = this.getPositionLeft(index);
+    if (column.id === 'change') {
+      return {
+        width: '350px',
+        minWidth: '350px',
+      };
+    }
     const defaultStyle = {
       width,
       minWidth: width,
@@ -211,6 +219,15 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
     const columnConfig = this.config[columnId];
     const id = columnConfig?.['cellLinkPath'].path;
     let parentUrl = columnConfig?.cellLinkPath.parentPath;
+
+    if (this.searchScreenKey === 'call-history') {
+      if (this.callHistoryService.activeMeidaType.value === 10) {
+        return `/spot-radio/${row.id}`;
+      } else {
+        return `/spot-tv/${row.id}`;
+      }
+    }
+
     if (row.data.type === 'magazine') {
       parentUrl = 'magazines';
     }
@@ -681,4 +698,6 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
     return dates.includes(column.id);
   }
+
+  makeChangeLinkToProfile(value: object) {}
 }

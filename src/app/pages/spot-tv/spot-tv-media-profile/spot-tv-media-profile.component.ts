@@ -2,10 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MediaProfileFields } from '@enums/media-profile.enum';
+import { SearchEnum } from '@enums/search.enum';
 import { Maven } from '@models/maven.model';
 import { SearchMediaProfileTitleKey } from '@models/search.model';
 import { Column, Row, Table } from '@models/table.model';
+import { MediaProfileResolver } from '@resolvers/media-profile/media-profile.resolver';
 import { MediaProfileListService } from '@services/media-profile-list/media-profile-list.service';
+import { MediaProfileService } from '@services/media-profile/media-profile.service';
 import { SearchService } from '@services/search/search.service';
 import { lensPath, lensProp, view } from 'ramda';
 import { Subject, takeUntil } from 'rxjs';
@@ -19,6 +22,7 @@ import {
   Formatter,
   spotTvProfileConfig,
 } from 'src/app/core/configs/profile.config';
+import { isArray } from 'util';
 import { DynamicListComponent } from '../../../core/modules/dynamic-list/dynamic-list.component';
 
 @Component({
@@ -53,7 +57,8 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private mediaProfileListService: MediaProfileListService,
-    private searchService: SearchService
+    private searchService: SearchService,
+    private mediaProfileService: MediaProfileService
   ) {}
 
   ngOnInit(): void {
@@ -62,44 +67,19 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
     )[1] as SearchMediaProfileTitleKey;
 
     this.activatedRoute.data.subscribe((data) => {
-      this.maven = data.mediaProfile as Maven;
-      this.profileConfig.mainInformationFields.forEach((_, index) => {
-        this.mainInformation[index] = this.updateFieldsWithValue(
-          this.profileConfig.mainInformationFields[index],
-          this.maven
-        );
-      });
-
-      this.profileConfig.mavenAttributesFields.forEach((_, index) => {
-        this.mavenAttributes[index] = this.updateFieldsWithValue(
-          this.profileConfig.mavenAttributesFields[index],
-          this.maven
-        );
-      });
-
-      this.diversityAttributes = this.updateFieldsWithValue(
-        this.profileConfig.diversityAttributesFields,
-        this.maven
-      );
-
-      if (this.maven.people) {
-        const persons: Row[] = this.maven.people?.map((person) => {
-          return { id: person.mavenid, data: { ...person } };
-        });
-        this.personnelData = {
-          rows: persons,
-          columns: PERSONNEL_COLUMNS,
-        };
-      }
-
-      if (this.maven.callHistory) {
-        const callHistory: Row[] = this.maven.callHistory?.map((history) => {
-          return { id: history.name, data: { ...history } };
-        });
-        this.callHistoryData = {
-          rows: callHistory,
-          columns: CALL_HISTORY_COLUMNS,
-        };
+      if (this.searchService.currentSearchPage.value === 'call-history') {
+        this.mediaProfileService
+          .fetchMediaProfile(
+            'spot-tv' as SearchEnum,
+            this.router.url.split('/')[2]
+          )
+          .subscribe((maven: any) => {
+            this.maven = maven as Maven;
+            this.setAllProps();
+          });
+      } else {
+        this.maven = data.mediaProfile as Maven;
+        this.setAllProps();
       }
     });
 
@@ -200,6 +180,47 @@ export class SpotTvMediaProfileComponent implements OnInit, OnDestroy {
             },
           });
         });
+    }
+  }
+
+  setAllProps() {
+    this.profileConfig.mainInformationFields.forEach((_, index) => {
+      this.mainInformation[index] = this.updateFieldsWithValue(
+        this.profileConfig.mainInformationFields[index],
+        this.maven
+      );
+    });
+
+    this.profileConfig.mavenAttributesFields.forEach((_, index) => {
+      this.mavenAttributes[index] = this.updateFieldsWithValue(
+        this.profileConfig.mavenAttributesFields[index],
+        this.maven
+      );
+    });
+
+    this.diversityAttributes = this.updateFieldsWithValue(
+      this.profileConfig.diversityAttributesFields,
+      this.maven
+    );
+
+    if (this.maven.people) {
+      const persons: Row[] = this.maven.people?.map((person) => {
+        return { id: person.mavenid, data: { ...person } };
+      });
+      this.personnelData = {
+        rows: persons,
+        columns: PERSONNEL_COLUMNS,
+      };
+    }
+
+    if (this.maven.callHistory) {
+      const callHistory: Row[] = this.maven.callHistory?.map((history) => {
+        return { id: history.name, data: { ...history } };
+      });
+      this.callHistoryData = {
+        rows: callHistory,
+        columns: CALL_HISTORY_COLUMNS,
+      };
     }
   }
 }

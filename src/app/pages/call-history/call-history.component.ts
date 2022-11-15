@@ -17,6 +17,7 @@ import { StyleTypesEnum } from '@enums/styles.enum';
 
 import { SearchService } from '@services/search/search.service';
 import { CallHistoryService } from '@services/call-history.service';
+import { ActivatedRoute } from '@angular/router';
 
 enum HeaderLabels {
   radio = 'Radio',
@@ -86,10 +87,12 @@ export class CallHistoryComponent implements OnInit {
 
   constructor(
     private searchService: SearchService,
-    private callHistoryService: CallHistoryService
+    private callHistoryService: CallHistoryService,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    this.activatedRoute.data.subscribe((data) => {});
     this.listenSearchBarMenuActions();
   }
 
@@ -161,9 +164,12 @@ export class CallHistoryComponent implements OnInit {
 
   mapLabel(label: string): string {
     if (label === 'callLetter') {
-      return 'Call Letter';
+      return (
+        'Finding call history for ' +
+        (this.criteries.callLetter || 'Call Letter')
+      );
     }
 
-    return 'Date';
+    return 'Finding call history by Date';
   }
 }

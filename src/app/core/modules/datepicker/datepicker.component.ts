@@ -1,9 +1,28 @@
-import { Component, Input, OnInit, OnChanges, Output, ViewChild, EventEmitter, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  OnChanges,
+  Output,
+  ViewChild,
+  EventEmitter,
+  SimpleChanges,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { DateTime } from 'luxon'; 
-import { MatDatepicker, MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
+import { DateTime } from 'luxon';
+import {
+  MatDatepicker,
+  MatDatepickerInputEvent,
+} from '@angular/material/datepicker';
+import {
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
 
 import { StyleTypesEnum } from '@enums/styles.enum';
 
@@ -14,7 +33,7 @@ export const FORMAT = {
   display: {
     dateInput: 'DD/MM/YYYY',
     monthYearLabel: 'MMM YYYY',
-  }
+  },
 };
 
 @Component({
@@ -28,7 +47,7 @@ export const FORMAT = {
       deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
     },
     { provide: MAT_DATE_FORMATS, useValue: FORMAT },
-  ]
+  ],
 })
 export class DatepickerComponent implements OnInit, OnChanges {
   @Input() opened: boolean = false;
@@ -42,16 +61,19 @@ export class DatepickerComponent implements OnInit, OnChanges {
 
   value = new FormControl();
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
-    if(this.date) {
-      this.value.setValue(this.date.toISO())
+    if (this.date) {
+      this.value.setValue(this.date.toISO());
     }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes.date && changes.date.currentValue !== changes.date.previousValue) {
+    if (
+      changes.date &&
+      changes.date.currentValue !== changes.date.previousValue
+    ) {
       this.value.setValue(changes.date.currentValue?.toISO() || null);
     }
   }
@@ -61,7 +83,9 @@ export class DatepickerComponent implements OnInit, OnChanges {
   }
 
   onSelectedChange(event: MatDatepickerInputEvent<Date | null>): void {
-    this.date = event.value ? DateTime.fromISO(event.value.toISOString()) : null;
+    this.date = event.value
+      ? DateTime.fromISO(event.value.toISOString())
+      : null;
 
     this.dateChange.emit(this.date);
   }

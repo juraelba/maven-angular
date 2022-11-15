@@ -15,6 +15,12 @@ export const LINK_DEFAULT_STYLE: Styles = {
   cursor: 'default',
 };
 
+export const CHANGE_COL_STYLE = {
+  width: '300px',
+  color: '#3A63CC',
+  cursor: 'pointer',
+};
+
 export const SEARCH_COLUMNS_CONFIG: TableConfig = {
   name: {
     cellStyles: LINK_STYLE,
@@ -47,6 +53,13 @@ export const SEARCH_COLUMNS_CONFIG: TableConfig = {
     cellStyles: LINK_STYLE,
     cellLinkPath: { path: 'website', external: true },
   },
+
+  change: {
+    cellStyles: CHANGE_COL_STYLE,
+    cellLinkPath: { path: 'mavenid', external: false },
+    pinned: false,
+  },
+
   partners: {
     cellStyles: LINK_DEFAULT_STYLE,
     cellLinkPath: {
