@@ -17,6 +17,7 @@ import { debounceTime, takeUntil, tap } from 'rxjs/operators';
 
 import { SelectOption } from '../../models/select.model';
 import { StyleTypesEnum } from '@enums/styles.enum';
+import { UtilsService } from '@services/utils/utils.service';
 
 interface SelectInpuClickEvent {
   event: MouseEvent;
@@ -42,7 +43,7 @@ export class SelectComponent implements OnInit, OnChanges {
   @Input() valueContainerWidth: string = '100%';
   @Input() sort: boolean = true;
   @Input() isArrowIconVisible: boolean = true;
-
+  @Input() keepVisible = false;
   @Output() applyChanges: EventEmitter<SelectOption[]> = new EventEmitter();
   @Output() clear: EventEmitter<undefined> = new EventEmitter();
   @Output() closeMenu: EventEmitter<null> = new EventEmitter();
@@ -68,7 +69,7 @@ export class SelectComponent implements OnInit, OnChanges {
   styleTypes = StyleTypesEnum;
   isOpened: boolean = false;
 
-  constructor() {}
+  constructor(private utilService: UtilsService) {}
 
   ngOnInit(): void {
     this.isOpened = this.panelOpen;
@@ -325,6 +326,7 @@ export class SelectComponent implements OnInit, OnChanges {
 
     this.dropdownOptions = [...this.options];
     this.allSelected = this.isAllSelected(this.options);
+    this.utilService.showTextFilterOverlay.next(false);
 
     this.closeMenu.emit();
   }

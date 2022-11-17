@@ -1,9 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnDestroy } from '@angular/core';
-import {FormControl} from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnDestroy,
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { debounceTime, Subscription } from 'rxjs';
 import { distinctUntilChanged } from 'rxjs/operators';
 
-import { Filter, TextFilter, TextFilterKey } from '@models/table.model';
+import { Column, Filter, TextFilter, TextFilterKey } from '@models/table.model';
 
 import { TEXT_FILTERS } from '../../../data/constants';
 
@@ -20,34 +27,37 @@ interface ChangeFilterValueEvent {
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.scss']
+  styleUrls: ['./filter.component.scss'],
 })
 export class FilterComponent implements OnInit, OnDestroy {
   @Input() filter: Filter;
+  @Input() column: Column;
 
   @Output() removeFilter: EventEmitter<string> = new EventEmitter();
+  @Output() textFilterSelect: EventEmitter<{
+    column: Column;
+    textFilter: TextFilter;
+  }> = new EventEmitter();
   @Output() selectFilter: EventEmitter<SelectFilterEvent> = new EventEmitter();
-  @Output() changeFilterValue: EventEmitter<ChangeFilterValueEvent> = new EventEmitter();
+  @Output() changeFilterValue: EventEmitter<ChangeFilterValueEvent> =
+    new EventEmitter();
 
   options: TextFilter[] = [];
   borderLabel: string;
   filterValueFormControl = new FormControl();
 
   filterValueChangeSuscription: Subscription;
-
-  constructor() { }
+  panelOpen = false;
+  constructor() {}
 
   ngOnInit(): void {
     this.borderLabel = this.getBorderLabel(this.filter);
     this.options = this.getFilterOptions(this.filter);
 
-    this.filterValueFormControl.setValue(this.filter.value)
+    this.filterValueFormControl.setValue(this.filter.value);
 
     this.filterValueChangeSuscription = this.filterValueFormControl.valueChanges
-      .pipe(
-        debounceTime(500),
-        distinctUntilChanged()
-      )
+      .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((value: string) => {
         this.changeFilterValue.emit({ id: this.filter.id, value });
       });
@@ -58,11 +68,14 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   getFilterOptions({ textFilterType }: Filter): TextFilter[] {
-    return TEXT_FILTERS.map((textFilter) => ({ ...textFilter, selected: textFilter.value === textFilterType}))
+    return TEXT_FILTERS.map((textFilter) => ({
+      ...textFilter,
+      selected: textFilter.value === textFilterType,
+    }));
   }
 
   getBorderLabel(filter: Filter): string {
-    return filter.textFilterType ? 'Select Filter' : '' ;
+    return filter.textFilterType ? 'Select Filter' : '';
   }
 
   onRemoveFilterClick(event: MouseEvent, id: string): void {
@@ -72,8 +85,12 @@ export class FilterComponent implements OnInit, OnDestroy {
   }
 
   selectTextFilterOption(event: MouseEvent, textFilter: TextFilter): void {
+    this.panelOpen = false;
     event.stopPropagation();
-
-    this.selectFilter.emit({ id: this.filter.id, textFilterType: textFilter.value });
+    this.textFilterSelect.emit({ column: this.column, textFilter });
+    this.selectFilter.emit({
+      id: this.filter.id,
+      textFilterType: textFilter.value,
+    });
   }
 }

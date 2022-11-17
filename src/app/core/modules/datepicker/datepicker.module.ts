@@ -6,14 +6,19 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import {
   DateAdapter,
   MatNativeDateModule,
+  MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
 
 import { DatepickerComponent } from './datepicker.component';
 
 import { SvgIconModule } from '@modules/svg-icon/svg-icon.module';
-import { CustomDateAdapter } from '../../configs/custom-date-adapter';
+import {
+  AppDateAdapter,
+  APP_DATE_FORMATS,
+} from '../../configs/custom-date-adapter';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   declarations: [DatepickerComponent],
@@ -26,11 +31,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     SvgIconModule,
     FormsModule,
     ReactiveFormsModule,
+    MatInputModule,
   ],
   exports: [DatepickerComponent],
-  providers: [
-    { provide: MAT_DATE_LOCALE, useValue: 'en-US' },
-    { provide: DateAdapter, useClass: CustomDateAdapter },
-  ],
 })
 export class DatepickerModule {}

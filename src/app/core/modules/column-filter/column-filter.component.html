@@ -39,7 +39,7 @@
       (click)="toggleTextFilterOverlay()"
       [ngClass]="{ 'bg-light-blue': isTextFilterOverlayVisible }"
     >
-      <div class="font-lato text-sm">Text filter Here</div>
+      <div class="font-lato text-sm">Text filter</div>
       <img
         class="cursor-pointer"
         src="/assets/images/icons/next.svg"
@@ -64,7 +64,7 @@
   [cdkConnectedOverlayOpen]="isTextFilterOverlayVisible"
   [cdkConnectedOverlayOffsetX]="260"
 >
-  <div class="rounded-md shadow-simple rounded-md w-full bg-white">
+  <div class="rounded-md shadow-simple w-full bg-white">
     <div
       *ngFor="let textFilter of textFilters"
       class="text-filter-option flex items-center hover:bg-light-blue text-pri-black text-sm px-[20px] py-[10px] cursor-pointer"

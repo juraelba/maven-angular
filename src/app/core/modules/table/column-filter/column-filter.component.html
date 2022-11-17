@@ -9,6 +9,7 @@
   (clear)="onClear()"
   #selectComponent
   class="mt-[20px]"
+  [keepVisible]="true"
 >
   <div dropdownHeaderContainer #dropdownHeaderContainer>
     <div
@@ -67,7 +68,9 @@
 <ng-template
   cdkConnectedOverlay
   [cdkConnectedOverlayOrigin]="trigger"
-  [cdkConnectedOverlayOpen]="isTextFilterOverlayVisible"
+  [cdkConnectedOverlayOpen]="
+    isTextFilterOverlayVisible && utilsService.showTextFilterOverlay.value
+  "
   [cdkConnectedOverlayPositions]="connectedPositions"
 >
   <div class="rounded-md shadow-simple w-full bg-white">

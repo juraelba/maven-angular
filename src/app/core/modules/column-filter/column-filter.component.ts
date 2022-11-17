@@ -109,6 +109,5 @@ export class ColumnFilterComponent implements OnInit {
 
   onMenuClose(): void {
     this.closeFilter.emit();
-    // this.isTextFilterOverlayVisible = false;
   }
 }

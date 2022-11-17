@@ -2,7 +2,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 import { TextFiltersLabelsEnum, FilterOperatorEnum } from '@enums/filters.enum';
 
-import { Column, FilterOperatorKey, Filter, TextFilterKey } from '@models/table.model';
+import {
+  Column,
+  FilterOperatorKey,
+  Filter,
+  TextFilterKey,
+} from '@models/table.model';
 
 interface SelectFilterEvent {
   id: string;
@@ -22,7 +27,7 @@ interface ApplyFilterEvent {
 @Component({
   selector: 'app-column-auto-filter',
   templateUrl: './column-auto-filter.component.html',
-  styleUrls: ['./column-auto-filter.component.scss']
+  styleUrls: ['./column-auto-filter.component.scss'],
 })
 export class ColumnAutoFilterComponent implements OnInit {
   @Input() column: Column;
@@ -34,10 +39,10 @@ export class ColumnAutoFilterComponent implements OnInit {
 
   _filters: Filter[] = [];
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
-    this._filters = [ ...this.filters ];
+    this._filters = [...this.filters];
   }
 
   onClearFilterButtonClick(event: MouseEvent): void {
@@ -50,13 +55,13 @@ export class ColumnAutoFilterComponent implements OnInit {
   onCancelButtonClick(event: MouseEvent): void {
     event.stopPropagation();
 
-    this._filters = [ ...this.filters ];
+    this._filters = [...this.filters];
     this.cancelFilter.emit(this.column.id);
   }
 
   onApplyButtonClick(event: MouseEvent): void {
     event.stopPropagation();
-    
+
     this.applyFilter.emit({ id: this.column.id, filters: this._filters });
   }
 
@@ -68,7 +73,7 @@ export class ColumnAutoFilterComponent implements OnInit {
       textFilterType: '',
       textFilterLabel: '',
       value: '',
-      operator: FilterOperatorEnum.AND
+      operator: FilterOperatorEnum.AND,
     };
 
     this._filters.push(filter);
@@ -80,12 +85,14 @@ export class ColumnAutoFilterComponent implements OnInit {
 
   onFilterSelect({ id, textFilterType }: SelectFilterEvent): void {
     this._filters = this._filters.map((filter) => {
-      if(filter.id === id) {
+      if (filter.id === id) {
         return {
           ...filter,
           textFilterType,
-          textFilterLabel: textFilterType ? TextFiltersLabelsEnum[textFilterType] : ''
-        }
+          textFilterLabel: textFilterType
+            ? TextFiltersLabelsEnum[textFilterType]
+            : '',
+        };
       }
 
       return filter;
@@ -95,21 +102,25 @@ export class ColumnAutoFilterComponent implements OnInit {
   onFilterValueChange({ id, value }: ChangeFilterValueEvent): void {
     this._filters = this._filters.map((filter) => ({
       ...filter,
-      value: filter.id === id ? value : filter.value
+      value: filter.id === id ? value : filter.value,
     }));
   }
 
-  changeOperator(event: MouseEvent, operator: FilterOperatorKey, id: string): void {
+  changeOperator(
+    event: MouseEvent,
+    operator: FilterOperatorKey,
+    id: string
+  ): void {
     event.stopPropagation();
 
     this._filters = this._filters.map((filter) => ({
       ...filter,
-      operator: filter.id === id ? operator : filter.operator
+      operator: filter.id === id ? operator : filter.operator,
     }));
   }
 
   getBorderLabel(filter: Filter): string {
-    return filter.textFilterType ? 'Select Filter' : '' ;
+    return filter.textFilterType ? 'Select Filter' : '';
   }
 
   trackByFilterId(index: number, filter: Filter): string {

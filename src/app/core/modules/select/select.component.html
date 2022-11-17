@@ -21,6 +21,7 @@
       *ngIf="isOpened"
       appClickOutside
       class="dropdown-container rounded-md shadow-simple w-full bg-white mt-[5px]"
+      [ngClass]="{ visualize: keepVisible }"
       (clickOutside)="onClickOutside()"
     >
       <ng-container *ngIf="dropdownTemplate">

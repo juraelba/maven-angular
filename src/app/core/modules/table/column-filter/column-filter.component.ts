@@ -5,6 +5,7 @@ import { Column, TextFilter, ColumnAutoFilterData } from '@models/table.model';
 import { SelectOption } from '@models/select.model';
 
 import { TEXT_FILTERS } from '../../../data/constants';
+import { UtilsService } from '@services/utils/utils.service';
 
 @Component({
   selector: 'app-column-filter',
@@ -51,7 +52,7 @@ export class ColumnFilterComponent implements OnInit {
 
   textFilters: TextFilter[] = TEXT_FILTERS;
 
-  constructor() {}
+  constructor(public utilsService: UtilsService) {}
 
   ngOnInit(): void {
     this.filterDataOptions = [...(this.rowFilterData || [])];
@@ -72,12 +73,15 @@ export class ColumnFilterComponent implements OnInit {
   }
 
   toggleTextFilterOverlay(): void {
+    this.utilsService.showTextFilterOverlay.next(
+      !this.isTextFilterOverlayVisible
+    );
     this.isTextFilterOverlayVisible = !this.isTextFilterOverlayVisible;
   }
 
   onMenuClose(): void {
     this.closeFilter.emit();
-    // this.isTextFilterOverlayVisible = false;
+    this.isTextFilterOverlayVisible = false;
   }
 
   showColumnAutoFilter(event: MouseEvent, textFilter: TextFilter): void {

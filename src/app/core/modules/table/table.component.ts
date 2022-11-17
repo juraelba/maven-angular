@@ -698,6 +698,4 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
     return dates.includes(column.id);
   }
-
-  makeChangeLinkToProfile(value: object) {}
 }

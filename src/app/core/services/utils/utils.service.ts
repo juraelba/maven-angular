@@ -9,6 +9,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class UtilsService {
+  showTextFilterOverlay: BehaviorSubject<any> = new BehaviorSubject(false);
   constructor() {}
 
   sortByAlphabeticalOrder<Option>(
