@@ -44,6 +44,7 @@ import { SearchMediaProfileTitleKey } from '@models/search.model';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { CallHistoryService } from '@services/call-history.service';
+import * as moment from 'moment';
 
 interface Group {
   [key: string]: SelectOption[] | null;
@@ -695,7 +696,10 @@ export class TableComponent implements OnInit, AfterViewInit, OnChanges {
 
   isDateColumn(column: Column): boolean {
     const dates = ['on'];
-
     return dates.includes(column.id);
+  }
+
+  formatDate(ts: any) {
+    return moment(ts).utc(true).format('YYYY-MM-DD').split('T')[2];
   }
 }

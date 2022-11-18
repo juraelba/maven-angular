@@ -34,12 +34,12 @@ export class AppDateAdapter extends NativeDateAdapter {
 
 export const APP_DATE_FORMATS = {
   parse: {
-    dateInput: { month: 'short', year: 'numeric', day: 'numeric' },
+    dateInput: { month: 'numeric', year: 'numeric', day: 'numeric' },
   },
   display: {
     dateInput: 'input',
     monthYearLabel: 'inputMonth',
-    dateA11yLabel: { year: 'numeric', month: 'long', day: 'numeric' },
+    dateA11yLabel: { year: 'numeric', month: 'numeric', day: 'numeric' },
     monthYearA11yLabel: { year: 'numeric', month: 'long' },
   },
 };

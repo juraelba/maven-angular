@@ -33,7 +33,6 @@ export class CallHistoryService {
     const year = date1.getFullYear();
     const month = date1.getMonth() + 1;
     const dt = date1.getDate();
-
     return year + '-' + month + '-' + dt;
   }
 }

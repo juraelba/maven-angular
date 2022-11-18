@@ -105,7 +105,11 @@
                   class="line-clamp-2 w-full cursor-default"
                   [routerLink]="[link]"
                 >
-                  {{ row.data[column.id] }}
+                  {{
+                    isDateColumn(column)
+                      ? (row.data[column.id] | localeDate)
+                      : row.data[column.id]
+                  }}
                 </a>
                 <a
                   *ngIf="searchScreenKey === 'media-search'"

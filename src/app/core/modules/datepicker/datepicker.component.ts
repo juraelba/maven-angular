@@ -26,28 +26,10 @@ import {
 
 import { StyleTypesEnum } from '@enums/styles.enum';
 
-export const FORMAT = {
-  parse: {
-    dateInput: 'LL',
-  },
-  display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMM YYYY',
-  },
-};
-
 @Component({
   selector: 'app-datepicker',
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss'],
-  providers: [
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
-    },
-    { provide: MAT_DATE_FORMATS, useValue: FORMAT },
-  ],
 })
 export class DatepickerComponent implements OnInit, OnChanges {
   @Input() opened: boolean = false;

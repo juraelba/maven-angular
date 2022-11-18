@@ -13,12 +13,14 @@ import {
 import { DatepickerComponent } from './datepicker.component';
 
 import { SvgIconModule } from '@modules/svg-icon/svg-icon.module';
-import {
-  AppDateAdapter,
-  APP_DATE_FORMATS,
-} from '../../configs/custom-date-adapter';
+
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import {
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+  MomentDateAdapter,
+} from '@angular/material-moment-adapter';
+import { AppDateAdapter } from '../../configs/custom-date-adapter';
 
 @NgModule({
   declarations: [DatepickerComponent],
@@ -34,5 +36,12 @@ import { MatInputModule } from '@angular/material/input';
     MatInputModule,
   ],
   exports: [DatepickerComponent],
+  // providers: [
+  //   {
+  //     provide: DateAdapter,
+  //     useClass: AppDateAdapter,
+  //     deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+  //   },
+  // ],
 })
 export class DatepickerModule {}
