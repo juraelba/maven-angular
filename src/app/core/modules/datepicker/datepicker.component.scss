@@ -5,12 +5,12 @@
   }
 
   .mat-calendar-table-header-divider::after {
-      display: none;
+    display: none;
   }
 }
 
 ::ng-deep {
-  &.mat-calendar-table-header-divider::after  {
+  &.mat-calendar-table-header-divider::after {
     display: none;
   }
 
@@ -37,4 +37,7 @@
       color: #000000;
     }
   }
+}
+::ng-deep .mat-form-field-underline {
+  display: none;
 }

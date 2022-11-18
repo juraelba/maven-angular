@@ -18,15 +18,17 @@
   >
     {{ label }}
   </div>
-
-  <input
-    class="outline-none placeholder:text-pri-black placeholder:font-lato w-full"
-    matInput
-    [placeholder]="label"
-    [matDatepicker]="picker"
-    (dateChange)="onSelectedChange($event)"
-    [formNoValidate]="true"
-  />
+  <mat-form-field class="w-full">
+    <input
+      class="outline-none placeholder:text-pri-black placeholder:font-lato w-full"
+      matInput
+      placeholder="MM/DD/YYYY"
+      [matDatepicker]="picker"
+      (dateChange)="onSelectedChange($event)"
+      [formNoValidate]="true"
+    />
+    <mat-label>{{ label }}</mat-label>
+  </mat-form-field>
 
   <mat-datepicker-toggle class="datepicker-toggle" matSuffix [for]="picker">
     <app-svg-icon

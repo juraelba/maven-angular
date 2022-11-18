@@ -14,7 +14,10 @@ import { DatepickerComponent } from './datepicker.component';
 
 import { SvgIconModule } from '@modules/svg-icon/svg-icon.module';
 
-import { MatFormFieldModule } from '@angular/material/form-field';
+import {
+  MatFormFieldModule,
+  MatPlaceholder,
+} from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import {
   MAT_MOMENT_DATE_ADAPTER_OPTIONS,
