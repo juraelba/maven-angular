@@ -7,6 +7,7 @@ export enum SearchEnum {
   'spot-radio' = 'spot-radio',
   'network-cable' = 'network-cable',
   'network-radio' = 'network-radio',
+  'regional-cable' = 'spot-cable',
   'digital' = 'digital',
   'magazine' = 'magazine',
   'newspaper' = 'newspaper',
@@ -120,6 +121,7 @@ export enum SearchExcelFileNamesEnum {
   'spot-radio' = 'Spot-Radio.xlsx',
   'network-cable' = 'Cable-Networks-Search.xlsx',
   'network-radio' = 'Network-Radio.xlsx',
+  'spot-cable' = 'Regional-Cable-Search.xlsx',
   digital = 'Digital.xlsx',
   magazine = 'Magazine.xlsx',
   newspaper = 'Newspaper.xlsx',
@@ -155,6 +157,7 @@ export enum SearchMediaProfileEnumTitles {
   'network-tv' = 'Broadcast Networks',
   'magazines' = 'Magazine',
   'call-history' = 'call-history',
+  'spot-cable' = 'Regional Cable',
 }
 
 export enum MediaMapEnum {
@@ -169,4 +172,5 @@ export enum MediaMapEnum {
   'magazines' = 'Magazine',
   'national-audio' = 'National Audio',
   'call-history' = 'call-history',
+  'regional-cable' = 'Regional Cable',
 }

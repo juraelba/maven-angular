@@ -96,7 +96,7 @@ export class SideNavComponent implements OnInit, AfterViewInit {
             {
               name: 'regional-cable',
               label: 'Regional Cable',
-              route: '/regional-cable-search',
+              route: '/regional-cable',
               disabled: true,
               permissions: [ObjectType.SpotCable],
             },

@@ -168,6 +168,17 @@ export const TABLE_COLUMNS: TableColumnsConfig = {
     { id: SearchColumnsIdEnum.website, label: SearchColumnsEnum.website },
     { id: SearchColumnsIdEnum.partners, label: SearchColumnsEnum.partners },
   ],
+
+  [SearchEnum['regional-cable']]: [
+    { id: SearchColumnsIdEnum.mavenid, label: SearchColumnsEnum.mavenid },
+    { id: SearchColumnsIdEnum.networks, label: SearchColumnsEnum.networks },
+    { id: SearchColumnsIdEnum.subType, label: SearchColumnsEnum.subType },
+    { id: SearchColumnsIdEnum.owner, label: SearchColumnsEnum.owner },
+    { id: SearchColumnsIdEnum.parent, label: SearchColumnsEnum.parent },
+    { id: SearchColumnsIdEnum.categories, label: SearchColumnsEnum.categories },
+    { id: SearchColumnsIdEnum.website, label: SearchColumnsEnum.website },
+    { id: SearchColumnsIdEnum.partners, label: SearchColumnsEnum.partners },
+  ],
 };
 
 export const COLUMNS_TO_OMIT = [

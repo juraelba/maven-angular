@@ -43,6 +43,13 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'regional-cable',
+        loadChildren: () =>
+          import('./pages/regional-cable/regional-cable.module').then(
+            (m) => m.RegionalCableModule
+          ),
+      },
+      {
         path: 'network-cable',
         loadChildren: () =>
           import('./pages/cable-networks/cable-networks.module').then(
