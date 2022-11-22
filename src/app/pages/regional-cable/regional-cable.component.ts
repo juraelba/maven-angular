@@ -25,8 +25,8 @@ export class RegionalCableComponent implements OnInit, OnDestroy {
     this.selectedCriteriaService.criteries?.[this.key] ?? {};
   unsubscribeAll: Subject<null> = new Subject();
 
-  owners3ListUrlKey: ListUrlsKey = ListKeys.owners10;
-  mediatypes3ListUrlKey: ListUrlsKey = ListKeys.mediatypes9;
+  owners10ListUrlKey: ListUrlsKey = ListKeys.owners10;
+  mediatypes9ListUrlKey: ListUrlsKey = ListKeys.mediatypes9;
 
   constructor(
     private selectedCriteriaService: SelectedCriteriaService,

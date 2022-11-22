@@ -1,20 +1,16 @@
-<app-search
-  [title]="'Cable Networks Search'"
-  [criteries]="criteries"
-  [key]="key"
->
-  <div class="grid-container grid gap-5 mb-[40px]">
-    <app-name-input
-      class="col-start-1 col-end-3"
-      (changeData)="onChange($event)"
-    ></app-name-input>
-    <app-sub-types
-      (change)="onChange($event)"
-      [listUrlKey]="mediatypes3ListUrlKey"
-    ></app-sub-types>
-    <app-owners-pick-list
-      (change)="onChange($event)"
-      [listUrlKey]="owners3ListUrlKey"
-    ></app-owners-pick-list>
-  </div>
-</app-search>
+<div>
+  <app-search
+    [title]="'Cable Networks Search'"
+    [criteries]="criteries"
+    [key]="key"
+  >
+    <div class="grid-container grid grid-cols-3 gap-5 mb-[40px]">
+      <app-name-input (changeData)="onChange($event)"></app-name-input>
+      <app-market-pick-list (change)="onChange($event)"></app-market-pick-list>
+      <app-owners-pick-list
+        (change)="onChange($event)"
+        [listUrlKey]="owners10ListUrlKey"
+      ></app-owners-pick-list>
+    </div>
+  </app-search>
+</div>
